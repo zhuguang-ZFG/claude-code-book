@@ -47,7 +47,7 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 |:-:|---------|-------------|
 | 01 | [The New Paradigm of Agent Programming](Part-1-Foundations/01-The-New-Paradigm-of-Agent-Programming.md) | Copilot → Claude Code evolution; five design principles; Bun + React/Ink + Zod v4 stack |
 | 02 | [The Dialog Loop — Agent's Heartbeat](Part-1-Foundations/02-The-Dialog-Loop-Heartbeat-of-an-Agent.md) | `while(true)` async generator loop; five yield events; ten termination reasons; `QueryDeps` DI |
-| 03 | [The Tool System — Agent's Hands](Part-1-Foundations/03-The-Tool-System-Agent-Hands.md) | `Tool<I,O,P>` five-element protocol; fail-safe `buildTool` factory; 45+ tools × 12 categories; concurrent partitioning |
+| 03 | [The Tool System — Agent's Hands](Part-1-Foundations/03-The-Tool-System-Agent-Hands.md) | `Tool<I,O,P>` five-element protocol; fail-safe `buildTool` factory; 55 tools × 12 categories; concurrent partitioning |
 | 04 | [The Permission Pipeline — Agent's Guardrails](Part-1-Foundations/04-The-Permission-Pipeline-Agent-Guardrails.md) | Four-stage pipeline; five permission modes; Bash rule matching; speculative classifier 2s Promise.race |
 
 ### Part 2. Core Systems — Deep Into Subsystems
@@ -59,7 +59,7 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 | 05 | [Settings & Configuration — Agent's DNA](Part-2-Core-Systems/05-Settings-and-Configuration-Agent-DNA.md) | Six-layer config priority chain; merge rules; security boundary & supply chain defense; dual-layer feature gating |
 | 06 | [The Memory System — Agent's Long-Term Memory](Part-2-Core-Systems/06-The-Memory-System-Agent-Long-Term-Memory.md) | Four closed memory types; "only save non-derivable info"; MEMORY.md index; Fork memory mechanism |
 | 07 | [Context Management — Agent's Working Memory](Part-2-Core-Systems/07-Context-Management-Agent-Working-Memory.md) | Effective window formula; four-level compression (Snip→MicroCompact→Collapse→AutoCompact); circuit breaker |
-| 08 | [The Hook System — Agent's Lifecycle Extension Points](Part-2-Core-Systems/08-The-Hook-System-Agent-Lifecycle-Extension-Points.md) | Five hook types; 26 lifecycle events; JSON response protocol; six-layer priority; three-layer security |
+| 08 | [The Hook System — Agent's Lifecycle Extension Points](Part-2-Core-Systems/08-The-Hook-System-Agent-Lifecycle-Extension-Points.md) | Five hook types; 22 lifecycle events; JSON response protocol; six-layer priority; three-layer security |
 
 ### Part 3. Advanced Patterns — Composition & Extension
 
@@ -94,7 +94,7 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 
 ## The book as one file
 
-`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.4 MB Chinese / 5.5 MB English) and an A4-typeset PDF (455 pages / 15.7 MB in Chinese, 493 pages / 10.0 MB in English). Artifacts land in `yuyu-book/dist/`.
+`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.4 MB Chinese / 5.5 MB English) and an A4-typeset PDF (462 pages / 15.5 MB in Chinese, 499 pages / 9.8 MB in English). Artifacts land in `yuyu-book/dist/`.
 
 | File | Language |
 |------|----------|

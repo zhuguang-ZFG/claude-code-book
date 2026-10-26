@@ -202,5 +202,240 @@ class ShippedCounts(Data):
                             f"no markable form in {lang}")
 
 
+CN_NUM = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7,
+          "八": 8, "九": 9, "十": 10}
+EN_NUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+          "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+TOOL_ROW = re.compile(r"^\|\s*([A-Za-z][A-Za-z0-9]*Tool)\s*\|")
+CAT_HEADING = re.compile(r"^## \d+\. \S")
+
+
+class TextTotalsMatchTheirOwnTables(Data):
+    """A stated total is a promise the table underneath has to keep.
+
+    Three figures in this book disagreed with the rows they summarised — a
+    chapter about 26 lifecycle events whose own table lists 22, a section headed
+    三个维度 that then describes five, and a tool count quoted as 45+, 六十多个 and
+    55 in three places. A reader who counts rows catches all of them, so this
+    test counts them too: the diagram and the table are the authority, and every
+    sentence quoting their total is checked against them.
+    """
+
+    def path(self, needle: str, lang: str) -> str:
+        """`needle` matches the Chinese path, which names the same unit in both
+        editions (附录/B… and B-Complete… are one unit)."""
+        return next(u[lang] for u, _k in self.units if needle in u["zh"])
+
+    def table_after(self, rel: str, marker: str) -> list[str]:
+        """Data rows of the table introduced by `marker`, header excluded."""
+        lines = prose_lines(read_text(REPO_ROOT / rel))
+        rows, seen = [], False
+        for ln in sorted(lines):
+            s = lines[ln].strip()
+            if not seen:
+                seen = s.startswith(marker)
+                continue
+            if s.startswith("|"):
+                if not SEP_ROW.match(s):
+                    rows.append(s)
+            elif rows:
+                break
+        return rows[1:]
+
+    def tools(self, lang: str) -> list[str]:
+        lines = prose_lines(read_text(REPO_ROOT / self.path("附录/B", lang)))
+        out, inside = [], False
+        for ln in sorted(lines):
+            s = lines[ln].strip()
+            if CAT_HEADING.match(s):
+                inside = True
+                continue
+            if inside and s.startswith("## "):
+                break
+            if inside and (m := TOOL_ROW.match(s)):
+                out.append(m.group(1))
+        return out
+
+    def dimensions(self, rel: str) -> int:
+        """How many cache-key dimensions the plate actually draws."""
+        _body, blocks, _langs = extract_mermaid(read_text(REPO_ROOT / rel), rel)
+        plate = next(b.src for b in blocks if "CacheSafeParams" in b.src)
+        return len({m.group(1) for m in re.finditer(r"\bD(\d)\s*\[", plate)})
+
+    def test_the_hook_table_lists_what_the_chapter_claims(self):
+        quotes = {
+            "zh": [r"掌握 (\d+) 个生命周期事件的触发时机",
+                   r"本章按功能分组介绍其中 (\d+) 个生命周期事件",
+                   r"下表总结了上述 (\d+) 个事件的分类",
+                   r"\*\*(\d+) 个生命周期事件\*\*"],
+            "en": [r"semantics of (\d+) lifecycle events",
+                   r"this chapter introduces (\d+) of its lifecycle events",
+                   r"typical uses of these (\d+) events",
+                   r"\*\*(\d+) lifecycle events\*\*"],
+        }
+        docs = ("README.md", r"(\d+) 个生命周期事件；JSON 响应协议", "zh"), \
+               ("en/README.md", r"(\d+) lifecycle events; JSON", "en"), \
+               ("yuyu-book/manifest.json", r'"zh": "(\d+) 个生命周期事件上', "zh"), \
+               ("yuyu-book/manifest.json",
+                r'"en": "Across (\d+) lifecycle events', "en")
+        bad = []
+        for lang in ("zh", "en"):
+            rel = self.path("08-钩子", lang)
+            rows = len(self.table_after(rel, "下表总结了" if lang == "zh"
+                                        else "The table below summarizes"))
+            self.assertGreater(rows, 0, f"{rel}: no event table found")
+            text = read_text(REPO_ROOT / rel)
+            for rx in quotes[lang]:
+                m = re.search(rx, text)
+                self.assertIsNotNone(m, f"{rel}: nothing matches {rx!r}")
+                if m.group(1) != str(rows):
+                    bad.append(f"{rel}: {rx!r} says {m.group(1)}, the table "
+                               f"lists {rows} events")
+        for doc, rx, lang in docs:
+            m = re.search(rx, read_text(REPO_ROOT / doc))
+            self.assertIsNotNone(m, f"{doc}: nothing matches {rx!r}")
+            rows = len(self.table_after(self.path("08-钩子", lang),
+                                        "下表总结了" if lang == "zh"
+                                        else "The table below summarizes"))
+            if m.group(1) != str(rows):
+                bad.append(f"{doc}: {rx!r} says {m.group(1)}, the table lists "
+                           f"{rows} events")
+        self.assertEqual(bad, [], "\n  " + "\n  ".join(bad))
+
+    def test_the_tool_inventory_is_the_number_the_book_quotes(self):
+        intro = {"zh": r"按 (\d+) 个功能类别列出 Claude Code 架构中注册的全部"
+                       r" (\d+) 个工具",
+                 "en": r"lists all (\d+) tools registered in the Claude Code "
+                       r"architecture, indexed across (\d+) functional"}
+        for lang in ("zh", "en"):
+            apxb = self.path("附录/B", lang)
+            rows = self.tools(lang)
+            self.assertEqual(len(rows), len(set(rows)),
+                             f"{lang}: a tool is listed twice in appendix B")
+            text = read_text(REPO_ROOT / apxb)
+            m = re.search(intro[lang], text)
+            self.assertIsNotNone(m, f"{apxb}: its own intro states no total")
+            want = ["12", str(len(rows))] if lang == "zh" \
+                else [str(len(rows)), "12"]
+            self.assertEqual(want, list(m.groups()),
+                             f"{apxb}: rows and categories vs its own intro")
+            bad = []
+            for rel, rxs in self._tool_quotes(lang):
+                body = read_text(REPO_ROOT / rel)
+                for rx in rxs:
+                    got = re.search(rx, body)
+                    if not got:
+                        bad.append(f"{rel}: nothing matches {rx!r}")
+                    elif got.groups() and got.group(1) != str(len(rows)):
+                        bad.append(f"{rel}: {rx!r} says {got.group(1)}, the "
+                                   f"inventory lists {len(rows)}")
+            self.assertEqual(bad, [], f"[{lang}] " + "\n  " + "\n  ".join(bad))
+
+    def _tool_quotes(self, lang):
+        """Every sentence outside the appendix that quotes the tool total."""
+        if lang == "zh":
+            return [
+                (self.path("01-智能体编程", lang), [r"(\d+) 个工具 · 编排引擎"]),
+                (self.path("03-工具系统", lang),
+                 [r"掌握 Claude Code (\d+) 个已注册工具",
+                  r"注册了 (\d+) 个专门化工具"]),
+                (self.path("13-流式架构", lang),
+                 [r"如果 Claude Code 的 (\d+) 个工具都在启动时构建 schema"]),
+                (self.path("15-构建你自己的", lang),
+                 [r"在拥有 (\d+) 个工具和数百个模块"]),
+                ("README.md", [r"(\d+) 工具 × 12 类"]),
+                ("yuyu-book/manifest.json",
+                 [r'"zh": "(\d+) 个工具如何靠同一份类型契约']),
+            ]
+        return [
+            (self.path("01-智能体编程", lang), [r"(\d+) Tools · Orchestration"]),
+            (self.path("03-工具系统", lang),
+             [r"Claude Code's (\d+) registered tools",
+              r"registers (\d+) specialized tools"]),
+            (self.path("13-流式架构", lang),
+             [r"Claude Code's (\d+) tools all build schemas at startup"]),
+            (self.path("15-构建你自己的", lang),
+             [r"In a codebase with (\d+) tools and hundreds of modules"]),
+            ("en/README.md", [r"(\d+) tools × 12 categories"]),
+            ("yuyu-book/manifest.json",
+             [r'"en": "How do (\d+) tools share one type contract']),
+        ]
+
+    def test_the_schema_arithmetic_follows_the_tool_count(self):
+        """The startup-cost sentence is 0.1-0.3ms per tool; it moves with the
+        inventory or it stops being arithmetic the reader can check."""
+        for rel, rx in (
+            (self.path("13-流式架构", "zh"),
+             r"(\d+) 个工具都在启动时构建 schema，总开销为 ([\d.]+)-([\d.]+)ms"),
+            (self.path("13-流式架构", "en"),
+             r"(\d+) tools all build schemas at startup, total overhead is "
+             r"([\d.]+)-([\d.]+)ms"),
+        ):
+            m = re.search(rx, read_text(REPO_ROOT / rel))
+            self.assertIsNotNone(m, f"{rel}: the schema-cost sentence moved")
+            n, low, high = int(m.group(1)), float(m.group(2)), float(m.group(3))
+            self.assertAlmostEqual(n * 0.1, low, places=4, msg=rel)
+            self.assertAlmostEqual(n * 0.3, high, places=4, msg=rel)
+
+    def test_the_cache_dimensions_are_one_number_across_the_section(self):
+        for label, rel, head, body, four, table in (
+            ("zh", self.path("13-流式架构", "zh"),
+             r"### 13\.5\.1 提示缓存共享的([一二三四五六七八九十])个维度",
+             r"缓存键由([一二三四五六七八九十])个维度构成",
+             r"`CacheSafeParams` 精确地封装了前([一二三四五六七八九十])个维度",
+             CN_NUM),
+            ("en", self.path("13-流式架构", "en"),
+             r"### 13\.5\.1 ([A-Za-z]+) Dimensions of Prompt Cache",
+             r"cache key consists of ([a-z]+) dimensions",
+             r"encapsulates the first ([a-z]+) dimensions",
+             EN_NUM),
+        ):
+            plate = self.dimensions(rel)
+            text = read_text(REPO_ROOT / rel)
+            nums = []
+            for rx in (head, body, four):
+                m = re.search(rx, text)
+                self.assertIsNotNone(m, f"{label}: nothing matches {rx!r}")
+                nums.append(m.group(1))
+            # lower() is a no-op on the Chinese numerals and undoes the
+            # title-case the English headings are written in
+            self.assertEqual(table[nums[0].lower()], plate,
+                             f"{label}: the heading counts {nums[0]}, the plate "
+                             f"draws {plate} dimensions")
+            self.assertEqual(nums[0].lower(), nums[1].lower(),
+                             f"{label}: heading says {nums[0]}, the text says "
+                             f"{nums[1]}")
+            self.assertEqual(table[nums[2].lower()], plate - 1,
+                             f"{label}: {nums[2]} dimensions wrapped, but the "
+                             f"plate has {plate} and one is described apart")
+            wrapped = text.split(re.search(four, text).group(0), 1)[1][:260]
+            self.assertIn("model", wrapped,
+                          f"{label}: the wrapped dimensions never name model — "
+                          f"that is how the list lost a dimension once")
+
+    def test_the_superseded_figures_are_gone(self):
+        """The wording these corrections replaced, nowhere in the book or its docs.
+
+        A stale figure is worse than a rough one: 六十多个工具 next to an appendix
+        listing 55 tells a reader the two were written by different hands.
+        """
+        stale = ("26 个生命周期事件", "26 lifecycle events", "all 26 events",
+                 "45+ 工具", "45+ tools", "45-plus tools", "45 个以上工具",
+                 "六十多个工具", "sixty-plus tools", "over sixty tools",
+                 "提示缓存共享的三个维度", "Three Dimensions of Prompt Cache")
+        docs = ("README.md", "en/README.md", "STRUCTURE.md", "CREDITS.md",
+                "CONTRIBUTING.md", "yuyu-book/manifest.json")
+        hits = []
+        for needle in stale:
+            for u, _k in self.units:
+                for lang in ("zh", "en"):
+                    if needle in read_text(REPO_ROOT / u[lang]):
+                        hits.append(f"{u[lang]}: still says {needle!r}")
+            for doc in docs:
+                if needle in read_text(REPO_ROOT / doc):
+                    hits.append(f"{doc}: still says {needle!r}")
+        self.assertEqual(hits, [], "\n  " + "\n  ".join(hits))
+
+
 if __name__ == "__main__":
     unittest.main()

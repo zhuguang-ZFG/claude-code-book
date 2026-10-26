@@ -369,8 +369,8 @@
     },
     "ch03": {
       "question": {
-        "zh": "45 个以上工具如何靠同一份类型契约注册、发现、并发调度，而不改动引擎代码？",
-        "en": "How do 45-plus tools share one type contract for registration, discovery, and concurrent scheduling without touching the engine?"
+        "zh": "55 个工具如何靠同一份类型契约注册、发现、并发调度，而不改动引擎代码？",
+        "en": "How do 55 tools share one type contract for registration, discovery, and concurrent scheduling without touching the engine?"
       },
       "deliverable": {
         "zh": "一张并发分区批次图，能用 buildTool 独立实现一个自定义工具。",
@@ -567,8 +567,8 @@
     },
     "ch08": {
       "question": {
-        "zh": "26 个生命周期事件上，五种钩子类型如何观察、拦截并改写 Agent 的行为？",
-        "en": "Across 26 lifecycle events, how do five hook types observe, intercept, and reshape agent behavior?"
+        "zh": "22 个生命周期事件上，五种钩子类型如何观察、拦截并改写 Agent 的行为？",
+        "en": "Across 22 lifecycle events, how do five hook types observe, intercept, and reshape agent behavior?"
       },
       "deliverable": {
         "zh": "一份事件×退出码×响应字段速查表，能独立写出可上线的 PreToolUse 钩子。",
