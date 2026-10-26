@@ -89,12 +89,12 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 | [A](Appendices/A-Architecture-Navigation-Map.md) | **Architecture Navigation Map** — 16 core modules, dependency tree, 6 data flow paths, 10 design patterns |
 | [B](Appendices/B-Complete-Tool-Inventory.md) | **Complete Tool Inventory** — 50+ tools × 12 categories, readOnly/destructive/concurrencySafe attributes |
 | [C](Appendices/C-Feature-Flag-Reference.md) | **Feature Flag Reference** — 89 flags × 13 categories, compile-time/runtime types, dependency graphs |
-| [D](Appendices/D-Glossary.md) | **Glossary** — 100 bilingual term definitions with cross-references and chapter locations |
+| [D](Appendices/D-Glossary.md) | **Glossary** — 122 bilingual term definitions with cross-references and chapter locations |
 
 
 ## The book as one file
 
-`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.3 MB Chinese / 5.4 MB English) and an A4-typeset PDF (446 pages / 16.0 MB in Chinese, 489 pages / 10.4 MB in English). Artifacts land in `yuyu-book/dist/`.
+`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.3 MB Chinese / 5.4 MB English) and an A4-typeset PDF (447 pages / 15.9 MB in Chinese, 488 pages / 9.6 MB in English). Artifacts land in `yuyu-book/dist/`.
 
 | File | Language |
 |------|----------|

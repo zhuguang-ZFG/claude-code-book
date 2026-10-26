@@ -96,14 +96,14 @@
 
 ### 3.2.1 `tests/`：构建契约
 
-`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、证据门禁正反两面）、`test_art`（25 份图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `build.py --check --mermaid=source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
+`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、证据门禁正反两面）、`test_art`（25 份图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `build.py --check --mermaid=source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是）、`test_docclaims`（把 README / STRUCTURE / CREDITS / revisions 里引用的每个数字重算一遍：附录 D 词条数、白话注与 core 数、主题索引、手绘图、来源登记、每版图版、构建器测试总数；句子改了措辞导致正则找不到那句，同样算失败——数字悄悄烂掉才是真正的问题）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
 
 ### 3.3 数据文件
 
 | 文件 | 内容 |
 |------|------|
 | `manifest.json` | 书的骨架：`version` / `date` / `author` / `repository` / `license` / `title` / `subtitle` / `epigraph` / `start_reading` + `parts`(4) / `front` / `appendices`(4) / `guides`(20)。单元条目只有 `id`、`zh`、`en` 三个字段；`guides[<id>]` 除罗盘三卡与 `sources` 外，还带通俗层的 `plain`（章首导读带）、`analogy`（打个比方）与 `plain_evidence`（指回书稿的 `file:line`） |
-| `glosses.json` | 术语白话注，当前 100 条。每条 `term` / `forms`（中英表面词形）/ `plain` / `analogy` / `priority` / `evidence`。只有 `priority: "core"` 的词会在正文里画虚线；`extra` 仍进章首面板但不打扰行文——一章最多 22 个新词，超了就下调 |
+| `glosses.json` | 术语白话注，当前 102 条（45 个 core 会在正文画虚线）。每条 `term` / `forms`（中英表面词形）/ `plain` / `analogy` / `priority` / `evidence`。只有 `priority: "core"` 的词会在正文里画虚线并进入章首新词面板（面板与画线的是同一批词，构建时断言）；`extra` 不上正文也不上面板，只在附录 D 里可查——一章最多 22 个新词，超了就下调 |
 | `reading-paths.json` | 三层阅读路线（起步 / 主干 / 进阶）。按单元存**位置**列表：数组长度必须等于该单元实际渲染出的 `<h2>` 数，对不上 `plain.stamp_tiers()` 直接报错，宁可不产出也不盖错章 |
 | `illustrations/` | 25 份手写 SVG：20 枚单元章徽（`<unit-id>.svg`，64×64 描线）+ 4 幅篇题刻（`part-<id>.svg`，200×140 小版画）+ 1 幅扉页车图（`cover.svg`，1000×470 横构图，四马一盖车、三十辐的轮，约 11.7 KB，故享 `PLATE_BYTES`）。全部 `currentColor`，无 id、无外链，见 `art.py` |
 | `sources.json` | 以来源 id 为键的 35 条登记。字段：`title` `authority` `kind` `url` `pinned` `snapshot` `accessed` `license` `scope`，`community` 类另带 `normative`。凡本书自己写的中文注（快照、许可、用途，以及带中文括注的标题与社区帖标题）都配 `*_en` 镜像，渲染时按语言取字段——门禁：镜像缺失或镜像里仍有汉字即构建失败。kind 分布：`docs` 21、`github` 6、`blog` 4、`spec` 1、`npm` 1、`community` 2；35 条全部被 `guides.sources` 引用 |

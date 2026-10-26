@@ -143,7 +143,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 通俗层是构建时叠在书稿上的一层，**从不回写 Markdown**。三个落点：
 
-**术语白话注**（`yuyu-book/glosses.json`）一条一个术语：`term.{zh,en}`、`forms.{zh,en}`（正文里要匹配的表面写法，大小写与连字符照抄）、`plain.{zh,en}`（一句能懂的话）、`analogy`（可选比方）、`priority`、`evidence`。只有 `priority: "core"` 的词会在正文首现处画虚线；只想进章首面板的词写 `"extra"`。一个单元的面板最多 22 行，超了构建失败——那时把最通用的词降成 `extra`，而不是删掉解释。
+**术语白话注**（`yuyu-book/glosses.json`）一条一个术语：`term.{zh,en}`、`forms.{zh,en}`（正文里要匹配的表面写法，大小写与连字符照抄）、`plain.{zh,en}`（一句能懂的话）、`analogy`（可选比方）、`priority`、`evidence`。只有 `priority: "core"` 的词会在正文首现处画虚线，而章首面板列的就是这批画了线的词——两处是同一批，构建时断言，不存在「只进面板不上正文」的中间档。`"extra"` 的词两者都不沾，只在附录 D 可查。一个单元最多 22 个新词，超了构建失败——那时把最通用的词降成 `extra`，而不是删掉解释（本书正是这样给 `Agent Harness` 与主循环腾出位置的）。
 
 **导读带与比方**在 `guides[<id>].plain` / `.analogy`，配 `guides[<id>].plain_evidence`。长度上限（超出即 `BuildError`）：导读带 zh 60 字 / en 170 字符，比方 zh 52 / en 160；浮窗里的白话 zh 40 / en 130，比方 zh 44 / en 130。
 

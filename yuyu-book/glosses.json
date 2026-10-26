@@ -1,4 +1,66 @@
 {
+ "agent-harness": {
+  "term": {
+   "zh": "智能体线束",
+   "en": "Agent Harness"
+  },
+  "forms": {
+   "zh": [
+    "Agent Harness",
+    "智能体线束"
+   ],
+   "en": [
+    "Agent Harness",
+    "agent harness"
+   ]
+  },
+  "plain": {
+   "zh": "把模型包在中间的那层程序：接需求、发工具、收结果",
+   "en": "the program wrapped around the model: it takes the request, hands out tools, checks permission, brings back the answer"
+  },
+  "priority": "core",
+  "evidence": [
+   "00-前言.md:11",
+   "第一部分-基础篇/01-智能体编程的新范式.md:59",
+   "en/00-Foreword.md:64",
+   "en/Part-1-Foundations/01-The-New-Paradigm-of-Agent-Programming.md:59"
+  ],
+  "analogy": {
+   "zh": "马只出力气；辕、衡、车厢决定它拉什么、走哪条路",
+   "en": "the horse only pulls; shafts, yoke and carriage decide what gets hauled and which road it takes"
+  }
+ },
+ "main-loop": {
+  "term": {
+   "zh": "主循环",
+   "en": "Main Loop"
+  },
+  "forms": {
+   "zh": [
+    "主循环",
+    "Main Loop"
+   ],
+   "en": [
+    "Main Loop",
+    "main loop"
+   ]
+  },
+  "plain": {
+   "zh": "问一次模型、跑一轮工具、再问一次，直到任务做完",
+   "en": "ask the model, run the tools it asks for, ask again, until the task is finished"
+  },
+  "priority": "core",
+  "evidence": [
+   "00-前言.md:16",
+   "第一部分-基础篇/02-对话循环-Agent的心跳.md:18",
+   "en/Part-1-Foundations/02-The-Dialog-Loop-Heartbeat-of-an-Agent.md:18",
+   "en/Appendices/D-Glossary.md:204"
+  ],
+  "analogy": {
+   "zh": "像心跳：一问一跑是一拍，任务了结才停",
+   "en": "a heartbeat: one ask and one act is one beat, and it stops when the work is done"
+  }
+ },
  "async-generator": {
   "term": {
    "zh": "异步生成器",
@@ -1221,7 +1283,7 @@
    "zh": "把某一瞬间的全部原样抄一份留着，之后怎么变都不影响它",
    "en": "a copy of everything at one instant, untouched by later changes"
   },
-  "priority": "core",
+  "priority": "extra",
   "evidence": [
    "第一部分-基础篇/02-对话循环-Agent的心跳.md:182",
    "第一部分-基础篇/01-智能体编程的新范式.md:380",
@@ -1250,7 +1312,7 @@
    "zh": "一件彻底办完才轮到下一件，中间绝不重叠",
    "en": "one job finishes completely before the next one starts"
   },
-  "priority": "core",
+  "priority": "extra",
   "evidence": [
    "第一部分-基础篇/01-智能体编程的新范式.md:57",
    "第一部分-基础篇/01-智能体编程的新范式.md:224",
