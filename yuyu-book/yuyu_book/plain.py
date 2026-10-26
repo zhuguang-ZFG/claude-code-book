@@ -9,10 +9,14 @@ from __future__ import annotations
 import html
 import re
 
-from .core import (BOOK_DIR, FENCE_RE, REPO_ROOT, SOURCE_ID_RE, BuildError,
-                   load_json, read_text)
+from .core import (BOOK_DIR, FENCE_RE, HAN_RE, REPO_ROOT, SOURCE_ID_RE,
+                   BuildError, load_json, read_text)
 
 TIER_ORDER = ("start", "core", "deep")
+# the one line in the hover card whose job a reader cannot guess from its
+# typography, so it says what it is
+WHY_TAG = {"zh": "为什么", "en": "Why"}
+ANALOGY_TAG = {"zh": "比方", "en": "Say it as"}
 TIER_LABELS = {"start": {"zh": "起步", "en": "Start"},
                "core": {"zh": "主干", "en": "Core"},
                "deep": {"zh": "进阶", "en": "Advanced"}}
@@ -29,7 +33,12 @@ TIER_DESC = {
 # past this many new terms in one chapter the panel stops being a help and
 # becomes a wall of text, so the build asks for the registry to be trimmed.
 MAX_PANEL = 22
-LIMITS = {"plain": {"zh": 40, "en": 130}, "analogy": {"zh": 44, "en": 130}}
+# `why` is the longest of the three because it carries a causal chain (the
+# constraint, then the choice), while `plain` names a thing and `analogy`
+# pictures it. It stays under a sentence and a half on purpose: a hover card
+# that needs its own scrollbar is a paragraph, not a help.
+LIMITS = {"plain": {"zh": 40, "en": 130}, "analogy": {"zh": 44, "en": 130},
+          "why": {"zh": 52, "en": 190}}
 LEAD_LIMITS = {"plain": {"zh": 60, "en": 170}, "analogy": {"zh": 52, "en": 160}}
 
 # annotating prose only: no links, code, headings, plates, sup/fn markers or
@@ -130,9 +139,9 @@ def validate_plain(glosses: dict, paths: dict, manifest: dict) -> None:
             if field == "plain":
                 continue
             for lang in ("zh", "en"):
-                val = (g.get("analogy") or {}).get(lang)
+                val = (g.get(field) or {}).get(lang)
                 if val and len(val) > lim[lang]:
-                    errors.append(f"gloss {gid}: analogy.{lang} is "
+                    errors.append(f"gloss {gid}: {field}.{lang} is "
                                   f"{len(val)} chars (max {lim[lang]})")
         for lang in ("zh", "en"):
             limit = LIMITS["plain"][lang]
@@ -157,6 +166,26 @@ def validate_plain(glosses: dict, paths: dict, manifest: dict) -> None:
         elif pr == "core" and langs_seen != {"zh", "en"}:
             errors.append(f"gloss {gid}: core glosses need evidence in both "
                           f"languages (found {sorted(langs_seen)})")
+        # `why` is the layer's answer to "why is it built this way", so it may
+        # not rest on the term's first mention: it needs its own prose line, in
+        # each language, and that line has to name the term.
+        why = g.get("why") or {}
+        if pr == "core" and not (why.get("zh") or "").strip():
+            errors.append(f"gloss {gid}: a core term owes the reader a why "
+                          "line, not just a definition")
+        if why:
+            for lang in ("zh", "en"):
+                val = (why.get(lang) or "").strip()
+                if not val:
+                    errors.append(f"gloss {gid}: why.{lang} is empty")
+                elif lang == "en" and HAN_RE.search(val):
+                    errors.append(f"gloss {gid}: why.en still carries Chinese")
+            seen = {p for p in (prose(r, f"gloss {gid} why", forms)
+                                for r in g.get("why_evidence") or [])
+                    if p}
+            if seen != {"zh", "en"}:
+                errors.append(f"gloss {gid}: why needs one prose line in each "
+                              f"language (found {sorted(seen)})")
 
     chapters = {u["id"] for u, k, _p in unit_stream(manifest) if k == "chapter"}
     for uid, tiers in paths.items():
@@ -272,9 +301,13 @@ class Matcher:
 
 def _pop(g: dict, lang: str) -> str:
     ana = (g.get("analogy") or {}).get(lang)
+    why = (g.get("why") or {}).get(lang)
     return ('<span class="gloss-pop" role="tooltip">'
             f'<b>{html.escape(g["term"][lang])}</b>'
             f'<span class="gp-plain">{html.escape(g["plain"][lang])}</span>'
+            + (f'<span class="gp-why"><i class="gw-t">'
+               f'{html.escape(WHY_TAG[lang])}</i>'
+               f'{html.escape(why)}</span>' if why else "")
             + (f'<span class="gp-analogy">{html.escape(ana)}</span>' if ana
                else "") + "</span>")
 

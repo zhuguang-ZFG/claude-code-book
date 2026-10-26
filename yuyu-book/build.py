@@ -187,8 +187,11 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     if index_path.exists():
         idx_entries = load_json(index_path)
 
-    back = [("sources", pages.ui("sources_page", lang)),
-            ("subject-index", pages.ui("index_page", lang))]
+    why_groups = _principle_groups(glosses, units, lang)
+    back = ([] if not why_groups
+            else [("principles", pages.ui("principles_page", lang))])
+    back += [("sources", pages.ui("sources_page", lang)),
+             ("subject-index", pages.ui("index_page", lang))]
     for anchor, label in back:
         if anchor == "subject-index" and not idx_entries:
             continue
@@ -216,6 +219,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
         body.append(_article(by_id[apx["id"]], manifest, sources, lang,
                              kind="appendix"))
 
+    if why_groups:
+        body.append(pages.principles_page(why_groups, lang))
     body.append(pages.source_registry(sources, lang))
     if idx_entries:
         body.append(pages.subject_index_page(idx_entries, lang))
@@ -291,6 +296,34 @@ def pdf_meta(manifest, outline, toc_entries, lang):
             "author": manifest["author"],
             "keywords": f'v{manifest["version"]} {manifest["date"]}',
             "lang": lang}
+
+
+def _principle_groups(glosses: dict, units, lang: str) -> list[dict]:
+    """The why lines, filed under the chapter that argues for them.
+
+    A term's own chapter is decided by its `why_evidence` pointer rather than by
+    where the word first appears: the reason lives where the reason is given,
+    which is not always the first mention.
+    """
+    by_path = {u.path: u for u in units}
+    order = {u.id: n for n, u in enumerate(units)}
+    groups: dict[str, dict] = {}
+    for gid, g in sorted(glosses.items(), key=lambda kv: kv[1]["term"][lang]):
+        why = (g.get("why") or {}).get(lang)
+        if not why:
+            continue
+        unit = next((by_path[str(r).rsplit(":", 1)[0].replace("\\", "/")]
+                     for r in g.get("why_evidence") or []
+                     if str(r).rsplit(":", 1)[0].replace("\\", "/") in by_path),
+                    None)
+        if unit is None:
+            raise BuildError(f"gloss {gid}: why_evidence points outside the book")
+        groups.setdefault(unit.id, {"anchor": unit.anchor,
+                                    "head": unit.display, "terms": []})
+        groups[unit.id]["terms"].append(
+            {"term": g["term"][lang], "why": why,
+             "analogy": (g.get("analogy") or {}).get(lang, "")})
+    return [groups[k] for k in sorted(groups, key=lambda k: order.get(k, 99))]
 
 
 def _article(payload, manifest, sources, lang, kind=None):

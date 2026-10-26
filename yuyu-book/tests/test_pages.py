@@ -6,9 +6,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book import pages, render  # noqa: E402
-from yuyu_book.core import (BOOK_DIR, REPO_ROOT, expected_ids, load_configs,  # noqa: E402
-                            load_json, load_unit, unit_stream)
+from yuyu_book import pages, plain, render  # noqa: E402
+from yuyu_book.core import (BOOK_DIR, REPO_ROOT, BuildError, expected_ids,
+                            load_configs, load_json, load_unit,
+                            unit_stream)  # noqa: E402
 from yuyu_book.style import CSS, ink_mark, page, trace, wheel  # noqa: E402
 
 
@@ -444,6 +445,63 @@ class BackMatter(Config):
             self.assertNotRegex(t, r"[\u4e00-\u9fff]",
                                 "a Chinese-only row leaked into the English index")
         self.assertNotIn("中文", html_en)
+
+
+class Principles(Config):
+    """The reason layer on paper: a hover card never reaches the PDF, so every
+    core term's `why` has to be printed somewhere, filed under the chapter that
+    argues for it."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        import build
+        cls.build = build
+        cls.glosses, _paths = plain.load_plain()
+
+    def _groups(self, lang="zh"):
+        units = [load_unit(u, k, lang, REPO_ROOT)
+                 for u, k, _p in unit_stream(self.manifest)]
+        return self.build._principle_groups(self.glosses, units, lang)
+
+    def test_every_reason_the_html_hovers_is_printed_once(self):
+        groups = self._groups()
+        printed = sum(len(g["terms"]) for g in groups)
+        owed = sum(1 for g in self.glosses.values()
+                   if (g.get("why") or {}).get("zh"))
+        self.assertEqual(printed, owed)
+        self.assertEqual(owed, sum(1 for g in self.glosses.values()
+                                   if g.get("priority") == "core"),
+                         "a core term is missing its reason line")
+
+    def test_the_page_files_each_reason_under_a_real_unit(self):
+        ids = set(expected_ids(self.manifest))
+        html = pages.principles_page(self._groups(), "zh")
+        self.assertIn('id="principles"', html)
+        for href in re.findall(r'<a class="xref" href="#([^"]+)"', html):
+            self.assertIn(href, ids, "a principle head points outside the book")
+
+    def test_a_row_carries_the_reason_then_the_picture(self):
+        html = pages.principles_page(self._groups(), "zh")
+        row = re.search(r'<li class="pr-row">.*?</li>', html, re.S).group(0)
+        self.assertIn('<span class="pr-why"><i class="pr-t">为什么</i>', row)
+        self.assertIn('<span class="pr-ana"><i class="pr-t">比方</i>', row)
+        self.assertLess(row.index("pr-why"), row.index("pr-ana"),
+                        "the picture must follow the reason, not lead it")
+
+    def test_the_english_page_leaks_no_chinese(self):
+        html = pages.principles_page(self._groups("en"), "en")
+        self.assertEqual(sorted(set(re.findall(r"[一-鿿]", html))), [],
+                         "the English principles page printed Chinese text")
+
+    def test_a_reason_pointer_outside_the_book_is_a_build_failure(self):
+        glosses = {"ag": {"term": {"zh": "异步生成器", "en": "async generator"},
+                          "why": {"zh": "一趟要交很多次", "en": "many results"},
+                          "why_evidence": ["nowhere/missing.md:1",
+                                           "en/nowhere/missing.md:1"]}}
+        with self.assertRaises(BuildError):
+            self.build._principle_groups(glosses, list(self.units.values()),
+                                         "zh")
 
 
 class Shell(unittest.TestCase):

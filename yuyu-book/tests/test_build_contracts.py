@@ -308,6 +308,26 @@ class PrintContract(unittest.TestCase):
         self.assertRegex(CSS, r"\.idx-term\{[^}]*overflow-wrap:anywhere")
         self.assertRegex(CSS, r"\.idx-row \.leader\{[^}]*min-width")
 
+    def test_a_principle_row_is_never_split_across_two_pages(self):
+        """The principles page is a list of one-to-three-line rows; a row cut by
+        a page break separates the term from the reason it belongs to."""
+        self.assertRegex(CSS, r"\.pr-row\{[^}]*break-inside:avoid")
+        self.assertRegex(CSS, r"@media \(max-width:44rem\)\{[^}]*"
+                             r"\.pr-row\{grid-template-columns:1fr")
+        print_block = CSS[CSS.index("@media print{"):]
+        self.assertRegex(print_block, r"\.pr-row\{grid-template-columns:6\.4rem")
+        # 665px of printed text box is under the 44rem screen floor, so the
+        # collapse fires on paper too; without the pins back, term and reason
+        # print on top of each other in the left gutter
+        self.assertRegex(print_block, r"\.pr-why\{grid-column:2;grid-row:1")
+
+    def test_the_reason_and_the_picture_are_two_visibly_different_voices(self):
+        """Three lines of plain text at one size read as a wall; the reason
+        carries a bronze rule and the picture is set in the calligraphic face."""
+        self.assertRegex(CSS, r"\.pr-why\{[^}]*border-inline-start:2px solid "
+                              r"var\(--bronze-2\)")
+        self.assertRegex(CSS, r"\.pr-ana\{[^}]*font-family:var\(--kai\)")
+
 
 class RunningHeads(unittest.TestCase):
     def test_every_bookmarked_section_opens_its_own_head(self):

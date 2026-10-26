@@ -902,6 +902,41 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 .idx-row .page-ref{display:none}
 @media (max-width:52rem){.idx-cols{columns:1}}
 
+/* ------- principles (原理札记) ------- */
+/* a hover card cannot reach the printed book, so the reason line gets a page;
+   the term sits in a gutter so the reasons align into one readable column
+   instead of staircasing down the measure */
+.pr-note{font-size:.9rem;color:var(--ink-2);line-height:1.75;max-width:34rem;
+  margin:-.35rem 0 1.4rem}
+.pr-unit{margin:0 0 1.6rem}
+.pr-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
+  font-family:var(--sans);font-size:.95rem;font-weight:700;margin:0;
+  padding:.2rem 0 .4rem;border-bottom:2px solid var(--bronze-2)}
+.pr-head a{color:var(--bronze-3);text-decoration:none}
+.pr-head a:hover{color:var(--cinnabar)}
+.pr-n{margin-inline-start:auto;font-family:var(--mono);font-size:.66rem;
+  color:var(--bronze-3);border:1px solid var(--line-2);border-radius:999px;
+  padding:.05rem .45rem}
+.pr-list{list-style:none;margin:.35rem 0 0;padding:0}
+.pr-row{display:grid;grid-template-columns:7.5rem 1fr;column-gap:.9rem;
+  padding:.45rem 0 .5rem;border-bottom:1px dotted var(--line-2);
+  break-inside:avoid}
+.pr-term{grid-column:1;grid-row:1;font-family:var(--sans);font-weight:700;
+  font-size:.88rem;line-height:1.8;color:var(--bronze-3);overflow-wrap:anywhere}
+.pr-why{grid-column:2;grid-row:1;padding-inline-start:.55rem;
+  border-inline-start:2px solid var(--bronze-2);font-size:.95rem;line-height:1.8;
+  color:var(--ink)}
+.pr-ana{grid-column:2;grid-row:2;margin-top:.22rem;padding-inline-start:.55rem;
+  font-family:var(--kai);font-size:.9rem;line-height:1.75;color:var(--cinnabar)}
+.pr-t{font-style:normal;font-family:var(--sans);font-size:.62rem;
+  letter-spacing:.14em;color:var(--bronze-3);margin-inline-end:.4rem}
+/* the collapse has to release the row pin too: term and reason both sit on row
+   1 by design at full width, and a shared cell is how they overlapped on a phone */
+@media (max-width:44rem){
+  .pr-row{grid-template-columns:1fr;row-gap:.15rem}
+  .pr-term,.pr-why,.pr-ana{grid-column:1;grid-row:auto}
+}
+
 /* ------- footer ------- */
 .colophon{margin:2.8rem 0 1.3rem;text-align:center;color:var(--ink-3);
   font-family:var(--sans);font-size:.78rem;letter-spacing:.1em}
@@ -960,6 +995,12 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 .gloss-pop b{display:block;margin-bottom:.15rem;font-size:.72rem;
   letter-spacing:.12em;color:var(--bronze-3)}
 .gloss-pop .gp-plain{display:block;color:var(--ink)}
+/* the reason line is the one a reader skims for, so it gets a rule rather than
+   another font: the calligraphic analogy below must stay the softest of three */
+.gloss-pop .gp-why{display:block;margin-top:.4rem;padding-inline-start:.5rem;
+  border-inline-start:2px solid var(--bronze-2);color:var(--ink)}
+.gloss-pop .gw-t{font-style:normal;font-size:.62rem;letter-spacing:.14em;
+  color:var(--bronze-3);margin-inline-end:.35rem}
 .gloss-pop .gp-analogy{display:block;margin-top:.35rem;font-family:var(--kai);
   color:var(--cinnabar)}
 /* a centred popover next to the page edge would be cut off; below the width
@@ -1085,6 +1126,18 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      is 665px of a much taller sheet — two columns is the book convention and
      halves the index */
   .idx-cols{columns:2;column-gap:2.2rem}
+  /* the printed sheet is 665px of text box: a 7.5rem gutter for a two-character
+     term would be a third of the line gone, so the gutter narrows with the page.
+     6.4rem is where the longest single-word English term ("immutability") still
+     sets on one line; past that only terms with a space in them wrap, which
+     reads as a term rather than as a break. The 44rem collapse above is a screen
+     rule the page box also matches — 665px is under 704px — so paper has to put
+     the gutter and the row pins back. */
+  .pr-row{grid-template-columns:6.4rem 1fr;column-gap:.7rem;padding:.28rem 0 .32rem}
+  .pr-term{grid-column:1;grid-row:1}
+  .pr-why{grid-column:2;grid-row:1}
+  .pr-ana{grid-column:2;grid-row:2}
+  .pr-unit{margin-bottom:1.25rem}
   /* there is no hover on paper: the mark stays as a quiet dotted underline,
      and the chapter panel — which the build keeps in step with the marks —
      carries the plain wording. Two columns halves its height. */

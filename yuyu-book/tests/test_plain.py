@@ -30,18 +30,27 @@ def _real_h2(manifest: dict, uid: str) -> int:
 
 
 def gloss(gid, zh, en, forms_zh, forms_en, priority="core", mark=None,
-          analogy=None, evidence=None):
+          analogy=None, evidence=None, why=None, why_evidence=None,
+          no_why=False):
     entry = {
         "term": {"zh": zh, "en": en},
         "forms": {"zh": forms_zh, "en": forms_en},
         "plain": {"zh": "能暂停再继续交结果的函数",
                   "en": "a function that pauses and hands out one result"},
         "analogy": dict({"zh": "像收银机，打一张撕一张"}, **(analogy or {})),
+        "why": dict({"zh": "一趟要交很多次，等它返一次就全卡住",
+                     "en": "a run hands out many results, so waiting for one "
+                           "return would stall the rest"}, **(why or {})),
+        "why_evidence": list(why_evidence if why_evidence is not None
+                             else [f"{ZH_CH02}:18", f"{EN_CH02}:18"]),
         "priority": priority,
         "evidence": evidence if evidence is not None
         else [f"{ZH_CH02}:18", f"{EN_CH02}:18"]}
     if mark is not None:
         entry["mark"] = mark
+    if no_why:
+        entry.pop("why")
+        entry.pop("why_evidence")
     return {gid: entry}
 
 
@@ -96,14 +105,23 @@ class TermMarks(unittest.TestCase):
         self.assertEqual(out.count('class="gloss"'), 1)
         self.assertEqual(len(hits), 1)
 
-    def test_the_popover_carries_the_term_the_plain_line_and_the_analogy(self):
+    def test_the_popover_carries_the_definition_the_reason_and_the_picture(self):
         out, _h, _u = mark("<p>异步生成器</p>",
                               gloss("ag", "异步生成器", "async generator",
                                     ["异步生成器"], ["async generator"]))
         self.assertIn('<span class="gloss-pop" role="tooltip">'
                       '<b>异步生成器</b>'
                       '<span class="gp-plain">能暂停再继续交结果的函数</span>'
+                      '<span class="gp-why"><i class="gw-t">为什么</i>'
+                      '一趟要交很多次，等它返一次就全卡住</span>'
                       '<span class="gp-analogy">像收银机，打一张撕一张</span>', out)
+
+    def test_a_gloss_without_a_reason_drops_the_reason_line(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"], no_why=True)
+        out, _h, _u = mark("<p>异步生成器</p>", g)
+        self.assertNotIn("gp-why", out)
+        self.assertIn("gp-analogy", out)
 
     def test_analogy_is_optional(self):
         g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
@@ -336,6 +354,55 @@ class RegistryValidation(unittest.TestCase):
             plain.validate_plain(g, {}, mini_manifest())
         self.assertIn("plain.zh is", str(ctx.exception))
 
+    def test_a_core_term_without_a_reason_is_rejected(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"], no_why=True)
+        with self.assertRaises(BuildError) as ctx:
+            plain.validate_plain(g, {"ch02": ["start", "core"]},
+                                 mini_manifest())
+        self.assertIn("owes the reader a why", str(ctx.exception))
+
+    def test_an_extra_term_may_stay_a_definition_only(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"], priority="extra", no_why=True)
+        plain.validate_plain(g, {"ch02": ["start", "core"]}, mini_manifest())
+
+    def test_a_reason_needs_its_own_prose_line_in_each_language(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"], why_evidence=[f"{ZH_CH02}:18"])
+        with self.assertRaises(BuildError) as ctx:
+            plain.validate_plain(g, {"ch02": ["start", "core"]},
+                                 mini_manifest())
+        self.assertIn("why needs one prose line in each language",
+                      str(ctx.exception))
+
+    def test_a_reason_may_not_be_backed_by_a_sample_block(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"], why_evidence=[f"{ZH_CH02}:28",
+                                                     f"{EN_CH02}:18"])
+        with self.assertRaises(BuildError) as ctx:
+            plain.validate_plain(g, {"ch02": ["start", "core"]},
+                                 mini_manifest())
+        self.assertIn("gloss ag why", str(ctx.exception))
+
+    def test_reason_lines_are_size_limited(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"])
+        g["ag"]["why"]["zh"] = "长" * (plain.LIMITS["why"]["zh"] + 1)
+        with self.assertRaises(BuildError) as ctx:
+            plain.validate_plain(g, {"ch02": ["start", "core"]},
+                                 mini_manifest())
+        self.assertIn("why.zh is", str(ctx.exception))
+
+    def test_an_english_reason_may_not_carry_chinese(self):
+        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
+                  ["async generator"])
+        g["ag"]["why"]["en"] = "a run hands out 很多次 results"
+        with self.assertRaises(BuildError) as ctx:
+            plain.validate_plain(g, {"ch02": ["start", "core"]},
+                                 mini_manifest())
+        self.assertIn("why.en still carries Chinese", str(ctx.exception))
+
     def test_a_gloss_without_evidence_is_rejected(self):
         g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
                   ["async generator"], evidence=[])
@@ -484,6 +551,21 @@ class RealRegistry(unittest.TestCase):
                 if ana:
                     self.assertNotIn(g["term"][lang], ana,
                                      f"{gid} analogy.{lang} is circular")
+
+    def test_every_core_term_tells_the_reader_why(self):
+        bare = [gid for gid, g in self.glosses.items()
+                if g.get("priority") == "core"
+                and not all((g.get("why") or {}).get(lang)
+                            for lang in ("zh", "en"))]
+        self.assertEqual(bare, [], "core terms without a reason line")
+
+    def test_a_reason_is_not_the_definition_repeated(self):
+        for gid, g in self.glosses.items():
+            for lang in ("zh", "en"):
+                why = (g.get("why") or {}).get(lang)
+                if why:
+                    self.assertNotEqual(why, g["plain"][lang],
+                                        f"{gid} why.{lang} repeats plain.{lang}")
 
 
 @unittest.skipUnless((BOOK_DIR / "reading-paths.json").exists(),

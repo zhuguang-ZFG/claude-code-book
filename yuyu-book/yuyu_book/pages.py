@@ -6,6 +6,7 @@ import html
 import re
 
 from .core import INDEX_CN_LETTER  # noqa: E402
+from .plain import ANALOGY_TAG, WHY_TAG  # noqa: E402
 
 _LABELS = {
     "cover_kicker": {"zh": "Agent Harness Engineering",
@@ -32,6 +33,16 @@ _LABELS = {
         "en": "The book does not republish source texts; GitHub references are pinned to "
              "tags/commits, community material carries access dates and is non-normative."},
     "index_page": {"zh": "主题索引", "en": "Subject Index"},
+    "principles_page": {"zh": "原理札记", "en": "Why It Works This Way"},
+    "principles_note": {
+        "zh": "书里的核心术语各有一句白话定义和一个比方；这一页补上中间那层——"
+              "它非这样不可的理由。理由一律取自正文自己的论证，条目排在提出它的那一章下面。",
+        "en": "Every core term carries a plain definition and an everyday "
+             "comparison; this page supplies the layer in between, the reason it "
+             "has to be that way. Each reason is the book's own argument, filed "
+             "under the chapter that makes it."},
+    "why_tag": WHY_TAG,
+    "analogy_tag": ANALOGY_TAG,
     "index_cn": {"zh": "中文", "en": "Chinese"},
     "index_cn_note": {
         "zh": "按译名首字的部首笔画排列；一个英文术语有多个译名时，每个译名单独立条。",
@@ -472,4 +483,34 @@ def subject_index_page(entries: list[dict], lang: str) -> str:
                          f'data-ref="{e[lang]["refs"][0]["anchor"] if e[lang]["refs"] else ""}"></span></li>')
         parts.append("</ul></div>")
     parts.append("</div></section>")
+    return "".join(parts)
+
+
+def principles_page(groups: list[dict], lang: str) -> str:
+    """The mechanism layer, on paper.
+
+    A hover card cannot reach the printed book, so the reasons a term exists
+    would otherwise live only in the HTML. Each row is one term: the reason,
+    then the picture the book uses for it.
+    """
+    parts = [f'<section class="front-page back-why" id="principles">'
+             f'<h1 class="page-title">{esc(ui("principles_page", lang))}</h1>'
+             f'<p class="pr-note">{esc(ui("principles_note", lang))}</p>']
+    why_tag, ana_tag = ui("why_tag", lang), ui("analogy_tag", lang)
+    for g in groups:
+        rows = []
+        for t in g["terms"]:
+            row = (f'<li class="pr-row"><b class="pr-term">{esc(t["term"])}</b>'
+                   f'<span class="pr-why"><i class="pr-t">{esc(why_tag)}</i>'
+                   f'{esc(t["why"])}</span>')
+            if t["analogy"]:
+                row += (f'<span class="pr-ana"><i class="pr-t">{esc(ana_tag)}</i>'
+                        f'{esc(t["analogy"])}</span>')
+            rows.append(row + "</li>")
+        parts.append(
+            f'<div class="pr-unit"><h2 class="pr-head">'
+            f'<a class="xref" href="#{esc(g["anchor"])}">{esc(g["head"])}</a>'
+            f'<span class="pr-n">{len(g["terms"])}</span></h2>'
+            f'<ul class="pr-list">{"".join(rows)}</ul></div>')
+    parts.append("</section>")
     return "".join(parts)

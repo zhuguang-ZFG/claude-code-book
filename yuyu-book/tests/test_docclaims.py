@@ -82,6 +82,10 @@ class Data(unittest.TestCase):
         return sum(1 for g in self.glosses.values()
                    if g.get("priority") == "core")
 
+    def why_terms(self) -> int:
+        return sum(1 for g in self.glosses.values()
+                   if (g.get("why") or {}).get("zh"))
+
     def suite(self) -> int:
         loader = unittest.TestLoader()
         s = loader.discover(str(BOOK_DIR / "tests"))
@@ -106,6 +110,14 @@ class ShippedCounts(Data):
              [str(self.glossary_rows("en"))]),
             ("STRUCTURE.md", r"术语白话注，当前 (\d+) 条（(\d+) 个 core",
              [g, str(self.core_terms())]),
+            # the reason layer is quoted in all three docs, and its size is a
+            # fact about glosses.json rather than about the core count
+            ("STRUCTURE.md", r"`why` \+ `why_evidence`（原理句与它的出处，"
+                             r"(\d+) 个 core 各配一对",
+             [str(self.core_terms())]),
+            ("README.md", r"(\d+) 个主干术语的原理", [str(self.why_terms())]),
+            ("en/README.md", r"the (\d+) core terms' reasons",
+             [str(self.why_terms())]),
             ("STRUCTURE.md", r"主题索引（生成物，当前 (\d+) 个词条 = "
                              r"(\d+) 条英文原名 \+ (\d+) 条中文译名）",
              [str(len(self.index())), str(len([e for e in self.index()
