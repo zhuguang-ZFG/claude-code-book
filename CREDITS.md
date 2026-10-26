@@ -1,6 +1,6 @@
 # 来源与致谢
 
-本书的每一项外部依据都登记在 [`yuyu-book/sources.json`](yuyu-book/sources.json)（35 条），整书构建时渲染为书内的「来源与许可」页（HTML/PDF 均可从目录跳转）。本书**不转载任何第三方正文或代码**：GitHub 条目钉到 tag 或完整 commit，社区条目一律标注访问日期并降级为非规范来源，`snapshot`/`scope` 字段只记录「何时以何种方式读到什么」。
+本书的每一项外部依据都登记在 [`yuyu-book/sources.json`](yuyu-book/sources.json)（49 条），整书构建时渲染为书内的「来源与许可」页（HTML/PDF 均可从目录跳转）。本书**不转载任何第三方正文或代码**：GitHub 条目钉到 tag 或完整 commit，社区条目一律标注访问日期并降级为非规范来源，`snapshot`/`scope` 字段只记录「何时以何种方式读到什么」。
 
 以下核实动作均于 **2026-10-25** 完成（HTTPS 抓取 + GitHub API 认证查询）。
 
@@ -52,7 +52,7 @@ SDK TypeScript 的版本尾号（`0.3.310`）与 CLI 版本尾号（`2.1.310`）
 
 第 14 章原本想钉 `/docs/en/plan-mode`，实测 **404**：Plan 模式已并入 `/docs/en/permission-modes`（该页讲 Shift+Tab 切模式与模式选择器），故改钉后者，不虚构链接。
 
-## 三、GitHub 仓库与钉版（6 条）
+## 三、GitHub 仓库与钉版（20 条）
 
 | 登记 ID | 对象 | 钉到什么 |
 | --- | --- | --- |
@@ -61,7 +61,23 @@ SDK TypeScript 的版本尾号（`0.3.310`）与 CLI 版本尾号（`2.1.310`）
 | `cc-issues` | Issue 列表 | 基线 commit `318b7e6a…`；列表流动，具体编号在引用时另记 |
 | `gh-agent-sdk-python` | `anthropics/claude-agent-sdk-python` | tag `v0.2.174` + commit（MIT） |
 | `gh-agent-sdk-typescript` | `anthropics/claude-agent-sdk-typescript` | tag `v0.3.310` + commit |
+| `gh-cc-action` | `anthropics/claude-code-action` | tag `v1` + commit `925afb53…`（MIT）：官方把线束搬进 GitHub Actions |
+| `gh-dxt` | `anthropics/dxt` | tag `v2.1.2` + commit `2a788100…`（MIT → Apache-2.0 过渡，均宽松）：插件分发包规范 |
+| `gh-cc-router` | `musistudio/claude-code-router` | tag `v3.1.3` + commit `3b0aebf3…`（MIT）：在 Claude Code 前插一层模型/工具路由 |
+| `gh-cc-templates` | `davila7/claude-code-templates` | tag `v1.29.7` + commit `ad49b119…`（MIT）：成批真实 agents / skills / hooks / MCP 配置 |
+| `gh-opencode` | `anomalyco/opencode`（原 `sst/opencode`） | tag `v1.19.4` + commit `148842ef…`（MIT）：另一套从零搭的终端编码线束，仓库已改名迁移 |
+| `gh-openhands` | `OpenHands/OpenHands` | tag `v1.33.0` + commit `b968abef…`（MIT）：把智能体全过程写成可回放事件流 |
+| `gh-acp` | `zed-industries/agent-client-protocol` | tag `schema-v1.26.0` + commit `e2d83349…`（Apache-2.0）：编辑器与智能体进程之间的第二份协议 |
+| `gh-playwright-mcp` | `microsoft/playwright-mcp` | tag `v0.0.83` + commit `f183dad4…`（Apache-2.0）：把浏览器能力摊成工具 schema 的 MCP 服务器 |
+| `gh-mcp-servers` | `modelcontextprotocol/servers` | tag `v2.1.0` + commit `ef9808f7…`（MIT → Apache-2.0 过渡）：官方参考实现目录 |
+| `gh-codex` | `openai/codex` | tag `rust-v0.164.0` + commit `6aaac694…`（Apache-2.0）：本地沙箱与审批独立成层 |
+| `gh-gemini-cli` | `google-gemini/gemini-cli` | tag `v0.65.0` + commit `6006c14a…`（Apache-2.0）：README 已声明官方入口迁往 Antigravity CLI |
+| `gh-superpowers` | `obra/superpowers` | tag `v7.0.1` + commit `2ce8aa15…`（MIT）：方法论装成 skills / 子智能体，多宿主分发 |
+| `gh-claude-mem` | `thedotmack/claude-mem` | tag `v15.2.1` + commit `35e24ba7…`（Apache-2.0）：插件形态的跨会话记忆层 |
+| `gh-learn-cc` | `shareAI-lab/learn-claude-code` | main HEAD `ce8f9f18…`（MIT，无 release，故钉当时分支头并在 `snapshot` 说明）：从零重建线束的双语教材 |
 | `gh-book-repo` | `lintsinghua/claude-code-book` | commit `12e29d66…`：自我引用锚点，便于日后 diff 复盘哪些结论已过期 |
+
+**摄取姿态**：这 14 条生态条目是**对照面，不是依据**。正文的每条技术论断仍只由官方文档、Anthropic 研究博客、MCP 规范与 Claude Code 仓库本身支撑；生态仓库回答的是另一类问题——同一层边界在别人手里会长成什么形状（可换的路由层、另一种上下文路线、第二份协议、无人值守时的权限退化）。所以 `scope` 一律写明「第几章的对照面」，`snapshot` 记下 star 量级、最近推送日期与是否归档，日后一眼能看出某个对照面是否已经停摆。候选里 `Aider-AI/aider`（最后一次推送 2026-05-22，已偏旧）、`github/github-mcp-server` 与 `modelcontextprotocol/typescript-sdk`（与已登记条目重合）经比对后未纳入。全部 14 条的 tag→commit 解析走 GitHub API（引用式 tag 再经 `/git/tags` 解引用取完整 40 位 SHA），许可按各仓库 LICENSE 原文核对，仅收 MIT / Apache-2.0 一类的宽松许可。
 
 ## 四、协议规范与工程博客（5 条）
 
@@ -115,7 +131,7 @@ MCP 规范以规范仓库的 tags 序列（`2026-07-28`、`2026-07-28-RC`、`202
 2. **许可姿态**：`anthropics/claude-code` 的 LICENSE 为「© Anthropic PBC. All rights reserved.」，npm 包内 license 字段为 `SEE LICENSE IN README.md`——均为专有。故对 Anthropic 的源码与文档一律**只链接、只摘录最小必要的字段名/事件名等事实性标识**；Agent SDK Python 为 MIT，TS 仓库以其自身 LICENSE 为准；MCP 规范以其自身声明为准。本书文字为 CC BY-NC-SA 4.0，第三方资料保留原许可。
 3. **文档在快速改写**：同一能力可能从博客迁到文档（best-practices）、从独立页并入上级页（plan-mode → permission-modes；lifecycle → versioning）。凡引用「官方怎么说」，优先指向现行文档页，并把历史 URL 的重定向关系记在 `snapshot` 里。
 4. **流动内容不作规范源**：issue 列表、论坛帖、星标数（本书仓库当日 `stargazers_count` 为 4324）只用于时间脉络。
-5. **可复现性**：`sources.json` 对 GitHub 条目钉 tag + 完整 SHA，文档/博客条目记访问日期与页面标题，社区条目额外标 `normative:false`；`manifest.json` 的 `guides[*].sources` 把 20 个单元各自映射到 3–5 条来源，任何一条正文论断都能回溯到「当时可见的哪个快照」。
+5. **可复现性**：`sources.json` 对 GitHub 条目钉 tag + 完整 SHA，文档/博客条目记访问日期与页面标题，社区条目额外标 `normative:false`；`manifest.json` 的 `guides[*].sources` 把 20 个单元各自映射到 3–9 条来源，任何一条正文论断都能回溯到「当时可见的哪个快照」。
 
 ## 十、构建与校验
 

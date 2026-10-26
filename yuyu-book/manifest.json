@@ -306,7 +306,9 @@
         "docs-how-it-works",
         "blog-building-effective-agents",
         "docs-best-practices",
-        "cc-release-v2-1-310"
+        "cc-release-v2-1-310",
+        "gh-opencode",
+        "gh-learn-cc"
       ],
       "plain": {
         "zh": "模型动手后的门槛在工程侧：权限、状态、恢复谁来管？答案是一层运行时加五条原则",
@@ -382,7 +384,9 @@
         "docs-tools-reference",
         "blog-writing-tools-for-agents",
         "docs-permissions",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-cc-router",
+        "gh-playwright-mcp"
       ],
       "plain": {
         "zh": "几十个工具共用一份五要素契约：只读的成批跑，改东西的单独排队，边听指令边开工",
@@ -421,7 +425,8 @@
         "docs-permission-modes",
         "docs-env-vars",
         "cc-issues",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-codex"
       ],
       "plain": {
         "zh": "工具请求要过四道关：验格式、查规则、工具自审、人点头；显式拒绝压过一切放行",
@@ -497,7 +502,8 @@
         "docs-memory",
         "blog-context-engineering",
         "docs-glossary",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-claude-mem"
       ],
       "plain": {
         "zh": "跨会话只记代码里读不出的四件事：你是谁、你纠正过什么、为何这么定、链接在哪",
@@ -536,7 +542,9 @@
         "blog-context-engineering",
         "docs-memory",
         "docs-prompt-caching",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-openhands",
+        "gh-claude-mem"
       ],
       "plain": {
         "zh": "白板写满就得擦：腾地方从轻到重分四级，压缩前先留好下笔的余量，连败三次就收手",
@@ -574,7 +582,9 @@
         "docs-hooks",
         "docs-permissions",
         "cc-changelog",
-        "cc-issues"
+        "cc-issues",
+        "gh-cc-action",
+        "gh-cc-templates"
       ],
       "plain": {
         "zh": "不改源码就能插手关键节点：五种钩子挂在工具、会话、压缩、权限等生命周期事件上，能拦、能改输入、能补上下文",
@@ -613,7 +623,8 @@
         "blog-multi-agent-research",
         "docs-agent-sdk-overview",
         "gh-agent-sdk-python",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-superpowers"
       ],
       "plain": {
         "zh": "把活交给专职子智能体：内置与自定义智能体怎么定义，Fork 靠字节级继承父上下文并行且不浪费 token",
@@ -690,7 +701,10 @@
         "docs-skills",
         "docs-plugins",
         "docs-env-vars",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-cc-templates",
+        "gh-dxt",
+        "gh-superpowers"
       ],
       "plain": {
         "zh": "把反复要交代的话写成 Markdown 技能：五个来源分层覆盖、按路径动态发现，插件再整包带进来",
@@ -729,7 +743,11 @@
         "mcp-spec-2026-07-28",
         "docs-plugins",
         "blog-writing-tools-for-agents",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-cc-router",
+        "gh-acp",
+        "gh-playwright-mcp",
+        "gh-mcp-servers"
       ],
       "plain": {
         "zh": "接外部工具不再一家一个适配：连接配置怎么分八类、工具改名映射、逐层审批，外加 IDE 双向桥",
@@ -806,7 +824,8 @@
         "docs-permission-modes",
         "docs-interactive-mode",
         "docs-tools-reference",
-        "cc-changelog"
+        "cc-changelog",
+        "gh-gemini-cli"
       ],
       "plain": {
         "zh": "先只读想清楚、批准了再动手改：计划能校验能续存，还能接上定时触发和后台长跑",
@@ -845,7 +864,11 @@
         "docs-cli-reference",
         "docs-agent-sdk-overview",
         "gh-agent-sdk-python",
-        "gh-agent-sdk-typescript"
+        "gh-agent-sdk-typescript",
+        "gh-opencode",
+        "gh-openhands",
+        "gh-cc-action",
+        "gh-learn-cc"
       ],
       "plain": {
         "zh": "全书收口成一张施工图：按六步搭出最小可跑 Harness（代码是教学示例），再谈架构教训与生产化",

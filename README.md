@@ -94,7 +94,7 @@ Claude Code 为 Anthropic 产品，本书是独立的技术分析作品，并非
 
 ## 离线整书
 
-`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（中文版 5.3 MB / 英文版 5.4 MB）与 A4 排版的 PDF（中文版 452 页 / 15.7 MB，英文版 488 页 / 10.2 MB），中英各一份，产物在 `yuyu-book/dist/`。
+`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（中文版 5.4 MB / 英文版 5.5 MB）与 A4 排版的 PDF（中文版 455 页 / 15.7 MB，英文版 493 页 / 10.0 MB），中英各一份，产物在 `yuyu-book/dist/`。
 
 | 文件 | 语言 |
 |------|------|
@@ -125,7 +125,7 @@ PDF 与图版渲染需要一个本机 Chromium 或 Edge（自动探测 `msedge`/
 
 本书文字采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)：须署名、非商业使用，并以相同协议共享改编内容。第三方资料保留其原有权利与许可条件。
 
-正文的技术叙述以 Claude Code `2.1.310` 与官方文档、Anthropic 研究博客、MCP 规范和社区讨论为核对基线。全部外部来源、钉到的 tag/commit、访问日期与许可姿态登记在 [CREDITS.md](CREDITS.md) 与 `yuyu-book/sources.json`，也可从整书的「来源与许可」页逐条跳转。感谢 [Linux.Do](https://linux.do/) 社区，本书的讨论与修订主要发生在 [【开源千星】《御舆：解码 Agent Harness》](https://linux.do/t/topic/1870593) 一帖。
+正文的技术叙述以 Claude Code `2.1.310` 与官方文档、Anthropic 研究博客、MCP 规范和社区讨论为核对基线。全部外部来源、钉到的 tag/commit、访问日期与许可姿态登记在 [CREDITS.md](CREDITS.md) 与 `yuyu-book/sources.json`（49 条，其中 20 条是 GitHub 开源仓库），也可从整书的「来源与许可」页逐条跳转。这些仓库条目按用途分两类：一类是**依据**（Claude Code 本体、官方 SDK、MCP 规范、Anthropic 研究博客），另一类是**对照面**（同一层边界在别人手里长成什么形状——可换的模型路由、另一种上下文路线、第二份协议、无人值守时的权限退化、能力封装单位能长多大）。对照面不支撑任何技术论断，只用来检验本书给出的边界是否真的存在。感谢 [Linux.Do](https://linux.do/) 社区，本书的讨论与修订主要发生在 [【开源千星】《御舆：解码 Agent Harness》](https://linux.do/t/topic/1870593) 一帖。
 
 ## Star History
 

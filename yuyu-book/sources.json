@@ -581,5 +581,270 @@
     "scope": "附录 A 之外的生态旁证：社区基于本书仓库衍生的在线阅读版，说明本书内容以仓库为唯一权威源、衍生站点不作为引用依据。仅作来源谱系记录，不支撑技术结论。",
     "scope_en": "Ecosystem evidence beyond Appendix A: an online reading edition derived from this book's repository by a community member, which shows the repository is the single authoritative source and the derived site is not a citation target. Provenance record only; it supports no technical conclusion.",
     "normative": false
+  },
+  "gh-cc-router": {
+    "title": "Claude Code Router",
+    "authority": "社区（musistudio/claude-code-router）",
+    "title_en": "Claude Code Router",
+    "authority_en": "community (musistudio/claude-code-router)",
+    "kind": "github",
+    "url": "https://github.com/musistudio/claude-code-router",
+    "pinned": {
+      "tag": "v3.1.3",
+      "commit": "3b0aebf3701406dc774f9fdd6c2160622376a626"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v3.1.3 指向该 commit，最近推送 2026-10-10，约 37.9k star，未归档）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v3.1.3 resolves to that commit; pushed 2026-10-10, ~37.9k stars, not archived)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 3、12 章的对照面：它在 Claude Code 前面插一层路由，把模型与工具端点换成任意提供方——线束里「发请求」那一环被拆出来重写，正好检验这层边界是否真的可换。",
+    "scope_en": "A cross-check for Chapters 3 and 12: it inserts a routing layer ahead of Claude Code and swaps model and tool endpoints for any provider, which tests whether that seam in the harness really is replaceable."
+  },
+  "gh-opencode": {
+    "title": "OpenCode",
+    "authority": "社区（anomalyco/opencode，原 sst/opencode）",
+    "title_en": "OpenCode",
+    "authority_en": "community (anomalyco/opencode, formerly sst/opencode)",
+    "kind": "github",
+    "url": "https://github.com/anomalyco/opencode",
+    "pinned": {
+      "tag": "v1.19.4",
+      "commit": "148842ef7cb1bc34192b3fff57d0f9721ab9c801"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v1.19.4；仓库已从 sst/opencode 迁至 anomalyco/opencode，旧 URL 仍 301；默认分支 dev 当日仍在推送，约 221.7k star）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v1.19.4; the repository moved from sst/opencode to anomalyco/opencode, the old URL still 301s; the default branch dev was still receiving commits that day, ~221.7k stars)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 1、15 章的平行样本：另一套从零搭的终端编码线束，同样有对话循环、工具协议、权限模式与会话恢复，读者可拿它逐条对照本书第 15 章「自己搭一层」的取舍。",
+    "scope_en": "A parallel specimen for Chapters 1 and 15: a second terminal coding harness built from scratch, with its own dialog loop, tool protocol, permission modes and session recovery, so the trade-offs Chapter 15 asks the reader to make can be checked against someone else's answers."
+  },
+  "gh-openhands": {
+    "title": "OpenHands",
+    "authority": "All Hands AI（OpenHands/OpenHands）",
+    "title_en": "OpenHands",
+    "authority_en": "All Hands AI (OpenHands/OpenHands)",
+    "kind": "github",
+    "url": "https://github.com/OpenHands/OpenHands",
+    "pinned": {
+      "tag": "v1.33.0",
+      "commit": "b968abef4779eb47f5843c975a60c7b4ccf49886"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v1.33.0，当日仍在推送，约 91.9k star）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v1.33.0, commits the same day, ~91.9k stars)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 7、15 章的另一种解法：它把智能体全过程写成事件流再据此回放与压缩，与本书「消息数组 + 四级压缩」的上下文路线互为对照。",
+    "scope_en": "A different answer for Chapters 7 and 15: the whole agent run is an event stream that can be replayed and condensed, which stands beside the book's message-array plus four-level compression route."
+  },
+  "gh-acp": {
+    "title": "Agent Client Protocol",
+    "authority": "Zed Industries（zed-industries/agent-client-protocol）",
+    "title_en": "Agent Client Protocol",
+    "authority_en": "Zed Industries (zed-industries/agent-client-protocol)",
+    "kind": "github",
+    "url": "https://github.com/zed-industries/agent-client-protocol",
+    "pinned": {
+      "tag": "schema-v1.26.0",
+      "commit": "e2d83349bc9e28a4059ea3acefa1c91c966f74e2"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release schema-v1.26.0，最近推送 2026-10-25）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release schema-v1.26.0, pushed 2026-10-25)",
+    "accessed": "2026-10-26",
+    "license": "Apache-2.0（SPDX: Apache-2.0）；链接引用，不转载",
+    "license_en": "Apache-2.0 (SPDX: Apache-2.0); linked, never republished",
+    "scope": "第 12 章的第二份协议：MCP 连接工具与数据，ACP 连接编辑器与智能体进程；两份规范并读，才看得出「标准化哪一层」是个选择而不是必然。",
+    "scope_en": "The second protocol for Chapter 12: MCP connects tools and data, ACP connects an editor to an agent process. Reading the two specs side by side shows that which layer gets standardised is a choice, not a law."
+  },
+  "gh-playwright-mcp": {
+    "title": "Playwright MCP",
+    "authority": "Microsoft（microsoft/playwright-mcp）",
+    "title_en": "Playwright MCP",
+    "authority_en": "Microsoft (microsoft/playwright-mcp)",
+    "kind": "github",
+    "url": "https://github.com/microsoft/playwright-mcp",
+    "pinned": {
+      "tag": "v0.0.83",
+      "commit": "f183dad4a52965583e3cc1d59b88cdc279e2e57d"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v0.0.83，最近推送 2026-10-22，约 38.6k star）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v0.0.83, pushed 2026-10-22, ~38.6k stars)",
+    "accessed": "2026-10-26",
+    "license": "Apache-2.0（SPDX: Apache-2.0）；链接引用，不转载",
+    "license_en": "Apache-2.0 (SPDX: Apache-2.0); linked, never republished",
+    "scope": "第 3、12 章的现成教材：一个把浏览器能力摊成工具 schema 的 MCP 服务器，工具粒度、返回结构与截图取舍都能直接对照本书讲的工具设计五要素。",
+    "scope_en": "Ready-made course material for Chapters 3 and 12: an MCP server that spreads browser capability into tool schemas, so tool granularity, result shape and the screenshot trade-off can be held against the book's five-part tool protocol."
+  },
+  "gh-cc-action": {
+    "title": "Claude Code Action",
+    "authority": "Anthropic（anthropics/claude-code-action）",
+    "title_en": "Claude Code Action",
+    "authority_en": "Anthropic (anthropics/claude-code-action)",
+    "kind": "github",
+    "url": "https://github.com/anthropics/claude-code-action",
+    "pinned": {
+      "tag": "v1",
+      "commit": "925afb53776cf1a2b738c6bdbed37b4d4000ef13"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v1，最近推送 2026-10-24，官方仓库）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v1, pushed 2026-10-24, an official repository)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 8、15 章的无人值守样本：官方把线束搬进 GitHub Actions，权限、审批与 hooks 在没有人的终端里如何退化，这里是第一手实现。",
+    "scope_en": "The unattended case for Chapters 8 and 15: Anthropic's own way of running the harness inside GitHub Actions, which is the primary implementation of what permissions, approval and hooks degrade to when nobody is watching a terminal."
+  },
+  "gh-cc-templates": {
+    "title": "Claude Code Templates",
+    "authority": "社区（davila7/claude-code-templates）",
+    "title_en": "Claude Code Templates",
+    "authority_en": "community (davila7/claude-code-templates)",
+    "kind": "github",
+    "url": "https://github.com/davila7/claude-code-templates",
+    "pinned": {
+      "tag": "v1.29.7",
+      "commit": "ad49b11922ea15f936e96f49f782e59ed8594342"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v1.29.7，当日仍在推送，约 32.9k star）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v1.29.7, commits the same day, ~32.9k stars)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 8、11 章的社区样本库：成批的真实 agents、skills、hooks、MCP 配置与 CLAUDE.md，可用来检验本书给出的模式在别人手里是否长成一个样。",
+    "scope_en": "A community sample set for Chapters 8 and 11: real agents, skills, hooks, MCP wiring and CLAUDE.md files in bulk, enough to check whether the patterns the book names grow into the same shape in other hands."
+  },
+  "gh-mcp-servers": {
+    "title": "Model Context Protocol Servers",
+    "authority": "MCP 项目（modelcontextprotocol/servers）",
+    "title_en": "Model Context Protocol Servers",
+    "authority_en": "the MCP project (modelcontextprotocol/servers)",
+    "kind": "github",
+    "url": "https://github.com/modelcontextprotocol/servers",
+    "pinned": {
+      "tag": "v2.1.0",
+      "commit": "ef9808f71090d0db3eda99e2af2ba78f1086f4fb"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v2.1.0，最近推送 2026-10-25；LICENSE 为 MIT 转 Apache-2.0 的过渡声明）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v2.1.0, pushed 2026-10-25; the LICENSE carries the project's MIT-to-Apache-2.0 transition notice)",
+    "accessed": "2026-10-26",
+    "license": "MIT / Apache-2.0 双许可过渡（均为宽松许可）；链接引用，不转载",
+    "license_en": "MIT / Apache-2.0 transition (both permissive); linked, never republished",
+    "scope": "第 12 章的参考实现目录：官方维护的服务器清单与迁移说明，本书讲到 MCP 工具发现与资源约定时，以它为可点开的落点。",
+    "scope_en": "The reference-implementation catalogue for Chapter 12: the maintained list of official servers and its migration notes, which is where the book's account of MCP tool discovery and resource conventions lands."
+  },
+  "gh-dxt": {
+    "title": "Desktop Extensions",
+    "authority": "Anthropic（anthropics/dxt）",
+    "title_en": "Desktop Extensions",
+    "authority_en": "Anthropic (anthropics/dxt)",
+    "kind": "github",
+    "url": "https://github.com/anthropics/dxt",
+    "pinned": {
+      "tag": "v2.1.2",
+      "commit": "2a788100a60db19a6b1c018fb1cf84ae85de9537"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v2.1.2，最近推送 2026-05-26；LICENSE 为 MIT 转 Apache-2.0 的过渡声明）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v2.1.2, pushed 2026-05-26; the LICENSE carries the project's MIT-to-Apache-2.0 transition notice)",
+    "accessed": "2026-10-26",
+    "license": "MIT / Apache-2.0 双许可过渡（均为宽松许可）；链接引用，不转载",
+    "license_en": "MIT / Apache-2.0 transition (both permissive); linked, never republished",
+    "scope": "第 11 章的分发包对照：插件包该装什么、如何声明依赖与入口，这套规范与 Claude Code 自己的插件格式并列，能看出「能力封装单位」的两种边界。",
+    "scope_en": "A packaging comparison for Chapter 11: what belongs in an extension bundle and how its entry points and dependencies are declared. Set beside Claude Code's own plugin format, the two show where the boundary of a capability package can be drawn."
+  },
+  "gh-codex": {
+    "title": "Codex CLI",
+    "authority": "OpenAI（openai/codex）",
+    "title_en": "Codex CLI",
+    "authority_en": "OpenAI (openai/codex)",
+    "kind": "github",
+    "url": "https://github.com/openai/codex",
+    "pinned": {
+      "tag": "rust-v0.164.0",
+      "commit": "6aaac694803004a63c6f393d153c96d22521a6b9"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release rust-v0.164.0，最近推送 2026-10-23，约 131.0k star；仓库 docs/sandbox.md 把沙箱与审批细节指向 developers.openai.com）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release rust-v0.164.0, pushed 2026-10-23, ~131.0k stars; the repo's docs/sandbox.md points the sandbox-and-approvals detail at developers.openai.com)",
+    "accessed": "2026-10-26",
+    "license": "Apache-2.0（SPDX: Apache-2.0）；链接引用，不转载",
+    "license_en": "Apache-2.0 (SPDX: Apache-2.0); linked, never republished",
+    "scope": "第 4 章的对照面：另一家在本地跑编码智能体的公司，把沙箱与审批做成独立一层，Rust 实现；同一组「谁被允许动什么」的问题，它在配置与策略文件上的答案与本书所讲的权限流水线并不相同。",
+    "scope_en": "A cross-check for Chapter 4: another company running a coding agent locally, with sandboxing and approvals split into their own layer in Rust. Asked the same question of who may touch what, it answers with config and policy files shaped quite differently from the permission pipeline this book describes."
+  },
+  "gh-gemini-cli": {
+    "title": "Gemini CLI",
+    "authority": "Google（google-gemini/gemini-cli）",
+    "title_en": "Gemini CLI",
+    "authority_en": "Google (google-gemini/gemini-cli)",
+    "kind": "github",
+    "url": "https://github.com/google-gemini/gemini-cli",
+    "pinned": {
+      "tag": "v0.65.0",
+      "commit": "6006c14a4decfe4b891c6263ad6ad5992e404b5b"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v0.65.0，当日仍在推送，约 108.4k star；README 顶部声明免费档与 Google One 用户自 2026-06-18 起改由 Antigravity CLI 承接）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v0.65.0, pushed the same day, ~108.4k stars; the README's opening notice says unpaid-tier and Google One users moved to Antigravity CLI from 2026-06-18)",
+    "accessed": "2026-10-26",
+    "license": "Apache-2.0（SPDX: Apache-2.0）；链接引用，不转载",
+    "license_en": "Apache-2.0 (SPDX: Apache-2.0); linked, never republished",
+    "scope": "第 14 章的对照面：一个把「下一轮做什么」写进明面流程的开源线束；同时它也是产品位置会变例——仓库仍在活跃提交，官方入口却已迁到另一条命令行。",
+    "scope_en": "A cross-check for Chapter 14: an open harness that puts the question of what the next turn is for into its visible flow. It is also a case study in a shifting product position -- the repository still commits daily while the official entry point moved to a different CLI."
+  },
+  "gh-learn-cc": {
+    "title": "Learn Claude Code — Harness Engineering",
+    "authority": "社区（shareAI-lab/learn-claude-code）",
+    "title_en": "Learn Claude Code -- Harness Engineering",
+    "authority_en": "community (shareAI-lab/learn-claude-code)",
+    "kind": "github",
+    "url": "https://github.com/shareAI-lab/learn-claude-code",
+    "pinned": {
+      "commit": "ce8f9f186058939da54c9d6fead78dfb5d0fd6c3"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：无 release，钉 main 分支当时 HEAD，最近推送 2026-09-28，约 79.2k star；README 有英/中/日三语）",
+    "snapshot_en": "2026-10-26 read (GitHub API: no releases, so the pin is main's HEAD at that date; pushed 2026-09-28, ~79.2k stars; the README ships in English, Chinese and Japanese)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 1、15 章的同类教材：它把「智能体 = 模型 + 线束」当作开场论证，再一层层从零搭出对话循环、工具、权限与会话——与本书的拆法几乎同构，可作独立对照。",
+    "scope_en": "A kindred text for Chapters 1 and 15: it opens by arguing that an agent is a model plus a harness, then rebuilds the dialog loop, tools, permissions and sessions from nothing. Its decomposition is close enough to the book's to serve as an independent second read of the same layers."
+  },
+  "gh-superpowers": {
+    "title": "Superpowers",
+    "authority": "社区（obra/superpowers）",
+    "title_en": "Superpowers",
+    "authority_en": "community (obra/superpowers)",
+    "kind": "github",
+    "url": "https://github.com/obra/superpowers",
+    "pinned": {
+      "tag": "v7.0.1",
+      "commit": "2ce8aa15d05bd57213e6f746f953aafb7ded7a8b"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v7.0.1，最近推送 2026-10-23，约 305.3k star）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v7.0.1, pushed 2026-10-23, ~305.3k stars)",
+    "accessed": "2026-10-26",
+    "license": "MIT（SPDX: MIT）；链接引用，不转载",
+    "license_en": "MIT (SPDX: MIT); linked, never republished",
+    "scope": "第 9、11 章的现成证据：一整套开发方法论被装成可组合的 skills、子智能体与入口指令，同一份包在十来个宿主上分发——能力封装单位能长多大，这是目前最有说服力的一个样本。",
+    "scope_en": "Existing evidence for Chapters 9 and 11: a whole development methodology packaged as composable skills, subagents and entry instructions, with the same bundle distributed across a dozen hosts -- the strongest sample yet of how large a unit of capability packaging can grow."
+  },
+  "gh-claude-mem": {
+    "title": "claude-mem",
+    "authority": "社区（thedotmack/claude-mem）",
+    "title_en": "claude-mem",
+    "authority_en": "community (thedotmack/claude-mem)",
+    "kind": "github",
+    "url": "https://github.com/thedotmack/claude-mem",
+    "pinned": {
+      "tag": "v15.2.1",
+      "commit": "35e24ba7f50f357b81bdafd823f89b41d65679fc"
+    },
+    "snapshot": "2026-10-26 读取（GitHub API：latest release v15.2.1，当日仍在推送，约 103.3k star；README 自述为插件形态的跨会话记忆，可切换多个宿主与记忆后端）",
+    "snapshot_en": "2026-10-26 read (GitHub API: latest release v15.2.1, pushed the same day, ~103.3k stars; its README describes a plugin-shaped cross-session memory with switchable hosts and memory backends)",
+    "accessed": "2026-10-26",
+    "license": "Apache-2.0（SPDX: Apache-2.0）；链接引用，不转载",
+    "license_en": "Apache-2.0 (SPDX: Apache-2.0); linked, never republished",
+    "scope": "第 6、7 章的压力测试：把「记住」做成线束外的一层，靠自己摘要或外部后端把旧内容压回上下文——正好与本书的四级压缩路线争同一块预算，是检验那套账算得对不对的活样本。",
+    "scope_en": "A stress test for Chapters 6 and 7: it moves remembering outside the harness and presses old content back into context through its own summaries or an external backend, competing with the book's four-level compression route for the very same budget."
   }
 }

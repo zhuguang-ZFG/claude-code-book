@@ -72,6 +72,12 @@ class Data(unittest.TestCase):
     def index(self) -> list[dict]:
         return load_json(BOOK_DIR / "subject-index.json")
 
+    def kinds(self) -> dict:
+        out = {}
+        for s in load_json(BOOK_DIR / "sources.json").values():
+            out[s["kind"]] = out.get(s["kind"], 0) + 1
+        return out
+
     def core_terms(self) -> int:
         return sum(1 for g in self.glosses.values()
                    if g.get("priority") == "core")
@@ -113,6 +119,22 @@ class ShippedCounts(Data):
             ("CREDITS.md", r"扉页一幅车图（共 (\d+) 份", [d]),
             ("STRUCTURE.md", r"以来源 id 为键的 (\d+) 条登记", [src]),
             ("CREDITS.md", r"sources\.json\)（(\d+) 条）", [src]),
+            # the registry is also quoted by family, in a sentence and in four
+            # section headings; both drift the moment one entry is added
+            ("STRUCTURE.md", r"kind 分布：`docs` (\d+)、`github` (\d+)、"
+                             r"`blog` (\d+)、`spec` (\d+)、`npm` (\d+)、"
+                             r"`community` (\d+)；(\d+) 条全部被",
+             [str(self.kinds()["docs"]), str(self.kinds()["github"]),
+              str(self.kinds()["blog"]), str(self.kinds()["spec"]),
+              str(self.kinds()["npm"]), str(self.kinds()["community"]), src]),
+            ("CREDITS.md", r"## 二、官方文档（(\d+) 条）",
+             [str(self.kinds()["docs"])]),
+            ("CREDITS.md", r"## 三、GitHub 仓库与钉版（(\d+) 条）",
+             [str(self.kinds()["github"])]),
+            ("CREDITS.md", r"## 四、协议规范与工程博客（(\d+) 条）",
+             [str(self.kinds()["spec"] + self.kinds()["blog"])]),
+            ("CREDITS.md", r"## 五、npm（(\d+) 条）",
+             [str(self.kinds()["npm"])]),
             ("README.md", r"每版 (\d+) 张（中英合计 (\d+)）",
              [str(plates_zh), str(plates_zh + plates_en)]),
             ("STRUCTURE.md", r"中英文各有 (\d+) 个 Mermaid 围栏（合计 (\d+)）",

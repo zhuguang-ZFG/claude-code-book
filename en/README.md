@@ -94,7 +94,7 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 
 ## The book as one file
 
-`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.3 MB Chinese / 5.4 MB English) and an A4-typeset PDF (452 pages / 15.7 MB in Chinese, 488 pages / 10.2 MB in English). Artifacts land in `yuyu-book/dist/`.
+`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.4 MB Chinese / 5.5 MB English) and an A4-typeset PDF (455 pages / 15.7 MB in Chinese, 493 pages / 10.0 MB in English). Artifacts land in `yuyu-book/dist/`.
 
 | File | Language |
 |------|----------|
@@ -125,7 +125,7 @@ Before submitting, run `python3 scripts/check_book.py` and `python3 -m unittest 
 
 Book content: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Credit the author, use non-commercially, and share adaptations under the same license. Third-party material retains its own terms.
 
-The technical narrative is checked against Claude Code `2.1.310` plus the official documentation, Anthropic research posts, the MCP specification, and community discussion. Every external source — with the tag or commit it is pinned to, the access date, and its licensing posture — is registered in [CREDITS.md](../CREDITS.md) and `yuyu-book/sources.json`, and reachable from the book's own sources page. Thanks to the [Linux.Do](https://linux.do/) community; most of the discussion happens in [the book's release thread](https://linux.do/t/topic/1870593).
+The technical narrative is checked against Claude Code `2.1.310` plus the official documentation, Anthropic research posts, the MCP specification, and community discussion. Every external source — with the tag or commit it is pinned to, the access date, and its licensing posture — is registered in [CREDITS.md](../CREDITS.md) and `yuyu-book/sources.json` (49 entries, 20 of them GitHub repositories), and reachable from the book's own sources page. Those repository entries do two different jobs: some are **authorities** (Claude Code itself, the official SDKs, the MCP specification, Anthropic's research posts); the rest are **cross-checks** — what the same boundary grows into in someone else's hands: a swappable model route, another context strategy, a second protocol, what permissions degrade to when nobody is watching, how large a packaged unit of capability can get. A cross-check supports no technical claim. It exists to test whether the seams the book names really are seams. Thanks to the [Linux.Do](https://linux.do/) community; most of the discussion happens in [the book's release thread](https://linux.do/t/topic/1870593).
 
 ## Star History
 
