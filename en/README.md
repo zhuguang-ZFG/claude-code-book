@@ -92,15 +92,40 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 | [D](Appendices/D-Glossary.md) | **Glossary** — 100 bilingual term definitions with cross-references and chapter locations |
 
 
+## The book as one file
+
+`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.3 MB Chinese / 5.4 MB English) and an A4-typeset PDF (446 pages / 16.0 MB in Chinese, 489 pages / 10.4 MB in English). Artifacts land in `yuyu-book/dist/`.
+
+| File | Language |
+|------|----------|
+| `yuyu-agent-harness-zh.html` / `.pdf` | Chinese |
+| `yuyu-agent-harness-en.html` / `.pdf` | English |
+
+The book carries its own cover, imprint and license page, revision history, reading routes, a contents page with real page numbers, a route map of the whole book on a sheet of its own — the foreword the spoked wheel at the head of the road, one station ring per chapter along four serpentine legs, the appendices a dashed siding — part openers with their own engraved headpiece, and per-chapter compass cards — the question a chapter answers, what you can build after reading it, and where it stops — each anchored to the sources behind it. All 157 diagrams per edition (314 across both) are pre-rendered as SVG in the book's own palette, code blocks get language chips, and the back matter adds a sources-and-licensing page plus a subject index. The PDF goes further with sidebar bookmarks, foot folios, recto/verso running heads, and clickable "see Chapter N" references; a plate too wide for a portrait column takes a landscape sheet of its own, and the text inside every plate stays selectable and searchable. Every chapter closes on the sheet it ends on, so no page carries nothing but a running head and a folio. Long names such as `KAIROS_GITHUB_WEBHOOKS`, `skipDangerousModePermissionPrompt` and `~/.claude/settings.json` are given break points at build time, so a justified Chinese line is no longer stretched into a channel of whitespace by one identifier that will not fit and, on paper, a table is no longer pushed past the page box; the cuts land only after `_`, after `/` and at camelCase seams, which leaves ordinary English words untouched. The HTML opens from `file://` with the network unplugged — no external fonts, images, or scripts.
+
+For engineers meeting this material for the first time, the build also lays a **plain-language layer** over the text (it never rewrites it): a one-sentence lead band plus an everyday analogy at the head of every chapter; a dotted underline at each term's first appearance, which opens a plain-English popover on screen (pinned to the bottom of the window wherever a side-by-side bubble would be clipped — narrow screens, and terms inside a table that scrolls sideways) and falls back to a "new terms in this chapter" panel on paper; and a Start / Core / Advanced stamp on every section heading, which is what the three reading routes in the foreword are built from. Twenty-five hand-drawn line illustrations — a four-horse chariot on the front page, one emblem per unit beside the chapter title, one engraving per part — are inked entirely in `currentColor`, so a single drawing serves screen, dark mode and paper. So is the rest of the ornament: each chapter head closes on a hand-run trace seeded from its own unit id (no two alike) and its wheel ruts run out into short dashes at the end, each part opener lays out the road its chapters travel (one ring each), callouts open with drawn marks instead of font glyphs, and section breaks carry a coupling line between two pads. A sticky contents rail joins the page from 1360px up, and the route map has its own wheeled entry there. The whole plain-language layer turns off with `--no-plain`.
+
+```bash
+npm ci                                              # diagrams need Mermaid 11.17.2
+python -m pip install -r yuyu-book/requirements.txt
+python yuyu-book/build.py --check                   # validate only; output to a temp dir
+python yuyu-book/build.py --lang zh                 # HTML only
+python yuyu-book/build.py --pdf                     # bilingual HTML + PDF
+```
+
+Rendering diagrams and building PDFs needs a local Chromium or Edge (auto-detected, or pass `--browser <path>`). The Markdown chapters are the single source of truth: the build reads them and never rewrites a file.
+
 ## Contributing
 
 Issues and pull requests are welcome. Include the chapter, section, expected correction, and a source link; for rendering problems, include the viewer and reproduction steps. Please keep Chinese and English changes aligned.
 
-Before submitting, run `python3 scripts/check_book.py` and `python3 -m unittest discover -s tests`. To validate Mermaid syntax, install Node.js 22 or later and run `npm ci` followed by `npm run check:diagrams`.
+Before submitting, run `python3 scripts/check_book.py` and `python3 -m unittest discover -s tests`. To validate Mermaid syntax, install Node.js 22 or later and run `npm ci` followed by `npm run check:diagrams`. When a change touches structure, the source registry, or book typesetting, also run `python yuyu-book/build.py --check` and `python3 -m unittest discover -s yuyu-book/tests -t .`; see [STRUCTURE.md](../STRUCTURE.md) for the repository layout and [CONTRIBUTING.md](../CONTRIBUTING.md) for the full workflow.
 
 ## License and acknowledgements
 
-Book content: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Credit the author, use non-commercially, and share adaptations under the same license. Third-party material retains its own terms. Thanks to the [Linux.Do](https://linux.do/) community.
+Book content: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Credit the author, use non-commercially, and share adaptations under the same license. Third-party material retains its own terms.
+
+The technical narrative is checked against Claude Code `2.1.310` plus the official documentation, Anthropic research posts, the MCP specification, and community discussion. Every external source — with the tag or commit it is pinned to, the access date, and its licensing posture — is registered in [CREDITS.md](../CREDITS.md) and `yuyu-book/sources.json`, and reachable from the book's own sources page. Thanks to the [Linux.Do](https://linux.do/) community; most of the discussion happens in [the book's release thread](https://linux.do/t/topic/1870593).
 
 ## Star History
 

@@ -92,15 +92,40 @@ Claude Code 为 Anthropic 产品，本书是独立的技术分析作品，并非
 | [D](附录/D-术语表.md) | **术语表** — 100 条中英对照术语，含交叉引用和章节定位 |
 
 
+## 离线整书
+
+`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（中文版 5.3 MB / 英文版 5.4 MB）与 A4 排版的 PDF（中文版 446 页 / 16.0 MB，英文版 489 页 / 10.4 MB），中英各一份，产物在 `yuyu-book/dist/`。
+
+| 文件 | 语言 |
+|------|------|
+| `yuyu-agent-harness-zh.html` / `.pdf` | 中文 |
+| `yuyu-agent-harness-en.html` / `.pdf` | English |
+
+整书自带封面、版本与许可页、修订史、阅读路线、带页码的目录、**全书线路图**（目录之后自成一页：前言是路头的辐轮，十五章是蛇形路上依次排开的站圈，附录走虚线岔线）、分部过渡页与每篇题刻、每章「本章问题 / 读完交付 / 本章边界」罗盘与来源锚点、每版 157 张（中英合计 314）按书的配色预渲染的图版、代码块语言角标、脚注、来源与许可页和主题索引；书里的装饰全是自绘矢量——扉页一辆四马古车、每单元一枚章徽、每篇一幅题刻，章眉下一条按单元 id 生成的手绘走线（20 章各不相同），章末两道渐次散开的车辙，分部过渡页横一条与章数一一对应的道路，提示块与小节分隔也各自带着手写墨记，没有一处用字体符号或图片素材凑数。宽屏（≥1360px）另有一列常驻侧栏目录，线路图在那里带一枚辐轮入口。PDF 另有侧边书签、页脚页码与奇偶不同的页眉，正文里的「参见第 N 章」自动成为可点击链接。每一章都收在它自己结束的那张纸上——全书没有一张只剩页眉与页码的空页。太宽放不下竖版的图版会独占一张横向纸页，图里的文字在 PDF 里依然可选中、可检索。`KAIROS_GITHUB_WEBHOOKS`、`skipDangerousModePermissionPrompt`、`~/.claude/settings.json` 这类长名字在构建时自动获得断点：两端对齐的中文行不会被一根放不下的长名拉成字距空洞，纸面上也不会把整张表顶出版心（断点只落在 `_`、`/` 与大小写交界处，普通英文词永不被切断）。HTML 断网双击即可阅读——不加载任何外部字体、图片或脚本。
+
+为第一次读这一类书的工程师，构建时还会叠一层**通俗层**（只叠加，不改写正文）：每章开头一句白话导读带加一个比方；术语首现处画虚线，屏幕上悬停出白话浮窗（屏幕不够宽、或术语坐在要横向滚动的宽表里时，浮窗改钉在屏幕底部，免得被裁掉看不见），纸面上退回章首的新词面板；每个小节右上角盖一枚「起步 / 主干 / 进阶」徽，前言据此给出三条阅读路线。全书另有 25 份手写线描图——扉页一幅四马古车、20 枚章徽配在章名右侧、4 幅题刻开在每篇首页——只用 `currentColor` 描线，所以屏幕、暗色模式与纸面共用同一份图。通俗层可以整块用 `--no-plain` 关掉。
+
+```bash
+npm ci                                              # 图版渲染需要 Mermaid 11.17.2
+python -m pip install -r yuyu-book/requirements.txt
+python yuyu-book/build.py --check                   # 只校验，产物写入临时目录
+python yuyu-book/build.py --lang zh                 # 仅 HTML
+python yuyu-book/build.py --pdf                     # 中英双语 HTML + PDF
+```
+
+PDF 与图版渲染需要一个本机 Chromium 或 Edge（自动探测 `msedge`/`chrome`，也可用 `--browser <路径>` 指定）。正文 Markdown 是唯一事实来源，构建过程不回写、不改写任何章节文件。
+
 ## 参与修订
 
 欢迎通过 Issue 或 PR 修正技术错误、补充案例和改进表达。请提供章节、小节、建议修改和参考来源；显示问题请注明阅读平台和复现步骤。涉及双语内容时，请同步检查英文版。
 
-提交前运行 `python3 scripts/check_book.py` 和 `python3 -m unittest discover -s tests`。Mermaid 语法检查需要 Node.js 22 或更高版本：先运行 `npm ci`，再运行 `npm run check:diagrams`。
+提交前运行 `python3 scripts/check_book.py` 和 `python3 -m unittest discover -s tests`。Mermaid 语法检查需要 Node.js 22 或更高版本：先运行 `npm ci`，再运行 `npm run check:diagrams`。改动涉及结构、来源登记或整书排版时，再跑 `python yuyu-book/build.py --check` 与 `python3 -m unittest discover -s yuyu-book/tests -t .`；仓库结构与构建契约见 [STRUCTURE.md](STRUCTURE.md)，贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可与致谢
 
-本书文字采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)：须署名、非商业使用，并以相同协议共享改编内容。第三方资料保留其原有权利与许可条件。感谢 [Linux.Do](https://linux.do/) 社区。
+本书文字采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)：须署名、非商业使用，并以相同协议共享改编内容。第三方资料保留其原有权利与许可条件。
+
+正文的技术叙述以 Claude Code `2.1.310` 与官方文档、Anthropic 研究博客、MCP 规范和社区讨论为核对基线。全部外部来源、钉到的 tag/commit、访问日期与许可姿态登记在 [CREDITS.md](CREDITS.md) 与 `yuyu-book/sources.json`，也可从整书的「来源与许可」页逐条跳转。感谢 [Linux.Do](https://linux.do/) 社区，本书的讨论与修订主要发生在 [【开源千星】《御舆：解码 Agent Harness》](https://linux.do/t/topic/1870593) 一帖。
 
 ## Star History
 
