@@ -468,6 +468,21 @@ class Deliverables(unittest.TestCase):
             self.assertTrue((REPO_ROOT / name).exists(), name)
             self.assertGreater((REPO_ROOT / name).stat().st_size, 200, name)
 
+    def test_the_artifact_step_only_uses_inputs_that_exist(self):
+        """GitHub annotates an unknown `with:` key but still passes the step,
+        so `if-no-files-available` silently disabled the one guard that turns a
+        build which published nothing into a red run."""
+        text = (REPO_ROOT / ".github" / "workflows" / "book.yml").read_text(
+            encoding="utf-8")
+        block = re.search(r"uses:\s*actions/upload-artifact@\S+\s+with:\n"
+                          r"((?:[ \t]+\S.*\n?)+)", text)
+        self.assertIsNotNone(block, "no upload-artifact step")
+        keys = set(re.findall(r"^[ \t]+([\w-]+):", block.group(1), re.M))
+        self.assertLessEqual(keys, {"name", "path", "if-no-files-found",
+                                    "retention-days", "compression-level",
+                                    "overwrite", "include-hidden-files"})
+        self.assertIn("if-no-files-found", keys)
+
 
 class EndToEndNoBrowser(unittest.TestCase):
     """The whole pipeline, with diagrams degraded to source listings: this is

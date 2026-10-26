@@ -102,4 +102,4 @@ jobs:
         with:
           name: yuyu-book-dist
           path: yuyu-book/dist/*
-          if-no-files-available: error
+          if-no-files-found: error
