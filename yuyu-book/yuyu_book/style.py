@@ -883,6 +883,10 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
   margin:1.6rem 0 .4rem;border-bottom:2px solid var(--bronze-2);
   padding-bottom:.15rem;display:inline-block;min-width:2.2rem}
 .idx-list{list-style:none;margin:0;padding:0;font-size:.9rem}
+/* the Chinese block needs one line of instruction: nothing else in the book
+   is filed by radical, and a reader who is not told will assume it is random */
+.idx-note{font-size:.82rem;color:var(--ink-2);margin:-.15rem 0 .3rem;
+  line-height:1.55;max-width:26rem}
 .idx-row{display:flex;align-items:baseline;gap:.35rem;padding:.26rem 0}
 .idx-term{flex:0 1 auto;min-width:0;font-family:var(--sans);font-weight:600;
   overflow-wrap:anywhere}

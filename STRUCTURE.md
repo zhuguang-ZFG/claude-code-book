@@ -108,7 +108,7 @@
 | `illustrations/` | 25 份手写 SVG：20 枚单元章徽（`<unit-id>.svg`，64×64 描线）+ 4 幅篇题刻（`part-<id>.svg`，200×140 小版画）+ 1 幅扉页车图（`cover.svg`，1000×470 横构图，四马一盖车、三十辐的轮，约 11.7 KB，故享 `PLATE_BYTES`）。全部 `currentColor`，无 id、无外链，见 `art.py` |
 | `sources.json` | 以来源 id 为键的 35 条登记。字段：`title` `authority` `kind` `url` `pinned` `snapshot` `accessed` `license` `scope`，`community` 类另带 `normative`。凡本书自己写的中文注（快照、许可、用途，以及带中文括注的标题与社区帖标题）都配 `*_en` 镜像，渲染时按语言取字段——门禁：镜像缺失或镜像里仍有汉字即构建失败。kind 分布：`docs` 21、`github` 6、`blog` 4、`spec` 1、`npm` 1、`community` 2；35 条全部被 `guides.sources` 引用 |
 | `revisions.json` | "版本与修订"页的条目，zh / en 各一份 |
-| `subject-index.json` | 书末主题索引（生成物，当前 238 个词条 = 116 条英文原名 + 122 条中文译名），由 `--regen-index` 重建。中文块排在 Z 之后（`core.INDEX_CN_LETTER = "中"` 的字典序天然靠后），页面上标题取 `ui("index_cn")`；中文版渲染时英文块在前、中文块在后，英文版只渲染英文块——没有本语言词条的行会被跳过 |
+| `subject-index.json` | 书末主题索引（生成物，当前 238 个词条 = 116 条英文原名 + 122 条中文译名），由 `--regen-index` 重建。中文块排在 Z 之后（`core.INDEX_CN_LETTER = "中"` 的字典序天然靠后），标题取 `ui("index_cn")`，块下一行 `ui("index_cn_note")` 说明排检法——全书只有这一块按部首笔画排；英文版只渲染英文块，没有本语言词条的行会被跳过 |
 
 ### 3.4 生成物（不要手改）
 

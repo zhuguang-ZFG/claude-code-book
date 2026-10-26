@@ -33,6 +33,10 @@ _LABELS = {
              "tags/commits, community material carries access dates and is non-normative."},
     "index_page": {"zh": "主题索引", "en": "Subject Index"},
     "index_cn": {"zh": "中文", "en": "Chinese"},
+    "index_cn_note": {
+        "zh": "按译名首字的部首笔画排列；一个英文术语有多个译名时，每个译名单独立条。",
+        "en": "Filed by the radical and stroke count of the first character; a "
+              "term with several translations is filed under each of them."},
     "compass_q": {"zh": "本章问题", "en": "The question"},
     "compass_d": {"zh": "读完交付", "en": "What you get"},
     "compass_b": {"zh": "本章边界", "en": "Out of scope"},
@@ -446,10 +450,12 @@ def subject_index_page(entries: list[dict], lang: str) -> str:
              f'<h1 class="page-title">{esc(ui("index_page", lang))}</h1>'
              f'<div class="idx-cols">']
     for letter in sorted(letters):
-        head = (ui("index_cn", lang) if letter == INDEX_CN_LETTER
-                else esc(letter))
+        cn = letter == INDEX_CN_LETTER
+        head = ui("index_cn", lang) if cn else esc(letter)
         parts.append(f'<div class="idx-block"><h2 class="idx-letter">{head}</h2>'
-                     f'<ul class="idx-list">')
+                     + (f'<p class="idx-note">{esc(ui("index_cn_note", lang))}</p>'
+                        if cn else '')
+                     + '<ul class="idx-list">')
         for e in letters[letter]:
             # a 23-character feature flag has no space to break at, and the row
             # would spend its dotted leader to fit it; `<wbr>` after each

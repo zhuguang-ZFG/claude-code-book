@@ -431,6 +431,11 @@ class BackMatter(Config):
         heads = re.findall(r'<h2 class="idx-letter">([^<]*)</h2>', html_zh)
         self.assertEqual([h for h in heads if not re.fullmatch(r"[A-Z]", h)],
                          ["中文"], "the Chinese block needs its own heading")
+        # nothing else in the book is filed by radical, so the block has to say
+        # how it is ordered or it reads as a pile
+        note = re.search(r'<p class="idx-note">([^<]*)</p>', html_zh)
+        self.assertIsNotNone(note, "the Chinese block shipped without its rule")
+        self.assertIn("部首", note.group(1))
 
     def test_the_english_index_does_not_inherit_chinese_rows(self):
         entries = load_json(BOOK_DIR / "subject-index.json")
