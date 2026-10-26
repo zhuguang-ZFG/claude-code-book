@@ -28,6 +28,33 @@ CJK_FONTS = ["C:/Windows/Fonts/msyh.ttc", "C:/Windows/Fonts/simsun.ttc",
 MARGIN = 48.0
 INK = (0.42, 0.36, 0.26)
 RULE = (0.82, 0.76, 0.62)
+HEAD_BAND = 60.0      # anything painted above this is the running head
+FOOT_BAND = 45.0      # ...and below the page bottom minus this is the folio
+
+
+def empty_sheets(doc) -> list[int]:
+    """1-based page numbers of sheets that carry nothing but furniture.
+
+    A unit that ends a few lines above the text block used to leave a page
+    behind with only a head and a folio on it — the reader turns a sheet and
+    finds no prose at all. Text, vector drawing and image all count as body,
+    so a plate that fills the block is never mistaken for a hole.
+    """
+    holes = []
+    for i, page in enumerate(doc):
+        lo, hi = HEAD_BAND, page.rect.height - FOOT_BAND
+        boxes = [fitz.Rect(b[:4]) for b in page.get_text("blocks")]
+        boxes += [d["rect"] for d in page.get_drawings()]
+        for im in page.get_images(full=True):
+            try:
+                boxes.append(page.get_image_bbox(im))
+            except Exception:                       # not painted on this page
+                continue
+        body = [b for b in boxes if b.is_valid and b.width > 1 and b.height > 1
+                and b.y0 > lo and b.y1 < hi]
+        if not body:
+            holes.append(i + 1)
+    return holes
 
 
 def _launch(p, browser: str | None):
@@ -229,6 +256,14 @@ def build_pdf(html_path: Path, meta: dict, browser: str | None = None) -> Path:
         doc.close()
         raise BuildError(f"pdf: stamped only {len(best)} of {len(rows)} "
                          f"contents rows (missing {missed[:8]})")
+
+    holes = empty_sheets(doc)
+    if holes:
+        doc.close()
+        raise BuildError(
+            f"pdf: {len(holes)} sheet(s) carry nothing but a running head and a "
+            f"folio (pages {holes[:8]}{'…' if len(holes) > 8 else ''}) — a unit "
+            "must close on the page it ends on")
 
     doc.set_metadata({
         "title": meta["title"], "author": meta["author"],
