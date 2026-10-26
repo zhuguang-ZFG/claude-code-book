@@ -1,0 +1,2554 @@
+[
+  {
+    "key": "ablation baseline",
+    "letter": "A",
+    "zh": {
+      "term": "Ablation Baseline",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Ablation Baseline",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "Ch 13"
+        }
+      ]
+    }
+  },
+  {
+    "key": "agent",
+    "letter": "A",
+    "zh": {
+      "term": "Agent",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Agent",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "Ch 1"
+        }
+      ]
+    }
+  },
+  {
+    "key": "agent harness",
+    "letter": "A",
+    "zh": {
+      "term": "Agent Harness",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Agent Harness",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "Ch 1"
+        }
+      ]
+    }
+  },
+  {
+    "key": "agent memory snapshot",
+    "letter": "A",
+    "zh": {
+      "term": "Agent Memory Snapshot",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Agent Memory Snapshot",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "Ch 10"
+        }
+      ]
+    }
+  },
+  {
+    "key": "agent trigger",
+    "letter": "A",
+    "zh": {
+      "term": "Agent Trigger",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Agent Trigger",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "always allow / always deny / always ask",
+    "letter": "A",
+    "zh": {
+      "term": "Always Allow / Always Deny / Always Ask",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Always Allow / Always Deny / Always Ask",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "Ch 4"
+        }
+      ]
+    }
+  },
+  {
+    "key": "api turn",
+    "letter": "A",
+    "zh": {
+      "term": "API Turn",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "API Turn",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "async generator",
+    "letter": "A",
+    "zh": {
+      "term": "Async Generator",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Async Generator",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "auto compact",
+    "letter": "A",
+    "zh": {
+      "term": "Auto Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Auto Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "auto mode",
+    "letter": "A",
+    "zh": {
+      "term": "Auto Mode",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Auto Mode",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "auto theme",
+    "letter": "A",
+    "zh": {
+      "term": "Auto Theme",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Auto Theme",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "away summary",
+    "letter": "A",
+    "zh": {
+      "term": "Away Summary",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Away Summary",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "background session (bg_sessions)",
+    "letter": "B",
+    "zh": {
+      "term": "Background Session (BG_SESSIONS)",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Background Session (BG_SESSIONS)",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "bash classifier",
+    "letter": "B",
+    "zh": {
+      "term": "Bash Classifier",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Bash Classifier",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "bridge mode",
+    "letter": "B",
+    "zh": {
+      "term": "Bridge Mode",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Bridge Mode",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "buddy",
+    "letter": "B",
+    "zh": {
+      "term": "Buddy",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Buddy",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "build tool (buildtool)",
+    "letter": "B",
+    "zh": {
+      "term": "Build Tool (buildTool)",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Build Tool (buildTool)",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "cache safe params",
+    "letter": "C",
+    "zh": {
+      "term": "Cache Safe Params",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Cache Safe Params",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "cached micro compact",
+    "letter": "C",
+    "zh": {
+      "term": "Cached Micro Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Cached Micro Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "channel",
+    "letter": "C",
+    "zh": {
+      "term": "Channel",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Channel",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "Ch 6"
+        }
+      ]
+    }
+  },
+  {
+    "key": "chicago_mcp",
+    "letter": "C",
+    "zh": {
+      "term": "CHICAGO_MCP",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "CHICAGO_MCP",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "claude.md",
+    "letter": "C",
+    "zh": {
+      "term": "CLAUDE.md",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "CLAUDE.md",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "Ch 6"
+        }
+      ]
+    }
+  },
+  {
+    "key": "cli (command line interface)",
+    "letter": "C",
+    "zh": {
+      "term": "CLI (Command Line Interface)",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "CLI (Command Line Interface)",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "compaction",
+    "letter": "C",
+    "zh": {
+      "term": "Compaction",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Compaction",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "companion sprite",
+    "letter": "C",
+    "zh": {
+      "term": "Companion Sprite",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Companion Sprite",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "concurrency safe",
+    "letter": "C",
+    "zh": {
+      "term": "Concurrency Safe",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Concurrency Safe",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "context collapse",
+    "letter": "C",
+    "zh": {
+      "term": "Context Collapse",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Context Collapse",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "context window",
+    "letter": "C",
+    "zh": {
+      "term": "Context Window",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Context Window",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "coordinator mode",
+    "letter": "C",
+    "zh": {
+      "term": "Coordinator Mode",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Coordinator Mode",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "Ch 10"
+        }
+      ]
+    }
+  },
+  {
+    "key": "coworker_type_telemetry",
+    "letter": "C",
+    "zh": {
+      "term": "COWORKER_TYPE_TELEMETRY",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "COWORKER_TYPE_TELEMETRY",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "Ch 13"
+        }
+      ]
+    }
+  },
+  {
+    "key": "cron tool",
+    "letter": "C",
+    "zh": {
+      "term": "Cron Tool",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Cron Tool",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "daemon",
+    "letter": "D",
+    "zh": {
+      "term": "Daemon",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Daemon",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "direct_connect",
+    "letter": "D",
+    "zh": {
+      "term": "DIRECT_CONNECT",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "DIRECT_CONNECT",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "dynamic tool registration",
+    "letter": "D",
+    "zh": {
+      "term": "Dynamic Tool Registration",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Dynamic Tool Registration",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "enhanced telemetry",
+    "letter": "E",
+    "zh": {
+      "term": "Enhanced Telemetry",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Enhanced Telemetry",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "Ch 13"
+        }
+      ]
+    }
+  },
+  {
+    "key": "extended thinking",
+    "letter": "E",
+    "zh": {
+      "term": "Extended Thinking",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Extended Thinking",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "Ch 5"
+        }
+      ]
+    }
+  },
+  {
+    "key": "extract memories",
+    "letter": "E",
+    "zh": {
+      "term": "Extract Memories",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Extract Memories",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "Ch 10"
+        }
+      ]
+    }
+  },
+  {
+    "key": "file persistence",
+    "letter": "F",
+    "zh": {
+      "term": "File Persistence",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "File Persistence",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "fork mode / fork subagent",
+    "letter": "F",
+    "zh": {
+      "term": "Fork Mode / Fork Subagent",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Fork Mode / Fork Subagent",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "fullscreen layout",
+    "letter": "F",
+    "zh": {
+      "term": "Fullscreen Layout",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Fullscreen Layout",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "globtool",
+    "letter": "G",
+    "zh": {
+      "term": "GlobTool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "GlobTool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "greptool",
+    "letter": "G",
+    "zh": {
+      "term": "GrepTool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "GrepTool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "hard fail",
+    "letter": "H",
+    "zh": {
+      "term": "Hard Fail",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Hard Fail",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "history snip",
+    "letter": "H",
+    "zh": {
+      "term": "History Snip",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "History Snip",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "hook",
+    "letter": "H",
+    "zh": {
+      "term": "Hook",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "第 8 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Hook",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "Ch 8"
+        }
+      ]
+    }
+  },
+  {
+    "key": "hook prompts",
+    "letter": "H",
+    "zh": {
+      "term": "Hook Prompts",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Hook Prompts",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ide integration",
+    "letter": "I",
+    "zh": {
+      "term": "IDE Integration",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "IDE Integration",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ink",
+    "letter": "I",
+    "zh": {
+      "term": "Ink",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Ink",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "job classifier",
+    "letter": "J",
+    "zh": {
+      "term": "Job Classifier",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Job Classifier",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "jwt (json web token)",
+    "letter": "J",
+    "zh": {
+      "term": "JWT (JSON Web Token)",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "JWT (JSON Web Token)",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "kairos",
+    "letter": "K",
+    "zh": {
+      "term": "KAIROS",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "KAIROS",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "Ch 6"
+        }
+      ]
+    }
+  },
+  {
+    "key": "kairos dream",
+    "letter": "K",
+    "zh": {
+      "term": "KAIROS Dream",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "KAIROS Dream",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "Ch 6"
+        }
+      ]
+    }
+  },
+  {
+    "key": "llm (large language model)",
+    "letter": "L",
+    "zh": {
+      "term": "LLM (Large Language Model)",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "LLM (Large Language Model)",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "Ch 1"
+        }
+      ]
+    }
+  },
+  {
+    "key": "lodestone",
+    "letter": "L",
+    "zh": {
+      "term": "Lodestone",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Lodestone",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "Ch 10"
+        }
+      ]
+    }
+  },
+  {
+    "key": "main loop",
+    "letter": "M",
+    "zh": {
+      "term": "Main Loop",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Main Loop",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "mcp (model context protocol)",
+    "letter": "M",
+    "zh": {
+      "term": "MCP (Model Context Protocol)",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "MCP (Model Context Protocol)",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "mcp skills",
+    "letter": "M",
+    "zh": {
+      "term": "MCP Skills",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "MCP Skills",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "memory",
+    "letter": "M",
+    "zh": {
+      "term": "Memory",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Memory",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "Ch 6"
+        }
+      ]
+    }
+  },
+  {
+    "key": "memory injection",
+    "letter": "M",
+    "zh": {
+      "term": "Memory Injection",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Memory Injection",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "Ch 6"
+        }
+      ]
+    }
+  },
+  {
+    "key": "message actions",
+    "letter": "M",
+    "zh": {
+      "term": "Message Actions",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Message Actions",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "micro compact",
+    "letter": "M",
+    "zh": {
+      "term": "Micro Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Micro Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "monitor tool",
+    "letter": "M",
+    "zh": {
+      "term": "Monitor Tool",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Monitor Tool",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "multi-tier settings",
+    "letter": "M",
+    "zh": {
+      "term": "Multi-tier Settings",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Multi-tier Settings",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "Ch 5"
+        }
+      ]
+    }
+  },
+  {
+    "key": "native client attestation",
+    "letter": "N",
+    "zh": {
+      "term": "Native Client Attestation",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Native Client Attestation",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "permission mode",
+    "letter": "P",
+    "zh": {
+      "term": "Permission Mode",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Permission Mode",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "Ch 4"
+        }
+      ]
+    }
+  },
+  {
+    "key": "permission pipeline",
+    "letter": "P",
+    "zh": {
+      "term": "Permission Pipeline",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Permission Pipeline",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "Ch 4"
+        }
+      ]
+    }
+  },
+  {
+    "key": "plan mode",
+    "letter": "P",
+    "zh": {
+      "term": "Plan Mode",
+      "refs": [
+        {
+          "anchor": "ch14",
+          "label": "第 14 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Plan Mode",
+      "refs": [
+        {
+          "anchor": "ch14",
+          "label": "Ch 14"
+        }
+      ]
+    }
+  },
+  {
+    "key": "power assertion",
+    "letter": "P",
+    "zh": {
+      "term": "Power Assertion",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Power Assertion",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "pretooluse / posttooluse",
+    "letter": "P",
+    "zh": {
+      "term": "PreToolUse / PostToolUse",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "第 8 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "PreToolUse / PostToolUse",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "Ch 8"
+        }
+      ]
+    }
+  },
+  {
+    "key": "proactive mode",
+    "letter": "P",
+    "zh": {
+      "term": "Proactive Mode",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Proactive Mode",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "Ch 5"
+        }
+      ]
+    }
+  },
+  {
+    "key": "prompt cache",
+    "letter": "P",
+    "zh": {
+      "term": "Prompt Cache",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Prompt Cache",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "prompt cache break detection",
+    "letter": "P",
+    "zh": {
+      "term": "Prompt Cache Break Detection",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Prompt Cache Break Detection",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "query engine",
+    "letter": "Q",
+    "zh": {
+      "term": "Query Engine",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Query Engine",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "quick search",
+    "letter": "Q",
+    "zh": {
+      "term": "Quick Search",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Quick Search",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "react",
+    "letter": "R",
+    "zh": {
+      "term": "React",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "React",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "reactive compact",
+    "letter": "R",
+    "zh": {
+      "term": "Reactive Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Reactive Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "readonly tool",
+    "letter": "R",
+    "zh": {
+      "term": "ReadOnly Tool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "ReadOnly Tool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "repl (read-eval-print loop)",
+    "letter": "R",
+    "zh": {
+      "term": "REPL (Read-Eval-Print Loop)",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "REPL (Read-Eval-Print Loop)",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "selector pattern",
+    "letter": "S",
+    "zh": {
+      "term": "Selector Pattern",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Selector Pattern",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "settings sync",
+    "letter": "S",
+    "zh": {
+      "term": "Settings Sync",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Settings Sync",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "Ch 10"
+        }
+      ]
+    }
+  },
+  {
+    "key": "skill",
+    "letter": "S",
+    "zh": {
+      "term": "Skill",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Skill",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "skill generator",
+    "letter": "S",
+    "zh": {
+      "term": "Skill Generator",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Skill Generator",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "slash command",
+    "letter": "S",
+    "zh": {
+      "term": "Slash Command",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Slash Command",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "snip compact",
+    "letter": "S",
+    "zh": {
+      "term": "Snip Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Snip Compact",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ssh remote",
+    "letter": "S",
+    "zh": {
+      "term": "SSH Remote",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "SSH Remote",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "Ch 11"
+        }
+      ]
+    }
+  },
+  {
+    "key": "state management",
+    "letter": "S",
+    "zh": {
+      "term": "State Management",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "State Management",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "stop reason",
+    "letter": "S",
+    "zh": {
+      "term": "Stop Reason",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Stop Reason",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "stream",
+    "letter": "S",
+    "zh": {
+      "term": "Stream",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Stream",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "Ch 13"
+        }
+      ]
+    }
+  },
+  {
+    "key": "streaming tool executor",
+    "letter": "S",
+    "zh": {
+      "term": "Streaming Tool Executor",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Streaming Tool Executor",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "subagent",
+    "letter": "S",
+    "zh": {
+      "term": "Subagent",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Subagent",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "system prompt",
+    "letter": "S",
+    "zh": {
+      "term": "System Prompt",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "System Prompt",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "team memory (teammem)",
+    "letter": "T",
+    "zh": {
+      "term": "Team Memory (TEAMMEM)",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Team Memory (TEAMMEM)",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "Ch 10"
+        }
+      ]
+    }
+  },
+  {
+    "key": "templates",
+    "letter": "T",
+    "zh": {
+      "term": "Templates",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Templates",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "terminal panel",
+    "letter": "T",
+    "zh": {
+      "term": "Terminal Panel",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Terminal Panel",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "token",
+    "letter": "T",
+    "zh": {
+      "term": "Token",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Token",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "token budget",
+    "letter": "T",
+    "zh": {
+      "term": "Token Budget",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Token Budget",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "tool",
+    "letter": "T",
+    "zh": {
+      "term": "Tool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "tool interface",
+    "letter": "T",
+    "zh": {
+      "term": "Tool Interface",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tool Interface",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "tool orchestration",
+    "letter": "T",
+    "zh": {
+      "term": "Tool Orchestration",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tool Orchestration",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "tool permission context",
+    "letter": "T",
+    "zh": {
+      "term": "Tool Permission Context",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tool Permission Context",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "Ch 4"
+        }
+      ]
+    }
+  },
+  {
+    "key": "tool registry",
+    "letter": "T",
+    "zh": {
+      "term": "Tool Registry",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tool Registry",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "toolsearch tool",
+    "letter": "T",
+    "zh": {
+      "term": "ToolSearch Tool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "ToolSearch Tool",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "transcript classifier",
+    "letter": "T",
+    "zh": {
+      "term": "Transcript Classifier",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Transcript Classifier",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "transcription / transcript",
+    "letter": "T",
+    "zh": {
+      "term": "Transcription / Transcript",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Transcription / Transcript",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "tree-sitter",
+    "letter": "T",
+    "zh": {
+      "term": "Tree-sitter",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tree-sitter",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "turn",
+    "letter": "T",
+    "zh": {
+      "term": "Turn",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Turn",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "Ch 2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "uds (unix domain socket) inbox",
+    "letter": "U",
+    "zh": {
+      "term": "UDS (Unix Domain Socket) Inbox",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "UDS (Unix Domain Socket) Inbox",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ultraplan",
+    "letter": "U",
+    "zh": {
+      "term": "Ultraplan",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Ultraplan",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "Ch 5"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ultrathink",
+    "letter": "U",
+    "zh": {
+      "term": "Ultrathink",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Ultrathink",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "Ch 5"
+        }
+      ]
+    }
+  },
+  {
+    "key": "unattended retry",
+    "letter": "U",
+    "zh": {
+      "term": "Unattended Retry",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Unattended Retry",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "Ch 13"
+        }
+      ]
+    }
+  },
+  {
+    "key": "verification agent",
+    "letter": "V",
+    "zh": {
+      "term": "Verification Agent",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Verification Agent",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "voice mode",
+    "letter": "V",
+    "zh": {
+      "term": "Voice Mode",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Voice Mode",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "Ch 12"
+        }
+      ]
+    }
+  },
+  {
+    "key": "web browser tool",
+    "letter": "W",
+    "zh": {
+      "term": "Web Browser Tool",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Web Browser Tool",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "Ch 7"
+        }
+      ]
+    }
+  },
+  {
+    "key": "workflow scripts",
+    "letter": "W",
+    "zh": {
+      "term": "Workflow Scripts",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Workflow Scripts",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "worktree",
+    "letter": "W",
+    "zh": {
+      "term": "Worktree",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Worktree",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "Ch 9"
+        }
+      ]
+    }
+  },
+  {
+    "key": "zod schema",
+    "letter": "Z",
+    "zh": {
+      "term": "Zod Schema",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Zod Schema",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "Ch 3"
+        }
+      ]
+    }
+  }
+]
