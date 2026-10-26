@@ -69,6 +69,9 @@ class Data(unittest.TestCase):
     def drawings(self) -> int:
         return len(list((BOOK_DIR / "illustrations").glob("*.svg")))
 
+    def index(self) -> list[dict]:
+        return load_json(BOOK_DIR / "subject-index.json")
+
     def core_terms(self) -> int:
         return sum(1 for g in self.glosses.values()
                    if g.get("priority") == "core")
@@ -97,8 +100,11 @@ class ShippedCounts(Data):
              [str(self.glossary_rows("en"))]),
             ("STRUCTURE.md", r"术语白话注，当前 (\d+) 条（(\d+) 个 core",
              [g, str(self.core_terms())]),
-            ("STRUCTURE.md", r"主题索引（生成物，当前 (\d+) 个词条）",
-             [str(len(load_json(BOOK_DIR / "subject-index.json")))]),
+            ("STRUCTURE.md", r"主题索引（生成物，当前 (\d+) 个词条 = "
+                             r"(\d+) 条英文原名 \+ (\d+) 条中文译名）",
+             [str(len(self.index())), str(len([e for e in self.index()
+                                               if e["letter"] != "中"])),
+              str(len([e for e in self.index() if e["letter"] == "中"]))]),
             ("README.md", r"全书另有 (\d+) 份手写线描图——扉页一幅四马古车、"
                          r"(\d+) 枚章徽配在章名右侧、(\d+) 幅题刻",
              [d, str(len(self.units)), str(len(self.manifest["parts"]))]),

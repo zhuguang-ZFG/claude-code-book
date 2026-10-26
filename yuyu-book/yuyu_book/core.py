@@ -22,6 +22,9 @@ SOURCE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 # registry text the book authored for itself, and therefore owes in both languages
 MIRRORED_FIELDS = ("title", "authority", "snapshot", "license", "scope")
 HAN_RE = re.compile(r"[\u4e00-\u9fff]")
+# the subject index files translated terms here instead of under a Latin
+# letter; "中" sorts after Z, so the block lands last without a special case
+INDEX_CN_LETTER = "中"
 FENCE_RE = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
 
 ZH_PATTERNS = [

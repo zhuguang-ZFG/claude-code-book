@@ -19,9 +19,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from yuyu_book import (art, audit, mermaid as mm, pages, plain,
                        render)  # noqa: E402
-from yuyu_book.core import (BOOK_DIR, REPO_ROOT, BuildError, dump_json,
-                            expected_ids, load_configs, load_json, load_unit,
-                            read_text, unit_stream)  # noqa: E402
+from yuyu_book.core import (BOOK_DIR, HAN_RE, INDEX_CN_LETTER, REPO_ROOT,
+                            BuildError, dump_json, expected_ids, load_configs,
+                            load_json, load_unit, read_text,
+                            unit_stream)  # noqa: E402
 from yuyu_book.style import CSS, key_mark, page, rut, trace, wheel  # noqa: E402
 
 
@@ -43,6 +44,20 @@ def glossary_to_index(manifest: dict) -> list[dict]:
         refs = e[lang]["refs"]
         if not any(r["anchor"] == anchor for r in refs):
             refs.append({"anchor": anchor, "label": label})
+
+    def add_alias(term: str, anchor: str, label: str):
+        """A Chinese headword pointing at the same chapter. Appendix D files
+        every term under its English name, which is the right heading for the
+        English book and the wrong one for the Chinese: a reader who just met
+        自动压缩 in ch 7 does not think to look under A."""
+        key = term.strip().lower()
+        if not key or len(term) > 64:
+            return
+        e = entries.setdefault(key, {"key": key, "letter": INDEX_CN_LETTER,
+                                     "zh": {"term": term.strip(), "refs": []},
+                                     "en": {"term": term.strip(), "refs": []}})
+        if not any(r["anchor"] == anchor for r in e["zh"]["refs"]):
+            e["zh"]["refs"].append({"anchor": anchor, "label": label})
 
     rx_zh = re.compile(r"第\s*(\d{1,2})\s*章")
     rx_en = re.compile(r"Chapter\s+(\d{1,2})", re.I)
@@ -72,6 +87,13 @@ def glossary_to_index(manifest: dict) -> list[dict]:
             for n in nums[:4]:
                 add(term, lang, f"ch{n:02d}",
                     f"第 {n} 章" if lang == "zh" else f"Ch {n}")
+            if lang == "zh" and len(cells) >= 5:
+                # the 中文译名 column, split on the slash that lets one English
+                # term carry several translations
+                for part in re.split(r"\s*/\s*", cells[1].strip("*` ")):
+                    if len(part) >= 2 and HAN_RE.search(part):
+                        for n in nums[:4]:
+                            add_alias(part, f"ch{n:02d}", f"第 {n} 章")
     out = sorted(entries.values(), key=lambda e: (e["letter"], e["key"]))
     return [e for e in out if e.get("zh", {}).get("refs")
             or e.get("en", {}).get("refs")]

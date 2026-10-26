@@ -2550,5 +2550,2079 @@
         }
       ]
     }
+  },
+  {
+    "key": "api 轮次",
+    "letter": "中",
+    "zh": {
+      "term": "API 轮次",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "API 轮次",
+      "refs": []
+    }
+  },
+  {
+    "key": "bash 分类器",
+    "letter": "中",
+    "zh": {
+      "term": "Bash 分类器",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Bash 分类器",
+      "refs": []
+    }
+  },
+  {
+    "key": "claude 记忆文件",
+    "letter": "中",
+    "zh": {
+      "term": "CLAUDE 记忆文件",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "CLAUDE 记忆文件",
+      "refs": []
+    }
+  },
+  {
+    "key": "cron 定时工具",
+    "letter": "中",
+    "zh": {
+      "term": "Cron 定时工具",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Cron 定时工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "fork 子智能体",
+    "letter": "中",
+    "zh": {
+      "term": "Fork 子智能体",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Fork 子智能体",
+      "refs": []
+    }
+  },
+  {
+    "key": "fork 模式",
+    "letter": "中",
+    "zh": {
+      "term": "Fork 模式",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Fork 模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "glob 搜索工具",
+    "letter": "中",
+    "zh": {
+      "term": "Glob 搜索工具",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Glob 搜索工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "grep 搜索工具",
+    "letter": "中",
+    "zh": {
+      "term": "Grep 搜索工具",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Grep 搜索工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "ide 集成",
+    "letter": "中",
+    "zh": {
+      "term": "IDE 集成",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "IDE 集成",
+      "refs": []
+    }
+  },
+  {
+    "key": "ink 框架",
+    "letter": "中",
+    "zh": {
+      "term": "Ink 框架",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Ink 框架",
+      "refs": []
+    }
+  },
+  {
+    "key": "json web 令牌",
+    "letter": "中",
+    "zh": {
+      "term": "JSON Web 令牌",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "JSON Web 令牌",
+      "refs": []
+    }
+  },
+  {
+    "key": "kairos dream 模式",
+    "letter": "中",
+    "zh": {
+      "term": "KAIROS Dream 模式",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "KAIROS Dream 模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "kairos 模式",
+    "letter": "中",
+    "zh": {
+      "term": "KAIROS 模式",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "KAIROS 模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "mcp 技能发现",
+    "letter": "中",
+    "zh": {
+      "term": "MCP 技能发现",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "MCP 技能发现",
+      "refs": []
+    }
+  },
+  {
+    "key": "plan 模式",
+    "letter": "中",
+    "zh": {
+      "term": "Plan 模式",
+      "refs": [
+        {
+          "anchor": "ch14",
+          "label": "第 14 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Plan 模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "react 框架",
+    "letter": "中",
+    "zh": {
+      "term": "React 框架",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "React 框架",
+      "refs": []
+    }
+  },
+  {
+    "key": "selector 模式",
+    "letter": "中",
+    "zh": {
+      "term": "Selector 模式",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Selector 模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "ssh 远程模式",
+    "letter": "中",
+    "zh": {
+      "term": "SSH 远程模式",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "SSH 远程模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "token 预算",
+    "letter": "中",
+    "zh": {
+      "term": "Token 预算",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Token 预算",
+      "refs": []
+    }
+  },
+  {
+    "key": "tree-sitter 解析器",
+    "letter": "中",
+    "zh": {
+      "term": "Tree-sitter 解析器",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Tree-sitter 解析器",
+      "refs": []
+    }
+  },
+  {
+    "key": "unix 域套接字收件箱",
+    "letter": "中",
+    "zh": {
+      "term": "Unix 域套接字收件箱",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Unix 域套接字收件箱",
+      "refs": []
+    }
+  },
+  {
+    "key": "zod 验证模式",
+    "letter": "中",
+    "zh": {
+      "term": "Zod 验证模式",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "Zod 验证模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "三级配置",
+    "letter": "中",
+    "zh": {
+      "term": "三级配置",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "三级配置",
+      "refs": []
+    }
+  },
+  {
+    "key": "上下文压缩",
+    "letter": "中",
+    "zh": {
+      "term": "上下文压缩",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "上下文压缩",
+      "refs": []
+    }
+  },
+  {
+    "key": "上下文折叠",
+    "letter": "中",
+    "zh": {
+      "term": "上下文折叠",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "上下文折叠",
+      "refs": []
+    }
+  },
+  {
+    "key": "上下文窗口",
+    "letter": "中",
+    "zh": {
+      "term": "上下文窗口",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "上下文窗口",
+      "refs": []
+    }
+  },
+  {
+    "key": "主动模式",
+    "letter": "中",
+    "zh": {
+      "term": "主动模式",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "主动模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "主循环",
+    "letter": "中",
+    "zh": {
+      "term": "主循环",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "主循环",
+      "refs": []
+    }
+  },
+  {
+    "key": "交互式循环",
+    "letter": "中",
+    "zh": {
+      "term": "交互式循环",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "交互式循环",
+      "refs": []
+    }
+  },
+  {
+    "key": "伴侣精灵",
+    "letter": "中",
+    "zh": {
+      "term": "伴侣精灵",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "伴侣精灵",
+      "refs": []
+    }
+  },
+  {
+    "key": "伴侣精灵组件",
+    "letter": "中",
+    "zh": {
+      "term": "伴侣精灵组件",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "伴侣精灵组件",
+      "refs": []
+    }
+  },
+  {
+    "key": "作业分类器",
+    "letter": "中",
+    "zh": {
+      "term": "作业分类器",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "作业分类器",
+      "refs": []
+    }
+  },
+  {
+    "key": "停止原因",
+    "letter": "中",
+    "zh": {
+      "term": "停止原因",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "停止原因",
+      "refs": []
+    }
+  },
+  {
+    "key": "全屏布局",
+    "letter": "中",
+    "zh": {
+      "term": "全屏布局",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "全屏布局",
+      "refs": []
+    }
+  },
+  {
+    "key": "动态工具注册",
+    "letter": "中",
+    "zh": {
+      "term": "动态工具注册",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "动态工具注册",
+      "refs": []
+    }
+  },
+  {
+    "key": "助手模式",
+    "letter": "中",
+    "zh": {
+      "term": "助手模式",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "助手模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "协作者类型遥测",
+    "letter": "中",
+    "zh": {
+      "term": "协作者类型遥测",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "协作者类型遥测",
+      "refs": []
+    }
+  },
+  {
+    "key": "协调器模式",
+    "letter": "中",
+    "zh": {
+      "term": "协调器模式",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "协调器模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "历史裁剪",
+    "letter": "中",
+    "zh": {
+      "term": "历史裁剪",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "历史裁剪",
+      "refs": []
+    }
+  },
+  {
+    "key": "原生客户端认证",
+    "letter": "中",
+    "zh": {
+      "term": "原生客户端认证",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "原生客户端认证",
+      "refs": []
+    }
+  },
+  {
+    "key": "只读工具",
+    "letter": "中",
+    "zh": {
+      "term": "只读工具",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "只读工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "后台会话",
+    "letter": "中",
+    "zh": {
+      "term": "后台会话",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "后台会话",
+      "refs": []
+    }
+  },
+  {
+    "key": "后钩子",
+    "letter": "中",
+    "zh": {
+      "term": "后钩子",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "第 8 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "后钩子",
+      "refs": []
+    }
+  },
+  {
+    "key": "命令行界面",
+    "letter": "中",
+    "zh": {
+      "term": "命令行界面",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "命令行界面",
+      "refs": []
+    }
+  },
+  {
+    "key": "响应式压缩",
+    "letter": "中",
+    "zh": {
+      "term": "响应式压缩",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "响应式压缩",
+      "refs": []
+    }
+  },
+  {
+    "key": "团队记忆",
+    "letter": "中",
+    "zh": {
+      "term": "团队记忆",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "团队记忆",
+      "refs": []
+    }
+  },
+  {
+    "key": "增强遥测",
+    "letter": "中",
+    "zh": {
+      "term": "增强遥测",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "增强遥测",
+      "refs": []
+    }
+  },
+  {
+    "key": "大语言模型",
+    "letter": "中",
+    "zh": {
+      "term": "大语言模型",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "大语言模型",
+      "refs": []
+    }
+  },
+  {
+    "key": "始终允许",
+    "letter": "中",
+    "zh": {
+      "term": "始终允许",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "始终允许",
+      "refs": []
+    }
+  },
+  {
+    "key": "始终拒绝",
+    "letter": "中",
+    "zh": {
+      "term": "始终拒绝",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "始终拒绝",
+      "refs": []
+    }
+  },
+  {
+    "key": "始终询问",
+    "letter": "中",
+    "zh": {
+      "term": "始终询问",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "始终询问",
+      "refs": []
+    }
+  },
+  {
+    "key": "子智能体",
+    "letter": "中",
+    "zh": {
+      "term": "子智能体",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "子智能体",
+      "refs": []
+    }
+  },
+  {
+    "key": "守护进程",
+    "letter": "中",
+    "zh": {
+      "term": "守护进程",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "守护进程",
+      "refs": []
+    }
+  },
+  {
+    "key": "对话转录",
+    "letter": "中",
+    "zh": {
+      "term": "对话转录",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "对话转录",
+      "refs": []
+    }
+  },
+  {
+    "key": "工作树",
+    "letter": "中",
+    "zh": {
+      "term": "工作树",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工作树",
+      "refs": []
+    }
+  },
+  {
+    "key": "工作流脚本",
+    "letter": "中",
+    "zh": {
+      "term": "工作流脚本",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工作流脚本",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具",
+    "letter": "中",
+    "zh": {
+      "term": "工具",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具工厂函数",
+    "letter": "中",
+    "zh": {
+      "term": "工具工厂函数",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具工厂函数",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具执行前",
+    "letter": "中",
+    "zh": {
+      "term": "工具执行前",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "第 8 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具执行前",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具接口",
+    "letter": "中",
+    "zh": {
+      "term": "工具接口",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具接口",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具搜索工具",
+    "letter": "中",
+    "zh": {
+      "term": "工具搜索工具",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具搜索工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具权限上下文",
+    "letter": "中",
+    "zh": {
+      "term": "工具权限上下文",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具权限上下文",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具注册表",
+    "letter": "中",
+    "zh": {
+      "term": "工具注册表",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具注册表",
+      "refs": []
+    }
+  },
+  {
+    "key": "工具编排",
+    "letter": "中",
+    "zh": {
+      "term": "工具编排",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "工具编排",
+      "refs": []
+    }
+  },
+  {
+    "key": "幂等断言",
+    "letter": "中",
+    "zh": {
+      "term": "幂等断言",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "幂等断言",
+      "refs": []
+    }
+  },
+  {
+    "key": "并发安全",
+    "letter": "中",
+    "zh": {
+      "term": "并发安全",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "并发安全",
+      "refs": []
+    }
+  },
+  {
+    "key": "异步生成器",
+    "letter": "中",
+    "zh": {
+      "term": "异步生成器",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "异步生成器",
+      "refs": []
+    }
+  },
+  {
+    "key": "微压缩",
+    "letter": "中",
+    "zh": {
+      "term": "微压缩",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "微压缩",
+      "refs": []
+    }
+  },
+  {
+    "key": "快速搜索",
+    "letter": "中",
+    "zh": {
+      "term": "快速搜索",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "快速搜索",
+      "refs": []
+    }
+  },
+  {
+    "key": "执行框架",
+    "letter": "中",
+    "zh": {
+      "term": "执行框架",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "执行框架",
+      "refs": []
+    }
+  },
+  {
+    "key": "扩展思考",
+    "letter": "中",
+    "zh": {
+      "term": "扩展思考",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "扩展思考",
+      "refs": []
+    }
+  },
+  {
+    "key": "技能",
+    "letter": "中",
+    "zh": {
+      "term": "技能",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "技能",
+      "refs": []
+    }
+  },
+  {
+    "key": "技能生成器",
+    "letter": "中",
+    "zh": {
+      "term": "技能生成器",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "技能生成器",
+      "refs": []
+    }
+  },
+  {
+    "key": "提示缓存",
+    "letter": "中",
+    "zh": {
+      "term": "提示缓存",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "提示缓存",
+      "refs": []
+    }
+  },
+  {
+    "key": "提示缓存断裂检测",
+    "letter": "中",
+    "zh": {
+      "term": "提示缓存断裂检测",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "提示缓存断裂检测",
+      "refs": []
+    }
+  },
+  {
+    "key": "文件持久化",
+    "letter": "中",
+    "zh": {
+      "term": "文件持久化",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "文件持久化",
+      "refs": []
+    }
+  },
+  {
+    "key": "斜杠命令",
+    "letter": "中",
+    "zh": {
+      "term": "斜杠命令",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "斜杠命令",
+      "refs": []
+    }
+  },
+  {
+    "key": "无人值守重试",
+    "letter": "中",
+    "zh": {
+      "term": "无人值守重试",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "无人值守重试",
+      "refs": []
+    }
+  },
+  {
+    "key": "智能体",
+    "letter": "中",
+    "zh": {
+      "term": "智能体",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "智能体",
+      "refs": []
+    }
+  },
+  {
+    "key": "智能体内存快照",
+    "letter": "中",
+    "zh": {
+      "term": "智能体内存快照",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "智能体内存快照",
+      "refs": []
+    }
+  },
+  {
+    "key": "智能体线束",
+    "letter": "中",
+    "zh": {
+      "term": "智能体线束",
+      "refs": [
+        {
+          "anchor": "ch01",
+          "label": "第 1 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "智能体线束",
+      "refs": []
+    }
+  },
+  {
+    "key": "智能体触发器",
+    "letter": "中",
+    "zh": {
+      "term": "智能体触发器",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "智能体触发器",
+      "refs": []
+    }
+  },
+  {
+    "key": "权限模式",
+    "letter": "中",
+    "zh": {
+      "term": "权限模式",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "权限模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "权限管线",
+    "letter": "中",
+    "zh": {
+      "term": "权限管线",
+      "refs": [
+        {
+          "anchor": "ch04",
+          "label": "第 4 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "权限管线",
+      "refs": []
+    }
+  },
+  {
+    "key": "查询引擎",
+    "letter": "中",
+    "zh": {
+      "term": "查询引擎",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "查询引擎",
+      "refs": []
+    }
+  },
+  {
+    "key": "桥接模式",
+    "letter": "中",
+    "zh": {
+      "term": "桥接模式",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "桥接模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "模型上下文协议",
+    "letter": "中",
+    "zh": {
+      "term": "模型上下文协议",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "模型上下文协议",
+      "refs": []
+    }
+  },
+  {
+    "key": "模板系统",
+    "letter": "中",
+    "zh": {
+      "term": "模板系统",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "模板系统",
+      "refs": []
+    }
+  },
+  {
+    "key": "流式",
+    "letter": "中",
+    "zh": {
+      "term": "流式",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "流式",
+      "refs": []
+    }
+  },
+  {
+    "key": "流式工具执行器",
+    "letter": "中",
+    "zh": {
+      "term": "流式工具执行器",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "流式工具执行器",
+      "refs": []
+    }
+  },
+  {
+    "key": "消息操作",
+    "letter": "中",
+    "zh": {
+      "term": "消息操作",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "消息操作",
+      "refs": []
+    }
+  },
+  {
+    "key": "消融基线",
+    "letter": "中",
+    "zh": {
+      "term": "消融基线",
+      "refs": [
+        {
+          "anchor": "ch13",
+          "label": "第 13 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "消融基线",
+      "refs": []
+    }
+  },
+  {
+    "key": "深度思考",
+    "letter": "中",
+    "zh": {
+      "term": "深度思考",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "深度思考",
+      "refs": []
+    }
+  },
+  {
+    "key": "状态管理",
+    "letter": "中",
+    "zh": {
+      "term": "状态管理",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "状态管理",
+      "refs": []
+    }
+  },
+  {
+    "key": "监控工具",
+    "letter": "中",
+    "zh": {
+      "term": "监控工具",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "监控工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "直连模式",
+    "letter": "中",
+    "zh": {
+      "term": "直连模式",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "直连模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "硬失败",
+    "letter": "中",
+    "zh": {
+      "term": "硬失败",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "硬失败",
+      "refs": []
+    }
+  },
+  {
+    "key": "磁石",
+    "letter": "中",
+    "zh": {
+      "term": "磁石",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "磁石",
+      "refs": []
+    }
+  },
+  {
+    "key": "离开摘要",
+    "letter": "中",
+    "zh": {
+      "term": "离开摘要",
+      "refs": [
+        {
+          "anchor": "ch11",
+          "label": "第 11 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "离开摘要",
+      "refs": []
+    }
+  },
+  {
+    "key": "系统提示词",
+    "letter": "中",
+    "zh": {
+      "term": "系统提示词",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "系统提示词",
+      "refs": []
+    }
+  },
+  {
+    "key": "终端面板",
+    "letter": "中",
+    "zh": {
+      "term": "终端面板",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "终端面板",
+      "refs": []
+    }
+  },
+  {
+    "key": "缓存安全参数",
+    "letter": "中",
+    "zh": {
+      "term": "缓存安全参数",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "缓存安全参数",
+      "refs": []
+    }
+  },
+  {
+    "key": "缓存式微压缩",
+    "letter": "中",
+    "zh": {
+      "term": "缓存式微压缩",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "缓存式微压缩",
+      "refs": []
+    }
+  },
+  {
+    "key": "网页浏览器工具",
+    "letter": "中",
+    "zh": {
+      "term": "网页浏览器工具",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "网页浏览器工具",
+      "refs": []
+    }
+  },
+  {
+    "key": "自动主题",
+    "letter": "中",
+    "zh": {
+      "term": "自动主题",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "自动主题",
+      "refs": []
+    }
+  },
+  {
+    "key": "自动压缩",
+    "letter": "中",
+    "zh": {
+      "term": "自动压缩",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "自动压缩",
+      "refs": []
+    }
+  },
+  {
+    "key": "自动模式",
+    "letter": "中",
+    "zh": {
+      "term": "自动模式",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "自动模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "裁剪压缩",
+    "letter": "中",
+    "zh": {
+      "term": "裁剪压缩",
+      "refs": [
+        {
+          "anchor": "ch07",
+          "label": "第 7 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "裁剪压缩",
+      "refs": []
+    }
+  },
+  {
+    "key": "记忆",
+    "letter": "中",
+    "zh": {
+      "term": "记忆",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "记忆",
+      "refs": []
+    }
+  },
+  {
+    "key": "记忆提取",
+    "letter": "中",
+    "zh": {
+      "term": "记忆提取",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "记忆提取",
+      "refs": []
+    }
+  },
+  {
+    "key": "记忆注入",
+    "letter": "中",
+    "zh": {
+      "term": "记忆注入",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "记忆注入",
+      "refs": []
+    }
+  },
+  {
+    "key": "设置同步",
+    "letter": "中",
+    "zh": {
+      "term": "设置同步",
+      "refs": [
+        {
+          "anchor": "ch10",
+          "label": "第 10 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "设置同步",
+      "refs": []
+    }
+  },
+  {
+    "key": "词元",
+    "letter": "中",
+    "zh": {
+      "term": "词元",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "词元",
+      "refs": []
+    }
+  },
+  {
+    "key": "语音模式",
+    "letter": "中",
+    "zh": {
+      "term": "语音模式",
+      "refs": [
+        {
+          "anchor": "ch12",
+          "label": "第 12 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "语音模式",
+      "refs": []
+    }
+  },
+  {
+    "key": "超级规划",
+    "letter": "中",
+    "zh": {
+      "term": "超级规划",
+      "refs": [
+        {
+          "anchor": "ch05",
+          "label": "第 5 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "超级规划",
+      "refs": []
+    }
+  },
+  {
+    "key": "转录分类器",
+    "letter": "中",
+    "zh": {
+      "term": "转录分类器",
+      "refs": [
+        {
+          "anchor": "ch03",
+          "label": "第 3 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "转录分类器",
+      "refs": []
+    }
+  },
+  {
+    "key": "转录记录",
+    "letter": "中",
+    "zh": {
+      "term": "转录记录",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "转录记录",
+      "refs": []
+    }
+  },
+  {
+    "key": "轮次",
+    "letter": "中",
+    "zh": {
+      "term": "轮次",
+      "refs": [
+        {
+          "anchor": "ch02",
+          "label": "第 2 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "轮次",
+      "refs": []
+    }
+  },
+  {
+    "key": "钩子",
+    "letter": "中",
+    "zh": {
+      "term": "钩子",
+      "refs": [
+        {
+          "anchor": "ch08",
+          "label": "第 8 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "钩子",
+      "refs": []
+    }
+  },
+  {
+    "key": "钩子提示词",
+    "letter": "中",
+    "zh": {
+      "term": "钩子提示词",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "钩子提示词",
+      "refs": []
+    }
+  },
+  {
+    "key": "频道",
+    "letter": "中",
+    "zh": {
+      "term": "频道",
+      "refs": [
+        {
+          "anchor": "ch06",
+          "label": "第 6 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "频道",
+      "refs": []
+    }
+  },
+  {
+    "key": "验证智能体",
+    "letter": "中",
+    "zh": {
+      "term": "验证智能体",
+      "refs": [
+        {
+          "anchor": "ch09",
+          "label": "第 9 章"
+        }
+      ]
+    },
+    "en": {
+      "term": "验证智能体",
+      "refs": []
+    }
   }
 ]

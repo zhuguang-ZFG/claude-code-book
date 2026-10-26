@@ -108,7 +108,7 @@
 | `illustrations/` | 25 份手写 SVG：20 枚单元章徽（`<unit-id>.svg`，64×64 描线）+ 4 幅篇题刻（`part-<id>.svg`，200×140 小版画）+ 1 幅扉页车图（`cover.svg`，1000×470 横构图，四马一盖车、三十辐的轮，约 11.7 KB，故享 `PLATE_BYTES`）。全部 `currentColor`，无 id、无外链，见 `art.py` |
 | `sources.json` | 以来源 id 为键的 35 条登记。字段：`title` `authority` `kind` `url` `pinned` `snapshot` `accessed` `license` `scope`，`community` 类另带 `normative`。凡本书自己写的中文注（快照、许可、用途，以及带中文括注的标题与社区帖标题）都配 `*_en` 镜像，渲染时按语言取字段——门禁：镜像缺失或镜像里仍有汉字即构建失败。kind 分布：`docs` 21、`github` 6、`blog` 4、`spec` 1、`npm` 1、`community` 2；35 条全部被 `guides.sources` 引用 |
 | `revisions.json` | "版本与修订"页的条目，zh / en 各一份 |
-| `subject-index.json` | 书末主题索引（生成物，当前 116 个词条），由 `--regen-index` 重建 |
+| `subject-index.json` | 书末主题索引（生成物，当前 238 个词条 = 116 条英文原名 + 122 条中文译名），由 `--regen-index` 重建。中文块排在 Z 之后（`core.INDEX_CN_LETTER = "中"` 的字典序天然靠后），页面上标题取 `ui("index_cn")`；中文版渲染时英文块在前、中文块在后，英文版只渲染英文块——没有本语言词条的行会被跳过 |
 
 ### 3.4 生成物（不要手改）
 
@@ -153,7 +153,7 @@ yuyu-book/
 | "第 9 章"文字上的交叉链接 | `render.RefLinker`（`--no-autolink` 可关） |
 | 侧栏导轨、目录页 | `build.build_edition()` 的 `rail` / `toc_entries` |
 | PDF 书签、奇偶眉标、页脚页码、目录页码 | `pdf.build_pdf()` 的 PyMuPDF 后置处理 |
-| 书末主题索引 | `build.glossary_to_index()` 读附录 D 的表格 |
+| 书末主题索引 | `build.glossary_to_index()` 读附录 D 的表格：英文原名进 A–Z，中文译名列（按 `/` 拆分）另立「中文」块，只服务中文版 |
 | 代码板右上角的语言角标 | `render.stamp_code_langs()` 读围栏 info 串 |
 | 术语上的虚线与悬停白话浮窗 | `plain` 层的首现标注（整层用 `--no-plain` 可关） |
 | 章首「本章新词」面板 | `pages.new_terms_panel(hits, lang, kind)` 按单元类型选标题（本章 / 开篇 / 本附录），与正文标记数一一对应：`build.py` 断言 `n_marks == n_rows` |

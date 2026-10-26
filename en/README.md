@@ -94,7 +94,7 @@ Claude Code belongs to Anthropic. This independent book is not an official Anthr
 
 ## The book as one file
 
-`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.3 MB Chinese / 5.4 MB English) and an A4-typeset PDF (447 pages / 15.9 MB in Chinese, 488 pages / 10.2 MB in English). Artifacts land in `yuyu-book/dist/`.
+`yuyu-book/` assembles the 20 units into **a single book you can read offline**: one self-contained HTML file (5.3 MB Chinese / 5.4 MB English) and an A4-typeset PDF (450 pages / 15.8 MB in Chinese, 488 pages / 10.2 MB in English). Artifacts land in `yuyu-book/dist/`.
 
 | File | Language |
 |------|----------|

@@ -416,6 +416,30 @@ class BackMatter(Config):
             self.assertTrue(e["zh"]["refs"] or e["en"]["refs"])
             self.assertTrue(e["key"].strip())
 
+    def test_a_chinese_reader_can_search_in_chinese(self):
+        """Appendix D files each term under its English name, which is the
+        right heading for the English book and the wrong one for this: nobody
+        who has just read 自动压缩 in ch 7 thinks to look under A. The
+        translation column is a headword too, so it gets its own block."""
+        entries = load_json(BOOK_DIR / "subject-index.json")
+        html_zh = pages.subject_index_page(entries, "zh")
+        terms = re.findall(r'<span class="idx-term">([^<]*)</span>', html_zh)
+        cn = [t for t in terms if re.search(r"[\u4e00-\u9fff]", t)]
+        self.assertGreater(len(cn), 60,
+                           "the Chinese headwords never reached the index")
+        self.assertIn("自动压缩", cn)
+        heads = re.findall(r'<h2 class="idx-letter">([^<]*)</h2>', html_zh)
+        self.assertEqual([h for h in heads if not re.fullmatch(r"[A-Z]", h)],
+                         ["中文"], "the Chinese block needs its own heading")
+
+    def test_the_english_index_does_not_inherit_chinese_rows(self):
+        entries = load_json(BOOK_DIR / "subject-index.json")
+        html_en = pages.subject_index_page(entries, "en")
+        for t in re.findall(r'<span class="idx-term">([^<]*)</span>', html_en):
+            self.assertNotRegex(t, r"[\u4e00-\u9fff]",
+                                "a Chinese-only row leaked into the English index")
+        self.assertNotIn("中文", html_en)
+
 
 class Shell(unittest.TestCase):
     def test_page_shell_is_js_free_and_offline(self):

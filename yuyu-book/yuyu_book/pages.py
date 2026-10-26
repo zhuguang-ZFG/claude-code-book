@@ -5,6 +5,8 @@ from __future__ import annotations
 import html
 import re
 
+from .core import INDEX_CN_LETTER  # noqa: E402
+
 _LABELS = {
     "cover_kicker": {"zh": "Agent Harness Engineering",
                      "en": "Agent Harness Engineering"},
@@ -30,6 +32,7 @@ _LABELS = {
         "en": "The book does not republish source texts; GitHub references are pinned to "
              "tags/commits, community material carries access dates and is non-normative."},
     "index_page": {"zh": "主题索引", "en": "Subject Index"},
+    "index_cn": {"zh": "中文", "en": "Chinese"},
     "compass_q": {"zh": "本章问题", "en": "The question"},
     "compass_d": {"zh": "读完交付", "en": "What you get"},
     "compass_b": {"zh": "本章边界", "en": "Out of scope"},
@@ -436,12 +439,16 @@ def source_registry(sources: dict, lang: str) -> str:
 def subject_index_page(entries: list[dict], lang: str) -> str:
     letters: dict[str, list] = {}
     for e in entries:
+        if not e[lang]["refs"]:
+            continue  # a headword this edition has no rows for
         letters.setdefault(e["letter"], []).append(e)
     parts = [f'<section class="front-page back-index" id="subject-index">'
              f'<h1 class="page-title">{esc(ui("index_page", lang))}</h1>'
              f'<div class="idx-cols">']
     for letter in sorted(letters):
-        parts.append(f'<div class="idx-block"><h2 class="idx-letter">{letter}</h2>'
+        head = (ui("index_cn", lang) if letter == INDEX_CN_LETTER
+                else esc(letter))
+        parts.append(f'<div class="idx-block"><h2 class="idx-letter">{head}</h2>'
                      f'<ul class="idx-list">')
         for e in letters[letter]:
             # a 23-character feature flag has no space to break at, and the row
