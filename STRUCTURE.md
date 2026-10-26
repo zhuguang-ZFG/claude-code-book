@@ -96,7 +96,7 @@
 
 ### 3.2.1 `tests/`：构建契约
 
-`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、证据门禁正反两面）、`test_art`（24 份图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `build.py --check --mermaid=source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
+`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、证据门禁正反两面）、`test_art`（25 份图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `build.py --check --mermaid=source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
 
 ### 3.3 数据文件
 
