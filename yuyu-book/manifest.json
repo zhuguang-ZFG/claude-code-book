@@ -577,8 +577,8 @@
         "cc-issues"
       ],
       "plain": {
-        "zh": "不改源码就能插手 Agent 的关键节点：五种钩子挂在 26 个生命周期事件上，能拦、能改写输入、能补上下文",
-        "en": "five hook kinds hang on 26 lifecycle events: watch, block, rewrite tool input, add context - no source edits"
+        "zh": "不改源码就能插手关键节点：五种钩子挂在工具、会话、压缩、权限等生命周期事件上，能拦、能改输入、能补上下文",
+        "en": "five hook kinds hang on lifecycle events from tools to sessions to compaction: watch, block, rewrite tool input, add context - no source edits"
       },
       "analogy": {
         "zh": "像小区门禁：保安不盖楼，但每次进出都能拦下、改道或在登记本上补一句",
@@ -772,7 +772,7 @@
       ],
       "plain": {
         "zh": "别干等：token 还在流就开工，工具该并行的并行、启动活儿同时跑，成本和缓存一路盯（数字多为示意）",
-        "en": "act while tokens arrive: overlap tool runs and startup, watch cost and cache breaks (ms figures illustrative)"
+        "en": "act while tokens arrive: overlap tool runs and startup, watch cost and cache breaks (the ms and cost figures are illustrative)"
       },
       "analogy": {
         "zh": "像跑堂接菜：厨房喊一道先端一道，上桌仍按点单顺序；一道洒了，同批的先停",
@@ -1000,7 +1000,7 @@
       ],
       "plain": {
         "zh": "用法：读到生词按字母查——一条给出英文原名、中文译名、短定义、相关词，和正文首次讨论的章节",
-        "en": "how to use: hit an unfamiliar term, sort by letter for name, translation, short definition and the chapter"
+        "en": "how to use: hit an unfamiliar term, sort by letter for name, translation, short definition, related terms and the chapter"
       },
       "analogy": {
         "zh": "像夹在书末的中英对照小词典：先给译名和一句话解释，再告诉你哪一章细说",
