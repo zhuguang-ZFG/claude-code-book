@@ -363,6 +363,9 @@ body.lang-en{font-family:"Iowan Old Style",Palatino,Georgia,var(--serif);
 body.lang-zh .chapter-body p,body.lang-zh .chapter-body li,
 body.lang-zh .chapter-body blockquote{line-break:strict}
 body.lang-en .chapter-body p,body.lang-en .chapter-body li{hyphens:auto}
+/* ragged-right beats a grid of gaps once the line is short enough that one
+   unbreakable token costs the whole row its spacing -- see the contract test */
+@media (max-width:30rem){body.lang-zh .chapter-body p,body.lang-zh .chapter-body li{text-align:left}}
 ::selection{background:rgba(200,164,92,.32)}
 a{color:inherit}
 a.ext::after{content:"↗";font-size:.72em;vertical-align:.15em;

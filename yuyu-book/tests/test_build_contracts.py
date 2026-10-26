@@ -108,6 +108,19 @@ class Typography(unittest.TestCase):
         self.assertIn("line-break:strict", CSS)
         self.assertIn("hyphens:auto", CSS)
 
+    def test_a_phone_measure_stops_justifying_chinese(self):
+        """Justification is a trade: an even right edge paid for in inter-word
+        space. A wide line has enough words to hide the cost; a 390px line that
+        cannot fit `CompactionResult` moves the whole token down and stretches
+        the six CJK glyphs left behind across the row. Latin hyphenates out of
+        the same trouble, so this is a Chinese-only concession."""
+        self.assertRegex(
+            CSS, r"@media \(max-width:30rem\)\{"
+                 r"body\.lang-zh \.chapter-body p,"
+                 r"body\.lang-zh \.chapter-body li\{text-align:left\}\}")
+        self.assertNotIn("lang-en .chapter-body p,.chapter-body li{text-align:left",
+                         CSS)
+
     def test_a_standalone_block_keeps_the_alignment_its_container_set(self):
         # the epigraph is a right-aligned block; the prose rule used to win on
         # its paragraphs, so a two-line English quote justified a river under a
