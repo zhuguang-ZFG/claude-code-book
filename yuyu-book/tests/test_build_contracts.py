@@ -37,7 +37,9 @@ DARK = _tokens(re.search(r"body:not\(\.force-light\)\{(.*?)\}", CSS, re.S).group
 
 
 def _rule(selector: str) -> str:
-    m = re.search(re.escape(selector) + r"\s*\{([^}]*)\}", CSS)
+    # anchored to the line head and matched whole: `.tp-no` must not answer for
+    # `.toc-part:hover .tp-no`, or a contract reads the rule it never named
+    m = re.search(r"(?m)^" + re.escape(selector) + r"\s*\{([^}]*)\}", CSS)
     return m.group(1) if m else ""
 
 
@@ -461,6 +463,134 @@ class RunningHeads(unittest.TestCase):
         self.assertIn("bookmark-level:1", CSS)
         self.assertIn("bookmark-label:content()", CSS)
         self.assertIn("bookmark-level:none", CSS)
+
+
+class DesignVocabulary(unittest.TestCase):
+    """One rule language, two radii, a budgeted accent.
+
+    The sheet had grown four ways to end a row (dashed, dotted, solid and a
+    boxed pill) and seven corner radii, so a rule stopped meaning anything and
+    every page read as several books printed together. These contracts keep the
+    vocabulary small enough to be a style rather than a pile."""
+
+    def test_the_radius_tokens_exist(self):
+        self.assertRegex(CSS, r"--r-1:4px")
+        self.assertRegex(CSS, r"--r-2:10px")
+
+    def test_only_the_two_radii_the_pill_and_a_circle_are_used(self):
+        allowed = {"var(--r-1)", "var(--r-2)", "999px", "50%", "0"}
+        stray = {tok for value in re.findall(r"border-radius:([^;}]+)", CSS)
+                 for tok in value.split()} - allowed
+        self.assertFalse(stray, f"stray radii: {sorted(stray)}")
+
+    def test_a_dashed_line_means_exactly_one_thing(self):
+        # dashed is the screen's "this term carries a gloss" cue, plus the
+        # build's own error plate; nowhere may it stand in for a separator.
+        for sel in (".new-terms", ".tl-row", ".rm-legs li", ".route-parts li",
+                    ".pd-list li"):
+            self.assertNotIn("dashed", _rule(sel), f"{sel} still dashes its rule")
+        self.assertIn("dashed", _rule(".gloss"))
+
+    def test_the_panel_of_new_terms_is_a_run_in_list(self):
+        # twenty-two boxed rows made a chapter's first page all furniture; the
+        # terms are a reference card now, so they carry no box of their own
+        panel = _rule(".new-terms")
+        self.assertNotIn("border:", panel)
+        self.assertNotIn("background", panel)
+        self.assertNotIn("border-bottom", _rule(".nt-row"))
+        self.assertNotIn("┄", CSS)
+
+    def test_a_source_chip_is_a_tag_not_a_pill(self):
+        self.assertNotIn("999px", _rule(".source-chip"))
+
+    def test_the_toc_folio_sits_in_a_tabular_column(self):
+        ref = _rule(".page-ref")
+        self.assertIn("font-variant-numeric:tabular-nums", ref)
+        self.assertIn("text-align:right", ref)
+
+    def test_part_numerals_are_inked_not_outlined(self):
+        # an outlined numeral at 1.9rem is the loudest thing on the contents
+        # page and, being hollow, reads as a plate that failed to print
+        no = _rule(".tp-no")
+        self.assertNotIn("-webkit-text-stroke", no)
+        self.assertIn("color:var(--bronze)", no)
+
+    def test_paper_reinks_the_accent(self):
+        # #B4472F is mixed for the screen's warm paper; on a laser printer's
+        # pure white it burns straight through the earth palette
+        print_block = CSS[CSS.index("@media print{"):]
+        self.assertRegex(print_block, r"--cinnabar:#[0-9A-F]{6}")
+
+    def test_the_cover_fills_the_sheet_it_is_given(self):
+        print_block = CSS[CSS.index("@media print{"):]
+        self.assertIn("justify-content:space-between", print_block)
+        self.assertNotIn("outline:", _rule(".cover-inner"))
+
+
+class ChapterOpening(unittest.TestCase):
+    """A chapter opens on its own argument.
+
+    The card of new terms is the tallest block in the opener: with a
+    twenty-term chapter the head, the band, the three cards, the source tags
+    and the wall of terms filled the sheet, and the chapter's first sentence
+    landed on page two. The reader meets the prose first and looks a term up
+    at the tail."""
+
+    def _article(self):
+        from build import _article
+        from yuyu_book.core import Unit
+        u = Unit("ch02", "chapter", "zh", "第 2 章", "对话循环", "")
+        payload = {"unit": u, "html": "<p>正文第一段</p>",
+                   "new_terms": [{"term": "事件流", "plain": "一条条排队送出来"}]}
+        guide = {"plain": {"zh": "一句话讲明白"},
+                 "question": {"zh": "循环怎么转"},
+                 "deliverable": {"zh": "一张时序图"},
+                 "boundary": {"zh": "不谈模型训练"}}
+        return _article(payload, {"guides": {"ch02": guide}}, {}, "zh")
+
+    def test_the_terms_card_does_not_open_the_chapter(self):
+        art = self._article()
+        self.assertGreater(art.index('class="new-terms"'),
+                           art.index('<p>正文第一段</p>'),
+                           "the card opened the chapter and the prose never arrived")
+
+    def test_the_opener_still_leads_with_the_plain_band(self):
+        art = self._article()
+        self.assertLess(art.index('class="lead-band"'),
+                        art.index('<p>正文第一段</p>'))
+
+    def test_a_term_row_never_breaks_across_a_sheet(self):
+        # the card closes the unit, so its rows start wherever the prose ran
+        # out; a row that split mid-sentence left one orphan clause — "every
+        # time" — alone at the top of an otherwise empty sheet
+        self.assertIn("break-inside:avoid", _rule(".nt-row"))
+
+    def test_the_last_row_leaves_no_trailing_air(self):
+        # a row's bottom padding is the last thing the card sets on a sheet,
+        # and 1.6px that no longer fits was enough for Chromium to hand the
+        # chapter one more page carrying nothing at all
+        pad = re.search(r"padding:([^;}]+)", _rule(".nt-row"))
+        self.assertIsNotNone(pad, ".nt-row sets no padding")
+        self.assertEqual(pad.group(1).split()[-1], "0",
+                         f".nt-row pads its bottom: {pad.group(1)}")
+
+    def test_the_card_holds_together_on_paper(self):
+        # rows and padding aside, a card that may break at all can overflow the
+        # text block by a point and buy the chapter an empty sheet; the plate
+        # is a third of a page at most, so paper moves it whole
+        print_block = CSS[CSS.index("@media print{"):]
+        self.assertRegex(print_block, r"\.new-terms\{[^}]*break-inside:avoid")
+
+    def test_the_panel_note_leads_the_list(self):
+        # a paragraph that trails a breakable list is the one element allowed
+        # to orphan by itself; the note is the card's caption, so it belongs
+        # under the title, where a sheet break can only fall between rows
+        from yuyu_book import pages
+        out = pages.new_terms_panel([{"term": "事件流", "plain": "排队送出来"}],
+                                    "zh")
+        self.assertLess(out.index('class="nt-note"'),
+                        out.index('class="nt-list"'),
+                        "the note trails the list and can print alone")
 
 
 class Deliverables(unittest.TestCase):

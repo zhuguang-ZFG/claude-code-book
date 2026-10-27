@@ -309,8 +309,8 @@ def new_terms_panel(hits: list[dict], lang: str, kind: str = "") -> str:
     return (f'<aside class="new-terms"><h4 class="nt-title">'
             f'{esc(title)}'
             f'<span class="nt-n">{len(hits)}</span></h4>'
-            f'<ul class="nt-list">{rows}</ul>'
-            f'<p class="nt-note">{esc(ui("new_terms_note", lang))}</p></aside>')
+            f'<p class="nt-note">{esc(ui("new_terms_note", lang))}</p>'
+            f'<ul class="nt-list">{rows}</ul></aside>')
 
 
 def compass(unit, guide: dict, sources: dict, lang: str) -> str:

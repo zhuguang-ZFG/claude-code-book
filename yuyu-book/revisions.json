@@ -1,6 +1,32 @@
 {
   "entries": [
     {
+      "version": "0.3.2",
+      "date": "2026-10-27",
+      "zh": [
+        "章首的家具搬到了章末：「本章新词」面板此前坐在开篇，是那里最高的一块——中文版第 2 章列 22 个词，它压在三张罗盘卡之上，正文第一句被推到第二页。现在开篇只留章题、白话导读带、罗盘三卡与来源锚点，正文从章首就开场；面板改到章末收束一章，与按语、车辙同在一处。",
+        "面板自身从「框」改成「读」：撤掉虚线边框、底色与每行前的 ┄ 分隔符，一个词一行、词后一枚金点接白话释义，纸上两栏排。它不再是一块要看进去的板子，而是一段能顺着读完的清单。",
+        "能跨页的清单不许落单：上一版有一页只剩半句 “every time” 与一行注记；面板改到章末之后，又有一页整张空白——词表最后那 1.6px 的内边距画不进版心，Chromium 就为它单留一张纸。现在纸上面板整块不拆（`break-inside:avoid`：22 个词两栏排只占版心三分之一，永远放得下），每一行的空气改记在行首而不是行尾，注记从词表之后移到词表之前。",
+        "圆角收敛成两枚加一个圆：`--r-1`（4px）转一张标签、`--r-2`（10px）转一个盒子，`999px` 只留给真是胶囊的东西（3px 的标题条、滚动条滑块）。此前同一张纸上排着七种半径——第五枚圆角就是同一张纸上多出来的一本书。",
+        "虚线只说一件事：这个词带白话注。线路图例、全书路线、按语集与引注清单的分隔虚线一律改实线；纸上还留虚线的只有 `.gloss` 与构建器自己报错的那块图版。",
+        "目录的页码排成一列：篇号从描边空心改为实墨（空心数字印在纸上像一块没吃上墨的版），条目与页码之间接一段金色点线引导，页码用等宽数字右对齐。",
+        "封面铺满整张纸：内框由 `border` + `outline` 的双线改回单框（双线读起来像重了一次版），纸上整页自书眉铺到书脚（`justify-content:space-between`），底部一条作者 / 版本 / 日期 / 许可收住。朱红在纸上重调为 `#9C4630`——屏幕上的 `#B4472F` 印到激光打印机的纯白纸上，会把整套土色系烧穿。",
+        "章末的装饰回到尺度：车辙收窄到 19rem、透明度 .9，纸上的罗盘卡减一层内边距。",
+        "门禁跟上：`DesignVocabulary` 与 `ChapterOpening` 共 13 项契约，多一枚圆角、多一处虚线、面板重新开篇、或封面回到双线，构建测试即红。构建器测试 417 项全绿。"
+      ],
+      "en": [
+        "The furniture moved off the chapter opener. The card of new terms sat at the head and was the tallest block there — Chapter 2 lists 22 terms in Chinese, and under it the three compass cards pushed the chapter's first sentence to page two. An opener now carries its title, the plain-language band, the compass and its source anchors, and the prose starts where it should; the card closes the unit instead, beside the keeper's line and the ruts.",
+        "The card reads across instead of looking boxed: no dashed frame, no tinted ground, no ┄ tie per row — one term to a line, a gold dot between term and plain wording, two columns on paper. It is a list you finish now, not a plate you look inside.",
+        "A list that may break across sheets must not break alone: one page held nothing but the clause “every time” and a caption line, and once the card moved to the tail another sheet came out entirely blank — 1.6px of bottom padding that would not fit the text block was enough for Chromium to reserve a page for it. On paper the plate no longer breaks at all (`break-inside:avoid`: 22 terms in two columns is a third of the text block and always fits), each row keeps its air above rather than below, and the note leads the list.",
+        "Two corners and a circle: `--r-1` (4px) turns a tag, `--r-2` (10px) turns a box, and `999px` is left to what really is a pill (the 3px title bar, a scrollbar thumb). Seven radii shared one sheet before — a fifth corner is a fifth book on the same page.",
+        "A dashed line means exactly one thing: this term carries a gloss. The route legend, the book's road, the keeper's notes and the citation list separate their rows with solid rules now; on paper only `.gloss` and the build's own missing-diagram plate keep a dash.",
+        "The contents page sets its folios in a column: part numerals are inked rather than outlined (a hollow numeral reads as a plate that failed to take ink), gold dotted leaders run from entry to page number, and the folios are tabular and right-aligned.",
+        "The cover fills the sheet it is given: the double frame (`border` plus `outline`) is one frame now, the page runs kicker to foot with `justify-content:space-between`, and author / edition / date / licence close it at the bottom. Cinnabar re-inks on paper to `#9C4630` — the screen's `#B4472F` burns straight through the earth palette on a laser printer.",
+        "The ornament at a chapter's foot came back to scale: the wheel ruts narrow to 19rem at .9 opacity, and compass cards lose a layer of padding on paper.",
+        "The gates say so: `DesignVocabulary` and `ChapterOpening`, 13 contracts in all, fail the build over a fifth radius, a second dashed rule, a card that opens a chapter, or a cover that frames itself twice. 417 builder tests green."
+      ]
+    },
+    {
       "version": "0.3.1",
       "date": "2026-10-26",
       "zh": [

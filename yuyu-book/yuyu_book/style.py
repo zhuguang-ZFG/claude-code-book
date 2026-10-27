@@ -333,6 +333,10 @@ CSS = r"""
   --mono:"JetBrains Mono","Cascadia Code","SF Mono",Consolas,Menlo,monospace;
   --measure:46rem;   /* the prose column — ~43 CJK characters a line */
   --furniture:56rem; /* plates, tables, code and reference grids fill this */
+  /* two corners and a circle: --r-1 turns a tag, --r-2 turns a box, and 999px
+     is left to the things that really are pills (a scrollbar, a 3px rule).
+     A fifth radius is a fifth book on the same sheet. */
+  --r-1:4px; --r-2:10px;
 }
 /* Latin needs a shorter measure than CJK for the same comfort: 46rem of 17px
    Palatino is a 90-character line, which no one reads without losing the
@@ -412,13 +416,15 @@ nav.rail .rail-map .rmk{flex:none;width:.8rem;height:.8rem;color:var(--bronze)}
 .page-title{font-size:1.9rem;margin:0 0 1.05rem;color:var(--bronze-3)}
 .page-title::after{content:"";display:block;width:3.6rem;height:3px;
   background:linear-gradient(90deg,var(--bronze),var(--bronze-2));
-  margin-top:.55rem;border-radius:2px}
+  margin-top:.55rem;border-radius:999px}
 section.front-page{break-before:page}
 .cover{text-align:center;padding:0;position:relative}
 .cover .wheel{width:26px;height:26px;color:var(--bronze-2);opacity:.9;flex:0 0 auto}
+/* one frame, not two: the outline used to draw a second line 5px outside the
+   border, which at book size reads as a plate that printed twice */
 .cover-inner{position:relative;display:inline-block;text-align:center;
   padding:clamp(2.2rem,5vw,4rem) clamp(1.6rem,5vw,4.2rem) 2.6rem;margin:2.4rem 0;
-  border:1px solid var(--line-2);outline:1px solid var(--line);outline-offset:5px;
+  border:1px solid var(--line-2);
   background:linear-gradient(180deg,var(--card),var(--paper))}
 .cover-kicker{font-family:var(--sans);font-size:.7rem;letter-spacing:.42em;
   color:var(--bronze);text-transform:uppercase;margin:0 0 1.6rem}
@@ -433,7 +439,7 @@ section.front-page{break-before:page}
   align-items:center;justify-content:center;gap:.05rem;width:2.9rem;
   padding:.42rem 0;background:var(--cinnabar);color:#FBF7EF;
   font-family:var(--kai);font-size:1.05rem;line-height:1.15;letter-spacing:0;
-  writing-mode:vertical-rl;border-radius:3px;
+  writing-mode:vertical-rl;border-radius:var(--r-1);
   box-shadow:inset 0 0 0 2px rgba(251,247,239,.55)}
 .cover-rule{display:flex;align-items:center;justify-content:center;gap:.9rem;
   margin:1.7rem auto 1.2rem;max-width:26rem}
@@ -477,7 +483,7 @@ section.front-page{break-before:page}
    row two-thirds empty, the fourth card takes the whole line and reads as the
    closing note it is */
 .route-grid>:last-child:nth-child(4){grid-column:1/-1}
-.route-card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+.route-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-2);
   padding:1rem 1.15rem;box-shadow:0 1px 4px rgba(38,34,27,.05)}
 .route-card h3{margin:0 0 .35rem;font-size:.92rem;color:var(--cinnabar);
   letter-spacing:.05em}
@@ -502,7 +508,7 @@ section.front-page{break-before:page}
 .rm-legs{list-style:none;margin:0 auto;padding:.85rem 0 0;max-width:34rem;
   border-top:1px solid var(--line)}
 .rm-legs li{display:flex;flex-direction:column;gap:.15rem;padding:.42rem 0;
-  border-bottom:1px dashed var(--line);line-height:1.62}
+  border-bottom:1px solid var(--line);line-height:1.62}
 .rm-legs li:last-child{border-bottom:0}
 /* the two lines of a row are furniture text, not prose: the browser's own
    paragraph margins would otherwise spend more sheet than the sentences do */
@@ -513,7 +519,7 @@ section.front-page{break-before:page}
   letter-spacing:.08em}
 .rm-why{color:var(--ink-2);font-size:.92rem}
 .route-parts{list-style:none;margin:0;padding:0}
-.route-parts li{padding:.55rem 0;border-bottom:1px dashed var(--line);
+.route-parts li{padding:.55rem 0;border-bottom:1px solid var(--line);
   display:flex;flex-direction:column;gap:.15rem}
 .route-parts a{font-family:var(--sans);font-weight:700;color:var(--bronze-3);
   text-decoration:none}
@@ -524,29 +530,33 @@ section.front-page{break-before:page}
   font-family:var(--sans);font-weight:700;font-size:.85rem;letter-spacing:.2em;
   color:var(--bronze);text-decoration:none}
 .toc-part:hover .tp-tx,.toc-part:hover .tp-no{color:var(--cinnabar)}
-.toc-part:hover .tp-no{-webkit-text-stroke-color:var(--cinnabar)}
 .toc-part::after{content:"";flex:1;height:1px;background:var(--line-2);
   transform:translateY(-.32em);order:2}
 .toc-part .page-ref{order:3}
-.tp-no{font-family:var(--serif);font-size:1.9rem;font-weight:700;
-  line-height:1;color:transparent;letter-spacing:0;
-  -webkit-text-stroke:1px var(--bronze-2)}
+/* the numeral is inked, not outlined: a hollow 1.9rem Ⅰ is the loudest mark on
+   the contents page and, being empty inside, reads as a plate that failed to
+   take ink */
+.tp-no{font-family:var(--serif);font-size:1.15rem;font-weight:700;
+  line-height:1;color:var(--bronze);letter-spacing:.06em}
 .tp-tx{color:var(--bronze-3)}
 .toc-part-plain{color:var(--cinnabar);margin-top:2.4rem}
 .toc-hr{border:none;border-top:1px solid var(--line);margin:1.2rem 0}
 .toc-group{break-inside:avoid}
 .toc-row{display:flex;align-items:baseline;text-decoration:none;color:var(--ink);
-  padding:.32rem 0 .3rem;font-size:.99rem;border-radius:6px}
+  padding:.32rem 0 .3rem;font-size:.99rem;border-radius:var(--r-1)}
 .toc-row:hover{color:var(--cinnabar)}
 .toc-row:hover .toc-n{color:var(--cinnabar);border-color:var(--cinnabar)}
 .toc-n{flex:0 0 auto;min-width:2.1rem;margin-inline-end:.75rem;text-align:center;
   font-family:var(--sans);font-size:.7rem;font-weight:700;color:var(--bronze-3);
-  border:1px solid var(--line-2);border-radius:5px;padding:.1rem .2rem;
+  border:1px solid var(--line-2);border-radius:var(--r-1);padding:.1rem .2rem;
   transform:translateY(-.12em)}
 .toc-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.leader{flex:1;border-bottom:1px dotted var(--line-2);margin:0 .5rem;
+/* the leader carries the eye from a title to its folio, so it is drawn in the
+   ornament gold rather than in the rule grey it kept getting lost in */
+.leader{flex:1;border-bottom:1px dotted var(--bronze-2);margin:0 .5rem;
   transform:translateY(-.28em)}
-.page-ref{font-family:var(--sans);font-size:.8rem;color:var(--ink-3);min-width:1.6rem;
+.page-ref{font-family:var(--sans);font-size:.86rem;color:var(--bronze-3);
+  font-variant-numeric:tabular-nums;min-width:1.6rem;
   text-align:right}
 
 /* ------- part dividers ------- */
@@ -586,7 +596,7 @@ section.front-page{break-before:page}
   color:var(--bronze);opacity:.85}
 .pd-list{list-style:none;margin:1.1rem auto 0;padding:.9rem 0 0;max-width:26rem;
   text-align:start;border-top:1px solid var(--line-2)}
-.pd-list li{padding:.42rem 0;border-bottom:1px dashed var(--line)}
+.pd-list li{padding:.42rem 0;border-bottom:1px solid var(--line)}
 .pd-list a{text-decoration:none;color:var(--ink-2);font-size:.95rem;
   display:flex;gap:.7rem;align-items:baseline}
 .pd-list a:hover{color:var(--cinnabar)}
@@ -605,7 +615,7 @@ article.chapter,article.unit{padding:1.7rem 0 2.2rem;break-before:page;
 article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
 .ch-head-row{display:flex;align-items:flex-start;gap:1.05rem}
 .ch-seal{flex:0 0 auto;display:grid;place-items:center;width:3.05rem;height:3.05rem;
-  margin-top:.25rem;border:2px solid var(--bronze-2);border-radius:6px;
+  margin-top:.25rem;border:2px solid var(--bronze-2);border-radius:var(--r-1);
   color:var(--bronze-3);background:var(--card);
   font-family:Georgia,var(--sans);font-weight:700;font-size:1.32rem;
   letter-spacing:.02em;font-variant-numeric:tabular-nums;
@@ -661,7 +671,7 @@ hr{border:none;text-align:center;margin:1.8rem 0}
   margin:0 0 1.1rem}
 @media (max-width:860px){.compass{grid-template-columns:1fr}}
 .compass-card{background:var(--card);border:1px solid var(--line);
-  border-radius:12px;padding:.75rem .9rem .8rem;position:relative;overflow:hidden;
+  border-radius:var(--r-2);padding:.75rem .9rem .8rem;position:relative;overflow:hidden;
   box-shadow:0 1px 4px rgba(38,34,27,.05)}
 .compass-card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;
   background:var(--bronze-2)}
@@ -676,12 +686,12 @@ hr{border:none;text-align:center;margin:1.8rem 0}
   color:var(--ink-3);display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
 .cc-src-t{letter-spacing:.14em;color:var(--bronze);margin-right:.4rem}
 .source-chip{display:inline-block;background:var(--paper-2);color:var(--bronze-3);
-  border:1px solid var(--line);border-radius:999px;padding:.08rem .68rem;
+  border:1px solid var(--line);border-radius:var(--r-1);padding:.08rem .68rem;
   text-decoration:none;font-size:.76rem;line-height:1.5;vertical-align:bottom}
 .source-chip:hover{border-color:var(--cinnabar);color:var(--cinnabar)}
 
 /* ------- callouts ------- */
-.callout{margin:1.15rem 0;padding:.75rem 1.05rem .3rem;border-radius:10px;
+.callout{margin:1.15rem 0;padding:.75rem 1.05rem .3rem;border-radius:var(--r-2);
   border:1px solid var(--line);border-left-width:4px;background:var(--card);
   font-size:.96rem}
 .callout .callout-tag{margin:0 0 .2rem;font-family:var(--sans);font-weight:700}
@@ -706,7 +716,7 @@ hr{border:none;text-align:center;margin:1.8rem 0}
 .callout-note{border-left-color:var(--ink-3)}
 .callout-note .callout-tag{color:var(--ink-2)}
 blockquote{margin:1.15rem 0;padding:.8rem 1.1rem;border-left:3px solid var(--line-2);
-  border-radius:0 10px 10px 0;background:rgba(243,234,216,.5);color:var(--ink-2)}
+  border-radius:0 var(--r-2) var(--r-2) 0;background:rgba(243,234,216,.5);color:var(--ink-2)}
 blockquote p{margin:0 0 .5em}
 /* A quotation follows its block's alignment, not the body's: justifying a
    Latin epigraph across the full measure stretches it into rivers, and it also
@@ -722,12 +732,12 @@ blockquote p:last-child{margin-bottom:0}
 
 /* ------- code ------- */
 code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
-  border:1px solid var(--line);border-radius:5px;padding:.06em .34em;
+  border:1px solid var(--line);border-radius:var(--r-1);padding:.06em .34em;
   color:var(--bronze-3)}
-.codehilite{margin:1.1rem 0 1.25rem;border-radius:10px;position:relative;
+.codehilite{margin:1.1rem 0 1.25rem;border-radius:var(--r-2);position:relative;
   overflow:hidden;background:var(--code-bg);border:1px solid var(--code-line);
   box-shadow:0 6px 18px -12px rgba(38,34,27,.55)}
-.mermaid-source-wrap{margin:1rem 0 1.25rem;border-radius:10px;
+.mermaid-source-wrap{margin:1rem 0 1.25rem;border-radius:var(--r-2);
   overflow-x:auto;background:var(--code-bg);border:1px solid var(--code-line);
   box-shadow:0 2px 10px -4px rgba(0,0,0,.35)}
 .codehilite::after{content:attr(data-lang);position:absolute;top:0;right:0;
@@ -744,7 +754,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
   scrollbar-width:thin;scrollbar-color:rgba(200,164,92,.4) transparent}
 .codehilite pre::-webkit-scrollbar{height:7px}
 .codehilite pre::-webkit-scrollbar-thumb{background:rgba(200,164,92,.35);
-  border-radius:4px}
+  border-radius:999px}
 /* the ring is drawn inside because the frame clips what sticks out, and in
    bronze-2 because the code plate is dark ink in both colour schemes */
 .codehilite pre:focus-visible{outline:2px solid var(--bronze-2);outline-offset:-2px}
@@ -762,7 +772,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 
 /* ------- tables ------- */
 .table-scroll{overflow-x:auto;margin:1.1rem 0;border:1px solid var(--line);
-  border-radius:10px;background:var(--card);
+  border-radius:var(--r-2);background:var(--card);
   scrollbar-width:thin;scrollbar-color:var(--line-2) var(--paper-2);
   box-shadow:0 1px 5px rgba(38,34,27,.05)}
 /* a phone paints no bar until the reader drags, so a column sliced in half
@@ -774,8 +784,8 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
    reason that attribute is there. */
 .table-scroll::-webkit-scrollbar{height:9px}
 .table-scroll::-webkit-scrollbar-track{background:var(--paper-2);
-  border-radius:0 0 10px 10px}
-.table-scroll::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
+  border-radius:0 0 var(--r-2) var(--r-2)}
+.table-scroll::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
 .table-scroll::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .table-scroll:focus-visible{outline:2px solid var(--bronze)}
 table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
@@ -794,7 +804,7 @@ figure.diagram{margin:1.5rem 0;text-align:center;break-inside:avoid}
 .diagram-frame{position:relative;background:
     linear-gradient(180deg,var(--card),var(--paper-2)),
     radial-gradient(100% 60% at 50% 0%,rgba(200,164,92,.07),transparent);
-  border:1px solid var(--line-2);border-radius:14px;padding:1.1rem 1rem;
+  border:1px solid var(--line-2);border-radius:var(--r-2);padding:1.1rem 1rem;
   box-shadow:0 6px 22px -12px rgba(38,34,27,.30),
     inset 0 0 0 1px rgba(255,255,255,.55);overflow-x:auto}
 .diagram-frame::before,.diagram-frame::after{content:"";position:absolute;
@@ -806,8 +816,8 @@ figure.diagram{margin:1.5rem 0;text-align:center;break-inside:avoid}
 .diagram-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
 .diagram-frame::-webkit-scrollbar{height:8px}
 .diagram-frame::-webkit-scrollbar-track{background:var(--paper-2);
-  border-radius:0 0 12px 12px}
-.diagram-frame::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
+  border-radius:0 0 var(--r-2) var(--r-2)}
+.diagram-frame::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
 .diagram-frame::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .diagram-frame .node rect,.diagram-frame .cluster rect{rx:8}
 figcaption{margin:.7rem auto 0;max-width:var(--measure);font-family:var(--sans);
@@ -820,20 +830,20 @@ figcaption::after{background:linear-gradient(90deg,var(--line-2),transparent)}
 .fig-no{color:var(--bronze);font-weight:700;letter-spacing:.06em;white-space:nowrap}
 .fig-cap{color:var(--ink-3)}
 .fig-hint{font-size:.7rem;line-height:1.5;color:var(--ink-3);white-space:nowrap;
-  border:1px solid var(--line-2);border-radius:999px;padding:.02rem .5rem;
+  border:1px solid var(--line-2);border-radius:var(--r-1);padding:.02rem .5rem;
   transform:translateY(-.12em)}
 /* the caption is a centered flex row, and a nowrap hint chip is the widest
    unbreakable item on it — on a phone the row overflows past the right edge,
    so let the chip drop to a second line instead */
 @media (max-width:44rem){figcaption{flex-wrap:wrap;row-gap:.2rem}}
 .mermaid-missing{color:var(--cinnabar);border:1px dashed var(--cinnabar);
-  padding:1rem;text-align:center;border-radius:10px;font-family:var(--sans)}
+  padding:1rem;text-align:center;border-radius:var(--r-2);font-family:var(--sans)}
 .mermaid-source{text-align:start}
 img{max-width:100%;height:auto}
 
 /* ------- chapter notes ------- */
 .chapter-notes{margin:1.9rem 0 0;padding:.85rem 1.05rem .9rem;border:1px solid var(--line);
-  border-radius:12px;background:var(--card)}
+  border-radius:var(--r-2);background:var(--card)}
 .notes-title{font-family:var(--sans);font-size:.75rem;letter-spacing:.25em;
   color:var(--bronze);margin:0 0 .5rem}
 .notes-list{list-style:none;margin:0;padding:0;counter-reset:fn;
@@ -858,13 +868,13 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 .reg-kind::after{content:"";flex:1;height:1px;background:var(--line-2);
   transform:translateY(-.3em)}
 .rk-n{font-family:var(--mono);font-size:.7rem;color:var(--bronze);
-  border:1px solid var(--line-2);border-radius:999px;padding:.06rem .45rem;
+  border:1px solid var(--line-2);border-radius:var(--r-1);padding:.06rem .45rem;
   letter-spacing:0}
 .reg-list{list-style:none;margin:0;padding:0}
 /* a row is a bordered card: cut by a page break it reads as two broken boxes */
 .reg-list li{padding:.85rem 1rem .95rem;margin-bottom:.55rem;
   border:1px solid var(--line);border-inline-start:3px solid var(--bronze-2);
-  border-radius:0 10px 10px 0;background:var(--card);
+  border-radius:0 var(--r-2) var(--r-2) 0;background:var(--card);
   break-inside:avoid;transition:border-inline-start-color .15s ease}
 .reg-list li:hover{border-inline-start-color:var(--cinnabar)}
 .reg-head{display:flex;flex-wrap:wrap;gap:.55rem;align-items:baseline}
@@ -873,7 +883,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 .reg-head a{font-weight:700;text-decoration:none;color:var(--ink)}
 .reg-head a:hover{color:var(--cinnabar)}
 .reg-auth{font-family:var(--sans);font-size:.78rem;color:var(--bronze);
-  background:var(--paper-2);border-radius:999px;padding:.05rem .7rem}
+  background:var(--paper-2);border-radius:var(--r-1);padding:.05rem .7rem}
 .reg-pin{font-family:var(--sans);font-size:.78rem;color:var(--ink-3)}
 .reg-pin code{font-size:.72rem}
 .reg-meta{font-family:var(--sans);font-size:.76rem;color:var(--ink-3);margin-top:.3rem}
@@ -915,7 +925,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 .pr-head a{color:var(--bronze-3);text-decoration:none}
 .pr-head a:hover{color:var(--cinnabar)}
 .pr-n{margin-inline-start:auto;font-family:var(--mono);font-size:.66rem;
-  color:var(--bronze-3);border:1px solid var(--line-2);border-radius:999px;
+  color:var(--bronze-3);border:1px solid var(--line-2);border-radius:var(--r-1);
   padding:.05rem .45rem}
 .pr-list{list-style:none;margin:.35rem 0 0;padding:0}
 .pr-row{display:grid;grid-template-columns:7.5rem 1fr;column-gap:.9rem;
@@ -976,7 +986,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 /* the lead band is the one device that survives print unchanged, so it is
    deliberately the loudest block on a chapter opener */
 .lead-band{position:relative;margin:0 0 1.1rem;padding:.9rem 1.2rem 1rem;
-  border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  border:1px solid var(--line);border-radius:var(--r-2);overflow:hidden;
   background:linear-gradient(135deg,var(--card),var(--paper-2) 82%);
   box-shadow:0 1px 4px rgba(38,34,27,.05)}
 .lead-band::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;
@@ -999,7 +1009,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
   line-height:1.85;color:var(--bronze-3)}
 .lb-a-tag{display:inline-block;font-family:var(--sans);font-size:.68rem;font-weight:700;
   letter-spacing:.14em;color:var(--bronze);background:var(--paper-2);
-  border:1px solid var(--line);border-radius:999px;padding:.06rem .55rem;
+  border:1px solid var(--line);border-radius:var(--r-1);padding:.06rem .55rem;
   margin-inline-end:.45rem;vertical-align:.14em}
 @media (max-width:860px){.lead-band{padding:.9rem 1rem 1rem}
   .lb-plain{font-size:1.02rem}}
@@ -1013,7 +1023,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
   max-width:min(21rem,80vw);padding:.6rem .8rem .65rem;text-align:start;
   font-family:var(--sans);font-size:.8rem;line-height:1.65;font-weight:400;
   color:var(--ink);background:var(--card);border:1px solid var(--line-2);
-  border-radius:10px;box-shadow:0 12px 28px -16px rgba(38,34,27,.6);
+  border-radius:var(--r-2);box-shadow:0 12px 28px -16px rgba(38,34,27,.6);
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .12s ease,transform .12s ease}
 .gloss:hover .gloss-pop,.gloss:focus .gloss-pop,.gloss:focus-within .gloss-pop{
@@ -1055,26 +1065,34 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 @media (prefers-color-scheme:dark){
   body:not(.force-light) .gloss-pop{box-shadow:0 12px 28px -14px rgba(0,0,0,.75)}}
 
-.new-terms{margin:0 0 1.25rem;padding:.85rem 1.1rem .9rem;
-  border:1px dashed var(--line-2);border-radius:14px;background:var(--paper-2)}
+/* the chapter's terms are a card you read across, not a box you look inside: a
+   dashed frame round twenty-two dotted rows made a chapter open entirely on
+   furniture, and the prose never reached the first page. It now trails the
+   unit, so it needs the air a following block would have had */
+.new-terms{margin:1.5rem 0 0;padding:.6rem 0 0;border-top:1px solid var(--line)}
 .nt-title{display:flex;align-items:baseline;gap:.5rem;margin:0 0 .35rem;
   font-family:var(--sans);font-size:.72rem;letter-spacing:.25em;
   color:var(--bronze);font-weight:700}
-.nt-n{font-family:var(--mono);font-size:.68rem;letter-spacing:0;color:var(--bronze-3);
-  border:1px solid var(--line-2);border-radius:999px;padding:.04rem .42rem}
+.nt-n{font-family:var(--mono);font-size:.68rem;letter-spacing:0;color:var(--bronze-3)}
 /* the panel is the one block that gets taller the more terms a chapter uses;
    at three columns a 20-term chapter is seven rows instead of twenty, which is
    the difference between a reference card and a wall of text */
 .nt-list{list-style:none;margin:0;padding:0;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:0 1.6rem}
-.nt-row{display:flex;flex-wrap:wrap;gap:.1rem .5rem;align-items:baseline;
-  padding:.22rem 0;border-bottom:1px dotted var(--line-2)}
+  grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:0 1.6rem}
+/* the air between rows sits above them, not below: a row's bottom padding is
+   the last thing the card leaves on a sheet, and 1.6px that will not fit was
+   enough for Chromium to strand a whole empty page after the chapter */
+.nt-row{display:flex;flex-wrap:wrap;align-items:baseline;
+  padding:.32rem 0 0;min-width:0;break-inside:avoid}
 .nt-term{flex:0 1 auto;min-width:0;font-family:var(--sans);font-weight:700;
   font-size:.84rem;color:var(--bronze-3)}
-.nt-term::after{content:"┄";color:var(--line-2);margin-inline-start:.25rem}
-.nt-plain{flex:1 1 12rem;min-width:0;font-size:.88rem;line-height:1.6;
+/* the tie between a term and its plain wording is one gold dot: the drawn
+   dash it replaces cost a row of its own colour in every one of 20 panels */
+.nt-term::after{content:"·";color:var(--bronze-2);font-weight:700;
+  margin-inline:.18rem .22rem}
+.nt-plain{flex:1 1 6rem;min-width:0;font-size:.86rem;line-height:1.6;
   color:var(--ink-2)}
-.nt-note{margin:.5rem 0 0;font-family:var(--sans);font-size:.74rem;
+.nt-note{margin:0 0 .3rem;font-family:var(--sans);font-size:.74rem;
   color:var(--ink-3)}
 @media (max-width:44rem){.nt-list{grid-template-columns:1fr}}
 
@@ -1083,7 +1101,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
 .sec-tier,.tier-chip{flex:0 0 auto;align-self:center;margin-inline-start:auto;
   font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.14em;
-  color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;
+  color:var(--ink-3);border:1px solid var(--line-2);border-radius:var(--r-1);
   padding:.08rem .5rem;white-space:nowrap}
 .t-start{color:var(--jade);border-color:var(--jade)}
 .t-core{color:var(--bronze-3);border-color:var(--bronze-2)}
@@ -1093,7 +1111,7 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
 .tl-hint{margin:0 0 1rem;color:var(--ink-2);font-size:.94rem;max-width:34rem}
 .tl-list{list-style:none;margin:0;padding:0}
 .tl-row{display:flex;align-items:baseline;gap:.75rem;padding:.4rem 0;
-  border-bottom:1px dashed var(--line)}
+  border-bottom:1px solid var(--line)}
 .tl-row .tier-chip{margin-inline-start:0}
 .tl-desc{flex:1;color:var(--ink-2);font-size:.92rem}
 .tl-n{font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
@@ -1113,8 +1131,11 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
 
 /* ------- print / PDF ------- */
 @media print{
+  /* #B4472F is mixed against the screen's warm paper; on a laser printer's
+     pure white it burns straight through the earth palette, so paper re-inks
+     the accent one step deeper before anything else is drawn */
   :root{--paper:#FFFFFF;--card:#FFFFFF;--paper-2:#F6F0E2;--code-bg:#F8F4EA;
-    --code-fg:#26221B;--code-line:#E3D8C1}
+    --code-fg:#26221B;--code-line:#E3D8C1;--cinnabar:#9C4630}
   body{background:#fff;font-size:10.2pt;line-height:1.74;padding:0!important}
   body.lang-en{font-size:10pt;line-height:1.6}
   /* the A4 text block is ~665px, narrower than either measure: on paper the
@@ -1123,11 +1144,14 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
   nav.rail,.no-print{display:none!important}
   .sheet{max-width:none;padding:0}
   /* on screen the cover is a card in the page flow; on paper the frame should
-     be the page, so it takes the whole text block (297mm - 2x17mm margins) and
-     centers its title stack inside it */
+     be the page, so it takes the whole text block (297mm - 2x17mm margins).
+     The stack is then spent from edge to edge -- kicker against the top of the
+     frame, the author line against the bottom -- because a centred stack left
+     a third of the sheet below the foot, which is the one place a cover may
+     not be empty. */
   .front-page.cover{min-height:250mm;display:flex;align-items:stretch}
   .cover-inner{margin:0;width:100%;border-color:var(--line-2);
-    display:flex;flex-direction:column;justify-content:center}
+    display:flex;flex-direction:column;justify-content:space-between}
   .diagram-frame,.codehilite,.table-scroll,.compass-card,.route-card{
     box-shadow:none}
   /* the reading-paths page carries the routes, the offline note, the parts list
@@ -1187,7 +1211,7 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      one line of text each. Three columns keeps the opener on one page. */
   .compass{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;
     margin-bottom:.95rem;break-inside:avoid}
-  .compass-card{padding:.6rem .7rem .65rem;border-radius:9px}
+  .compass-card{padding:.6rem .7rem .65rem}
   .cc-tag{font-size:.66rem;letter-spacing:.14em;margin-bottom:.24rem}
   .compass-card p{font-size:.84rem;line-height:1.62}
   .cc-src{gap:.26rem .3rem}
@@ -1197,9 +1221,11 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
   .ch-trace{width:min(15rem,100%);opacity:.9;color:var(--bronze-3)}
   /* the ruts must never fall onto a sheet of their own: glued to the block they
      close, the pair moves together and the page ends short instead of emptying.
-     Chromium honours break-inside, not break-before:avoid. */
+     Chromium honours break-inside, not break-before:avoid. A chapter ends on
+     the tail of its last page, so the mark has to be big enough to be the
+     reason the page stops there rather than a stray that fell into the void. */
   .ch-close{break-inside:avoid}
-  .ch-rut{width:min(14rem,74%);margin-top:1.15rem;opacity:.9;color:var(--bronze-3)}
+  .ch-rut{width:min(19rem,82%);margin-top:1.6rem;opacity:.9;color:var(--bronze-3)}
   /* the keeper keeps the ink it has on paper; the hover lean simply stops */
   .keeper{break-inside:avoid;margin:.9rem 0 0}
   .kp-art svg{transition:none}
@@ -1227,7 +1253,12 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      sheet and let it draw bigger than it does beside the sticky rail */
   .pd-inner{padding-top:1.6rem}
   .pd-art{width:min(15rem,58%);margin-bottom:.7rem}
-  .new-terms{background:none}
+  /* the card is a plate, so it moves as one: allowed to break, its last row
+     overflowed the text block by a point and Chromium handed the chapter an
+     extra sheet carrying nothing at all — the one thing the empty-page gate
+     exists to catch. Twenty-two terms are eleven rows at two columns, which
+     is a third of a sheet and always fits on one. */
+  .new-terms{break-inside:avoid}
   .nt-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   .nt-term{font-size:.8rem}
   .nt-plain{font-size:.83rem;line-height:1.6}

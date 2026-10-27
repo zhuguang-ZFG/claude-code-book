@@ -422,8 +422,13 @@ def _article(payload, manifest, sources, lang, kind=None, notes=None,
               f'<p class="keeper-note">{pages.esc(keeper)}</p></div>'
               if keeper else "") + rut(u.id)
     body_html = render.glue_closer(body_html, closer)
+    # the card of new terms trails the chapter rather than opening it: it is
+    # the tallest block on the opener, and ahead of the prose it spent the
+    # whole first sheet on furniture so that a chapter's first sentence landed
+    # on page two. The ruts stay the last ink of the argument; the card is the
+    # apparatus that closes it.
     return (f'<article class="{cls}" id="{u.id}">{head}'
-            f'{lead}{compass}{panel}<div class="chapter-body">{body_html}</div>'
+            f'{lead}{compass}<div class="chapter-body">{body_html}{panel}</div>'
             f'</article>')
 
 
