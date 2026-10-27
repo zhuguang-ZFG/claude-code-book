@@ -499,14 +499,29 @@ class EndToEndNoBrowser(unittest.TestCase):
     """The whole pipeline, with diagrams degraded to source listings: this is
     the assertion that a machine without Edge still produces a legal book."""
 
-    def test_check_mode_passes_for_both_languages(self):
+    def check(self, *extra: str) -> str:
         proc = subprocess.run(
             [sys.executable, str(BOOK_DIR / "build.py"), "--check",
-             "--mermaid=source"],
+             "--mermaid=source", *extra],
             cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
         self.assertIn("CHECK OK", proc.stdout)
-        self.assertIn("20 units", proc.stdout)
+        return proc.stdout
+
+    def test_check_mode_passes_for_both_languages(self):
+        out = self.check()
+        self.assertIn("20 units", out)
+        self.assertEqual(out.count("20 lead bands"), 2, out)
+
+    def test_no_plain_leaves_no_lead_band(self):
+        """`--no-plain` is documented as closing the plain layer whole, and the
+        lead band calls itself a plain-language device — but its text lives in
+        the manifest, so nothing in the assembler stopped it from being built
+        back in while the marks, panels, chips and keeper notes all went away."""
+        out = self.check("--no-plain")
+        self.assertEqual(out.count("0 lead bands"), 2, out)
+        for needle in ("0 glosses", "0 tier chips", "0 keeper notes"):
+            self.assertEqual(out.count(needle), 2, f"{needle}: {out}")
 
 
 if __name__ == "__main__":

@@ -104,7 +104,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                   out_dir: Path, do_pdf: bool, edge: str | None,
                   glosses: dict | None = None,
                   paths: dict | None = None,
-                  notes: dict | None = None) -> Path:
+                  notes: dict | None = None,
+                  plain_layer: bool = True) -> Path:
     ids = expected_ids(manifest)
     mapping = {i: i for i in ids}
     glosses = glosses or {}
@@ -211,7 +212,7 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     nos[front_id] = nos[front_id] or pages.FRONT_NO
     body.append(pages.route_map_page(manifest, lang, nos))
     body.append(_article(by_id[front_id], manifest, sources, lang,
-                         notes=notes))
+                         notes=notes, show_lead=plain_layer))
     for part in manifest["parts"]:
         rows = [(u["id"], by_id[u["id"]]["unit"].no_plain,
                  by_id[u["id"]]["unit"].title)
@@ -220,10 +221,11 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                                        manifest["parts"].index(part) + 1, rows))
         for unit_def in part["units"]:
             body.append(_article(by_id[unit_def["id"]], manifest, sources,
-                                 lang, notes=notes))
+                                 lang, notes=notes, show_lead=plain_layer))
     for apx in manifest["appendices"]:
         body.append(_article(by_id[apx["id"]], manifest, sources, lang,
-                             kind="appendix", notes=notes))
+                             kind="appendix", notes=notes,
+                             show_lead=plain_layer))
 
     if why_groups:
         body.append(pages.principles_page(why_groups, lang))
@@ -277,6 +279,12 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
         raise BuildError(f"keeper layer: {n_keep} chapter notes and {n_kn} "
                          f"collection rows for {want_keep} authored — the "
                          "postman must sit at every rut and be listed once")
+    n_lead = html_text.count('<div class="lead-band"')
+    want_lead = len(units) if plain_layer else 0
+    if n_lead != want_lead:
+        raise BuildError(f"plain layer: {n_lead} lead bands for {want_lead} "
+                         "units — the band belongs to the layer, so --no-plain "
+                         "has to drop it with everything else")
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / f"yuyu-agent-harness-{lang}.html"
@@ -284,7 +292,7 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     stats = (f"{out.name}: {out.stat().st_size / 1e6:.1f} MB, "
              f"{len(units)} units, {n_diagrams} plates, "
              f"{sum(len(p['external']) for p in payloads)} cited links, "
-             f"{n_marks} glosses, {n_chips} tier chips, "
+             f"{n_marks} glosses, {n_lead} lead bands, {n_chips} tier chips, "
              f"{n_emblems} emblems, {n_heads} headpieces, "
              f"{n_keep} keeper notes")
     print("  " + stats)
@@ -342,7 +350,8 @@ def _principle_groups(glosses: dict, units, lang: str) -> list[dict]:
     return [groups[k] for k in sorted(groups, key=lambda k: order.get(k, 99))]
 
 
-def _article(payload, manifest, sources, lang, kind=None, notes=None):
+def _article(payload, manifest, sources, lang, kind=None, notes=None,
+             show_lead=True):
     u = payload["unit"]
     kind = kind or u.kind
     guide = manifest["guides"].get(u.id, {})
@@ -378,7 +387,9 @@ def _article(payload, manifest, sources, lang, kind=None, notes=None):
             f'{trace(u.id)}</header>')
     cls = "chapter" if kind == "chapter" else ("unit" if kind == "front"
                                                else "unit appendix")
-    lead = pages.lead_band(guide, lang)
+    # the band's text lives in the manifest, not in the glossary, so it is the
+    # one device the empty layer cannot swallow by itself
+    lead = pages.lead_band(guide, lang) if show_lead else ""
     compass = pages.compass(u, guide, sources, lang) if guide else ""
     panel = pages.new_terms_panel(payload.get("new_terms") or [], lang, kind)
     # keep rendered body but drop its own H1 (re-synthesised above)
@@ -410,7 +421,8 @@ def main(argv=None):
     ap.add_argument("--mermaid", default="render", choices=["render", "source"])
     ap.add_argument("--no-autolink", action="store_true")
     ap.add_argument("--no-plain", action="store_true",
-                    help="skip the plain-language layer (glosses, tiers)")
+                    help="skip the plain-language layer (marks, panels, lead "
+                         "bands, tier chips, principle notes, keeper notes)")
     ap.add_argument("--regen-index", action="store_true")
     args = ap.parse_args(argv)
 
@@ -444,7 +456,7 @@ def main(argv=None):
                           browser=args.browser, autolink=not args.no_autolink,
                           out_dir=out_dir, do_pdf=args.pdf and not args.check,
                           edge=args.edge, glosses=glosses, paths=paths,
-                          notes=notes)
+                          notes=notes, plain_layer=not args.no_plain)
         print("OK" if not args.check else "CHECK OK")
     except BuildError as e:
         print(f"BUILD FAILED: {e}", file=sys.stderr)
