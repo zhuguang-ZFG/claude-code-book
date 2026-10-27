@@ -937,6 +937,35 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
   .pr-term,.pr-why,.pr-ana{grid-column:1;grid-row:auto}
 }
 
+/* ------- keeper (按语) ------- */
+/* the old postman at the foot of each unit: a narrow box floated to the far
+   edge so the line reads as marginalia, not as a paragraph the manuscript
+   grew; on paper the same box sits inline above the ruts it comments on */
+.keeper{display:flex;align-items:flex-end;gap:.65rem;margin:1.4rem 0 .15rem;
+  max-width:min(38ch,100%);margin-inline-start:auto}
+.kp-art{flex:none;width:2.4rem;line-height:0;color:var(--ink-3)}
+.kp-art svg{width:100%;height:auto;transition:transform .18s ease}
+.keeper:hover .kp-art svg,.keeper:focus-within .kp-art svg{
+  transform:translateY(-3px) rotate(-4deg)}
+.keeper-note{margin:0;font-family:var(--kai);font-size:.92rem;line-height:1.75;
+  color:var(--ink-2);border-inline-start:2px solid var(--bronze-2);
+  padding-inline-start:.6rem}
+.kn-list{list-style:none;margin:.35rem 0 0;padding:0}
+.kn-row{display:grid;grid-template-columns:7.2rem 1fr;column-gap:.9rem;
+  padding:.45rem 0 .5rem;border-bottom:1px dotted var(--line-2);
+  break-inside:avoid;align-items:baseline}
+.kn-head{font-family:var(--sans);font-weight:700;font-size:.88rem;
+  line-height:1.8;overflow-wrap:anywhere}
+.kn-head a{color:var(--bronze-3);text-decoration:none}
+.kn-head a:hover{color:var(--cinnabar)}
+.kn-note{padding-inline-start:.55rem;border-inline-start:2px solid
+  var(--bronze-2);font-family:var(--kai);font-size:.92rem;line-height:1.75;
+  color:var(--ink)}
+@media (max-width:44rem){
+  .kn-row{grid-template-columns:1fr;row-gap:.15rem}
+  .kn-head,.kn-note{grid-column:1}
+}
+
 /* ------- footer ------- */
 .colophon{margin:2.8rem 0 1.3rem;text-align:center;color:var(--ink-3);
   font-family:var(--sans);font-size:.78rem;letter-spacing:.1em}
@@ -1167,6 +1196,9 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      Chromium honours break-inside, not break-before:avoid. */
   .ch-close{break-inside:avoid}
   .ch-rut{width:min(14rem,74%);margin-top:1.15rem;opacity:.9;color:var(--bronze-3)}
+  /* the keeper keeps the ink it has on paper; the hover lean simply stops */
+  .keeper{break-inside:avoid;margin:.9rem 0 0}
+  .kp-art svg{transition:none}
   .pd-route{width:min(20rem,100%);opacity:.95;color:var(--bronze-3)}
   /* the map is the one page a reader consults before choosing a route, so on
      paper it takes the full measure and its station numbers grow a point */

@@ -45,6 +45,14 @@ LEAD_LIMITS = {"plain": {"zh": 60, "en": 170}, "analogy": {"zh": 52, "en": 160}}
 # already-built components (every component we emit lives in a <span>)
 _SKIP_GLOSS = {"a", "code", "pre", "svg", "style", "sup", "sub", "figure",
                "h1", "h2", "h3", "h4", "span", "kbd", "samp", "var"}
+# Inline <code> is the one exception: half the book's field names (an
+# `isConcurrencySafe` in a sentence) never appear outside backticks, so the
+# help has to be reachable where the reader first meets the term. `pre` stays
+# skipped — a code plate is studied as a whole, and dashing shapes inside it
+# would break the copy a reader pastes out of the page.
+_SKIP_GLOSS_INLINE = _SKIP_GLOSS - {"code"}
+_CODE_HUMP = re.compile(r"[_0-9]|[a-z][A-Z]")
+_TAG_NAME_RE = re.compile(r"<(/?)([a-zA-Z][a-zA-Z0-9]*)")
 _ASCII_FORM = re.compile(r"[A-Za-z]")
 _H2_RE = re.compile(r'<h2 id="([^"]+)">((?:(?!</?h2\b).)*)</h2>', re.S)
 
@@ -56,6 +64,55 @@ def load_plain():
         p = BOOK_DIR / name
         out.append(load_json(p) if p.exists() else {})
     return out[0], out[1]
+
+
+# ---------------------------------------------------------------- keeper ----
+# The 按语 layer: one line of postman's marginalia per unit, at its wheel
+# ruts. Commentary may not become a second manuscript, so it stays one
+# sentence and must look back at a term that really stands in its own unit.
+NOTE_LIMITS = {"zh": 36, "en": 130}
+
+
+def load_notes() -> dict:
+    p = BOOK_DIR / "notes.json"
+    return load_json(p) if p.exists() else {}
+
+
+def validate_notes(notes: dict, glosses: dict,
+                   unit_texts: dict[str, dict[str, str]]) -> None:
+    errors: list[str] = []
+    missing = sorted(set(unit_texts) - set(notes))
+    extra = sorted(set(notes) - set(unit_texts))
+    if missing:
+        errors.append(f"units without a note: {', '.join(missing)}")
+    if extra:
+        errors.append(f"notes without a unit: {', '.join(extra)}")
+    forms = {lang: sorted({f for g in glosses.values()
+                           for f in (g.get("forms") or {}).get(lang) or []},
+                          key=len, reverse=True)
+             for lang in ("zh", "en")}
+    for uid, n in sorted(notes.items()):
+        texts = unit_texts.get(uid) or {}
+        for lang in ("zh", "en"):
+            who = f"{uid}.{lang}"
+            body = (n.get(lang) or "").strip()
+            if not body:
+                errors.append(f"{who}: empty note text")
+                continue
+            if len(body) > NOTE_LIMITS[lang]:
+                errors.append(f"{who}: {len(body)} chars, over the "
+                              f"上限 of {NOTE_LIMITS[lang]} — a note is one "
+                              "sentence, or it is a paragraph")
+            if lang == "en" and HAN_RE.search(body):
+                errors.append(f"{who}: 汉字 in the English note — the edition "
+                              "does not code-switch")
+            unit = texts.get(lang) or ""
+            if not any(f in body and f in unit for f in forms[lang]):
+                errors.append(f"{who}: no registered term form of this unit "
+                              "in it — 术语锁: the note must look back at a "
+                              "word the chapter itself uses")
+    if errors:
+        raise BuildError("keeper layer invalid:\n  " + "\n  ".join(errors))
 
 
 def prose_lines(text: str) -> dict[int, str]:
@@ -243,7 +300,12 @@ def marks(g: dict) -> bool:
 
 
 class Matcher:
-    """Longest-form-first alternation over every markable surface form."""
+    """Longest-form-first alternation over every markable surface form.
+
+    Two matchers: prose sees every form; inline code sees only shapes a
+    reader cannot parse as an English word (camel humps, underscores,
+    digits), because dashing every backtapped word turns prose into a
+    field of dashes."""
 
     def __init__(self, glosses: dict, lang: str):
         pairs: list[tuple[str, str]] = []
@@ -254,13 +316,21 @@ class Matcher:
                 pairs.append((form, gid))
         pairs.sort(key=lambda p: (-len(p[0]), p[0]))
         self.pairs = pairs
+        self.rx, self.gid_of = self._compile(pairs)
+        code_pairs = [p for p in pairs if _CODE_HUMP.search(p[0])]
+        self.rx_code, self.gid_of_code = self._compile(code_pairs)
+
+    @staticmethod
+    def _compile(pairs: list[tuple[str, str]]):
         alts = []
         for form, _gid in pairs:
             esc = re.escape(form)
             if _ASCII_FORM.match(form):
                 esc = rf"(?<![A-Za-z0-9_]){esc}(?![A-Za-z0-9_])"
             alts.append(f"({esc})")
-        self.rx = re.compile("|".join(alts)) if alts else None
+        rx = re.compile("|".join(alts)) if alts else None
+        gid_of = [gid for _f, gid in pairs]
+        return rx, gid_of
 
     def mark(self, doc: str, glosses: dict, lang: str,
              used: set[str]) -> tuple[str, list[dict]]:
@@ -271,16 +341,35 @@ class Matcher:
             return doc, []
         from . import render
 
-        gid_of = [gid for _f, gid in self.pairs]
         seen: set[str] = set()
         hits: list[dict] = []
         out: list[str] = []
-        for kind, text, blocked in render.iter_doc(doc, _SKIP_GLOSS):
-            if kind == "tag" or blocked:
+        code_depth = pre_depth = 0
+        for kind, text, blocked in render.iter_doc(doc, _SKIP_GLOSS_INLINE):
+            if kind == "tag":
+                m = _TAG_NAME_RE.match(text)
+                if m:
+                    closing, name = m.group(1), m.group(2).lower()
+                    delta = -1 if closing else 1
+                    if name == "code":
+                        code_depth = max(0, code_depth + delta)
+                    elif name == "pre":
+                        pre_depth = max(0, pre_depth + delta)
+                out.append(text)
+                continue
+            if blocked:
                 out.append(text)
                 continue
 
-            def repl(m):
+            if code_depth and not pre_depth:
+                rx, gid_of = self.rx_code, self.gid_of_code
+            else:
+                rx, gid_of = self.rx, self.gid_of
+            if rx is None:
+                out.append(text)
+                continue
+
+            def repl(m, gid_of=gid_of):
                 gid = gid_of[m.lastindex - 1]
                 if gid in seen:
                     return m.group(0)
@@ -295,7 +384,7 @@ class Matcher:
                 return f'<span class="gloss" tabindex="0" data-g="{gid}">' \
                     f'{m.group(0)}{_pop(g, lang)}</span>'
 
-            out.append(self.rx.sub(repl, text))
+            out.append(rx.sub(repl, text))
         return "".join(out), hits
 
 

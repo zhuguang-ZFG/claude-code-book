@@ -103,11 +103,13 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                   mode: str, browser: str | None, autolink: bool,
                   out_dir: Path, do_pdf: bool, edge: str | None,
                   glosses: dict | None = None,
-                  paths: dict | None = None) -> Path:
+                  paths: dict | None = None,
+                  notes: dict | None = None) -> Path:
     ids = expected_ids(manifest)
     mapping = {i: i for i in ids}
     glosses = glosses or {}
     paths = paths or {}
+    notes = notes or {}
     layer = plain.Layer(glosses, lang)
 
     units = []
@@ -190,6 +192,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     why_groups = _principle_groups(glosses, units, lang)
     back = ([] if not why_groups
             else [("principles", pages.ui("principles_page", lang))])
+    if notes:
+        back += [("keeper-notes", pages.ui("notes_page", lang))]
     back += [("sources", pages.ui("sources_page", lang)),
              ("subject-index", pages.ui("index_page", lang))]
     for anchor, label in back:
@@ -206,7 +210,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     nos = {p["unit"].id: p["unit"].no_plain for p in payloads}
     nos[front_id] = nos[front_id] or pages.FRONT_NO
     body.append(pages.route_map_page(manifest, lang, nos))
-    body.append(_article(by_id[front_id], manifest, sources, lang))
+    body.append(_article(by_id[front_id], manifest, sources, lang,
+                         notes=notes))
     for part in manifest["parts"]:
         rows = [(u["id"], by_id[u["id"]]["unit"].no_plain,
                  by_id[u["id"]]["unit"].title)
@@ -214,13 +219,16 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
         body.append(pages.part_divider(part, lang,
                                        manifest["parts"].index(part) + 1, rows))
         for unit_def in part["units"]:
-            body.append(_article(by_id[unit_def["id"]], manifest, sources, lang))
+            body.append(_article(by_id[unit_def["id"]], manifest, sources,
+                                 lang, notes=notes))
     for apx in manifest["appendices"]:
         body.append(_article(by_id[apx["id"]], manifest, sources, lang,
-                             kind="appendix"))
+                             kind="appendix", notes=notes))
 
     if why_groups:
         body.append(pages.principles_page(why_groups, lang))
+    if notes:
+        body.append(pages.notes_page(notes, units, lang))
     body.append(pages.source_registry(sources, lang))
     if idx_entries:
         body.append(pages.subject_index_page(idx_entries, lang))
@@ -262,6 +270,13 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     if n_marks != n_rows:
         raise BuildError(f"plain layer: {n_marks} dashed marks but {n_rows} "
                          f"panel rows — every mark must be restated on paper")
+    n_keep = html_text.count('<div class="keeper">')
+    n_kn = html_text.count('<li class="kn-row">')
+    want_keep = sum(1 for u in units if (notes.get(u.id) or {}).get(lang))
+    if notes and (n_keep != want_keep or n_kn != want_keep):
+        raise BuildError(f"keeper layer: {n_keep} chapter notes and {n_kn} "
+                         f"collection rows for {want_keep} authored — the "
+                         "postman must sit at every rut and be listed once")
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / f"yuyu-agent-harness-{lang}.html"
@@ -270,7 +285,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
              f"{len(units)} units, {n_diagrams} plates, "
              f"{sum(len(p['external']) for p in payloads)} cited links, "
              f"{n_marks} glosses, {n_chips} tier chips, "
-             f"{n_emblems} emblems, {n_heads} headpieces")
+             f"{n_emblems} emblems, {n_heads} headpieces, "
+             f"{n_keep} keeper notes")
     print("  " + stats)
     if do_pdf:
         from yuyu_book import pdf
@@ -326,7 +342,7 @@ def _principle_groups(glosses: dict, units, lang: str) -> list[dict]:
     return [groups[k] for k in sorted(groups, key=lambda k: order.get(k, 99))]
 
 
-def _article(payload, manifest, sources, lang, kind=None):
+def _article(payload, manifest, sources, lang, kind=None, notes=None):
     u = payload["unit"]
     kind = kind or u.kind
     guide = manifest["guides"].get(u.id, {})
@@ -371,7 +387,11 @@ def _article(payload, manifest, sources, lang, kind=None):
     # the ruts go inside the body, glued to the block they close: left as a
     # trailing sibling they can fall alone onto a sheet the next unit's forced
     # page break then empties
-    body_html = render.glue_closer(body_html, rut(u.id))
+    keeper = ((notes or {}).get(u.id) or {}).get(lang)
+    closer = (f'<div class="keeper">{art.keeper()}'
+              f'<p class="keeper-note">{pages.esc(keeper)}</p></div>'
+              if keeper else "") + rut(u.id)
+    body_html = render.glue_closer(body_html, closer)
     return (f'<article class="{cls}" id="{u.id}">{head}'
             f'{lead}{compass}{panel}<div class="chapter-body">{body_html}</div>'
             f'</article>')
@@ -397,8 +417,14 @@ def main(argv=None):
     try:
         manifest, sources = load_configs()
         glosses, paths = ({}, {}) if args.no_plain else plain.load_plain()
+        notes = {} if args.no_plain else plain.load_notes()
         if not args.no_plain:
             plain.validate_plain(glosses, paths, manifest)
+            if notes:
+                unit_texts = {u["id"]: {"zh": read_text(REPO_ROOT / u["zh"]),
+                                        "en": read_text(REPO_ROOT / u["en"])}
+                              for u, _k, _p in unit_stream(manifest)}
+                plain.validate_notes(notes, glosses, unit_texts)
         if args.regen_index:
             entries = glossary_to_index(manifest)
             dump_json(BOOK_DIR / "subject-index.json", entries)
@@ -417,7 +443,8 @@ def main(argv=None):
             build_edition(lang, manifest, sources, mode=args.mermaid,
                           browser=args.browser, autolink=not args.no_autolink,
                           out_dir=out_dir, do_pdf=args.pdf and not args.check,
-                          edge=args.edge, glosses=glosses, paths=paths)
+                          edge=args.edge, glosses=glosses, paths=paths,
+                          notes=notes)
         print("OK" if not args.check else "CHECK OK")
     except BuildError as e:
         print(f"BUILD FAILED: {e}", file=sys.stderr)

@@ -141,7 +141,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 ### 5.1 通俗层：白话注、导读带、阅读路线
 
-通俗层是构建时叠在书稿上的一层，**从不回写 Markdown**。三个落点：
+通俗层是构建时叠在书稿上的一层，**从不回写 Markdown**。四个落点：
 
 **术语白话注**（`yuyu-book/glosses.json`）一条一个术语：`term.{zh,en}`、`forms.{zh,en}`（正文里要匹配的表面写法，大小写与连字符照抄）、`plain.{zh,en}`（一句能懂的话）、`analogy`（可选比方）、`priority`、`evidence`。只有 `priority: "core"` 的词会在正文首现处画虚线，而章首面板列的就是这批画了线的词——两处是同一批，构建时断言，不存在「只进面板不上正文」的中间档。`"extra"` 的词两者都不沾，只在附录 D 可查。一个单元最多 22 个新词，超了构建失败——那时把最通用的词降成 `extra`，而不是删掉解释（本书正是这样给 `Agent Harness` 与主循环腾出位置的）。
 
@@ -149,13 +149,15 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 **阅读路线**（`yuyu-book/reading-paths.json`）按单元存一个小节顺序的位置列表，取值 `start` / `core` / `deep`（成品里渲染成"起步 / 主干 / 进阶"）。长度必须等于该单元实际渲染出的 `<h2>` 数：加了小节忘了同步，构建会直接报错，而不是把徽盖到别的小节上。
 
+**按语**（`yuyu-book/notes.json`）以单元 id 为键，`{zh, en}` 各一句，由坐在章末车辙上方的老驿卒说出来，书末「按语集」再把二十条按阅读顺序收成一页。门禁是 `plain.validate_notes()`：中文 ≤36 字、英文 ≤130 字符，英文里不许夹汉字，二十个单元缺一条或多一条没主的都让构建失败；最要紧的是**术语锁**——句子里必须有一个 `glosses.json` 登记过的词形，而且那个词形要真的站在这一单元自己的 Markdown 里（构建器读的是源文件，不认「意思差不多」：第 1 章正文写的是 `Agent Harness`，写「智能体线束」会被退回；第 14 章写「规划模式」，写「计划模式」同样被退回）。旁白可以借书自己的比喻，不许凭空造词，也不许替书稿发表它没说过的论断——这是这一层与「白话不能以说错为代价」同一条底线的另一面。
+
 整层可以 `--no-plain` 关掉，用来对比开合前后的成品。
 
 **底线：通俗不能以说错为代价。** 每一句白话都要能在书稿里指出行号；`validate_plain()` 会逐条核对证据指针落在代码围栏之外、那一行确实含登记过的词形，core 词条与每条导读带要求中英两侧都有证据。写不出证据的白话，就是还没读懂正文——先别写。
 
 ### 5.2 插图：章徽、篇题刻与扉页车图
 
-- 位置与命名：`yuyu-book/illustrations/<unit-id>.svg`（20 枚章徽）、`illustrations/part-<p1..p4>.svg`（4 幅题刻）、`illustrations/cover.svg`（扉页那幅四马单辕古车，1000×470）。
+- 位置与命名：`yuyu-book/illustrations/<unit-id>.svg`（20 枚章徽）、`illustrations/part-<p1..p4>.svg`（4 幅题刻）、`illustrations/cover.svg`（扉页那幅四马单辕古车，1000×470）、`illustrations/keeper.svg`（章末那枚老驿卒的斗笠与灯笼，64×64，每章内联一次，测试把它的体积钉在 3 KB 以内）。
 - 章徽是 64×64 的单线小图、描边 2.1；题刻是 200×140 的小版画、描边 1.5；车图铺满整个版面、按层次分档描线（轮与辕 6.5/6，马身 4，辐与细部 1.2–2）。屏幕上题刻约 216px 宽、章徽 74px，三者不该用同一档笔画粗细。
 - 硬约束（`art.py` 的装载器逐条把关，违反即构建失败）：只用 `currentColor` 上色——一张图同时管屏幕、暗色模式与纸面，不需要第二份文件；不得出现 `id=`（同一份图会被内联进单文件几十次，一个 id 就是一次重复 id，审计会在离图很远的地方炸）、`href=`、`url(`、`<style>`、`<script>`；必须有 `viewBox`；章徽与题刻单文件 ≤ 6 KB，车图另设 `PLATE_BYTES` 上限（它只出现一次，不必跟着章徽的预算走）。
 - 语义优先于好看：图要能指着正文解释。第 12 章是桥（MCP 桥接外部协议），附录 C 是配电箱上的回路表（功能标志），第 1 章是辐辏之轮，第一部分是一整只三十辐的轮。看不出对应关系的图，等于给读者添噪声。
@@ -176,7 +178,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 - `article` 数量或 `compass` 卡数量少于单元数
 - 指向 `.md` 的残余链接
 
-`audit()` 之后 `build.py` 还有三道对账：正文术语标记数必须等于章首面板行数；导读带、罗盘、新词面板、tier 徽、章徽、题刻的数量要写进统计行并与预期相等；磁盘上每一枚能装配的图都必须真的上了页面。通俗层自身的证据与长度规则由 `plain.validate_plain()` 在装配之前把关，见第 5.1 节。
+`audit()` 之后 `build.py` 还有四道对账：正文术语标记数必须等于章首面板行数；章末按语数必须等于「按语集」的行数、且等于该语言真有按语的单元数；导读带、罗盘、新词面板、tier 徽、章徽、题刻的数量要写进统计行并与预期相等；磁盘上每一枚能装配的图都必须真的上了页面。通俗层自身的证据与长度规则由 `plain.validate_plain()` 与 `plain.validate_notes()` 在装配之前把关，见第 5.1 节。
 
 PDF 阶段另有三道：命名目标缺失（`no destination found for ...`）、目录页码盖不全（`stamped only N of M contents rows`），以及目标文件被占用（`cannot replace yuyu-agent-harness-*.pdf`）——最后那道在 Windows 上尤其常见：阅读器、资源管理器的预览、或一个还开着 `dist/` 里 PDF 的校验脚本都会锁住文件；关掉它重跑即可，未盖章的 `*.raw.pdf` 会留在原地。
 
@@ -190,7 +192,7 @@ PDF 阶段另有三道：命名目标缺失（`no destination found for ...`）�
 - [ ] 中文与英文两份 Markdown 同步修改
 - [ ] 新单元已在 `manifest.json` 登记，且 `guides` 三字段双语齐备
 - [ ] 新来源已过第 4 节的门禁，`snapshot`/`accessed`/`scope` 写实
-- [ ] 动到通俗层时，每条新写的白话都带指得回书稿的 `plain_evidence` / `evidence`，中英两侧齐备；新单元有 `illustrations/<id>.svg`
+- [ ] 动到通俗层时，每条新写的白话都带指得回书稿的 `plain_evidence` / `evidence`，中英两侧齐备；新单元有 `illustrations/<id>.svg`，并在 `notes.json` 里留一条按语（术语锁会替你核对那句里有没有本单元真正用过的词形）
 - [ ] 若动到版本号，`revisions.json` 与 `manifest.json` 的 `version`/`date` 一致
 - [ ] 涉及显示问题，注明阅读平台、文件与复现步骤
 

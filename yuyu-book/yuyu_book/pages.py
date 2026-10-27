@@ -34,6 +34,16 @@ _LABELS = {
              "tags/commits, community material carries access dates and is non-normative."},
     "index_page": {"zh": "主题索引", "en": "Subject Index"},
     "principles_page": {"zh": "原理札记", "en": "Why It Works This Way"},
+    "notes_page": {"zh": "按语集", "en": "The Keeper's Notes"},
+    "notes_note": {
+        "zh": "每一章都收在它自己的车辙上；车辙上方另有一句按语，出自一位"
+              "赶了三十年驿路的老驿卒。他不解释术语，只回头看看刚走完的"
+              "这段路。这一页把二十条按语照原路再走一遍，每条链回章末。",
+        "en": "Every unit closes on its own wheel ruts, and above them stands "
+             "one line by an old postman who has ridden this road for thirty "
+             "years. He explains nothing; he only looks back over the leg "
+             "just travelled. This page walks all twenty lines in order, each "
+             "linked back to the ruts it sat on."},
     "principles_note": {
         "zh": "书里的核心术语各有一句白话定义和一个比方；这一页补上中间那层——"
               "它非这样不可的理由。理由一律取自正文自己的论证，条目排在提出它的那一章下面。",
@@ -513,4 +523,29 @@ def principles_page(groups: list[dict], lang: str) -> str:
             f'<span class="pr-n">{len(g["terms"])}</span></h2>'
             f'<ul class="pr-list">{"".join(rows)}</ul></div>')
     parts.append("</section>")
+    return "".join(parts)
+
+
+def notes_page(notes: dict, units, lang: str) -> str:
+    """The twenty lines of the old postman, walked once more in order.
+
+    One row per unit in reading order; the head links back to the chapter's
+    own ruts, because a note taken out of its ending loses its timing."""
+    parts = [f'<section class="front-page back-notes" id="keeper-notes">'
+             f'<h1 class="page-title">{esc(ui("notes_page", lang))}</h1>'
+             f'<p class="pr-note">{esc(ui("notes_note", lang))}</p>'
+             f'<ul class="kn-list">']
+    for u in units:
+        body = (notes.get(u.id) or {}).get(lang)
+        if not body:
+            continue
+        # the gutter label, not the full title: a row whose head wraps to three
+        # lines stops being an index and becomes a table of contents
+        label = getattr(u, "eyebrow", None) or u.display
+        parts.append(
+            f'<li class="kn-row"><b class="kn-head">'
+            f'<a class="xref" href="#{esc(u.anchor)}" title="{esc(u.display)}">'
+            f'{esc(label)}</a>'
+            f'</b><span class="kn-note">{esc(body)}</span></li>')
+    parts.append("</ul></section>")
     return "".join(parts)

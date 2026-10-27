@@ -150,6 +150,39 @@ class TermMarks(unittest.TestCase):
         out, _h, _u = mark(cases[0][0], g)
         self.assertIn("<code>异步生成器</code>", out)
 
+    def test_an_identifier_is_marked_where_a_reader_meets_it(self):
+        """Half the book's vocabulary only ever appears as code: a term written
+        `isConcurrencySafe` in a sentence is that reader's first and only
+        meeting with it, so the help has to be reachable there."""
+        g = gloss("concurrency-safe", "并发安全", "concurrency safe",
+                  ["isConcurrencySafe"], ["isConcurrencySafe"],
+                  evidence=[f"{ZH_CH02}:18", f"{EN_CH02}:18"])
+        out, hits, _u = mark("<p><code>isConcurrencySafe</code> 决定两个工具"
+                             "能不能同时跑。</p>", g)
+        self.assertEqual([h["id"] for h in hits], ["concurrency-safe"])
+        self.assertRegex(out, r"<code><span class=\"gloss\"[^>]*>"
+                             r"isConcurrencySafe<span class=\"gloss-pop\"")
+
+    def test_an_ordinary_word_inside_code_stays_plain(self):
+        """Only shapes a reader cannot parse as a word earn a mark inside
+        code; `Streaming` in backticks is English already, and dashing every
+        backtapped word would turn prose into a field of dashes."""
+        g = gloss("streaming", "流式", "Streaming", ["Streaming"],
+                  ["Streaming"])
+        out, hits, _u = mark("<p>先看 <code>Streaming</code> 的两种收尾，"
+                             "正文里的 Streaming 才算。</p>", g)
+        self.assertEqual(len(hits), 1)
+        self.assertIn("<code>Streaming</code>", out)
+
+    def test_a_code_plate_never_gets_a_mark_even_for_an_identifier(self):
+        g = gloss("concurrency-safe", "并发安全", "concurrency safe",
+                  ["isConcurrencySafe"], ["isConcurrencySafe"])
+        out, hits, _u = mark(
+            "<pre><code>const t = buildTool({ isConcurrencySafe: true });"
+            "</code></pre>", g)
+        self.assertEqual(len(hits), 0)
+        self.assertNotIn('class="gloss"', out)
+
     def test_the_longer_form_wins_when_two_terms_overlap(self):
         g = {}
         g.update(gloss("async-generator", "异步生成器", "async generator",

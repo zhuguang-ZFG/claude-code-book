@@ -53,7 +53,7 @@ class ShippedDrawings(unittest.TestCase):
 
     @unittest.skipUnless(art.ART_DIR.exists(), "no illustrations yet")
     def test_no_drawing_repeats_a_shape_id(self):
-        """25 files inlined into one page: a shared id would collide, and the
+        """26 files inlined into one page: a shared id would collide, and the
         duplicate-id audit would fire far from the drawing that caused it."""
         ids = set()
         for path in sorted(art.ART_DIR.glob("*.svg")):
@@ -131,7 +131,7 @@ class Loader(unittest.TestCase):
 class Stylesheet(unittest.TestCase):
     def test_the_emblem_slots_are_styled(self):
         from yuyu_book.style import CSS
-        for cls in (".ch-emblem", ".pd-art", ".cover-art"):
+        for cls in (".ch-emblem", ".pd-art", ".cover-art", ".kp-art"):
             self.assertIn(cls, CSS, cls)
         # the emblem must not be allowed to stretch the head row
         self.assertIn("margin-inline-start:auto",

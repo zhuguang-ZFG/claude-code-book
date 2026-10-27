@@ -596,7 +596,7 @@
    "zh": "一个位置只允许列出的几种形状之一，用前得先分辨是哪种",
    "en": "one slot holding any of several listed shapes; you must tell which first"
   },
-  "priority": "core",
+  "priority": "extra",
   "evidence": [
    "第一部分-基础篇/02-对话循环-Agent的心跳.md:61",
    "第一部分-基础篇/04-权限管线-Agent的护栏.md:193",
@@ -605,15 +605,7 @@
   "analogy": {
    "zh": "信封里可能是发票、贺卡或照片，拆开先看是哪样",
    "en": "an envelope with an invoice, card, or photo - open it to see which"
-  },
-  "why": {
-   "zh": "五类消息走同一条流，界面看到的顺序就是产生的顺序；拆成几条流，先后只能靠猜。",
-   "en": "All five kinds travel one stream, so the UI sees them in the order produced; split them across separate streams and the sequence must be guessed."
-  },
-  "why_evidence": [
-   "第一部分-基础篇/02-对话循环-Agent的心跳.md:61",
-   "en/Part-1-Foundations/02-The-Dialog-Loop-Heartbeat-of-an-Agent.md:61"
-  ]
+  }
  },
  "closure": {
   "term": {

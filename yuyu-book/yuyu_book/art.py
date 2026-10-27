@@ -54,6 +54,15 @@ def emblem(unit_id: str) -> str:
     return f'<span class="ch-emblem" aria-hidden="true">{text}</span>'
 
 
+def keeper() -> str:
+    """The old postman at the foot of each chapter, inlined 20 times: small
+    by contract, because a mascot the file cannot afford is not a mascot."""
+    text = _read("keeper")
+    if not text:
+        return ""
+    return f'<span class="kp-art" aria-hidden="true">{text}</span>'
+
+
 def headpiece(part_id: str) -> str:
     """The drawing a part divider opens with, or '' when there is none."""
     text = _read(f"part-{part_id}")
