@@ -321,6 +321,17 @@ class PrintContract(unittest.TestCase):
         # print on top of each other in the left gutter
         self.assertRegex(print_block, r"\.pr-why\{grid-column:2;grid-row:1")
 
+    def test_the_postman_line_is_glued_and_the_collection_row_kept_whole(self):
+        """On paper the keeper sits inline above the ruts it comments on; a note
+        split across two sheets leaves a page of wheel tracks with nothing to
+        say. The collection page is one row per unit, and a row cut in half
+        separates a chapter from the verdict on it."""
+        self.assertRegex(CSS, r"\.kn-row\{[^}]*break-inside:avoid")
+        print_block = CSS[CSS.index("@media print{"):]
+        self.assertRegex(print_block, r"\.keeper\{[^}]*break-inside:avoid")
+        # the hover lean is a screen trick; on paper it just stops
+        self.assertRegex(print_block, r"\.kp-art svg\{transition:none\}")
+
     def test_the_reason_and_the_picture_are_two_visibly_different_voices(self):
         """Three lines of plain text at one size read as a wall; the reason
         carries a bronze rule and the picture is set in the calligraphic face."""

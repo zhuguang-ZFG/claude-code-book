@@ -96,7 +96,7 @@
 
 ### 3.2.1 `tests/`：构建契约
 
-`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点、原理札记的成页与归属）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、`why` 的长度与双语证据门禁正反两面）、`test_notes`（按语的术语锁正反两面、长度上限、英文不许夹汉字、缺一条与多一条都算错、按语集成页与回链、驿卒图过装载器且小到能内联 20 次，最后拿真实的 `notes.json` 与 20 份单元源文件跑它自己的门禁）、`test_art`（26 份图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `build.py --check --mermaid=source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是）、`test_docclaims`（把 README / STRUCTURE / CREDITS / revisions 里引用的每个数字重算一遍：附录 D 词条数、白话注与 core 数、主题索引、手绘图、来源登记、每版图版、构建器测试总数；句子改了措辞导致正则找不到那句，同样算失败——数字悄悄烂掉才是真正的问题。另一半盯的是**正文声明的总数与它自己那张表**：第 8 章说的事件数必须等于汇总表行数、附录 B 数出的工具数必须等于全书每一处引用它的句子（连第 13 章 0.1–0.3ms × N 的算术一起核）、§13.5.1 的维度数以图版真正画出的枚数为准，而被替换掉的旧措辞（`45+`、六十多个、26 个事件、三个维度）只要再出现就让测试红）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
+`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点、原理札记的成页与归属）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、`why` 的长度与双语证据门禁正反两面）、`test_notes`（按语的术语锁正反两面、长度上限、英文不许夹汉字、缺一条与多一条都算错、按语集成页与回链、驿卒图过装载器且小到能内联 20 次，最后拿真实的 `notes.json` 与 20 份单元源文件跑它自己的门禁）、`test_art`（26 份图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `build.py --check --mermaid=source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是）、`test_docclaims`（把 README / STRUCTURE / CREDITS / revisions 里引用的每个数字重算一遍：附录 D 词条数、白话注与 core 数、主题索引、手绘图、来源登记、每版图版、构建器测试总数；句子改了措辞导致正则找不到那句，同样算失败——数字悄悄烂掉才是真正的问题。另一半盯的是**正文声明的总数与它自己那张表**：第 8 章说的事件数必须等于汇总表行数、附录 B 数出的工具数必须等于全书每一处引用它的句子（连第 13 章 0.1–0.3ms × N 的算术一起核）、§13.5.1 的维度数以图版真正画出的枚数为准、附录 B 那行按语里的总数与附录 B 数出的行数对表（按语里宁可一个数字都不写，写了就必须能被重算），而被替换掉的旧措辞（`45+`、六十多个、26 个事件、三个维度）只要再出现就让测试红）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
 
 ### 3.3 数据文件
 
@@ -105,7 +105,7 @@
 | `manifest.json` | 书的骨架：`version` / `date` / `author` / `repository` / `license` / `title` / `subtitle` / `epigraph` / `start_reading` + `parts`(4) / `front` / `appendices`(4) / `guides`(20)。单元条目只有 `id`、`zh`、`en` 三个字段；`guides[<id>]` 除罗盘三卡与 `sources` 外，还带通俗层的 `plain`（章首导读带）、`analogy`（打个比方）与 `plain_evidence`（指回书稿的 `file:line`） |
 | `glosses.json` | 术语白话注，当前 102 条（44 个 core 会在正文画虚线）。每条 `term` / `forms`（中英表面词形）/ `plain` / `analogy` / `why` + `why_evidence`（原理句与它的出处，44 个 core 各配一对，长度上限 zh 52 / en 190）/ `priority` / `evidence`。只有 `priority: "core"` 的词会在正文里画虚线并进入章首新词面板（面板与画线的是同一批词，构建时断言）；一个术语在某章只以行内代码现身时，虚线画在那段代码上——但只画读不成普通词的形状（带 `_`、数字或驼峰接缝的标识符），`Streaming` 这类普通词仍等正文，`<pre>` 图版一律不画（图版整块来读，虚线还会打断照抄）；`extra` 不上正文也不上面板，只在附录 D 里可查——一章最多 22 个新词，超了就下调 |
 | `reading-paths.json` | 三层阅读路线（起步 / 主干 / 进阶）。按单元存**位置**列表：数组长度必须等于该单元实际渲染出的 `<h2>` 数，对不上 `plain.stamp_tiers()` 直接报错，宁可不产出也不盖错章 |
-| `notes.json` | 按语层：以单元 id 为键的 20 条一句话旁白（中英各一份），由那位老驿卒在章末车辙上方说出来。门禁是 `plain.validate_notes()`：必须含一个已注册词形、且该词形出现在这一单元自己的正文里（术语锁），中文 ≤36 字、英文 ≤130 字符，英文不夹汉字，一个单元都不能缺 |
+| `notes.json` | 按语层：以单元 id 为键的 20 条一句话旁白（中英各一份），由那位老驿卒在章末车辙上方说出来。门禁是 `plain.validate_notes()`：必须含一个已注册词形、且该词形出现在这一单元自己的正文里（术语锁），中文 ≤36 字、英文 ≤130 字符，英文不夹汉字，一个单元都不能缺。还有一道门在 `test_docclaims`：按语里写的数字必须能被重算——`KEEPER_TOTALS` 钉住附录 B 那行的工具总数与附录 B 真正数出来的行数相等，其余任何数字都要么不写、要么得先在表里登记它从哪算来；写成汉字的「五十五」测试读不到，正是这本书被约数骗过的原因 |
 | `illustrations/` | 26 份手写 SVG：20 枚单元章徽（`<unit-id>.svg`，64×64 描线）+ 4 幅篇题刻（`part-<id>.svg`，200×140 小版画）+ 1 幅扉页车图（`cover.svg`，1000×470 横构图，四马一盖车、三十辐的轮，约 11.7 KB，故享 `PLATE_BYTES`）+ 1 枚驿卒（`keeper.svg`，64×64，斗笠与提灯；章章内联一次，测试把它的体积钉在 3 KB 以内）。全部 `currentColor`，无 id、无外链，见 `art.py` |
 | `sources.json` | 以来源 id 为键的 49 条登记。字段：`title` `authority` `kind` `url` `pinned` `snapshot` `accessed` `license` `scope`，`community` 类另带 `normative`。凡本书自己写的中文注（快照、许可、用途，以及带中文括注的标题与社区帖标题）都配 `*_en` 镜像，渲染时按语言取字段——门禁：镜像缺失或镜像里仍有汉字即构建失败。kind 分布：`docs` 21、`github` 20、`blog` 4、`spec` 1、`npm` 1、`community` 2；49 条全部被 `guides.sources` 引用 |
 | `revisions.json` | "版本与修订"页的条目，zh / en 各一份 |
@@ -193,7 +193,7 @@ yuyu-book/
 | 改某章的白话导读带或"打个比方" | `manifest.json` 的 `guides[<id>].plain` / `analogy`，改完给 `plain_evidence` 补上指得回书稿的 `file:line` |
 | 加或改一条术语白话注 | `yuyu-book/glosses.json`（只想进面板、不在正文画虚线，就把 `priority` 降成 `extra`） |
 | 调整某章哪些小节属于起步/主干/进阶 | `yuyu-book/reading-paths.json`（按小节顺序，长度必须等于小节数） |
-| 加或改一条章末按语 | `yuyu-book/notes.json`（那句里得有一个本单元正文真的用过的注册词形，否则术语锁不让过） |
+| 加或改一条章末按语 | `yuyu-book/notes.json`（那句里得有一个本单元正文真的用过的注册词形，否则术语锁不让过；句中出现数字，就必须是 `test_docclaims` 重算得出来的那个） |
 | 重画某章小图、某篇题刻或章末的驿卒 | `yuyu-book/illustrations/<id>.svg`（`currentColor` 描线，别加 id） |
 | 新增或修订一条参考来源 | `yuyu-book/sources.json` |
 | 改版本说明页 | `yuyu-book/revisions.json` |

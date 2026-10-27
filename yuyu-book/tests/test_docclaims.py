@@ -413,6 +413,43 @@ class TextTotalsMatchTheirOwnTables(Data):
                           f"{label}: the wrapped dimensions never name model — "
                           f"that is how the list lost a dimension once")
 
+    KEEPER_TOTALS = {("apxb", "zh"): r"(\d+) 枚腰牌",
+                     ("apxb", "en"): r"(\d+) tallies"}
+
+    def test_the_postman_only_states_numbers_the_book_can_recount(self):
+        """A keeper note is prose, but the numbers in it are the repository's.
+
+        Spelled out, 五十五 is invisible to every gate in this file — that is
+        precisely how 六十多个工具 lived beside an appendix listing 55. So a note
+        either carries no digits at all or carries one a test recomputes; adding
+        a second entry to KEEPER_TOTALS is the way to say where a new number
+        comes from.
+        """
+        notes = load_json(BOOK_DIR / "notes.json")
+        want = {lang: str(len(self.tools(lang))) for lang in ("zh", "en")}
+        bad = []
+        for lang in ("zh", "en"):
+            for uid, body in notes.items():
+                rx = self.KEEPER_TOTALS.get((uid, lang))
+                if rx is None:
+                    bad += [f"{uid}/{lang}: {d.group()!r} is a number no test "
+                            f"can recount"
+                            for d in re.finditer(r"\d+", body[lang])]
+                    continue
+                m = re.search(rx, body[lang])
+                if m is None:
+                    bad.append(f"{uid}/{lang}: its total is spelled out where no "
+                               f"test can read it (looking for {rx!r})")
+                    continue
+                if m.group(1) != want[lang]:
+                    bad.append(f"{uid}/{lang}: says {m.group(1)}, appendix B "
+                               f"lists {want[lang]}")
+                bad += [f"{uid}/{lang}: {d.group()!r} is a number no test can "
+                        f"recount"
+                        for d in re.finditer(r"\d+", body[lang])
+                        if not (m.start(1) <= d.start() and d.end() <= m.end(1))]
+        self.assertEqual(bad, [], "\n  " + "\n  ".join(bad))
+
     def test_the_superseded_figures_are_gone(self):
         """The wording these corrections replaced, nowhere in the book or its docs.
 
