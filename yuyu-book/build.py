@@ -298,22 +298,41 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     print("  " + stats)
     if do_pdf:
         from yuyu_book import pdf
-        p = pdf.build_pdf(out, pdf_meta(manifest, outline, toc_entries, lang),
-                          edge or browser)
+        pmeta = pdf_meta(manifest, outline, toc_entries, lang, idx_entries)
+        # paper has no hover and no locator chip that means anything without a
+        # sheet number, so the index rows get their folios from a measuring
+        # print and the book is printed again with the numbers in place
+        folios = {}
+        if pmeta["index_rows"]:
+            dest = pdf.measure(out,
+                               sorted({r["anchor"] for r in pmeta["index_rows"]}),
+                               edge or browser)
+            folios = {a: dest[a] + 1 for a in dest}
+            out.write_text(pages.fill_index_folios(html_text, folios),
+                           encoding="utf-8")
+        p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios)
         print(f"  {p.name}: {p.stat().st_size / 1e6:.1f} MB, "
-              f"{len(outline)} bookmarks")
+              f"{len(outline)} bookmarks, {len(folios)} index folios")
     return out
 
 
-def pdf_meta(manifest, outline, toc_entries, lang):
+def pdf_meta(manifest, outline, toc_entries, lang, idx_entries=()):
     """Everything the PDF pass needs that the HTML cannot say for itself:
-    bookmarks, running heads, and where the printed contents rows sit."""
+    bookmarks, running heads, the contents rows it must number, and the index
+    rows it must number once the measuring print says where each unit lands."""
     return {"outline": outline,
             # every bookmark opens a section, parts included: leaving the part
             # dividers out made those pages wear the previous chapter's head
             "heads": [(a, label) for _lvl, label, a in outline],
             "toc_rows": [e["anchor"] for e in toc_entries
                          if e["kind"] in ("row", "part")],
+            # a folio is written into the row it belongs to, keyed by the anchor
+            # the row links to — the terms are here so a test can prove this list
+            # is the index in the order the page puts it down: an entry this
+            # edition has no chip for prints no row and gets no folio
+            "index_rows": [{"term": e[lang]["term"],
+                            "anchor": e[lang]["refs"][0]["anchor"]}
+                           for e in idx_entries if e[lang]["refs"]],
             "toc_title": pages.ui("toc", lang),
             "title": manifest["title"][lang],
             "subtitle": manifest["subtitle"][lang],

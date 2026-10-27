@@ -1,4 +1,5 @@
-"""The printed-sheet audit: which pages count as carrying content.
+"""The printed-sheet audit: which pages count as carrying content, and whether
+an index folio measured on one print is still true on the next.
 
 `empty_sheets()` is the gate that keeps the book from shipping a reader-facing
 hole — a sheet with nothing on it but the running head and the folio. These
@@ -12,7 +13,7 @@ import fitz
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book.pdf import empty_sheets  # noqa: E402
+from yuyu_book.pdf import empty_sheets, folio_drift  # noqa: E402
 
 
 def _doc(*pages):
@@ -66,6 +67,28 @@ class Sheets(unittest.TestCase):
         with _doc(_with_body, _furniture_only, _plate_only,
                   _furniture_only) as doc:
             self.assertEqual(empty_sheets(doc), [2, 4])
+
+
+class Folios(unittest.TestCase):
+    """The index's second print: numbers measured on one sheet must still be
+    right on the sheet the book was actually printed to."""
+
+    def test_a_number_that_stands_where_it_was_measured_is_no_drift(self):
+        self.assertEqual(folio_drift({"ch07": 90, "ch08": 120},
+                                     {"ch07": 91, "ch08": 121}), {})
+
+    def test_rows_sharing_a_unit_agree_by_construction(self):
+        """Two headwords filed under one chapter print two folios, and both are
+        that chapter's page: the map is keyed by anchor, so it cannot disagree
+        with itself."""
+        self.assertEqual(folio_drift({"ch07": 90}, {"ch07": 91}), {})
+
+    def test_a_sheet_that_moved_when_the_numbers_landed_is_named(self):
+        """A row whose reserved slot turned out too narrow repages the index —
+        and every folio in the book was measured before that happened."""
+        self.assertEqual(folio_drift({"ch07": 90, "ch08": 122},
+                                     {"ch07": 91, "ch08": 121}),
+                         {"ch08": (123, 121)})
 
 
 if __name__ == "__main__":

@@ -7,6 +7,12 @@ tree (meta["outline"]), the running heads (meta["heads"]), the footer folios
 and the printed contents numbers (meta["toc_rows"] inside the contents
 pages). Number glyphs use built-in Helvetica; CJK heads need a local system
 font, subsetted before save, and degrade to a plain rule if none is there.
+
+The subject index is the one thing that cannot be drawn on after the fact —
+dozens of rows share an anchor and print near-identical lines — so it takes
+two prints: `measure` learns which sheet each unit landed on, the folios are
+written into the slots the rows already reserve, and the book is printed
+again with them in place.
 """
 from __future__ import annotations
 
@@ -107,11 +113,48 @@ def _destinations(doc, anchors: list[str]) -> dict[str, int]:
     return found
 
 
-def _fit(text: str, width: float, size: float, measure) -> str:
-    if measure(text) <= width:
+def measure(html_path: Path, anchors: list[str],
+            browser: str | None = None) -> dict[str, int]:
+    """Print the book once only to learn which sheet each anchor landed on.
+
+    The index needs this before the real print: a headword's page cannot be
+    stamped as ink after the fact the way a contents row can, because dozens of
+    rows share one anchor and print identical lines. So the numbers are measured
+    here, written into the slots the HTML already reserves, and the book is
+    printed again with them in place.
+    """
+    probe = html_path.with_name(html_path.stem + ".probe.pdf")
+    _print_pdf(html_path, probe, browser)
+    doc = fitz.open(probe)
+    try:
+        found = _destinations(doc, anchors)
+    finally:
+        doc.close()
+        probe.unlink(missing_ok=True)
+    missing = sorted({a for a in anchors if a not in found})
+    if missing:
+        raise BuildError("pdf: measuring print has no destination for "
+                         f"{missing[:8]}")
+    return found
+
+
+def folio_drift(dest: dict[str, int], folios: dict[str, int]) -> dict[str, tuple]:
+    """Index anchors whose printed folio no longer matches where the unit lands.
+
+    `dest` is 0-based from this print, `folios` the 1-based numbers written into
+    the rows after the measuring print. Empty means the layout held: a row whose
+    reserved slot turned out too narrow would repage the index *after* every
+    number in it was measured.
+    """
+    return {a: (dest[a] + 1, got) for a, got in folios.items()
+            if dest[a] + 1 != got}
+
+
+def _fit(text: str, width: float, size: float, width_of) -> str:
+    if width_of(text) <= width:
         return text
     trimmed = text
-    while trimmed and measure(trimmed + "…") > width:
+    while trimmed and width_of(trimmed + "…") > width:
         trimmed = trimmed[:-1]
     return (trimmed + "…") if trimmed else ""
 
@@ -174,7 +217,8 @@ def _running_head(head: _Head, page, text: str, side: str) -> None:
     shape.commit()
 
 
-def build_pdf(html_path: Path, meta: dict, browser: str | None = None) -> Path:
+def build_pdf(html_path: Path, meta: dict, browser: str | None = None,
+              folios: dict[str, int] | None = None) -> Path:
     raw = html_path.with_name(html_path.stem + ".raw.pdf")
     out = html_path.with_suffix(".pdf")
     _print_pdf(html_path, raw, browser)
@@ -183,11 +227,24 @@ def build_pdf(html_path: Path, meta: dict, browser: str | None = None) -> Path:
 
     anchors = [a for (_lvl, _t, a) in meta["outline"]]
     anchors += list(meta["toc_rows"]) + ["front"]
+    anchors += sorted({r["anchor"] for r in meta.get("index_rows", ())})
     dest = _destinations(doc, anchors)
     missing = sorted({a for a in anchors if a not in dest})
     if missing:
         doc.close()
         raise BuildError(f"pdf: no destination found for {missing[:8]}")
+
+    # the index folios were measured on the previous print and written into the
+    # rows; a number that has moved means the reserved slot changed the column
+    # layout after all, and every folio in the book is now suspect
+    if folios:
+        moved = folio_drift(dest, folios)
+        if moved:
+            doc.close()
+            raise BuildError(
+                f"pdf: {len(moved)} index folio(s) moved between the measuring "
+                f"print and this one ({list(moved.items())[:4]}) — a row must "
+                "reserve the width its number needs")
 
     doc.set_toc([[lvl, label, dest[a] + 1]
                  for lvl, label, a in meta["outline"]])

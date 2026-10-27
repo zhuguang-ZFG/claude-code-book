@@ -178,9 +178,9 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 - `article` 数量或 `compass` 卡数量少于单元数
 - 指向 `.md` 的残余链接
 
-`audit()` 之后 `build.py` 还有四道对账：正文术语标记数必须等于章首面板行数；章末按语数必须等于「按语集」的行数、且等于该语言真有按语的单元数；导读带、罗盘、新词面板、tier 徽、章徽、题刻的数量要写进统计行并与预期相等；磁盘上每一枚能装配的图都必须真的上了页面。通俗层自身的证据与长度规则由 `plain.validate_plain()` 与 `plain.validate_notes()` 在装配之前把关，见第 5.1 节。
+`audit()` 之后 `build.py` 还有五道对账：正文术语标记数必须等于章首面板行数；章末按语数必须等于「按语集」的行数、且等于该语言真有按语的单元数；导读带、罗盘、新词面板、tier 徽、章徽、题刻的数量要写进统计行并与预期相等；磁盘上每一枚能装配的图都必须真的上了页面；主题索引每一行必须恰有一枚页码空位、`pdf_meta` 交给打印趟的行表必须与页面真正落下的行同名同序（行表错开一位，每个页码都会落到别人的头词上）。通俗层自身的证据与长度规则由 `plain.validate_plain()` 与 `plain.validate_notes()` 在装配之前把关，见第 5.1 节。
 
-PDF 阶段另有三道：命名目标缺失（`no destination found for ...`）、目录页码盖不全（`stamped only N of M contents rows`），以及目标文件被占用（`cannot replace yuyu-agent-harness-*.pdf`）——最后那道在 Windows 上尤其常见：阅读器、资源管理器的预览、或一个还开着 `dist/` 里 PDF 的校验脚本都会锁住文件；关掉它重跑即可，未盖章的 `*.raw.pdf` 会留在原地。
+PDF 阶段另有五道：命名目标缺失（`no destination found for ...`）、量页码那一趟没有目的地（`measuring print has no destination for ...`）、页码落进空位后翻页位置变了（`index folio(s) moved between the measuring print and this one`）、目录页码盖不全（`stamped only N of M contents rows`），以及目标文件被占用（`cannot replace yuyu-agent-harness-*.pdf`）——最后一道在 Windows 上尤其常见：阅读器、资源管理器的预览、或一个还开着 `dist/` 里 PDF 的校验脚本都会锁住文件；关掉它重跑即可，未盖章的 `*.raw.pdf` 会留在原地。索引页码要打印两趟，所以 `--pdf` 每种语言多花一趟打印的时间。打印出来的行内页码写回 `dist/` 里那份 HTML（屏幕上这一格本就隐藏，读屏也不会念出一个只有纸才知道的数）。
 
 ## 7. PDF 的机器相关性
 

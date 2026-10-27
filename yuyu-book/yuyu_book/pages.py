@@ -5,7 +5,7 @@ from __future__ import annotations
 import html
 import re
 
-from .core import INDEX_CN_LETTER  # noqa: E402
+from .core import BuildError, INDEX_CN_LETTER  # noqa: E402
 from .plain import ANALOGY_TAG, WHY_TAG  # noqa: E402
 
 _LABELS = {
@@ -494,6 +494,39 @@ def subject_index_page(entries: list[dict], lang: str) -> str:
         parts.append("</ul></div>")
     parts.append("</div></section>")
     return "".join(parts)
+
+
+IDX_SLOT = re.compile(r'<span class="page-ref idx-ref" data-ref="([^"]*)"></span>')
+
+
+def fill_index_folios(html_text: str, folios: dict[str, int]) -> str:
+    """Write each index row's printed page number into the slot it reserves.
+
+    The row is keyed by the anchor it links to, never by the headword: `Session`
+    and `SessionStart` print almost the same line, so any pass that looked for
+    the term in the printed sheet could hand `SessionStart` the other's number.
+    A slot with no folio, or a folio whose anchor never reached the page, is a
+    build failure rather than an index that quietly stops mid-column.
+    """
+    hit: list[str] = []
+
+    def ink(m: re.Match) -> str:
+        anchor = m.group(1)
+        hit.append(anchor)
+        if anchor not in folios:
+            raise BuildError(
+                f"index: no page number for {anchor!r} — the sheet would print "
+                "an empty folio slot")
+        return (f'<span class="page-ref idx-ref" data-ref="{anchor}">'
+                f"{folios[anchor]}</span>")
+
+    filled = IDX_SLOT.sub(ink, html_text)
+    unknown = sorted(set(folios) - set(hit))
+    if unknown:
+        raise BuildError(
+            f"index: {len(unknown)} folio(s) with no row to fill "
+            f"({unknown[:8]}) — the index and the page disagree")
+    return filled
 
 
 def principles_page(groups: list[dict], lang: str) -> str:

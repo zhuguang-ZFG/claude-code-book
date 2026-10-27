@@ -446,6 +446,73 @@ class BackMatter(Config):
                                 "a Chinese-only row leaked into the English index")
         self.assertNotIn("中文", html_en)
 
+    def test_paper_reserves_the_folio_slot_the_pdf_fills(self):
+        """A screen has no pages, so an index row shows only its locator chip and
+        the row's folio placeholder stays hidden. Paper is the other case: the
+        placeholder exists in the markup, but the print block inherited the
+        screen's `display:none` and the PDF pass had no row list to stamp, so the
+        slot was neither reserved nor filled."""
+        entries = load_json(BOOK_DIR / "subject-index.json")
+        printed = [e for e in entries if e["zh"]["refs"]]
+        html = pages.subject_index_page(entries, "zh")
+        rows = re.findall(r'<li class="idx-row">.*?</li>', html, re.S)
+        self.assertEqual(len(rows), len(printed),
+                         "a row this edition lists never reached the page")
+        for row, e in zip(rows, printed):
+            self.assertEqual(row.count('class="page-ref idx-ref"'), 1, e["key"])
+            self.assertIn(f'data-ref="{e["zh"]["refs"][0]["anchor"]}"', row,
+                          e["key"])
+        print_block = CSS[CSS.index("@media print{"):]
+        self.assertRegex(print_block, r"\.idx-row \.page-ref\{display:block")
+
+    def test_the_meta_row_list_is_the_index_in_printed_order(self):
+        """The folio pass is handed terms, not positions: page one of the PDF
+        tells it which sheet each anchor landed on, the numbers are written into
+        the slots the rows already reserve, and page two prints the book. If
+        `pdf_meta` and the rendered page disagree, every number lands on somebody
+        else's headword."""
+        import build
+        from html import unescape
+        entries = load_json(BOOK_DIR / "subject-index.json")
+        for lang in ("zh", "en"):
+            printed = [e for e in entries if e[lang]["refs"]]
+            html = pages.subject_index_page(entries, lang)
+            rendered = [unescape(t).replace("_<wbr>", "_") for t in
+                        re.findall(r'<span class="idx-term">(.*?)</span>', html, re.S)]
+            rows = build.pdf_meta(self.manifest, [], [], lang, entries)["index_rows"]
+            self.assertEqual([r["term"] for r in rows], rendered, lang)
+            self.assertEqual([r["anchor"] for r in rows],
+                             [e[lang]["refs"][0]["anchor"] for e in printed], lang)
+
+    def test_folios_land_in_the_slot_of_their_own_row(self):
+        """A row's slot is keyed by the anchor it links to, so `SessionStart`
+        cannot borrow `Session`'s number however similar the two lines print."""
+        html = ('<li class="idx-row"><span class="idx-term">Session</span>'
+                '<span class="page-ref idx-ref" data-ref="ch07"></span></li>'
+                '<li class="idx-row"><span class="idx-term">SessionStart</span>'
+                '<span class="page-ref idx-ref" data-ref="ch08"></span></li>')
+        filled = pages.fill_index_folios(html, {"ch07": 91, "ch08": 121})
+        self.assertIn('data-ref="ch07">91</span>', filled)
+        self.assertIn('data-ref="ch08">121</span>', filled)
+        self.assertEqual(filled.count('class="page-ref idx-ref"'), 2)
+
+    def test_an_unfilled_or_double_slot_fails_the_build(self):
+        """The slot is the only place a folio may go: a row left blank prints an
+        index that stops mid-column, and a number written twice would mean two
+        rows claim one anchor."""
+        html = ('<li class="idx-row"><span class="page-ref idx-ref" '
+                'data-ref="ch07"></span></li>'
+                '<li class="idx-row"><span class="page-ref idx-ref" '
+                'data-ref="ch09"></span></li>')
+        from yuyu_book.core import BuildError
+        with self.assertRaises(BuildError):
+            pages.fill_index_folios(html, {"ch07": 91})
+        with self.assertRaises(BuildError):
+            pages.fill_index_folios(html, {"ch07": 91, "ch09": 99, "ch11": 5})
+        # the empty slot survives untouched in the source, so a screen reader
+        # never gets a page number that only a printed sheet can know
+        self.assertNotIn(">91<", html)
+
 
 class Principles(Config):
     """The reason layer on paper: a hover card never reaches the PDF, so every

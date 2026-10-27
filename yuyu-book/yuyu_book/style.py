@@ -1155,6 +1155,10 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      is 665px of a much taller sheet — two columns is the book convention and
      halves the index */
   .idx-cols{columns:2;column-gap:2.2rem}
+  /* the folio slot: a screen has no pages, so the row hides its page reference;
+     paper reserves the box here and the PDF pass writes the number into it —
+     nothing in the HTML can know the page a row lands on */
+  .idx-row .page-ref{display:block}
   /* the printed sheet is 665px of text box: a 7.5rem gutter for a two-character
      term would be a third of the line gone, so the gutter narrows with the page.
      6.4rem is where the longest single-word English term ("immutability") still
