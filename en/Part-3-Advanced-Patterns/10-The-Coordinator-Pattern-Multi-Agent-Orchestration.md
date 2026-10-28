@@ -380,7 +380,7 @@ This means the coordinator cannot simply forward a worker's findings to another 
 > This is one of the most core design principles of the Coordinator pattern. In traditional master-slave architectures, the master node can simply forward a slave node's results to another slave node. But in an AI agent system, this forwarding leads to severe context loss issues:
 >
 > - **Format inconsistency**: Different workers produce output in different formats; direct forwarding causes the recipient to be unable to understand
-> - **Coexistence of information redundancy and gaps**: Worker A's report may contain大量 irrelevant details while missing critical information
+> - **Coexistence of information redundancy and gaps**: Worker A's report may contain many irrelevant details while missing critical information
 > - **Lack of global perspective**: Each worker only sees the portion it investigated and cannot make globally optimal decisions
 >
 > Requiring the coordinator to "digest" all findings before writing the spec ensures that workers in the implementation phase receive unified, precise, and contextualized instructions.

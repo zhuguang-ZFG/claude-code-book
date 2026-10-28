@@ -72,7 +72,7 @@ The three permission-related methods form a layered permission check pipeline:
 2. **Layer 2: Permission checks (hasPermissionsToUseTool + checkPermissions)**: Contains tool-specific permission logic. Different tools have different permission check granularity -- the Read tool may only check whether a path is in an allow list, while the Bash tool needs to parse commands and assess risk levels.
 3. **Layer 3: Runtime property determination**: Affects the tool's concurrency scheduling strategy. For example, `isConcurrencySafe()` marks whether a tool can be executed in parallel.
 
-The design philosophy behind the three-layer separation is "separation of concerns": data validation doesn't care about permission policies, permission policies don't care about concurrency scheduling. Each layer does one thing, but the three layers串联 together to provide complete protection.
+The design philosophy behind the three-layer separation is "separation of concerns": data validation doesn't care about permission policies, permission policies don't care about concurrency scheduling. Each layer does one thing, but the three layers work together to provide complete protection.
 
 **Element 4: Execution Logic**
 

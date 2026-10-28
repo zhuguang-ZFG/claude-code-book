@@ -1,6 +1,6 @@
 {
-  "version": "0.3.2",
-  "date": "2026-10-27",
+  "version": "0.3.3",
+  "date": "2026-10-28",
   "author": "LinTsinghua",
   "repository": "https://github.com/lintsinghua/claude-code-book",
   "license": {
@@ -716,13 +716,13 @@
       },
       "plain_evidence": [
         "第三部分-高级模式篇/11-技能系统与插件架构.md:17",
-        "第三部分-高级模式篇/11-技能系统与插件架构.md:302",
-        "第三部分-高级模式篇/11-技能系统与插件架构.md:413",
-        "第三部分-高级模式篇/11-技能系统与插件架构.md:512",
+        "第三部分-高级模式篇/11-技能系统与插件架构.md:299",
+        "第三部分-高级模式篇/11-技能系统与插件架构.md:410",
+        "第三部分-高级模式篇/11-技能系统与插件架构.md:509",
         "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:17",
-        "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:302",
-        "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:413",
-        "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:513"
+        "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:299",
+        "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:410",
+        "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:510"
       ]
     },
     "ch12": {

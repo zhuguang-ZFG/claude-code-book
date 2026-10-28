@@ -420,7 +420,7 @@ Three key design decisions:
 
 **Why Only 34 Lines? -- The "Less Is More" Philosophy of State Management**
 
-In today's frontend ecosystem, state management libraries are层出不穷 -- Redux, MobX, Recoil, Jotai, Valtio... each trying to solve different pain points. Claude Code's Store has chosen a minimalist path, which is not laziness but a precise grasp of requirements.
+In today's frontend ecosystem, state management libraries keep proliferating -- Redux, MobX, Recoil, Jotai, Valtio... each trying to solve different pain points. Claude Code's Store has chosen a minimalist path, which is not laziness but a precise grasp of requirements.
 
 The state management needs of an Agent CLI tool are fundamentally different from those of a complex Web application:
 

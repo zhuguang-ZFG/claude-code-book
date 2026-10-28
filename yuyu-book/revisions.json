@@ -1,6 +1,26 @@
 {
   "entries": [
     {
+      "version": "0.3.3",
+      "date": "2026-10-28",
+      "zh": [
+        "第 11 章重新校准信任边界：`LoadedFrom` 不再画成从高到低的信誉阶梯，而是画成“来源标签 → 允许的转换”决策图。本地项目技能与第三方插件也需要审查；来源能收紧 Shell 展开和文件提取等加载策略，却不能替内容作安全背书。中英文正文、图版与章末要点同步改写。",
+        "第 11 章章徽从一个泛用文件夹重画为带折角的技能页接入两枚插件端子：左侧三行是可读指令，右侧插脚表示能力被装入更大的扩展单元。仍是 `currentColor` 单线 SVG，无 id、脚本或外部资源。",
+        "第 13 章把两条时间线拆开：工具可按完成速度竞跑，但最终 `tool_result` 按调用序进入对话轨迹。结果已有 `tool_use_id` 绑定调用，排序不是为了猜 A/B 对应，而是让重放、调试、下一轮上下文与缓存前缀不随机器竞速漂移；正文也补出这份确定性换来的队头阻塞。时序图随之改成“乱序完成 / 有序提交”两栏。",
+        "第 13 章章徽重画为三股并行流穿过一枚缓冲闸门，再按三行有序射出；它把流式执行、汇合缓冲和顺序提交压进同一枚 64×64 线稿。",
+        "第 8 章把钩子能力从绝对说法改成协议边界：有的事件只允许观察，有的可以改写或阻断；PostToolUse 是否异步取决于下游要不要等待响应，而不是工具是否已经结束。章徽也改成生命周期线上三个事件节点，上下各接一条钩子反射弧。",
+        "英文书稿清掉第 3、5、6、8、10、13 章及附录 D 共九处汉字夹杂，并新增整稿级门禁：20 单元的英文 Markdown 一旦出现汉字就按文件与行号失败，唯一豁免精确到附录 D 术语表的第二列；反例测试保证汉字若漏进该表的定义列仍会失败。规则同步写进贡献指南。顺手修正英文反模式提示中的冠词错误。构建器测试 419 项全绿。"
+      ],
+      "en": [
+        "Chapter 11 recalibrates its trust boundary. `LoadedFrom` is no longer drawn as a reputation ladder from high to low; it is a decision map from source tag to permitted transformation. Local project skills and third-party plugins still require review. Provenance can tighten loading policy around Shell expansion and file extraction, but cannot vouch for content. Prose, plate and takeaway changed together in both languages.",
+        "Chapter 11's emblem is no longer a generic folder. A folded skill sheet now plugs into two plugin terminals: three strokes on the left stand for readable instructions, while the pins on the right show that capability joining a larger extension unit. It remains a single-line `currentColor` SVG with no ids, scripts or external assets.",
+        "Chapter 13 now separates two timelines: tools may race to completion, while final `tool_result` blocks enter the conversation trace in call order. `tool_use_id` already binds result to call, so ordering is not a guess about A versus B; it keeps replay, debugging, the next turn's context and cache prefixes from drifting with machine timing. The prose now names the head-of-line blocking paid for that determinism, and the plate contrasts out-of-order completion with ordered submission.",
+        "Chapter 13's emblem now draws three parallel streams passing through a buffer gate and leaving as three ordered arrows, putting streaming execution, convergence and ordered submission into one 64×64 line drawing.",
+        "Chapter 8 replaces absolutes with protocol boundaries: some event handlers may only observe, while others can rewrite or block; whether PostToolUse should be asynchronous depends on whether downstream work must consume its response, not on whether the tool has ended. Its emblem is now a lifecycle line with three event nodes and hook reflex arcs above and below it.",
+        "Nine stray Han fragments were removed from the English manuscripts of Chapters 3, 5, 6, 8, 10 and 13 plus Appendix D. A whole-manuscript gate now reports the file and line for any recurrence across the twenty English units; its only exemption is precisely Appendix D's second table column, and a negative test proves Han in that table's definition column still fails. The contributor guide records the rule, and the English anti-pattern callout loses a stray article error. 419 builder tests green."
+      ]
+    },
+    {
       "version": "0.3.2",
       "date": "2026-10-27",
       "zh": [

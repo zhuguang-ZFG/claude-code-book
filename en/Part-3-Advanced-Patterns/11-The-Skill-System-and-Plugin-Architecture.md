@@ -262,30 +262,27 @@ Additionally, the skill body supports inline Shell command execution and environ
 >
 > MCP skills come from external servers, and Shell commands can execute arbitrary system operations. If Shell command inline expansion were allowed in MCP skills, a malicious MCP server could inject a command like `$(rm -rf /)` into a skill prompt. Therefore, the system skips Shell command expansion when the `LoadedFrom` type is `mcp` — this is a critical security boundary.
 >
-> This is a classic "trust boundary" problem — local skill files are created and managed by the user (trusted), while MCP skills come from the network (untrusted). Security policies should differ based on the trust level of the source.
+> This is a classic trust-boundary problem, but “local” does not mean “trusted”: project skills may arrive with a third-party repository, and plugins may come from outside authors. A source tag is not a certificate of good content; it lets the loader choose transformations that fit the exposure. Refusing local Shell expansion for a remote MCP skill is one such tighter rule.
 
 ### 11.2.3 LoadedFrom Types
 
 The source of a skill is identified by the `LoadedFrom` type, which includes six sources: legacy command directory (commands_DEPRECATED), new skill directory (skills), plugin-provided (plugin), enterprise managed policy (managed), built-in compiled (bundled), and MCP server-provided (mcp).
 
-This type is used not only for tracking sources but also directly influences security policy. For example, skills from MCP do not execute Shell command inlining because MCP skills come from untrusted remote servers.
+This type records provenance and selects loading policy. For example, MCP skills do not receive Shell command expansion. Read the diagram below as “source to policy branch,” not as an absolute reputation ranking from high to low.
 
 ```mermaid
-graph LR
-    subgraph Sources["LoadedFrom Types and Security Policy Mapping"]
-        direction TB
-        B["bundled — Trust Level: Highest<br/>Shell inline: Allowed / File extraction: Secure extraction"]
-        M["managed — Trust Level: High<br/>Shell inline: Allowed / File extraction: Secure extraction"]
-        S["skills — Trust Level: Medium<br/>Shell inline: Allowed / File extraction: Secure extraction"]
-        P["plugin — Trust Level: Medium<br/>Shell inline: Allowed / File extraction: Secure extraction"]
-        CD["commands_DEPRECATED — Trust Level: Medium<br/>Shell inline: Allowed / File extraction: Secure extraction"]
-        MCP["mcp — Trust Level: Low<br/>Shell inline: Prohibited / File extraction: N/A"]
-    end
+flowchart TB
+    O["LoadedFrom source tag"] --> G{"Select allowed transformations"}
+    G --> B["bundled<br/>Shell inline: allowed / auxiliary files: secure extraction"]
+    G --> M["managed<br/>Shell inline: allowed / auxiliary files: secure extraction"]
+    G --> S["skills<br/>Shell inline: allowed / auxiliary files: secure extraction"]
+    G --> P["plugin<br/>Shell inline: allowed / auxiliary files: secure extraction"]
+    G --> CD["commands_DEPRECATED<br/>Shell inline: allowed / auxiliary files: secure extraction"]
+    G --> MCP["mcp<br/>Shell inline: prohibited / auxiliary files: N/A"]
+    G -.-> NOTE["Provenance selects a policy branch<br/>It does not certify the content"]
 
-    B --> M --> S --> P --> CD --> MCP
-
-    NOTE["Security policy decreases based on source trust level"]
-
+    style O fill:#3498db,stroke:#2471a3,color:#fff
+    style G fill:#fff3e0,stroke:#f39c12,color:#333
     style B fill:#2ecc71,stroke:#27ae60,color:#fff
     style M fill:#27ae60,stroke:#1e8449,color:#fff
     style S fill:#f39c12,stroke:#d68910,color:#fff
@@ -654,7 +651,7 @@ and run related tests after completion (post hook).
 
 > **Anti-Pattern Warning: Do not create "do-everything" skills**
 >
-> A skill should do one thing and do it well. If you find a skill's prompt exceeds 200 lines, consider splitting it into multiple skills. For example, instead of creating an "full-stack development" skill, create three independent skills: "API generation", "frontend component generation", and "test generation".
+> A skill should do one thing and do it well. If you find a skill's prompt exceeds 200 lines, consider splitting it into multiple skills. For example, instead of creating a "full-stack development" skill, create three independent skills: "API generation", "frontend component generation", and "test generation".
 >
 > Reason: The larger the skill, the greater the uncertainty when the model executes it. Small, focused skills are easier to debug, easier to reuse, and easier to compose with other skills.
 
@@ -752,7 +749,7 @@ Consider: Is there overlap between these skills? How can you avoid conflicts bet
 
 1. **Tiered Architecture**: Skill sources are layered from managed -> user -> project -> plugin -> bundled, with enterprise policies having the highest priority. Each layer has independent paths and security policies.
 
-2. **Security First**: MCP skills (`loadedFrom === 'mcp'`) do not execute Shell command inlining; built-in skill file extraction uses `O_NOFOLLOW | O_EXCL` to prevent symlink attacks; skills in gitignored directories are automatically skipped. Security policy decreases based on source trust level.
+2. **Security First**: MCP skills (`loadedFrom === 'mcp'`) do not execute Shell command inlining; built-in skill file extraction uses `O_NOFOLLOW | O_EXCL` to prevent symlink attacks; skills in gitignored directories are automatically skipped. Provenance selects the transformations the loader permits, but does not certify a skill's content.
 
 3. **Lazy Loading**: Built-in skill referenced files are only extracted to disk on first invocation; conditional skills are only activated when matching file patterns; dynamic skills are only discovered when file operations trigger path scanning. This lazy strategy optimizes startup performance and memory usage.
 

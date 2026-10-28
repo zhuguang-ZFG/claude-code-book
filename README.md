@@ -117,9 +117,9 @@ PDF 与图版渲染需要一个本机 Chromium 或 Edge（自动探测 `msedge`/
 
 ## 参与修订
 
-欢迎通过 Issue 或 PR 修正技术错误、补充案例和改进表达。请提供章节、小节、建议修改和参考来源；显示问题请注明阅读平台和复现步骤。涉及双语内容时，请同步检查英文版。
+欢迎通过 Issue 或 PR 修正技术错误、补充案例和改进表达。请提供章节、小节、建议修改和参考来源；显示问题请注明阅读平台和复现步骤。涉及双语内容时，请同步检查英文版；英文书稿不得夹带汉字，附录 D 术语表的中文译名列是唯一例外，构建器会逐行检查。
 
-提交前运行 `python3 scripts/check_book.py` 和 `python3 -m unittest discover -s tests`。Mermaid 语法检查需要 Node.js 22 或更高版本：先运行 `npm ci`，再运行 `npm run check:diagrams`。改动涉及结构、来源登记或整书排版时，再跑 `python yuyu-book/build.py --check` 与 `python3 -m unittest discover -s yuyu-book/tests -t .`；仓库结构与构建契约见 [STRUCTURE.md](STRUCTURE.md)，贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+提交前运行 `python3 scripts/check_book.py`、`npm run check:diagrams`、`python3 -m unittest discover -s tests -v` 与 `python3 -m unittest discover -s yuyu-book/tests -v`；Mermaid 检查需要 Node.js 22 或更高版本，先执行 `npm ci`。最后用 `python yuyu-book/build.py --check` 装配并审计两语版；仓库结构与构建契约见 [STRUCTURE.md](STRUCTURE.md)，贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可与致谢
 

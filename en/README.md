@@ -117,9 +117,9 @@ Rendering diagrams and building PDFs needs a local Chromium or Edge (auto-detect
 
 ## Contributing
 
-Issues and pull requests are welcome. Include the chapter, section, expected correction, and a source link; for rendering problems, include the viewer and reproduction steps. Please keep Chinese and English changes aligned.
+Issues and pull requests are welcome. Include the chapter, section, expected correction, and a source link; for rendering problems, include the viewer and reproduction steps. Keep Chinese and English changes aligned. English manuscripts must contain no Han text except the Chinese-translation column in Appendix D; the build tests scan every line.
 
-Before submitting, run `python3 scripts/check_book.py` and `python3 -m unittest discover -s tests`. To validate Mermaid syntax, install Node.js 22 or later and run `npm ci` followed by `npm run check:diagrams`. When a change touches structure, the source registry, or book typesetting, also run `python yuyu-book/build.py --check` and `python3 -m unittest discover -s yuyu-book/tests -t .`; see [STRUCTURE.md](../STRUCTURE.md) for the repository layout and [CONTRIBUTING.md](../CONTRIBUTING.md) for the full workflow.
+Before submitting, run `python3 scripts/check_book.py`, `npm run check:diagrams`, `python3 -m unittest discover -s tests -v`, and `python3 -m unittest discover -s yuyu-book/tests -v`. Mermaid validation requires Node.js 22 or later; run `npm ci` first. Finish with `python yuyu-book/build.py --check` to assemble and audit both editions. See [STRUCTURE.md](../STRUCTURE.md) for the repository layout and [CONTRIBUTING.md](../CONTRIBUTING.md) for the full workflow.
 
 ## License and acknowledgements
 

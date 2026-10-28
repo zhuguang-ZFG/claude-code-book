@@ -20,6 +20,7 @@ from yuyu_book.core import (GUIDE_FIELDS, REPO_ROOT, BuildError, expected_ids,
 
 ZH_DIR_RX = re.compile(r"^(第[一二三四五六七八九十]+部分-.+|附录)$")
 EN_DIR_RX = re.compile(r"^(Part-\d-.+|Appendices)$")
+HAN_RX = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
 
 
 def disk_markdown(lang: str) -> set[str]:
@@ -44,6 +45,21 @@ def disk_markdown(lang: str) -> set[str]:
              for p in d.glob("*.md")}
     found |= {p.relative_to(REPO_ROOT).as_posix() for p in foreword}
     return found
+
+
+def untranslated_han(uid: str, rel: str, text: str) -> list[str]:
+    """Report Han outside Appendix D's deliberately bilingual second column."""
+    leaks = []
+    for no, line in enumerate(text.splitlines(), 1):
+        if not HAN_RX.search(line):
+            continue
+        if uid == "apxd" and line.lstrip().startswith("|"):
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) == 5 and not HAN_RX.search(" | ".join(
+                    cells[:1] + cells[2:])):
+                continue
+        leaks.append(f"{rel}:{no}: {line.strip()}")
+    return leaks
 
 
 class ShippedConfigIsSelfConsistent(unittest.TestCase):
@@ -75,6 +91,34 @@ class ShippedConfigIsSelfConsistent(unittest.TestCase):
             self.assertTrue(on_disk, f"no {lang} book markdown found")
             self.assertEqual(sorted(on_disk), sorted(registered & on_disk),
                              f"unregistered {lang} markdown")
+
+    def test_english_manuscript_has_no_untranslated_han_fragments(self):
+        """A translated clause can still leave one source-language word behind.
+
+        Appendix D is deliberately bilingual only in its second table column,
+        the Chinese headword readers use to reach the subject index. Everything
+        else must be English all the way down, including Mermaid labels.
+        """
+        leaks = []
+        for unit_def, _kind, _part in unit_stream(self.manifest):
+            rel = unit_def["en"]
+            leaks.extend(untranslated_han(
+                unit_def["id"], rel,
+                (REPO_ROOT / rel).read_text(encoding="utf-8")))
+        self.assertEqual(leaks, [], "untranslated Han in English manuscript:\n  "
+                         + "\n  ".join(leaks))
+
+    def test_only_appendix_d_translation_cells_are_exempt(self):
+        self.assertEqual(untranslated_han(
+            "apxd", "glossary.md",
+            "| Agent | 智能体 | English definition | Tool | Chapter 1 |"), [])
+        self.assertEqual(untranslated_han(
+            "apxd", "glossary.md",
+            "| Agent | 智能体 | leaked 中文 definition | Tool | Chapter 1 |"),
+            ["glossary.md:1: | Agent | 智能体 | leaked 中文 definition | Tool | Chapter 1 |"])
+        self.assertEqual(untranslated_han(
+            "ch01", "chapter.md", "English prose with 中文 left behind"),
+            ["chapter.md:1: English prose with 中文 left behind"])
 
     def test_expected_ids_follow_part_order(self):
         m = self.manifest

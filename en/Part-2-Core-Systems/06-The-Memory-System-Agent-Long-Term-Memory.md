@@ -148,7 +148,7 @@ Even when a user **explicitly requests** saving such information, the system gui
 
 **The Deeper Logic of This Exclusion Principle**
 
-Many users, when first using the memory system, try to have the Agent memorize "the project's file structure" or "the API route list." This instinct is understandable -- humans确实 need to understand this information when taking over a new project. But there is a key difference between Agents and humans: Agents can read the file system in real time during every conversation.
+Many users, when first using the memory system, try to have the Agent memorize "the project's file structure" or "the API route list." This instinct is understandable -- humans do need this information when taking over a new project. But there is a key difference between Agents and humans: Agents can read the file system in real time during every conversation.
 
 ```
 Information Acquisition Cost Comparison:

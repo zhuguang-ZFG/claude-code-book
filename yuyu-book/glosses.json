@@ -2043,7 +2043,7 @@
   },
   "priority": "extra",
   "evidence": [
-   "第三部分-高级模式篇/11-技能系统与插件架构.md:480",
+   "第三部分-高级模式篇/11-技能系统与插件架构.md:477",
    "附录/D-术语表.md:127",
    "en/Appendices/D-Glossary.md:125"
   ],
@@ -2859,8 +2859,8 @@
    "en": "Skill manuals are not all spread out in advance; one is pulled only when used, saving the startup time and memory they would waste sitting idle."
   },
   "why_evidence": [
-   "第三部分-高级模式篇/11-技能系统与插件架构.md:756",
-   "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:757"
+   "第三部分-高级模式篇/11-技能系统与插件架构.md:753",
+   "en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md:754"
   ]
  },
  "mcp-server": {

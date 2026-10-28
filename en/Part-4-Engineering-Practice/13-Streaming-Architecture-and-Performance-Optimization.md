@@ -73,7 +73,7 @@ In streaming mode, when the API returns a `tool_use` type content block, the sys
 
 This immediate detection relies on `content_block_start` and `content_block_delta` events from streaming events. When the system receives `content_block_start` with type `tool_use`, it immediately knows a tool call is coming and can pre-lookup tool definitions and prepare permission check context. Subsequent `content_block_delta` events incrementally build the tool's JSON input parameters through an incremental JSON parser enabling parsing-while-receiving.
 
-**Challenges of incremental JSON parsing.** Tool parameters are in JSON format, but streaming transmission means JSON arrives character by character. Traditional `JSON.parse()` requires a complete string to work. Claude Code's approach is to maintain an accumulation buffer, appending to the buffer each time a delta arrives, then attempting to parse. Since JSON's structure is known (defined through inputSchema), the parser can make reasonable "predictions" for incomplete JSON -- for example, when the buffer content is `{"path": "/src/ind`, the system can predict this is a file path parameter and start file system预热 (such as triggering OS-level file cache prefetching).
+**Challenges of incremental JSON parsing.** Tool parameters are in JSON format, but streaming transmission means JSON arrives character by character. Traditional `JSON.parse()` requires a complete string to work. Claude Code's approach is to maintain an accumulation buffer, appending to the buffer each time a delta arrives, then attempting to parse. Since JSON's structure is known (defined through inputSchema), the parser can make reasonable "predictions" for incomplete JSON -- for example, when the buffer content is `{"path": "/src/ind`, the system can predict this is a file path parameter and begin filesystem warm-up (such as triggering OS-level file cache prefetching).
 
 > **Anti-pattern warning:** Don't do heavy computation on delta events during streaming processing. Each delta event may only contain one or a few tokens; if the parsing logic itself costs more time than it saves, it's counterproductive. The correct approach is lightweight buffer accumulation, triggering substantive processing only at key "boundary events" (like `content_block_stop`).
 
@@ -226,31 +226,31 @@ flowchart LR
 
 Although tools can execute in parallel, results must be output in order. The `getCompletedResults()` method guarantees this through the `yielded` state marker: completed tool results are output sequentially in the order they were added; if a non-concurrency-safe tool is still executing, subsequent tool results won't be output even if ready. Progress messages are an exception -- they are immediately yielded without order constraints, ensuring users see real-time progress feedback from tool execution.
 
-**Why must we strictly maintain order?** This is because the model's reasoning depends on the order of tool results. If tool results return to the model out of order, the model might misunderstand the correspondence of results. For example, if the model first called Read to read file A, then Read to read file B. If B's result arrives before A's, the model might mistake B's content for A's. Order guarantee ensures the model's understanding of the world remains consistent.
+**Why still submit in insertion order?** A `tool_result` is paired with its call by `tool_use_id`, so identity does not depend on position. Ordered buffering fixes the conversation trace instead. The same set of calls does not produce a different message prefix merely because Grep beat Read on one run; replay, debugging and caching stay steadier, and the next turn's context is not shaped by machine timing. The cost is head-of-line blocking: a later result may wait after finishing. Progress messages therefore bypass this ordering rule, while final results do not.
 
 This design can be compared to an "airport baggage carousel": luggage (tool results) may be processed at different speeds, but passengers (the model) see them in the same order as checked in. Early-arriving luggage waits in the background until all luggage before it has arrived before appearing together on the carousel.
 
 ```mermaid
 flowchart LR
-    subgraph Timeline
+    subgraph Completion["Execution completion (may be out of order)"]
         direction TB
-        T1["Tool1 Read<br/>[====]complete"] --> T2["Tool2 Grep<br/>[=====]complete"] --> T3["Tool3 Bash<br/>[===========]complete"] --> T4["Tool4 Read<br/>[===]complete"]
+        T2["Tool2 Grep<br/>finishes first"] --> T4["Tool4 Read<br/>finishes second"] --> T1["Tool1 Read<br/>finishes later"] --> T3["Tool3 Glob<br/>finishes last"]
     end
 
-    subgraph OutputOrder
+    subgraph Transcript["Submitted to the model (call order)"]
         direction TB
-        Y1["1st yield"]
-        Y2["Wait for Tool1 complete<br/>2nd yield"]
-        Y3["Wait for Tool2 complete<br/>3rd yield"]
-        Y4["Wait for Tool3 complete<br/>4th yield"]
+        Y1["tool_result #1"] --> Y2["tool_result #2"]
+        Y2 --> Y3["tool_result #3"]
+        Y3 --> Y4["tool_result #4"]
+        ORDER["Call order, not completion order"] -.- Y1
     end
 
     P["Progress messages<br/>immediate yield<br/>not order-constrained"] -.- Y1
 
-    T1 -->|"complete"| Y1
-    T2 -->|"complete"| Y2
-    T3 -->|"complete"| Y3
-    T4 -->|"complete"| Y4
+    T1 -->|"release"| Y1
+    T2 -->|"finish early; buffer"| Y2
+    T3 -->|"finish last"| Y3
+    T4 -->|"finish early; buffer"| Y4
 
     classDef toolNode fill:#e8f4f8,stroke:#2980b9,stroke-width:1px
     classDef yieldNode fill:#d4edda,stroke:#27ae60,stroke-width:1px
@@ -258,7 +258,7 @@ flowchart LR
 
     class T1,T2,T3,T4 toolNode
     class Y1,Y2,Y3,Y4 yieldNode
-    class P progressNode
+    class P,ORDER progressNode
 ```
 
 ### 13.2.4 Sibling Tool Error Cascading
@@ -426,7 +426,7 @@ Understanding Claude Code's cost tracking mechanism, let's summarize a set of be
 
 **1. Establish Cost Budget Awareness**
 
-Set a token budget上限 at the start of each session. Claude Code implements this through the `maxBudgetUsd` parameter. When cumulative cost approaches the budget limit, the system should proactively remind users rather than silently exhausting the budget.
+Set a token budget ceiling at the start of each session. Claude Code implements this through the `maxBudgetUsd` parameter. When cumulative cost approaches the budget limit, the system should proactively remind users rather than silently exhausting the budget.
 
 ```
 +------------------+---------------------------+

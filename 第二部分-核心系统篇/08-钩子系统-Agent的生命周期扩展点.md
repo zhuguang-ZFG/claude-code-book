@@ -16,7 +16,7 @@
 
 用一个生物学的类比来理解：人体不是只有骨骼（架构）和肌肉（核心逻辑），还有遍布全身的神经系统。神经末梢感知外界刺激（事件触发），传导信号到大脑（钩子逻辑），大脑做出反应后再通过运动神经下达指令（决策和操作）。钩子系统正是 Claude Code 的这套"神经反射弧"——它不需要修改核心器官的功能，却能在关键节点插入条件反射式的行为。
 
-从工程角度看，钩子系统遵循的是经典的**观察者模式（Observer Pattern）**结合**责任链模式（Chain of Responsibility）**。每个生命周期事件就是一个"信号"，多个钩子可以监听同一个信号，按优先级依次处理，任何一个钩子都可以选择"阻断信号传播"。这种设计使得 Claude Code 的核心执行引擎无需了解扩展逻辑的存在，实现了核心系统与用户自定义逻辑的彻底解耦。
+从工程角度看，钩子系统结合了**观察者模式（Observer Pattern）**与**责任链模式（Chain of Responsibility）**。每个生命周期事件发布一个“信号”，匹配的钩子按优先级组成处理链；具体事件和钩子类型决定它只能观察、可以改写，还是能够阻断。核心执行引擎只依赖统一的响应协议，而不依赖扩展逻辑的实现，因此能与用户自定义行为保持解耦。
 
 ## 8.1 钩子类型与执行模型
 
@@ -263,7 +263,7 @@ flowchart TD
     class PreToolUse,PostToolUse,PostToolUseFailure tool
     class SubagentStart,SubagentStop sub
     class PreCompact,PostCompact compact
-    class Other 其他事件
+    class Other other
     class ToolExec,AgentProcess,SubagentExec,CompactExec,UserLoop process
 ```
 
@@ -318,7 +318,7 @@ flowchart TD
 3. **自动通知**：在特定工具调用后发送 Slack/邮件通知
 4. **MCP 输出覆写**：对 MCP 工具的返回值进行后处理或脱敏
 
-> **最佳实践：** PostToolUse 钩子应该尽量使用异步模式（`async: true`），因为工具已经执行完毕，钩子的结果通常不需要影响后续流程。只有在需要覆盖 MCP 工具输出时才使用同步模式。
+> **最佳实践：** 如果 PostToolUse 只负责审计、指标或通知，且结果不必在下一轮模型调用前消费，优先使用异步模式（`async: true`）。如果响应需要覆盖 MCP 工具输出、注入后续上下文或立即影响下一步，则保持同步；判断依据是“下游是否必须等待结果”，而不是“工具是否已经执行完”。
 
 **PostToolUseFailure**（工具执行失败后）
 

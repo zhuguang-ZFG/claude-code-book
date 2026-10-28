@@ -137,7 +137,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 **双语同步**
 
-`en/` 下的英文镜像与中文逐单元对应，章节标题模板不同但结构一致；只改中文不改英文，虽然不会立刻失败，但会让两语版的图数、脚注数、索引词条数对不上，评审时请一并说明差异。
+`en/` 下的英文镜像与中文逐单元对应，章节标题模板不同但结构一致；只改中文不改英文会让两语版的图数、脚注数、索引词条数对不上。英文书稿不得夹带汉字，唯一例外精确到附录 D 术语表的第二列（中文译名）；`test_manifest` 会扫描全部英文单元，定义列或正文里的残留都会按文件与行号报错。
 
 ### 5.1 通俗层：白话注、导读带、阅读路线
 
@@ -190,6 +190,7 @@ PDF 阶段另有五道：命名目标缺失（`no destination found for ...`）�
 
 - [ ] `make check`（或逐条跑第 2 节的两语 `--check`、两套 unittest、`scripts/check_book.py`、`npm run check:diagrams`）通过
 - [ ] 中文与英文两份 Markdown 同步修改
+- [ ] 英文书稿无汉字残留（附录 D 的双语译名列除外）
 - [ ] 新单元已在 `manifest.json` 登记，且 `guides` 三字段双语齐备
 - [ ] 新来源已过第 4 节的门禁，`snapshot`/`accessed`/`scope` 写实
 - [ ] 动到通俗层时，每条新写的白话都带指得回书稿的 `plain_evidence` / `evidence`，中英两侧齐备；新单元有 `illustrations/<id>.svg`，并在 `notes.json` 里留一条按语（术语锁会替你核对那句里有没有本单元真正用过的词形）

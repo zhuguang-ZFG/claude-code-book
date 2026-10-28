@@ -16,7 +16,7 @@ If the permission pipeline (Chapter 4) is the Agent's "guardrails", then the hoo
 
 Using a biological analogy to understand: the human body has not just bones (architecture) and muscles (core logic), but also a nervous system spread throughout. Nerve endings perceive external stimuli (event triggers), conduct signals to the brain (hook logic), and after the brain responds, instructions are sent through motor nerves (decisions and operations). The hook system is precisely this "neural reflex arc" of Claude Code -- it doesn't require modifying core organ functions, yet can insert reflexive behaviors at critical nodes.
 
-From an engineering perspective, the hook system follows the classic **Observer Pattern** combined with **Chain of Responsibility Pattern**. Each lifecycle event is a "signal", multiple hooks can listen to the same signal, processing in priority order, and any hook can choose to "block signal propagation". This design enables Claude Code's core execution engine to operate without knowledge of extension logic, achieving complete decoupling between the core system and user-defined logic.
+From an engineering perspective, the hook system combines the **Observer Pattern** with the **Chain of Responsibility Pattern**. Each lifecycle event publishes a signal, and matching hooks form a priority-ordered processing chain; the event and hook kind determine whether a handler may only observe, may rewrite data, or may block. The core engine depends on the shared response protocol rather than any extension's implementation, keeping user-defined behavior decoupled from the execution core.
 
 ## 8.1 Hook Types and Execution Model
 
@@ -263,7 +263,7 @@ flowchart TD
     class PreToolUse,PostToolUse,PostToolUseFailure tool
     class SubagentStart,SubagentStop sub
     class PreCompact,PostCompact compact
-    class Other 其他events
+    class Other other
     class ToolExec,AgentProcess,SubagentExec,CompactExec,UserLoop process
 ```
 
@@ -318,7 +318,7 @@ Typical use cases:
 3. **Automatic notification**: Send Slack/email notifications after specific tool calls
 4. **MCP output override**: Post-process or sanitize MCP tool return values
 
-> **Best practice:** PostToolUse hooks should尽量 use async mode (`async: true`) because the tool has already finished executing, hook results usually don't need to affect subsequent flow. Only use sync mode when needing to override MCP tool output.
+> **Best practice:** Prefer async mode (`async: true`) when PostToolUse only records audits, metrics, or notifications and nothing downstream must consume its response before the next model turn. Keep it synchronous when the response overrides MCP output, adds context needed immediately, or otherwise affects the next step. The deciding question is whether downstream work must wait, not whether the tool has already finished.
 
 **PostToolUseFailure** (After tool execution failure)
 
