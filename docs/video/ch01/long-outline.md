@@ -91,7 +91,7 @@
 
 **口播要点**
 1. 
-pm install -g @anthropic-ai/claude-code → claude --version
+npm install -g @anthropic-ai/claude-code → claude --version
 2. /doctor：环境、权限、MCP、API、文件系统——渐进式出结果（呼应流式原则）
 3. 一次工具调用：思考 → GlobTool(\*.ts\) → 回复；心中对照主循环模块
 
