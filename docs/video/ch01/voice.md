@@ -1,6 +1,6 @@
 # 第 01 章口播音色锁定｜驭者·Agent Harness
 
-> 状态：试音已出，**待用户确认**后再批量合成全片配音。  
+> 状态：试音已出，**用户已确认 2026-10-27**后再批量合成全片配音。  
 > 试音文件（本机，未进 git）：  
 > - ideo/ch01/assets/voice-sample-long.mp3（长讲开场约 80 汉字样段，约 29s）  
 > - ideo/ch01/assets/voice-sample-short.mp3（短片口播连贯稿全文，约 28s）
