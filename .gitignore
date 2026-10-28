@@ -8,3 +8,9 @@ yuyu-book/dist/
 yuyu-book/.cache/
 yuyu-book/cover-art.png
 yuyu-book/.scratch/
+
+# video narration / renders (large binaries stay on disk)
+video/**/*.mp3
+video/**/*.wav
+video/**/*.mp4
+video/**/out/
