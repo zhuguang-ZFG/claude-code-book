@@ -9,6 +9,13 @@ yuyu-book/.cache/
 yuyu-book/cover-art.png
 yuyu-book/.scratch/
 
+# workflow scratch: chapter copies taken for a subagent to read, and the
+# commit/diff dumps assembled for a review step. The briefs, reports and the
+# progress ledger beside them are the decision record and stay tracked.
+.superpowers/sdd/*-source-copy.md
+.superpowers/sdd/*-review-package.txt
+.superpowers/sdd/*-fix-diff-utf8.txt
+
 # video narration / renders (large binaries stay on disk)
 video/**/*.mp3
 video/**/*.wav
@@ -23,9 +30,10 @@ video/**/.hf-cache/
 video/**/.hf-tmpdir/
 video/**/.hyperframes/
 video/*/tools/
-video/_refs_dump/
-video/_*.py
-video/**/_*.py
+# underscore prefix marks a one-off: probe scripts, ffprobe dumps, help text
+# captures, snippet scratch and reference dumps taken during a run
+video/_*
+video/**/_*
 video/**/*.log
 video/**/*.srt
 video/**/*.vtt
