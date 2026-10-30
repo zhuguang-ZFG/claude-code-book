@@ -11,10 +11,15 @@ const { default: mermaid } = await import('mermaid');
 mermaid.initialize({ startOnLoad: false });
 const root = fileURLToPath(new URL('../', import.meta.url));
 
+// video/ is a local production workspace whose vendored toolchains ship their
+// own Markdown; authored video docs live in docs/video/. Matches check_book.py.
+const skipRoots = new Set(['video']);
+
 async function* markdownFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
     if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
+    if (directory === root && skipRoots.has(entry.name)) continue;
     const filename = path.join(directory, entry.name);
     if (entry.isDirectory()) yield* markdownFiles(filename);
     else if (entry.isFile() && entry.name.endsWith('.md')) yield filename;

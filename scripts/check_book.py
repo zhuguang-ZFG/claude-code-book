@@ -10,6 +10,11 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# video/ is a local production workspace: renders, scratch scripts and vendored
+# toolchains that ship their own already-broken Markdown. Authored video docs
+# live in docs/video/ and stay checked.
+SKIP_ROOTS = {'video'}
+
 
 def check(root=ROOT):
     errors = []
@@ -17,6 +22,7 @@ def check(root=ROOT):
         path for path in root.rglob('*.md')
         if not any(part.startswith('.') or part == 'node_modules'
                    for part in path.relative_to(root).parts)
+        and path.relative_to(root).parts[0] not in SKIP_ROOTS
     )
     diagrams = 0
     for path in files:
