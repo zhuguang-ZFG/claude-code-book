@@ -27,6 +27,15 @@ and is the authority for what shipped where. Summary as of 2026-10-29:
 
 合集：season_id 9436416「驭者·Agent Harness」。
 
+Timing calibration (established at ch05): narration runs at **2.89 汉字/秒** with
+云扬 -10%/-5Hz, back-computed from ch02's measured VO (628s ÷ 1811 汉字). Across
+ch01-ch04 the ratio of finished runtime to pure narration time stays within
+0.97-1.03, so the animation beds run under the voice rather than adding hold
+time — which means 口播汉字数 ÷ 2.89 predicts the finished runtime while the
+script is still being written. Worth knowing because the "15-20 min" line in
+every gate checklist had been passed over in silence: ch03 shipped at 9.9 min
+and ch04 at 7.6 min. ch05's script was sized against the measured rate instead.
+
 Rules carried forward, both learned the hard way:
 
 - 先过片，再发布 — the gate checklist in each chapter's package is a hard
