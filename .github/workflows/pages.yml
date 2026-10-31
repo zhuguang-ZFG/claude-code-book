@@ -1,0 +1,98 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '00-前言.md'
+      - '第一部分-基础篇/**'
+      - '第二部分-核心系统篇/**'
+      - '第三部分-高级模式篇/**'
+      - '第四部分-工程实践篇/**'
+      - '附录/**'
+      - 'en/**'
+      - 'yuyu-book/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# one site at a time: a second push re-runs build, not a racing deploy
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: npm ci
+
+      - run: python -m pip install -r yuyu-book/requirements.txt
+
+      - name: Install CJK fonts
+        timeout-minutes: 12
+        run: |
+          sudo apt-get -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 \
+               install -y fonts-noto-cjk
+
+      - name: Install Chromium
+        timeout-minutes: 15
+        run: python -m playwright install --with-deps chromium
+
+      # the same plates Book CI warms; the reader/gallery generators read
+      # the dist HTML for their plain-language extracts
+      - name: Build the book (zh)
+        run: python yuyu-book/build.py --lang zh
+
+      - name: Build the beginner readers
+        run: |
+          python scripts/build_beginner_reader.py
+          python scripts/build_illustration_gallery.py
+
+      - name: Assemble the site
+        run: |
+          mkdir -p site
+          cp yuyu-book/dist/yuyu-agent-harness-zh.html site/index.html
+          cp docs/beginner-reader.html site/beginner-reader.html
+          cp docs/beginner-reader.en.html site/beginner-reader.en.html
+          cp docs/illustration-gallery.html site/illustration-gallery.html
+          cp cover.png site/cover.png
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
