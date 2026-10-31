@@ -88,7 +88,7 @@ when_to_save: When the user corrects your approach ("don't do that") or confirms
 body_structure: The rule itself + Why: reason + How to apply: applicable scenarios
 ```
 
-Key design: It records not only failures (corrections) but also successes (confirmations). If only corrections are saved, the Agent becomes overly cautious, deviating from validated methods.
+Key design: it records failures (corrections) and successes (confirmations). If only corrections are saved, the Agent becomes overly cautious, deviating from validated methods.
 
 **Practical Application Scenarios:**
 
@@ -493,7 +493,7 @@ flowchart LR
     class perm perm_node
 ```
 
-This principle applies not only to the memory system but also serves as general guidance for designing high-performance Agent architectures: keep cache-related interface parameters (tool lists, system prompt prefixes) unchanged as much as possible, and place differentiation logic in runtime behavioral control.
+The same trade-off holds outside the memory system, as guidance for designing high-performance Agent architectures: keep cache-related interface parameters (tool lists, system prompt prefixes) unchanged as much as possible, and place differentiation logic in runtime behavioral control.
 
 ### 6.4.3 Memory Lifecycle
 

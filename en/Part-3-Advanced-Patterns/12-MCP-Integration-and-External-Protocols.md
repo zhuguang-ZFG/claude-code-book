@@ -240,7 +240,7 @@ flowchart LR
 
 **The Deeper Meaning of State Transitions**
 
-Each state not only represents the technical state of the connection but also corresponds to different user interaction strategies:
+Each state maps to its own user-interaction strategy:
 
 - **Connected**: The server is connected and tools are available. `ConnectedMCPServer` contains the complete MCP Client instance, server capability declarations, configuration information, and a cleanup function (for graceful disconnection).
 - **Failed**: The connection attempt failed. The system records the failure reason (network error, authentication failure, server not responding, etc.) and decides whether to enter the retry flow. Not all failures should be retried — authentication failures require user intervention, while network timeouts can be retried automatically.
@@ -698,7 +698,7 @@ Key components are as follows:
 The Bridge system's complexity stems from needing to simultaneously satisfy requirements across multiple dimensions:
 
 1. **Multi-transport protocol compatibility**: Must support both legacy (v1) and new (v2) transport protocols simultaneously, with smooth migration without affecting existing integrations.
-2. **Bidirectional communication**: Not only does the CLI push messages outward, it also needs to receive external control commands (such as switching models, interrupting execution).
+2. **Bidirectional communication**: The CLI pushes messages outward and receives external control commands back (such as switching models, interrupting execution).
 3. **Multi-session parallelism**: The same user may simultaneously use multiple terminals or IDE windows, each requiring independent session management.
 4. **Security isolation**: Messages from different sources require different authentication and permission check strategies.
 
@@ -1226,7 +1226,7 @@ Analyze the Bridge communication behavior in the following scenarios:
 
 2. **Eight connection configuration variants**: These configurations combine local process pipes, HTTP-based connections, WebSocket adapters, SDK calls, and proxy integration. Choose a configuration supported by both endpoints; distinguish transport latency from server execution cost.
 
-3. **Security Value of Three-part Naming**: The `mcp__{server}__{tool}` naming convention not only solves tool name conflicts but, more importantly, provides independent namespaces during permission checks, preventing permission confusion between MCP tools and built-in tools. The prefix skip in SDK mode is an advanced feature that allows MCP tools to override built-in tools.
+3. **Security Value of Three-part Naming**: The `mcp__{server}__{tool}` naming convention settles tool name conflicts and gives permission checks a namespace of their own, so an MCP tool cannot be confused with a built-in one. The prefix skip in SDK mode is an advanced feature that allows MCP tools to override built-in tools.
 
 4. **Defense-in-Depth Security Architecture**: The four-layer permission model — enterprise policy (denylist > allowlist), IDE tool allowlist, user permission configuration, runtime confirmation — ensures that even if one layer's check is bypassed, other layers still provide protection. This is the complete embodiment of the "default distrust" security principle.
 

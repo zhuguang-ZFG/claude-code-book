@@ -213,7 +213,7 @@ FileEditTool's `isDestructive` method determines whether an edit is a destructiv
 
 All three tools support `contextModifier`, which updates the file state cache after execution, enabling subsequent tool calls and memory attachment injection to see the latest file state.
 
-> **Best Practice:** When designing your own Agent tools, follow the "least privilege" principle -- prefer Edit over Write, prefer Read over Bash. This is not only a security concern but also an efficiency issue: a precise Edit is faster than writing an entire file and less error-prone.
+> **Best Practice:** When designing your own Agent tools, follow the "least privilege" principle -- prefer Edit over Write, prefer Read over Bash. The rule is about efficiency as well as safety: a precise Edit is faster than writing an entire file and less error-prone.
 
 ### The Search Duo: GlobTool and GrepTool
 

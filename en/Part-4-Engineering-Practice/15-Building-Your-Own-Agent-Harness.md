@@ -871,7 +871,7 @@ stateDiagram-v2
 
 ### In-Depth Discussion on Observability
 
-Observability for a production-grade Agent Harness goes beyond "logging" -- it's a systematic, layered design:
+Observability in a production-grade Agent Harness is a layered design:
 
 **Layer 1: Structured logs.** Every critical operation outputs structured log entries containing the operation type, duration, input summary, and output summary. Claude Code's approach is to instrument key paths, recording metrics such as message count, tool result count, query chain ID, and query depth.
 

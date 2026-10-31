@@ -33,7 +33,7 @@ sequenceDiagram
     Human Receive->>Human Send: Manually transport results
 ```
 
-This mode only goes so far: the LLM can only "speak," not "act." It cannot read your file system, execute test commands, create Git branches, or autonomously adjust its strategy when encountering errors. Every interaction with the outside world requires a human intermediary to manually complete -- copying code to the editor, switching to the terminal to run commands, and then copying the output back to the dialog box. This "human glue" pattern is not only inefficient but also error-prone.
+This mode only goes so far: the LLM can only "speak," not "act." It cannot read your file system, execute test commands, create Git branches, or autonomously adjust its strategy when encountering errors. Every interaction with the outside world requires a human intermediary to manually complete -- copying code to the editor, switching to the terminal to run commands, and then copying the output back to the dialog box. This "human glue" pattern is slow and error-prone.
 
 In 2024, a fundamental cognitive shift began to spread: **the true value of LLMs lies not in generating text, but in serving as a reasoning engine to orchestrate tool calls.** When the LLM is no longer merely "the one answering questions" but becomes "the decision hub that determines what tools to call, what parameters to pass, and how to process the returned results," its capability boundaries swung wide open.
 

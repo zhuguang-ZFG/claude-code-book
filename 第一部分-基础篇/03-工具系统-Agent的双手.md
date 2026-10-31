@@ -213,7 +213,7 @@ FileEditTool 的 `isDestructive` 方法会根据编辑内容判断是否为破�
 
 三个工具都支持 `contextModifier`，在执行后更新文件状态缓存，使得后续的工具调用和内存附件注入能看到最新的文件状态。
 
-> **最佳实践：** 在设计自己的 Agent 工具时，遵循"最小权限"原则——优先使用 Edit 而非 Write，优先使用 Read 而非 Bash。这不仅是安全问题，也是效率问题：精确的 Edit 比 Write 整个文件更快，也更不容易出错。
+> **最佳实践：** 在设计自己的 Agent 工具时，遵循"最小权限"原则——优先使用 Edit 而非 Write，优先使用 Read 而非 Bash。这一条同时管着安全和效率：精确的 Edit 比 Write 整个文件更快，也更不容易出错。
 
 ### 搜索双雄：GlobTool 与 GrepTool
 

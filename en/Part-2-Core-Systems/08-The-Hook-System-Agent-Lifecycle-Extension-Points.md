@@ -530,7 +530,7 @@ The table below summarizes the classification, blockability and typical uses of 
 
 ## 8.3 Hook Response Protocol
 
-Hook output is not just a piece of stdout text, but a structured JSON response protocol. The output parsing function in hook execution module is responsible for parsing and processing this protocol. Understanding this protocol is the foundation for designing advanced hooks.
+Hook output is a structured JSON response protocol, parsed by the output parsing function in the hook execution module. Understanding this protocol is the foundation for designing advanced hooks.
 
 > **Design reflection:** Why is hook output structured JSON instead of simple stdout text? Because hooks need precise control over Claude Code's behavior -- not just "say something", but clearly specify "allow" or "block", "modify input" or "inject context". Plain text output can't express this structured intent. Keeping stdout as unstructured output channel (for logging and debugging) while JSON as structured control channel, this dual-channel design balances flexibility and precision.
 

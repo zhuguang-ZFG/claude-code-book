@@ -316,7 +316,7 @@ The presence of the boundary marker enables subsequent compression operations to
 
 ## 7.4 Token Budget Tracking
 
-Token management is not just about reactive compression triggering; it also includes proactive budget planning and early warning systems.
+Token management runs on two tracks: reactive compression triggering, and proactive budget planning with early warning.
 
 ### Multi-Level Warning States
 

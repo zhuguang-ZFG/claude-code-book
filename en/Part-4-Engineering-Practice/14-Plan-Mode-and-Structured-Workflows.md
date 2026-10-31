@@ -416,7 +416,7 @@ flowchart TD
 
 Fork Agent's state isolation strategy can be compared to a "sandbox": sub-agent runs in sandbox, can see outside world (through cloned file state), but cannot affect outside world (cannot modify parent Agent state, cannot control UI). The only communication channel with outside world is tool results -- sub-agent's execution results return to parent Agent through structured `tool_result` messages.
 
-> **Best practice:** When designing sub-agents, follow "principle of least privilege". Only pass the minimum context the sub-agent needs to complete the task; don't indiscriminately pass the entire parent Agent state. This not only improves security but also reduces token consumption (the sub-agent's input tokens also count toward the cost).
+> **Best practice:** When designing sub-agents, follow "principle of least privilege". Only pass the minimum context the sub-agent needs to complete the task; don't indiscriminately pass the entire parent Agent state. Passing less narrows what the sub-agent can do and cuts token consumption (the sub-agent's input tokens also count toward the cost).
 
 ---
 
@@ -451,7 +451,7 @@ Each CronTask contains a `durable` runtime flag. Tasks with `durable: false` onl
 
 - User creates a one-time task "check deploy status in 5 minutes", a short-term task that no longer makes sense if session ends before triggering.
 - User creates temporary polling task "check logs every minute" during debugging, this task only serves current debugging session.
-- Persisting these temporary tasks to disk not only wastes storage but might cause subsequent sessions to unexpectedly trigger outdated tasks.
+- Persisting these temporary tasks to disk wastes storage and lets a later session fire a job that is already out of date.
 
 Therefore, `durable` flag provides a "lightweight task" mechanism: tasks needing cross-session persistence set `durable: true`, tasks only serving current session set `durable: false`.
 
