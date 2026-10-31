@@ -221,7 +221,7 @@ If the model did request tool calls, the loop executes the tools: depending on w
 
 Tool execution is also an async generator. For each result message produced, the loop yields it to the upper-level consumer (UI) while also collecting it into the tool results array.
 
-This design embodies an important engineering principle: **"result collection" and "result passing" are decoupled.** Tool results are both collected into an array for the next API call and yielded to the UI for real-time display. These two concerns are handled simultaneously through the same yield operation, avoiding additional state synchronization logic.
+Two things come apart here: **"result collection" and "result passing" are decoupled.** Tool results are both collected into an array for the next API call and yielded to the UI for real-time display. These two concerns are handled simultaneously through the same yield operation, avoiding additional state synchronization logic.
 
 ### Phase 5: Tool Result Backfill and Next Round
 
@@ -381,7 +381,7 @@ Key transition paths include:
 
 4. **reactive_compact_retry**: When context is too long, recovers through reactive compaction. If compaction fails, the loop terminates. This path is the dialog loop's "emergency brake" -- when all preventive compression methods have failed to prevent context overflow, reactive compact serves as the last recovery attempt to salvage the conversation.
 
-5. **collapse_drain_retry**: The overflow recovery path for context collapse. Executes with higher priority than reactive compaction because collapse preserves finer-grained context. This priority ordering reflects the "minimum information loss" principle -- among all recovery methods, the one losing the least information is preferred.
+5. **collapse_drain_retry**: The overflow recovery path for context collapse. Executes with higher priority than reactive compaction because collapse preserves finer-grained context. Recovery methods are ordered by minimum information loss: whichever discards least runs first.
 
 6. **stop_hook_blocking**: When a stop hook returns a blocking error, the error is injected into the message list and the loop continues, giving the model a chance to correct itself. This path demonstrates a key design philosophy of Agent systems: **errors are not necessarily termination conditions; they can also be feedback signals.** After receiving the hook's error message, the model might adjust its strategy and try a different approach.
 

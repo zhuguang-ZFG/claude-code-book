@@ -83,7 +83,7 @@ The first checkpoint of the permission pipeline is not about permissions per se,
 
 When parsing fails, `toolPermissionResult` retains its default `passthrough` state, which is subsequently converted to `ask` behavior. So when data validation fails the system degrades to asking the user for confirmation instead of crashing outright.
 
-This design choice embodies an important engineering principle: **in security systems, error handling should be "safe" rather than "correct."** Crashing outright does expose the problem, but during Agent runtime it could interrupt the entire session. Gracefully degrading to user confirmation is a safer error handling strategy -- it gives the user the opportunity to decide whether to continue, rather than having the system decide on the user's behalf.
+One principle sits behind this choice: **in security systems, error handling should be "safe" rather than "correct."** Crashing outright does expose the problem, but during Agent runtime it could interrupt the entire session. Gracefully degrading to user confirmation is a safer error handling strategy -- it gives the user the opportunity to decide whether to continue, rather than having the system decide on the user's behalf.
 
 ### 4.1.2 Stage 2: hasPermissionsToUseTool -- Rule Matching
 

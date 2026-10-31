@@ -162,7 +162,7 @@ flowchart TD
 
 ### 12.1.3 Connection Manager: MCPConnectionManager
 
-The MCP connection manager is a React Context Provider that provides MCP connection management capabilities to the entire component tree. Its design embodies the "centralized control, distributed usage" architecture pattern — connection establishment, disconnection, and retries are handled uniformly by the manager, while tool usage is distributed across individual components.
+The MCP connection manager is a React Context Provider that provides MCP connection management capabilities to the entire component tree. The manager keeps establishing, dropping and retrying connections to itself, while the components keep using the tools.
 
 **Why the Context Provider Pattern?**
 

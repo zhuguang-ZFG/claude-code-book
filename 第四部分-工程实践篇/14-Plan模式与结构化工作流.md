@@ -309,7 +309,7 @@ flowchart TD
 
 **来源三：Attachment message 的 plan_file_reference。** auto-compact 是一种自动压缩上下文的机制（详见第 7 章）。在压缩过程中，系统识别到计划文件的重要性，会在 attachment 消息中保留对计划文件的引用。这确保了即使经过自动压缩，计划文件仍然可以通过引用被定位和读取。
 
-三种来源的优先级设计体现了"可靠性优先"的原则：tool_use input 最可靠（API 协议保证），planContent 次之（内部机制保证），plan_file_reference 最弱（依赖 auto-compact 的正确识别）。恢复逻辑按此优先级依次尝试，第一个成功的来源即为最终结果。
+三种来源按可靠性排优先级：tool_use input 最可靠（API 协议保证），planContent 次之（内部机制保证），plan_file_reference 最弱（依赖 auto-compact 的正确识别）。恢复逻辑按此优先级依次尝试，第一个成功的来源即为最终结果。
 
 ---
 

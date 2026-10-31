@@ -162,7 +162,7 @@ flowchart TD
 
 ### 12.1.3 连接管理器 MCPConnectionManager
 
-MCP 连接管理器是一个 React Context Provider，为整个组件树提供 MCP 连接管理能力。它的设计体现了"集中管控、分散使用"的架构模式——连接的建立、断开和重试由管理器统一处理，而工具的使用则分散在各个组件中。
+MCP 连接管理器是一个 React Context Provider，为整个组件树提供 MCP 连接管理能力。连接的建立、断开和重试由管理器统一处理，工具的使用则留在各个组件里。
 
 **为什么选择 Context Provider 模式？**
 

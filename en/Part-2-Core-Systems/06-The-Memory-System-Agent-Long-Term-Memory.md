@@ -537,7 +537,7 @@ Specific validation rules:
 - If the memory names a function or flag: grep to find it
 - If the user is about to act on your recommendation (rather than asking about history): validate first
 
-This reflects a deep design philosophy of Claude Code: **memory is a trusted clue, not a trusted conclusion.** It guides the Agent on where to find information but does not replace the Agent's independent verification of the current state.
+The rule behind these checks: **memory is a trusted clue, not a trusted conclusion.** It guides the Agent on where to find information but does not replace the Agent's independent verification of the current state.
 
 **Design Philosophy of Validation Levels**
 

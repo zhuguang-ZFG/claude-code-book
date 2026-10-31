@@ -802,7 +802,7 @@ In this configuration, if the model executes `rm -rf /tmp/test`, only the first 
 
 ### Emergency Disable Switches
 
-Claude Code provides multiple security switches to handle hook-related risks. This embodies the "Defense in Depth" security design philosophy -- not relying on a single security measure but setting barriers at multiple levels.
+Claude Code provides multiple security switches to handle hook-related risks. That is "Defense in Depth" -- no single measure carries the load, and barriers sit at several levels.
 
 ```mermaid
 flowchart TD

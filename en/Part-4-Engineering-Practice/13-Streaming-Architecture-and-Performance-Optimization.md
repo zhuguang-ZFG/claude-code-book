@@ -46,7 +46,7 @@ classDiagram
     QueryEngine ..> QueryEngine_PropertyNotes : field descriptions
 ```
 
-QueryEngine's design embodies the "single ownership" principle: session state has one and only one owner. This is particularly important in concurrent scenarios -- if multiple components simultaneously modify the message list, it could lead to disordered messages or duplicate processing. An instance defines an ownership boundary, not a lock: overlapping asynchronous calls still require serialization or explicit concurrency control.
+Under QueryEngine, session state has one and only one owner -- single ownership. This is particularly important in concurrent scenarios -- if multiple components simultaneously modify the message list, it could lead to disordered messages or duplicate processing. An instance defines an ownership boundary, not a lock: overlapping asynchronous calls still require serialization or explicit concurrency control.
 
 > **Cross-reference:** QueryEngine's core query loop is analyzed in detail in Chapter 2 "The Dialog Loop -- Heartbeat of an Agent". This chapter focuses on its streaming characteristics and performance optimization mechanisms.
 

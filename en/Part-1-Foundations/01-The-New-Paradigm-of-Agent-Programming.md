@@ -233,7 +233,7 @@ This startup strategy reveals a universal engineering principle: **the startup p
 
 `QueryEngine` is a class that owns the query lifecycle and session state, managing core data such as dialog message history, file cache, usage statistics, and permission denial records. It is the "lifecycle manager" of the conversation.
 
-The engine is designed to serve both interactive REPL and headless SDK runtime modes, reflecting architectural versatility considerations. By encapsulating the core query logic in an independent class, different runtime environments can share the same set of state management and lifecycle control code.
+The engine serves both the interactive REPL and the headless SDK from one core: the query logic lives in a class of its own, so every runtime shares the same state management and lifecycle control code.
 
 This "one core, multiple entry points" design pattern is very valuable in engineering practice. Imagine if the interactive REPL and SDK modes used two different sets of query logic -- every time you fixed a bug or added a feature, you'd need to make synchronized changes in two places. The QueryEngine design ensures that whether users interact through the terminal or through API calls, they follow the same verified core path.
 

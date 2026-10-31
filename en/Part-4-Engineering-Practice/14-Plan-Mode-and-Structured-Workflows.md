@@ -309,7 +309,7 @@ Let's analyze more deeply the three recovery sources of `recoverPlanFromMessages
 
 **Source 3: Attachment message's plan_file_reference.** auto-compact is an automatic context compression mechanism (detailed in Chapter 7). During compression, system recognizes plan file's importance, preserves reference to plan file in attachment messages. This ensures even after auto-compression, plan file can still be located and read through reference.
 
-Three sources' priority design reflects "reliability first" principle: tool_use input most reliable (API protocol guarantee), planContent second (internal mechanism guarantee), plan_file_reference weakest (relies on auto-compact's correct recognition). Recovery logic attempts in this priority order, first successful source is final result.
+The three sources are ranked by reliability: tool_use input most reliable (API protocol guarantee), planContent second (internal mechanism guarantee), plan_file_reference weakest (relies on auto-compact's correct recognition). Recovery logic attempts in this priority order, first successful source is final result.
 
 ---
 

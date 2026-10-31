@@ -221,7 +221,7 @@ All three tools support `contextModifier`, which updates the file state cache af
 
 **GrepTool** uses regular expressions to search file contents, powered by `ripgrep` under the hood. It supports multiple output modes (filenames, content lines, counts) and rich filtering options (file types, glob patterns, etc.).
 
-The design of these two tools embodies the principle of "specialization over generalization." Although BashTool can achieve similar functionality through `find` and `grep` commands, dedicated search tools have several advantages:
+Neither search is handed to BashTool. BashTool can get close with `find` and `grep`, but a dedicated search tool has several advantages:
 
 1. **Structured output**: Search tools return structured result lists rather than the text output of Shell commands. The model can parse structured data more accurately.
 2. **Permission control**: Search tools are read-only by default, with more lenient permission checks. If every search had to go through BashTool, users would face more permission confirmation prompts.
