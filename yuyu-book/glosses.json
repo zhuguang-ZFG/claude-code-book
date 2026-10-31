@@ -31,7 +31,7 @@
   },
   "why": {
    "zh": "模型光会说话做不了事，注册、校验、把关、纠错这些杂事得有一层统一兜住，随手封装挡不住。",
-   "en": "Each of those problems is a challenge of its own, so a thin wrapper cannot cover them; the harness is one framework that handles them all together."
+   "en": "No one of those problems is hard alone, but a thin wrapper leaves each for the next layer to trip over; the harness takes them all in one place."
   },
   "why_evidence": [
    "第一部分-基础篇/01-智能体编程的新范式.md:111",

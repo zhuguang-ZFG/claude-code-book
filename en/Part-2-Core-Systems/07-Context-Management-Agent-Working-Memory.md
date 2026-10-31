@@ -15,7 +15,7 @@ All of a large language model's reasoning capabilities rest on a single premise:
 
 You can think of the context window as a **whiteboard of limited size**. All of the Agent's working memory -- conversation history, tool results, intermediate reasoning -- must be written on this whiteboard. When the whiteboard runs out of space, you must erase old content before writing new content. The key question is: **what to erase, what to keep, and how to erase it**?
 
-This is not just a problem for Claude Code; it is a core engineering challenge that all long-conversation Agent systems must solve. Many Agent frameworks opt for "brute-force truncation" on this problem -- simply discarding the oldest messages. Claude Code's approach is far more refined.
+This is not Claude Code's problem alone; every long-conversation Agent system has to solve it. Many Agent frameworks opt for "brute-force truncation" on this problem -- simply discarding the oldest messages. Claude Code's approach is far more refined.
 
 ### The Effective Window Formula
 
@@ -233,7 +233,7 @@ flowchart TD
 
 The `CompactionResult` interface describes the complete structure of the compression output, including: boundary marker (boundaryMarker), summary messages (summaryMessages), re-injected attachments (attachments), hook results (hookResults), messages retained during partial compression (messagesToKeep), and token counts before and after compression.
 
-Notably, the `buildPostCompactMessages` function ensures consistent output message ordering across all compression paths: boundary marker, summary messages, retained messages, attachments, hook results.
+The `buildPostCompactMessages` function ensures consistent output message ordering across all compression paths: boundary marker, summary messages, retained messages, attachments, hook results.
 
 > **Cross-Reference:** AutoCompact's forked agent execution method is closely related to the Fork pattern discussed in Chapter 9. The compression operation executes in a restricted sub-Agent that runs for at most 1 turn (generating only a summary, no tool calls), ensuring compression does not produce side effects.
 

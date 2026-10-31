@@ -227,7 +227,7 @@ The design of these two tools embodies the principle of "specialization over gen
 2. **Permission control**: Search tools are read-only by default, with more lenient permission checks. If every search had to go through BashTool, users would face more permission confirmation prompts.
 3. **Performance optimization**: Dedicated search tools can be optimized for specific scenarios (e.g., limiting result counts, parallel searching), while Shell commands have limited optimization room.
 
-It is worth noting that when Ant native builds embed dedicated fast search tools, GlobTool and GrepTool are disabled because the `find` and `grep` commands in the Shell have been aliased to these fast tools, and BashTool can use them directly.
+When Ant native builds embed dedicated fast search tools, GlobTool and GrepTool are disabled because the `find` and `grep` commands in the Shell have been aliased to these fast tools, and BashTool can use them directly.
 
 ### AgentTool: The Sub-Agent Entry Point
 
@@ -428,4 +428,4 @@ Record the input token count difference in both cases, and calculate how many to
 
 5. **Tool system extensibility comes from the type contract**: The generic design of `Tool<Input, Output, Progress>` gives each tool its own type space, while `ToolUseContext` provides a unified execution environment. Adding new tools requires no modifications to the orchestration engine's code -- this is exactly the realization of the "progressive capability extension" principle mentioned in Chapter 1 at the tool level.
 
-In the next chapter, we will dive into the Agent's safety guardrails -- the permission pipeline. If the tool system gives the Agent the ability to act, the permission pipeline defines the boundaries of the Agent's actions. Understanding the design of the permission pipeline, you will know how Claude Code finds the precise balance between "autonomous execution" and "safety assurance."
+In the next chapter, we will dive into the Agent's safety guardrails -- the permission pipeline. The tool system gives the Agent the ability to act; the permission pipeline defines where those actions stop. Understanding the design of the permission pipeline, you will know how Claude Code finds the precise balance between "autonomous execution" and "safety assurance."

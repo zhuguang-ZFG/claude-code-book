@@ -81,7 +81,7 @@ These four stages are: validateInput (input validation), hasPermissionsToUseTool
 
 The first checkpoint of the permission pipeline is not about permissions per se, but about input data validity. In the permission checking function, the tool's input is first parsed through a Zod Schema using strict structural validation. If the input does not conform to the Schema definition (e.g., the Bash tool is missing the required `command` field), the parsing will throw an exception and the tool call is rejected outright. This design separates "invalid data" from "insufficient permissions" -- the former is a programming error, the latter is a policy decision.
 
-It is worth noting that when parsing fails, `toolPermissionResult` retains its default `passthrough` state, which is subsequently converted to `ask` behavior. This means that even when data validation fails, the system gracefully degrades to requesting user confirmation rather than crashing outright.
+When parsing fails, `toolPermissionResult` retains its default `passthrough` state, which is subsequently converted to `ask` behavior. This means that even when data validation fails, the system gracefully degrades to requesting user confirmation rather than crashing outright.
 
 This design choice embodies an important engineering principle: **in security systems, error handling should be "safe" rather than "correct."** Crashing outright does expose the problem, but during Agent runtime it could interrupt the entire session. Gracefully degrading to user confirmation is a safer error handling strategy -- it gives the user the opportunity to decide whether to continue, rather than having the system decide on the user's behalf.
 
@@ -178,7 +178,7 @@ The elegance of this type lies in its immutability (all fields are readonly). Ev
 
 The necessity of immutability here can be understood through a concrete scenario: suppose Tool A and Tool B simultaneously begin permission checking. During the check process, Tool A's user confirmation triggers a permission rule update (the user selects "always allow"). If PermissionContext were mutable, Tool B might see the rules modified mid-check, leading to inconsistency between the front and back checks of the same request. Immutability ensures that each permission check uses a deterministic snapshot.
 
-Among these, rules are indexed by source. This design allows the system to precisely track the origin of each rule and display information such as "this rule comes from project-level settings" in the rule management interface. This capability is crucial in multi-level configuration scenarios -- when a rule is defined by multiple sources, users need to know which rule is in effect, where it comes from, and how to modify it.
+Among these, rules are indexed by source. This design allows the system to precisely track the origin of each rule and display information such as "this rule comes from project-level settings" in the rule management interface. Multi-level configuration scenarios lean on this capability -- when a rule is defined by multiple sources, users need to know which rule is in effect, where it comes from, and how to modify it.
 
 ### 4.2.2 PermissionDecision Sources: hook, user, classifier
 
@@ -206,7 +206,7 @@ This design can be understood through a real-world analogy: imagine a "non-trans
 
 ## 4.3 The Permission Mode Spectrum
 
-Claude Code defines five internal permission modes that form a spectrum from strict to permissive. Understanding this spectrum is crucial for choosing the appropriate permission configuration.
+Claude Code defines five internal permission modes that form a spectrum from strict to permissive. Read the spectrum first; the permission configuration follows from it.
 
 ```mermaid
 flowchart LR

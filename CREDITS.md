@@ -133,6 +133,7 @@ MCP 规范以规范仓库的 tags 序列（`2026-07-28`、`2026-07-28-RC`、`202
 3. **文档在快速改写**：同一能力可能从博客迁到文档（best-practices）、从独立页并入上级页（plan-mode → permission-modes；lifecycle → versioning）。凡引用「官方怎么说」，优先指向现行文档页，并把历史 URL 的重定向关系记在 `snapshot` 里。
 4. **流动内容不作规范源**：issue 列表、论坛帖、星标数（本书仓库当日 `stargazers_count` 为 4324）只用于时间脉络。
 5. **可复现性**：`sources.json` 对 GitHub 条目钉 tag + 完整 SHA，文档/博客条目记访问日期与页面标题，社区条目额外标 `normative:false`；`manifest.json` 的 `guides[*].sources` 把 20 个单元各自映射到 3–9 条来源，任何一条正文论断都能回溯到「当时可见的哪个快照」。
+6. **文风校准**（2026-10-31）：按开源项目 [Nanako0129/sepia](https://github.com/Nanako0129/sepia)（MIT）的「去 AI 味」方法论做了一轮最小原位改写——只删元话语脚手架（「值得注意的是」「影响是深远的」「如果说……那么」）、换掉空泛宣告与匀速排比，不新增任何技术断言；所有修改逐行原地等行，`manifest.json`/`glosses.json` 的行号证据锚点因此逐一仍然指得回原散文。
 
 ## 十、构建与校验
 

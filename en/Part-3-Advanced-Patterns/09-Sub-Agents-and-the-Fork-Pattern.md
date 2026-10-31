@@ -565,7 +565,7 @@ The tool filtering function is the final arbiter, implementing a three-layer fil
 
 ## 9.6 Sub-Agent Lifecycle Management
 
-Sub-agents go through a complete lifecycle from creation to destruction. Understanding this lifecycle is critical for designing efficient multi-agent collaboration workflows.
+Sub-agents go through a complete lifecycle from creation to destruction. Before designing efficient multi-agent workflows, walk this lifecycle once.
 
 ### Lifecycle State Transitions
 

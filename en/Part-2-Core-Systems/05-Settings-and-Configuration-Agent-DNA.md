@@ -170,7 +170,7 @@ flowchart TD
     class empty empty
 ```
 
-Note that policySettings uses "first non-empty source wins" rather than "deep merge." This difference is crucial: enterprise management policies are typically a complete, audited configuration scheme, and policies from different sources should not "leak" into each other. For example, a policy delivered via remote API already contains complete security rules and should not be diluted by partial configurations from a local managed-settings.json file.
+Note that policySettings uses "first non-empty source wins" rather than "deep merge." The difference is the point: enterprise management policies are typically a complete, audited configuration scheme, and policies from different sources should not "leak" into each other. For example, a policy delivered via remote API already contains complete security rules and should not be diluted by partial configurations from a local managed-settings.json file.
 
 ### 5.1.4 The Special Status of the Policy Layer
 
@@ -371,7 +371,7 @@ For features that need to be dynamically controlled at runtime, Claude Code uses
 
 The "CACHED_MAY_BE_STALE" in the function name plainly states its semantics: the value comes from cache and may be stale in cross-process scenarios. This is to avoid asynchronous waiting on the startup critical path -- synchronously reading from cache is preferable to blocking while waiting for remote configuration.
 
-**This naming convention is worth learning for all system designers.** In API design, encoding non-obvious behavioral constraints directly into function names "reminds" callers of this constraint every time they use it. In contrast, a function named `getFeatureValue` would give the false expectation of "returning the latest value."
+**This naming convention is worth stealing.** In API design, encoding non-obvious behavioral constraints directly into function names "reminds" callers of this constraint every time they use it. In contrast, a function named `getFeatureValue` would give the false expectation of "returning the latest value."
 
 In the memory system, we can see the usage of GrowthBook feature flags -- checking randomly named feature flags to determine whether to enable certain memory features.
 

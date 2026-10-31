@@ -119,7 +119,7 @@ body_structure: 事实或决策 + Why: 动机 + How to apply: 对建议的影响
 
 **reference -- 外部引用**
 
-指向外部系统的指针——Linear 项目、Grafana 仪表盘、Slack 频道。这些信息不在代码仓库中，但对理解项目上下文至关重要。
+指向外部系统的指针——Linear 项目、Grafana 仪表盘、Slack 频道。这些信息不在代码仓库中，但理解项目上下文时少不了。
 
 ```
 when_to_save: 了解到外部系统的资源和用途时

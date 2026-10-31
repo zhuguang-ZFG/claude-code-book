@@ -15,7 +15,7 @@
 
 可以把上下文窗口想象成一块**有限大小的白板**。Agent 的所有工作记忆——对话历史、工具结果、中间推理——都必须写在这块白板上。白板空间用完时，你必须擦掉旧内容才能写新内容。关键问题是：**擦掉什么、保留什么、用什么方式擦**？
 
-这不仅是 Claude Code 面对的问题，而是所有长对话 Agent 系统都必须解决的核心工程挑战。许多 Agent 框架在这个问题上选择了"暴力截断"——直接丢弃最早的消息。Claude Code 的做法远比这精细。
+这不只是 Claude Code 一家的问题，所有长对话 Agent 系统都得解决它。许多 Agent 框架在这个问题上选择了"暴力截断"——直接丢弃最早的消息。Claude Code 的做法远比这精细。
 
 ### 有效窗口公式
 
@@ -233,7 +233,7 @@ flowchart TD
 
 `CompactionResult` 接口描述了压缩产物的完整结构，包含：边界标记（boundaryMarker）、摘要消息（summaryMessages）、重新注入的附件（attachments）、钩子结果（hookResults）、部分压缩时保留的消息（messagesToKeep），以及压缩前后的令牌计数。
 
-值得注意的是，`buildPostCompactMessages` 函数确保了所有压缩路径的输出消息顺序一致：边界标记、摘要消息、保留消息、附件、钩子结果。
+`buildPostCompactMessages` 函数确保了所有压缩路径的输出消息顺序一致：边界标记、摘要消息、保留消息、附件、钩子结果。
 
 > **交叉参考：** AutoCompact 的 forked agent 执行方式与第 9 章讨论的 Fork 模式密切相关。压缩操作在一个受限的子 Agent 中执行，该子 Agent 最多运行 1 轮（只生成摘要，不做工具调用），确保压缩不会产生副作用。
 

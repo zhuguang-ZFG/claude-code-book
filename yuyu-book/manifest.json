@@ -252,7 +252,7 @@
   "guides": {
     "front": {
       "question": {
-        "zh": "为什么调用 LLM 的聊天机器人远远不够，Agent 需要 Harness 这一层工程基础设施？",
+        "zh": "会聊天的模型为什么远远不够？Agent 为什么非得有 Harness 这一层？",
         "en": "Why does an agent need a runtime layer—an Agent Harness—rather than a thin wrapper around the LLM API?"
       },
       "deliverable": {
@@ -291,8 +291,8 @@
     },
     "ch01": {
       "question": {
-        "zh": "从 Chatbot 到自主智能体的范式转移中，Claude Code 的架构骨架与五大设计原则是什么？",
-        "en": "What shifts AI programming from chatbot to autonomous agent, and what architectural skeleton and design principles does Claude Code embody?"
+        "zh": "从 Chatbot 到自主智能体，Claude Code 的骨架怎么搭？五大原则各落在哪？",
+        "en": "What moves AI programming from chatbot to autonomous agent, and where do Claude Code's five design principles sit in the skeleton?"
       },
       "deliverable": {
         "zh": "一张五模块分层架构图，并能独立完成安装与 /doctor 首次诊断。",
@@ -409,8 +409,8 @@
     },
     "ch04": {
       "question": {
-        "zh": "一次工具调用如何穿过四阶段权限管线，在自主效率与安全控制之间取得平衡？",
-        "en": "How does a tool call traverse the four-stage pipeline, and how is autonomy balanced against safety?"
+        "zh": "一次工具调用怎么穿过四道关？效率和安全各让了什么？",
+        "en": "How does a tool call clear the four stages, and what does autonomy give up to safety?"
       },
       "deliverable": {
         "zh": "一张四阶段决策流程图，能独立编写项目级 allow/deny 权限配置。",
@@ -487,7 +487,7 @@
     },
     "ch06": {
       "question": {
-        "zh": "哪些信息值得跨会话长期保存？后台提取又如何在提示缓存约束下进行？",
+        "zh": "哪些信息值得跨会话长期保存？后台提取又怎么在提示缓存的红线下干活？",
         "en": "What deserves durable storage across sessions, and how does background extraction run within prompt-cache limits?"
       },
       "deliverable": {
@@ -736,7 +736,7 @@
       },
       "boundary": {
         "zh": "工具接口本体见第3章，权限管线内部机制见第4章；本章只讲 MCP 如何接入这两套系统。",
-        "en": "The tool interface itself (Chapter 3) and the permission pipeline internals (Chapter 4) are assumed, not re-explained; only MCP's integration is."
+        "en": "The tool interface itself (Chapter 3) and the permission pipeline internals (Chapter 4) are assumed, not re-explained; only MCP's integration is new here."
       },
       "sources": [
         "docs-mcp",
@@ -771,7 +771,7 @@
     "ch13": {
       "question": {
         "zh": "模型还在吐字，工具为何已能开跑？延迟、并发与 token 成本之间怎么权衡？",
-        "en": "Why can tools start running while the model is still talking, and how are latency, concurrency, and token cost traded off against each other?"
+        "en": "Why can tools start running while the model is still talking, and when latency, concurrency, and token cost collide, which one yields?"
       },
       "deliverable": {
         "zh": "一份性能排查清单：流式管线、并/串行规则、启动并行预取、用量累加与缓存命中率的计算方法。",

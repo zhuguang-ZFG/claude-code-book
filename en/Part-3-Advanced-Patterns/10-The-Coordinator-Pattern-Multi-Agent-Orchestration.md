@@ -587,7 +587,7 @@ The guiding principle in the system prompt is: **the coordinator should make ful
 
 ## 10.7 Coordinator Pattern vs. Fork Pattern Comparison
 
-The two patterns represent different parallelism strategies, and choosing the correct one is critical for task success.
+The two patterns are two parallelism strategies; pick the wrong one and the task stalls.
 
 | Dimension | Coordinator Pattern | Fork Pattern |
 |-----------|-------------------|-------------|

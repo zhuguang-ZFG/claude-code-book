@@ -404,7 +404,7 @@ flowchart LR
     class TOTAL,TOTAL2 resultNode
 ```
 
-**updateUsage** handles usage data from single streaming events. Since Anthropic API's `message_delta` events only return incremental fields, `updateUsage` uses `> 0` guards for each field to distinguish "not returned" from "truly zero". This guard is crucial: if the API returns `input_tokens: 0` (because that request used caching), the system won't incorrectly overwrite the previously recorded true value to zero.
+**updateUsage** handles usage data from single streaming events. Since Anthropic API's `message_delta` events only return incremental fields, `updateUsage` uses `> 0` guards for each field to distinguish "not returned" from "truly zero". This guard cannot be skipped: if the API returns `input_tokens: 0` (because that request used caching), the system won't incorrectly overwrite the previously recorded true value to zero.
 
 This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean "this quantity is indeed zero" or "this event doesn't contain information about this quantity"? Without distinction, "100% cache hit rate" leads to the absurd result of "displaying zero input tokens".
 

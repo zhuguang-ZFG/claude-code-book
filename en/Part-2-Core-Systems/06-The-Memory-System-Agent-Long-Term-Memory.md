@@ -119,7 +119,7 @@ Scenario 3: Team conventions. The user says "our team agreed that all API respon
 
 **reference -- External References**
 
-Pointers to external systems -- Linear projects, Grafana dashboards, Slack channels. This information is not in the code repository but is critical for understanding project context.
+Pointers to external systems -- Linear projects, Grafana dashboards, Slack channels. This information is not in the code repository but you need them to understand project context.
 
 ```
 when_to_save: When learning about external system resources and their purposes

@@ -110,7 +110,7 @@ If your task meets any of the following conditions, you should consider the Agen
 
 Claude Code chose Bun as its runtime, primarily for three reasons:
 
-- **Startup speed:** Bun's cold start time is roughly one-third that of Node.js, which is critical for CLI tools
+- **Startup speed:** Bun's cold start time is roughly one-third that of Node.js -- a hard number for CLI tools
 - **Native TypeScript:** No pre-compilation step needed, runs `.ts` files directly
 - **Bundle features:** `bun:bundle` provides compile-time feature flags (`feature('X')`), eliminating unnecessary code paths at build time
 
@@ -1066,7 +1066,7 @@ Current tool systems are text-centric, but multimodal interaction is changing th
 - **Visual understanding tools:** Screenshot analysis, UI element location, chart interpretation
 - **Voice interaction:** Voice input triggers tool calls, voice output announces tool results
 
-Multimodal interaction has far-reaching architectural implications for Agent Harnesses. The current `ContentBlock` type system needs extending to support binary data, tool `inputSchema` needs to support file references rather than text-only parameters, and streaming needs to support chunked binary data. These changes aren't simple feature additions, but a refactoring of the core data model.
+Multimodal interaction forces Agent Harness architecture to move. The current `ContentBlock` type system needs extending to support binary data, tool `inputSchema` needs to support file references rather than text-only parameters, and streaming needs to support chunked binary data. These changes aren't simple feature additions, but a refactoring of the core data model.
 
 **New challenges in multimodal scenarios:**
 
