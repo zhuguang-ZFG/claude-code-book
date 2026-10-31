@@ -8,7 +8,7 @@ Claude Code 架构深度剖析
 
 <table align="center">
 <tr><td><img src="cover.png" width="420" alt="御舆：解码 Agent Harness — Claude Code 架构深度剖析，LinTsinghua" /></td></tr>
-<tr><td align="center">🎨 <a href="docs/illustration-gallery.html">插画一览 · 看图说话</a>（26 份手绘插图配白话题注，下载后用浏览器打开）｜ <a href="docs/illustration-prompts.md">再生提示词手册</a></td></tr>
+<tr><td align="center">📖 <a href="docs/beginner-reader.html">入门分册 · 看图读懂</a>（人人可读，由浅入深，下载后用浏览器打开）｜ 🎨 <a href="docs/illustration-gallery.html">插画一览 · 看图说话</a> ｜ <a href="docs/illustration-prompts.md">再生提示词手册</a></td></tr>
 </table>
 
 </div>
