@@ -245,7 +245,7 @@ The `truncateEntrypointContent` function implements dual capacity protection: fi
 
 Why are two layers of limits needed? The line limit and byte limit each address different concerns:
 
-- **Line limit (200 lines)**: Protects the Agent's comprehension efficiency. Even if each line is short, an index of more than 200 lines requires the Agent to spend more tokens understanding and filtering. The line limit ensures that the index always remains a "quick browse" tool rather than a "deep reading" document.
+- **Line limit (200 lines)**: Protects the Agent's comprehension efficiency. Even if each line is short, an index of more than 200 lines requires the Agent to spend more tokens understanding and filtering. The cap keeps the index a "quick browse" object instead of a document to read closely.
 - **Byte limit (25KB)**: Protects the context budget. A single memory's index entry may contain a long description (approaching the 150-character limit), and 200 such entries could reach 30KB, putting pressure on the context window. The byte limit provides a hard cost ceiling.
 
 The order of the two layers also matters -- truncation by lines first, then by bytes. When there are fewer memory entries but longer descriptions, the byte limit triggers first; when there are more memory entries but shorter descriptions, the line limit triggers first. In either case, there is a corresponding protection mechanism.

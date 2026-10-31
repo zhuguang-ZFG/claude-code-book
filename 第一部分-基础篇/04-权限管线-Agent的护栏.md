@@ -93,7 +93,7 @@ flowchart TD
 
 `getDenyRuleForTool` 函数遍历所有来源（userSettings、projectSettings、localSettings、flagSettings、policySettings、cliArg、command、session）的 deny 规则进行匹配。匹配逻辑支持精确工具名匹配和 MCP 服务器级通配符——例如规则 `mcp__server1__*` 可以匹配该服务器下的所有工具。
 
-七种规则来源按"就近原则"排优先级：会话级规则（最近设置的）优先于命令行参数，命令行参数优先于项目配置，项目配置优先于全局用户配置。这种优先级排序确保了更具体、更近期的规则能够覆盖更一般、更早期的规则。
+七种规则来源按"就近原则"排优先级：会话级规则（最近设置的）优先于命令行参数，命令行参数优先于项目配置，项目配置优先于全局用户配置。越具体、越近期的规则排得越靠前，覆盖掉更一般、更早期的规则。
 
 ```mermaid
 flowchart BT

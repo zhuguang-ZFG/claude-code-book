@@ -235,7 +235,7 @@ This startup strategy reveals a universal engineering principle: **the startup p
 
 The engine serves both the interactive REPL and the headless SDK from one core: the query logic lives in a class of its own, so every runtime shares the same state management and lifecycle control code.
 
-This "one core, multiple entry points" design pattern is very valuable in engineering practice. Imagine if the interactive REPL and SDK modes used two different sets of query logic -- every time you fixed a bug or added a feature, you'd need to make synchronized changes in two places. The QueryEngine design ensures that whether users interact through the terminal or through API calls, they follow the same verified core path.
+This "one core, multiple entry points" design pattern is very valuable in engineering practice. Imagine if the interactive REPL and SDK modes used two different sets of query logic -- every time you fixed a bug or added a feature, you'd need to make synchronized changes in two places. QueryEngine puts terminal use and API calls on the same verified core path.
 
 #### Async Generator Dialog Main Loop
 
@@ -277,7 +277,7 @@ The core function in the tool registration module returns the complete list of a
 2. **Lazy Loading**: Some tools use dynamic imports instead of static imports to avoid circular dependencies and reduce startup time.
 3. **Tool Filtering**: The tool filtering function, before sending the tool list to the LLM, filters out forbidden tools based on the permission context, ensuring the model cannot even "see" tools it should not use.
 
-Conditional registration and lazy loading amount to loading on demand. In Agent systems, the number of tools can reach dozens or even hundreds (especially after MCP protocol extension). If all tools were loaded at startup, it would not only slow down startup but also potentially cause initialization errors due to circular dependencies. Claude Code's approach ensures that only the tools actually needed are loaded into memory.
+Conditional registration and lazy loading amount to loading on demand. In Agent systems, the number of tools can reach dozens or even hundreds (especially after MCP protocol extension). If all tools were loaded at startup, it would not only slow down startup but also potentially cause initialization errors due to circular dependencies. Claude Code therefore loads into memory only the tools it actually needs.
 
 ---
 

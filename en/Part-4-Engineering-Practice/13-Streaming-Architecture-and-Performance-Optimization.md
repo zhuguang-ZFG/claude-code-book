@@ -408,7 +408,7 @@ flowchart LR
 
 This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean "this quantity is indeed zero" or "this event doesn't contain information about this quantity"? Without distinction, "100% cache hit rate" leads to the absurd result of "displaying zero input tokens".
 
-The essence of the `> 0` guard is a **monotonic increase guarantee**: usage fields only increase, never decrease or get overwritten with smaller values. This ensures that querying usage at any time gets the maximum known value up to that point.
+The essence of the `> 0` guard is a **monotonic increase guarantee**: usage fields only increase, never decrease or get overwritten with smaller values. Query usage at any moment and the number you get is the largest seen so far.
 
 > **Anti-pattern warning:** Don't use `|| 0` as default value in `updateUsage`. `|| 0` treats `0`, `undefined`, `null`, `""` all as falsy, causing true zero values to be incorrectly replaced. Using `> 0` guard (or more rigorous `!== undefined && val > 0`) correctly distinguishes "not returned" from "truly zero".
 

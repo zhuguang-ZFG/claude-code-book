@@ -70,7 +70,7 @@ The Coordinator pattern also affects the agent registry. When Coordinator mode i
 
 ### Pattern Matching for Session Recovery
 
-The `matchSessionMode()` function handles pattern consistency during session recovery: when the current mode doesn't match the session's recorded mode, the system automatically flips the environment variable to match the session's mode. This ensures that when a user recovers a session created in Coordinator mode, the system automatically activates Coordinator mode, even if the current startup configuration doesn't have the environment variable set.
+The `matchSessionMode()` function handles pattern consistency during session recovery: when the current mode doesn't match the session's recorded mode, the system automatically flips the environment variable to match the session's mode. So recovering a session created in Coordinator mode switches Coordinator mode on even when the startup configuration never set the variable.
 
 This design solves a practical problem: a user might set the Coordinator environment variable during one launch and create a session, but forget to set it when recovering that session later. Without automatic mode matching, the session would be restored in the wrong mode, leading to inconsistent behavior or even errors.
 

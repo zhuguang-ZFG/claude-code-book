@@ -135,7 +135,7 @@ The type system, through type computation, allows developers to provide only the
 
 Claude Code's tool registration makes extensive use of conditional imports to achieve compile-time dead code elimination. When specific conditions are not met, the entire module for the corresponding tool is not included in the final build. The same applies to tools controlled by feature flags.
 
-Feature flags come from the build toolchain and are evaluated by the bundler at compile time. When a feature flag is off, the corresponding tool implementation code is removed by tree-shaking. This pattern ensures that external builds (for third-party users) do not contain internal tool code.
+Feature flags come from the build toolchain and are evaluated by the bundler at compile time. When a feature flag is off, the corresponding tool implementation code is removed by tree-shaking. External builds (for third-party users) carry no internal tool code.
 
 This design has significant security implications: if internal tools (such as REPL tools, debugging tools) were included in external builds, even if they were unavailable, they could leak internal architecture information. Dead code elimination eliminates this information leakage risk at the source.
 

@@ -93,7 +93,7 @@ Rule matching is the core of the permission pipeline. The `hasPermissionsToUseTo
 
 The `getDenyRuleForTool` function traverses deny rules from all sources (userSettings, projectSettings, localSettings, flagSettings, policySettings, cliArg, command, session) for matching. The matching logic supports exact tool name matching and MCP server-level wildcards -- for example, the rule `mcp__server1__*` can match all tools under that server.
 
-The seven rule sources are ordered by proximity: session-level rules (the most recently set) take priority over command-line arguments, command-line arguments take priority over project configuration, and project configuration takes priority over global user configuration. This priority ordering ensures that more specific, more recent rules can override more general, earlier ones.
+The seven rule sources are ordered by proximity: session-level rules (the most recently set) take priority over command-line arguments, command-line arguments take priority over project configuration, and project configuration takes priority over global user configuration. The more specific and recent a rule, the earlier it sits, so it overrides the general and the old.
 
 ```mermaid
 flowchart BT

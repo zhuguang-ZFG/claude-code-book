@@ -204,7 +204,7 @@ flowchart TD
     class ar4 alert
 ```
 
-Async hook implementation is completed in background execution functions. Async-rewake mode hooks bypass the regular registry, injecting messages through notification queue upon completion. This design ensures async hook execution doesn't block Agent's main loop while retaining the ability to "sound the alarm" when necessary.
+Async hook implementation is completed in background execution functions. Async-rewake mode hooks bypass the regular registry, injecting messages through notification queue upon completion. Async hook execution stays off the Agent's main loop, and the hook can still "sound the alarm" when it needs to.
 
 ---
 

@@ -734,7 +734,7 @@ flowchart TD
     class T1,T2,T3,T4 termNode
 ```
 
-Each phase has corresponding resource management strategy. Creation phase allocates resources (context, controllers), execution phase uses resources (API calls, file access), termination phase releases resources (close controllers, write transcript). This "allocate-use-release" three-phase lifecycle management ensures no resource leaks.
+Each phase has corresponding resource management strategy. Creation phase allocates resources (context, controllers), execution phase uses resources (API calls, file access), termination phase releases resources (close controllers, write transcript). Each phase owns its own resources, so nothing leaks.
 
 ---
 

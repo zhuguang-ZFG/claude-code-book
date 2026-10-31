@@ -46,7 +46,7 @@ graph BT
     class flag,policy topLayer
 ```
 
-> Each layer can override the configuration of lower layers, but will not delete them -- they are simply "shadowed." This design ensures that each layer can be independently understood and maintained.
+> Each layer can override the configuration of lower layers, but will not delete them -- they are simply "shadowed." Any one layer can then be understood and maintained on its own.
 
 ### 5.1.2 Merge Rules
 

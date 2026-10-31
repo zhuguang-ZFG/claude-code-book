@@ -229,7 +229,7 @@ After tool execution completes, the loop performs attachment injection (memory f
 
 The next iteration will use this expanded message list to call the model again. The model will see the previous tool results and then decide whether to continue calling tools or provide a final response.
 
-Attachment injection is an easily overlooked but very important step. Imagine this scenario: during tool execution, the user modifies the CLAUDE.md file. Without injecting this change, the model might make decisions based on stale configuration in the next call. Attachment injection ensures that at the start of each loop iteration, the model has the latest environment information.
+Attachment injection is an easily overlooked but very important step. Imagine this scenario: during tool execution, the user modifies the CLAUDE.md file. Without injecting this change, the model might make decisions based on stale configuration in the next call. With that injection, the model starts each loop iteration holding the latest environment information.
 
 ### Termination Condition Judgment
 
@@ -285,7 +285,7 @@ flowchart TD
 - **User-Initiated Termination**: `aborted_streaming`, `aborted_tools` -- the user decided to stop
 - **Abnormal Termination**: the remaining seven -- the system encountered a situation where it could not continue
 
-For abnormal termination, the system performs cleanup logic before returning the terminal state: cancelling tools in execution, releasing resource references, logging the termination reason. This cleanup logic ensures that even if the Agent exits abnormally, it won't leave behind "dirty" state.
+For abnormal termination, the system performs cleanup logic before returning the terminal state: cancelling tools in execution, releasing resource references, logging the termination reason. Do that and even an abnormal exit leaves no "dirty" state behind.
 
 ---
 
