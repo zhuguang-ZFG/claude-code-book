@@ -273,7 +273,7 @@ This type definition contains rich architectural decisions:
 
 The core function in the tool registration module returns the complete list of all available tools and is the "Single Source of Truth" for the tool system. A few design details:
 
-1. **Conditional Registration**: Some tools are controlled by Feature Flags, such as REPL tools only available in internal builds, and scheduled task tools only enabled under specific feature modes. One codebase therefore serves several product forms.
+1. **Conditional Registration**: Some tools are controlled by Feature Flags, such as REPL tools only available in internal builds, and scheduled task tools only enabled under specific feature modes. One codebase therefore serves different product forms.
 2. **Lazy Loading**: Some tools use dynamic imports instead of static imports to avoid circular dependencies and reduce startup time.
 3. **Tool Filtering**: The tool filtering function, before sending the tool list to the LLM, filters out forbidden tools based on the permission context, ensuring the model cannot even "see" tools it should not use.
 
