@@ -192,7 +192,7 @@ BashTool's special status in the tool system is reflected in the following aspec
 
 - **Interruption behavior**: BashTool can customize its behavior when the user interrupts. Some long-running commands (such as test suites) may choose to block rather than cancel. This design reflects a nuanced understanding of user intent: interrupting a running `npm install` should stop the command immediately (the user changed their mind), but interrupting a test suite might just mean the user wants to see current progress (the results are still valuable once tests complete).
 
-- **Semantic analysis**: BashTool performs AST parsing and semantic analysis on commands, determining whether a command is a search/read operation (`isSearchOrReadCommand`), used for UI collapsible display. This embodies the "intelligent tool" design philosophy -- tools are not just passive pipelines for executing commands, but can understand command semantics and make corresponding UI decisions.
+- **Semantic analysis**: BashTool performs AST parsing and semantic analysis on commands, determining whether a command is a search/read operation (`isSearchOrReadCommand`), used for UI collapsible display. The tool here is more than a pipe handing the command to the shell: it reads what the command does, then decides how the interface folds it away.
 
 - **Sandbox integration**: Through the `--dangerouslyDisableSandbox` parameter and sandbox configuration, it controls the security boundary of command execution. The sandbox is BashTool's "safety net" -- even in bypass permission mode, the sandbox can still restrict a command's filesystem access scope.
 

@@ -176,7 +176,7 @@ Note that policySettings uses "first non-empty source wins" rather than "deep me
 
 Unlike other configuration sources that use deep merge, `policySettings` employs a completely different resolution logic. Instead of reading from files and merging, it searches for the first non-empty source by priority (remote API settings > MDM settings > managed-settings.json file > HKCU registry).
 
-This means enterprise administrators only need to configure policies in one location, and the system will use the highest-priority source rather than merging all sources.
+An enterprise administrator therefore writes the policy once: the system takes the highest-priority source instead of merging them.
 
 **Design Decision Analysis: Why is the merge logic for policySettings different from other configuration sources?**
 

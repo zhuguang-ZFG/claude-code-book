@@ -103,7 +103,7 @@ graph TD
 2. **Plugin agents** (plugin): Can override built-in agents
 3. **User settings** (userSettings) -> **Project settings** (projectSettings) -> **Flag settings** (flagSettings) -> **Policy settings** (policySettings): Priority increases in order
 
-This means that policy-level custom agents can override built-in agents with the same name, providing flexibility for enterprise deployments.
+A policy-level custom agent therefore displaces the built-in agent of the same name.
 
 > **Real-World Scenario: Enterprise Security Audit Override**
 >
@@ -684,4 +684,4 @@ Write out the input and expected output for each step.
 
 6. **Sub-agent lifecycle management** goes through complete state transitions from creation to cleanup. Setting maxTurns appropriately, choosing the right model, and correctly configuring the tool set are key to using sub-agents efficiently.
 
-7. **The adversarial verification philosophy** is not just a technical choice but reflects an engineering culture — rather than trusting that code "should work," actively try to prove that it doesn't.
+7. **The adversarial verification philosophy**: rather than trusting that code "should work," actively try to prove that it doesn't.

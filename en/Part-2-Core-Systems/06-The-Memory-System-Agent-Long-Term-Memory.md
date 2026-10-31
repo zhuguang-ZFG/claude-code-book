@@ -521,7 +521,7 @@ stateDiagram-v2
     Note right of MemoryInvalidatedDeleted: MEMORY.md index entry removed
 ```
 
-Memory "invalidation" is a topic worth discussing. Claude Code does not implement an automatic memory expiration mechanism -- once a memory is saved, it persists indefinitely unless manually deleted or overridden by a subsequent memory. This means memory quality management relies on the Agent's judgment (not saving information that isn't worth saving) and the user's active maintenance.
+Memory never expires on its own. Claude Code does not implement an automatic memory expiration mechanism -- once a memory is saved, it persists indefinitely unless manually deleted or overridden by a subsequent memory. So the quality of the store rests on two habits: the Agent declining to save what is not worth saving, and the user pruning what is there.
 
 ### 6.4.4 Memory Reading and Validation
 

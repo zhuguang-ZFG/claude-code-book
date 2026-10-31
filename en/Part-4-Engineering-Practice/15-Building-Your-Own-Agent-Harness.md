@@ -23,7 +23,7 @@ Why are loops better suited than recursion for Agent scenarios? Three reasons:
 
 3. **Debugging is more intuitive.** State changes in a loop happen at a fixed code location -- a single breakpoint captures all state transitions. In recursion, state changes are scattered across multiple call stack frames, requiring breakpoints at different levels.
 
-**Principle 2: Schema-driven, not hard-coded.** Each tool defines its input parameters through a Zod Schema, and the `buildTool` factory function automatically fills in default behavior from partial definitions. This means tool validation logic, permission checks, and description generation all derive from the same Schema, eliminating the root cause of inconsistencies.
+**Principle 2: Schema-driven, not hard-coded.** Each tool defines its input parameters through a Zod Schema, and the `buildTool` factory function automatically fills in default behavior from partial definitions. Validation logic, permission checks and description generation all derive from the same Schema, so the three cannot disagree.
 
 The deeper value of Schema-driven design lies in "Single Source of Truth." Consider an alternative without Schema-driven design: input validation is written in one place, permission checks in another, and API documentation is manually authored. When a parameter needs modification, all three locations need synchronized updates, and missing any one leads to inconsistency. Schema-driven design ensures that validation logic, permission logic, and documentation all derive from the same definition -- modify one place and it takes effect globally.
 

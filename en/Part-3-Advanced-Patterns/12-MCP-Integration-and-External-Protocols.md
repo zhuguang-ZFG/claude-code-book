@@ -95,7 +95,7 @@ flowchart TD
 
 > **Analogy:** Think of MCP as the USB protocol stack. The physical layer (USB-C cable) corresponds to MCP's transport layer (stdio/SSE/WS); the protocol layer (USB descriptors and endpoints) corresponds to MCP's capability declarations and tool discovery; the application layer (USB device drivers) corresponds to specific MCP tool implementations. Just as you don't need to know how a mouse works internally to use it, Claude Code doesn't need to know how an MCP server works internally to invoke its tools.
 
-> **Cross-reference:** Once MCP tools are mapped to internal Claude Code Tool objects, they fully integrate into the tool system described in Chapter 3. This means MCP tools go through the same four-stage permission pipeline checks (Chapter 4), participate in the same concurrency scheduling strategies, and can be intercepted and enhanced through the hook system (Chapter 8).
+> **Cross-reference:** Once MCP tools are mapped to internal Claude Code Tool objects, they fully integrate into the tool system described in Chapter 3. MCP tools therefore run the same route as built-in ones: the four-stage permission checks (Chapter 4), the concurrency scheduling strategy, and interception or enhancement by the hook system (Chapter 8).
 
 ### 12.1.2 Connection Configurations and Transports
 

@@ -110,7 +110,7 @@ This book attempts to fill that gap. We explain Agent Harness design using publi
 
 The timing for this book is right, for three reasons:
 
-1. **Architectural patterns are converging.** Although different Agent frameworks vary in implementation details, the core architectural patterns -- dialog-loop-driven execution, tool type systems, layered permission pipelines, and streaming state management -- have converged across multiple mainstream projects. This means the design patterns summarized here have broad applicability and will not become outdated by any single framework's version update.
+1. **Architectural patterns are converging.** Although different Agent frameworks vary in implementation details, the core architectural patterns -- dialog-loop-driven execution, tool type systems, layered permission pipelines, and streaming state management -- have converged across multiple mainstream projects. The patterns collected here are therefore not tied to any one framework's implementation.
 
 2. **Engineering challenges have been fully exposed.** After two years of practice, the core engineering challenges facing Agent systems are clearly visible: context window management, security and concurrency of tool calls, state consistency during long-running operations, error recovery and retry strategies, and so on. These problems will not disappear as model capabilities improve -- on the contrary, as Agents execute more complex tasks, these engineering issues will become even more acute.
 
