@@ -8,7 +8,7 @@ A Deep Architectural Analysis of Claude Code
 
 <table align="center">
 <tr><td><img src="../cover.png" width="420" alt="御舆：解码 Agent Harness — Claude Code 架构深度剖析，LinTsinghua" /></td></tr>
-<tr><td align="center">📖 <a href="../docs/beginner-reader.html">Beginner reader · illustrated</a> (plain language, shallow-to-deep; download and open in a browser) ｜ 🎨 <a href="../docs/illustration-gallery.html">Illustration gallery</a> ｜ <a href="../docs/illustration-prompts.md">Prompt handbook</a></td></tr>
+<tr><td align="center">📖 <a href="../docs/beginner-reader.en.html">Beginner reader · illustrated</a> (plain language, shallow-to-deep; download and open in a browser) ｜ 🎨 <a href="../docs/illustration-gallery.html">Illustration gallery</a> ｜ <a href="../docs/illustration-prompts.md">Prompt handbook</a></td></tr>
 </table>
 
 </div>

@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
-"""Regenerate docs/beginner-reader.html — the plain-language on-ramp.
+"""Regenerate docs/beginner-reader.html (+ .en.html) — the plain-language
+on-ramp.
 
 一本真正浅显易懂的入门分册：每站 = 一幅手绘插图 + 大书里现成的
 「一句话讲明白」与「打个比方」，按四篇由浅入深排站（底色随篇目加深，
 "由浅入深"因此被画出来），每站一枚链接跳回大书对应章。正文零改动——
-所有句子都取自作者自己的通俗层。
+所有句子都取自作者自己的通俗层（zh 从中文 dist 提取，en 从英文 dist）。
 
-Run after `python yuyu-book/build.py` (reads the built zh HTML for the
-plain-language layer; anchors link back into it).
+Run after `python yuyu-book/build.py [--lang en]` (reads the built HTML for
+the plain-language layer; anchors link back into it).
 """
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DIST = ROOT / "yuyu-book" / "dist" / "yuyu-agent-harness-zh.html"
 ART = ROOT / "yuyu-book" / "illustrations"
-OUT = ROOT / "docs" / "beginner-reader.html"
-BOOK = "yuyu-agent-harness-zh.html"
+
+YT_CHANNEL = "https://www.youtube.com/@anthropic-ai"
+YT_SEARCH = "https://www.youtube.com/results?search_query="
+B_SEARCH = "https://search.bilibili.com/all?keyword="
+
+STRIP = re.compile(r"<[^>]+>")
 
 # 由浅入深：四篇的底色一层比一层深，深浅即顺序
 PARTS = [
@@ -26,15 +30,49 @@ PARTS = [
     ("第四部分 · 工程实践篇", "实战", "#E0D4B8", ["ch13", "ch14", "ch15"]),
 ]
 ORDER = ["front"] + [u for _, _, _, us in PARTS for u in us] + ["apxd"]
-BIG = {"front": 200, "cover": 260}
-WIDTH = {u: (BIG.get(u, 148)) for u in ORDER}
+WIDTH = {u: 148 for u in ORDER}
 
-# 视频指路：只收录存在性经核验的链接（官方频道 + 核验过的 B 站稿件 +
-# 站内搜索页）。视频属社区/官方宣传资源，非本书规范来源；技术事实
-# 以大书正文与官方文档为准。核验日期 2026-10-31。
-YT_CHANNEL = "https://www.youtube.com/@anthropic-ai"
-YT_SEARCH = "https://www.youtube.com/results?search_query="
-B_SEARCH = "https://search.bilibili.com/all?keyword="
+CAPTIONS = {
+    "front": "一张古地图：整本书就是一条路",
+    "ch01": "罗盘：从「陪聊」到「干活」，换一种瞄准方式",
+    "ch02": "心跳：一句话进、一句话出的对话循环",
+    "ch03": "螺母：Agent 的双手——工具越多，本事越大",
+    "ch04": "闸门：危险操作先过一道勾选的护栏",
+    "ch05": "千层饼：配置像基因，一层层定性格",
+    "ch06": "折角笔记本：Agent 的长期记忆记在这里",
+    "ch07": "仪表盘：脑子里工作台还剩多少位置",
+    "ch08": "挂钩：在人生节点上，给它装上小动作",
+    "ch09": "分叉路：派几个小助手分头去办",
+    "ch10": "指挥家：一个主编排，四方小队听调",
+    "ch11": "技能卡：把说明书装进兜里，随取随用",
+    "ch12": "外接线：一根线，用上全世界的工具",
+    "ch13": "漏斗：回答像水一样，一边流一边看",
+    "ch14": "小红旗：先画路线再出发，插旗为证",
+    "ch15": "辘轳：亲手摇一架，你也造一个 Agent",
+    "apxd": "小词典：生词太多？翻这一册",
+    "keeper": "老驿卒：每章结尾替你守夜总结的人",
+    "cover": "四马古车：书名「御舆」——驾驭一辆车，也驾驭一个 Agent",
+}
+
+TRANSITIONS = {
+    "ch01": "先站上起点：看清这场范式转移把程序员带到了哪里。",
+    "ch02": "方向既明，先听 Agent 的心跳——它怎么跟你一来一回。",
+    "ch03": "心跳会转了，还得有手：这一站看它凭什么能动手。",
+    "ch04": "手有了力气，就要有护栏——别让它碰不该碰的。",
+    "ch05": "护栏立好，回头给它定性格：配置是它的基因。",
+    "ch06": "基因定了，它还得记住你们相处的每一件事。",
+    "ch07": "记性太好也是负担——这一站看它如何打理工作记忆。",
+    "ch08": "想在它的生命周期里插手？钩子就是那些接口。",
+    "ch09": "一个助手不够用？让它分身出小助手。",
+    "ch10": "分身多了就要有指挥——编排者模式登场。",
+    "ch11": "指挥有序，还要给它发技能卡：能力即插即用。",
+    "ch12": "墙外的世界靠外接线：MCP 把外部工具接进来。",
+    "ch13": "都接好了，让回答像水一样流出来。",
+    "ch14": "让它放开了跑之前，先学会画路线、插红旗。",
+    "ch15": "看完全程，现在亲手摇一架自己的辘轳。",
+    "apxd": "路上的生词，都在这本小词典里。",
+}
+
 VIDEOS = {
     "front": [("YouTube · Anthropic 官方频道", YT_CHANNEL),
               ("YouTube · 搜「Mastering Claude Code in 30 minutes」（官方）",
@@ -58,33 +96,91 @@ VIDEOS = {
     "ch15": [("YouTube · Anthropic 官方频道（agent 深讲）", YT_CHANNEL)],
 }
 
-# 站间衔接：只做承上启下，不新增任何技术断言
-TRANSITIONS = {
-    "ch01": "先站上起点：看清这场范式转移把程序员带到了哪里。",
-    "ch02": "方向既明，先听 Agent 的心跳——它怎么跟你一来一回。",
-    "ch03": "心跳会转了，还得有手：这一站看它凭什么能动手。",
-    "ch04": "手有了力气，就要有护栏——别让它碰不该碰的。",
-    "ch05": "护栏立好，回头给它定性格：配置是它的基因。",
-    "ch06": "基因定了，它还得记住你们相处的每一件事。",
-    "ch07": "记性太好也是负担——这一站看它如何打理工作记忆。",
-    "ch08": "想在它的生命周期里插手？钩子就是那些接口。",
-    "ch09": "一个助手不够用？让它分身出小助手。",
-    "ch10": "分身多了就要有指挥——编排者模式登场。",
-    "ch11": "指挥有序，还要给它发技能卡：能力即插即用。",
-    "ch12": "墙外的世界靠外接线：MCP 把外部工具接进来。",
-    "ch13": "都接好了，让回答像水一样流出来。",
-    "ch14": "让它放开了跑之前，先学会画路线、插红旗。",
-    "ch15": "看完全程，现在亲手摇一架自己的辘轳。",
-    "apxd": "路上的生词，都在这本小词典里。",
+# ---------------- English edition ----------------
+PARTS_EN = [
+    ("Part I · Foundations", "Start", "#FBF6EC", ["ch01", "ch02", "ch03", "ch04"]),
+    ("Part II · Core Systems", "Core", "#F3EAD8", ["ch05", "ch06", "ch07", "ch08"]),
+    ("Part III · Advanced Patterns", "Deep", "#EADFC7", ["ch09", "ch10", "ch11", "ch12"]),
+    ("Part IV · Engineering Practice", "Practice", "#E0D4B8", ["ch13", "ch14", "ch15"]),
+]
+ORDER_EN = ["front"] + [u for _, _, _, us in PARTS_EN for u in us] + ["apxd"]
+
+CAPTIONS_EN = {
+    "front": "An old map: the whole book is one road",
+    "ch01": "Compass: from chatbot to co-worker — a new way to aim",
+    "ch02": "Heartbeat: the loop of one message in, one out",
+    "ch03": "Nut: the agent's hands — more tools, more skill",
+    "ch04": "Gate: risky actions pass a checked guardrail first",
+    "ch05": "Layer cake: settings are genes, layer by layer",
+    "ch06": "Folded notebook: where long-term memory lives",
+    "ch07": "Gauge: how much workbench is left in mind",
+    "ch08": "Hooks: small actions wired into life's milestones",
+    "ch09": "Fork: send small helpers to work in parallel",
+    "ch10": "Conductor: one orchestrator, four squads on call",
+    "ch11": "Skill cards: the manual in your pocket",
+    "ch12": "Jacks: one line to the world's tools",
+    "ch13": "Funnel: answers flow like water, watchable as they pour",
+    "ch14": "Flag: draw the route first, plant the flag as proof",
+    "ch15": "Windlass: crank one yourself — build an agent of your own",
+    "apxa": "Treasure map: where the source lives, located",
+    "apxb": "Tool inventory: every belonging, ticked off",
+    "apxc": "Switch bank: which flags are on, at a glance",
+    "apxd": "Pocket dictionary: too many new words? Look here",
+    "keeper": "The old courier: summarizing at every chapter's end",
+    "part-p1": "The great compass: foundations, aim first",
+    "part-p2": "The chest: core systems locked inside",
+    "part-p3": "Mountain path: advanced patterns, the hill shortcut",
+    "part-p4": "Gateway: engineering practice, the road out of town",
+    "cover": "The four-horse chariot: Yù Yú — drive a chariot, drive an agent",
+}
+
+TRANSITIONS_EN = {
+    "ch01": "Stand at the start: see where this paradigm shift has taken programmers.",
+    "ch02": "Aim set, first listen for the agent's heartbeat — how it talks with you, back and forth.",
+    "ch03": "The heart beats; now for hands: what lets it actually act.",
+    "ch04": "Hands need guardrails — keep it from touching what it shouldn't.",
+    "ch05": "Rails up, give it character: settings are its genes.",
+    "ch06": "Character set, it must remember everything you share.",
+    "ch07": "A perfect memory is a burden — how it manages working memory.",
+    "ch08": "Want a say during its lifecycle? Hooks are those interfaces.",
+    "ch09": "One helper isn't enough? Let it spawn sub-agents.",
+    "ch10": "Many helpers need a conductor — the orchestrator takes the stage.",
+    "ch11": "Order established, hand it skill cards: plug-and-play ability.",
+    "ch12": "The world beyond the wall: MCP wires outside tools in.",
+    "ch13": "All wired up — let answers flow like water.",
+    "ch14": "Before it runs free, learn to draw the route and plant the flag.",
+    "ch15": "You've seen it all — now crank a windlass of your own.",
+    "apxd": "New words on the road all live in this little dictionary.",
+}
+
+VIDEOS_EN = {
+    "front": [("YouTube · Anthropic official channel", YT_CHANNEL),
+              ("YouTube · search “Mastering Claude Code in 30 minutes” (official)",
+               YT_SEARCH + "Mastering+Claude+Code+in+30+minutes")],
+    "ch01": [("Bilibili · Claude Code tutorial (community, verified)",
+              "https://www.bilibili.com/video/BV1uS9UBQEuH")],
+    "ch02": [("Bilibili · search “Claude Code conversation”", B_SEARCH + "Claude%20Code%20%E5%AF%B9%E8%AF%9D")],
+    "ch03": [("Bilibili · search “Claude Code tools”", B_SEARCH + "Claude%20Code%20%E5%B7%A5%E5%85%B7")],
+    "ch04": [("Bilibili · search “Claude Code permissions”", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
+    "ch05": [("Bilibili · search “Claude Code settings”", B_SEARCH + "Claude%20Code%20%E9%85%8D%E7%BD%AE")],
+    "ch06": [("Bilibili · search “Claude Code memory”", B_SEARCH + "Claude%20Code%20%E8%AE%B0%E5%BF%86")],
+    "ch07": [("Bilibili · search “Claude Code context”", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87")],
+    "ch08": [("Bilibili · search “Claude Code Hooks”", B_SEARCH + "Claude%20Code%20Hooks")],
+    "ch09": [("Bilibili · search “Claude Code sub-agents”", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93")],
+    "ch10": [("YouTube · Anthropic official channel (multi-agent)", YT_CHANNEL)],
+    "ch11": [("Bilibili · search “Claude Skills”", B_SEARCH + "Claude%20Skills")],
+    "ch12": [("Bilibili · search “MCP tutorial”", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
+             ("YouTube · Anthropic official channel (MCP)", YT_CHANNEL)],
+    "ch13": [("Bilibili · search “Claude Code streaming”", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
+    "ch14": [("Bilibili · search “Claude Code plan mode”", B_SEARCH + "Claude%20Code%20Plan")],
+    "ch15": [("YouTube · Anthropic official channel (agent deep dive)", YT_CHANNEL)],
 }
 
 STRIP = re.compile(r"<[^>]+>")
 
 
-def extract_units(html: str) -> dict:
-    """For every unit: title, the author's own plain sentence and analogy."""
-    marks = {u: html.find(f'id="{u}"') for u in ORDER if u != "apxd"}
-    marks["apxd"] = html.find('id="apxd"')
+def extract_units(html: str, uids: list) -> dict:
+    marks = {u: html.find(f'id="{u}"') for u in uids}
     order = sorted(marks.items(), key=lambda kv: kv[1])
     units = {}
     for i, (uid, pos) in enumerate(order):
@@ -102,108 +198,87 @@ def extract_units(html: str) -> dict:
     return units
 
 
-CAPTIONS = {
-    "front": "一张古地图：整本书就是一条路",
-    "ch01": "罗盘：从「陪聊」到「干活」，换一种瞄准方式",
-    "ch02": "心跳：一句话进、一句话出的对话循环",
-    "ch03": "螺母：Agent 的双手——工具越多，本事越大",
-    "ch04": "闸门：危险操作先过一道勾选的护栏",
-    "ch05": "千层饼：配置像基因，一层层定性格",
-    "ch06": "折角笔记本：Agent 的长期记忆记在这里",
-    "ch07": "仪表盘：脑子里工作台还剩多少位置",
-    "ch08": "挂钩：在人生节点上，给它装上小动作",
-    "ch09": "分叉路：派几个小助手分头去办",
-    "ch10": "指挥家：一个主编排，四方小队听调",
-    "ch11": "技能卡：把说明书装进兜里，随取随用",
-    "ch12": "外接线：一根线，用上全世界的工具",
-    "ch13": "漏斗：回答像水一样，一边流一边看",
-    "ch14": "小红旗：先画路线再出发，插旗为证",
-    "ch15": "辘轳：亲手摇一架，你也造一个 Agent",
-    "apxd": "小词典：生词太多？翻这一册",
-}
-
-
 def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
-            bg: str, width: int) -> str:
-    analogy = (f'<p class="st-ana">打个比方：{unit["analogy"]}</p>'
+            bg: str, width: int, t) -> str:
+    analogy = (f'<p class="st-ana">{t["analogy_label"]}{unit["analogy"]}</p>'
                if unit["analogy"] else "")
     plain = (f'<p class="st-plain">{unit["plain"]}</p>' if unit["plain"] else "")
-    trans = TRANSITIONS.get(uid, "")
+    trans = t["transitions"].get(uid, "")
     trans_html = f'<p class="st-trans">{trans}</p>' if trans else ""
     vids = "".join(f'<a class="st-vid" href="{url}" target="_blank"'
                    f' rel="noopener">📺 {label}</a>'
-                   for label, url in VIDEOS.get(uid, []))
+                   for label, url in t["videos"].get(uid, []))
     vids_html = f'<p class="st-vids">{vids}</p>' if vids else ""
     return f"""<article class="st" style="background:{bg}">
   <div class="st-art" style="width:{width}px">{svg}</div>
   <div class="st-body">
-    <p class="st-part">第 {num} 站 · {part} · <b class="st-tier">{tier}</b></p>
+    <p class="st-part">{t["station_word"].format(num=num, total=t["total"])} · {part} · <b class="st-tier">{tier}</b></p>
     <h2>{unit["title"]}</h2>
-    <p class="st-cap">{CAPTIONS.get(uid, "")}</p>
+    <p class="st-cap">{t["captions"].get(uid, "")}</p>
     {trans_html}{plain}{analogy}{vids_html}
-    <a class="st-go" href="{BOOK}#{uid}">想深入？翻开大书这一章 →</a>
+    <a class="st-go" href="{t["book"]}#{uid}">{t["go_deeper"]}</a>
   </div>
 </article>"""
 
 
-def main():
-    html = DIST.read_text(encoding="utf-8")
-    units = extract_units(html)
+def build(lang: str) -> tuple[str, int]:
+    t = LANGS[lang]
+    dist = ROOT / "yuyu-book" / "dist" / t["dist"]
+    html = dist.read_text(encoding="utf-8")
     svgs = {u: (ART / f"{u}.svg").read_text(encoding="utf-8").strip()
-            for u in ORDER + ["cover", "keeper"] if (ART / f"{u}.svg").exists()}
+            for u in t["order"] + ["cover", "keeper"]
+            if (ART / f"{u}.svg").exists()}
+    units = extract_units(html, t["order"])
 
     stations = [f"""<article class="st st-hero" style="background:#FBF6EC">
   <div class="st-art" style="width:200px">{svgs.get("cover", "")}</div>
   <div class="st-body">
-    <p class="st-part">开卷 · <b class="st-tier">人人可读</b></p>
-    <h2>这本书在讲一件什么事？</h2>
-    <p class="st-cap">四马古车：书名「御舆」——驾驭一辆车，也驾驭一个 Agent</p>
-    <p class="st-plain">大模型很聪明，但让它真正替你干活，还需要一整套"驾车"的
-    装备——这本书把这套装备拆开给你看。不用先懂编程，跟着图往下走就行。</p>
-    <a class="st-go" href="{BOOK}#front">想深入？翻开前言 →</a>
+    <p class="st-part">{t["hero_tag"]}</p>
+    <h2>{t["hero_h2"]}</h2>
+    <p class="st-cap">{t["captions"]["cover"]}</p>
+    <p class="st-plain">{t["hero_plain"]}</p>
+    <a class="st-go" href="{t["book"]}#front">{t["hero_link"]}</a>
   </div>
 </article>"""]
 
     num = 0
-    total = sum(len(us) for _, _, _, us in PARTS) + 1  # + 附录 D 站
-    for part, tier, bg, us in PARTS:
+    for part, tier, bg, us in t["parts"]:
         for uid in us:
             num += 1
-            svg = svgs.get(uid, "")
-            stations.append(station(uid, f"{num} / {total}",
-                                    units.get(uid, {"title": uid}), svg,
-                                    tier, part, bg, WIDTH[uid]))
+            stations.append(station(uid, num,
+                                    units.get(uid, {"title": uid}),
+                                    svgs.get(uid, ""), tier, part, bg,
+                                    t["widths"].get(uid, 148), t))
 
     num += 1
     stations.append(f"""<article class="st" style="background:#FBF6EC">
   <div class="st-art" style="width:148px">{svgs.get("apxd", "")}</div>
   <div class="st-body">
-    <p class="st-part">第 {num} / {total} 站 · 附录 · <b class="st-tier">随身</b></p>
-    <h2>路上遇到生词？</h2>
-    <p class="st-cap">小词典：生词太多？翻这一册</p>
-    <p class="st-plain">术语表、源码地图、工具清单、功能开关——都在附录里，
-    随时折回去查。</p>
-    <a class="st-go" href="{BOOK}#apxd">想深入？翻开附录 D →</a>
+    <p class="st-part">{t["station_word"].format(num=num, total=t["total"])} · {t["appendix_tag"]} · <b class="st-tier">{t["appendix_tier"]}</b></p>
+    <h2>{t["appendix_h2"]}</h2>
+    <p class="st-cap">{t["captions"]["apxd"]}</p>
+    <p class="st-plain">{t["appendix_plain"]}</p>
+    <a class="st-go" href="{t["book"]}#apxd">{t["appendix_link"]}</a>
   </div>
 </article>
 <article class="st st-hero" style="background:#FBF6EC">
   <div class="st-art" style="width:148px">{svgs.get("keeper", "")}</div>
   <div class="st-body">
-    <p class="st-part">到站 · <b class="st-tier">老驿卒的话</b></p>
-    <h2>路走完了，接下来呢？</h2>
-    <p class="st-cap">老驿卒：每章结尾替你守夜总结的人</p>
-    <p class="st-plain">这本分册只是地图，真正的风景在大书里——每站都有
-    「想深入」的门，推门进去，那里有完整的原理、代码与练习。</p>
-    <a class="st-go" href="{BOOK}">回到大书 →</a>
+    <p class="st-part">{t["keeper_tag"]}</p>
+    <h2>{t["keeper_h2"]}</h2>
+    <p class="st-cap">{t["captions"]["keeper"]}</p>
+    <p class="st-plain">{t["keeper_plain"]}</p>
+    <a class="st-go" href="{t["book"]}">{t["keeper_link"]}</a>
   </div>
 </article>""")
 
-    page = PAGE_HEAD + "\n".join(stations) + PAGE_TAIL
-    OUT.write_text(page, encoding="utf-8")
-    print(f"{OUT} ({len(page)} bytes, {len(stations)} stations)")
+    page = t["page_head"] + "\n".join(stations) + t["page_tail"]
+    out = ROOT / "docs" / t["out"]
+    out.write_text(page, encoding="utf-8")
+    return out, len(stations)
 
 
-PAGE_HEAD = """<!doctype html>
+PAGE_HEAD_ZH = """<!doctype html>
 <html lang="zh">
 <head>
 <meta charset="utf-8">
@@ -261,7 +336,7 @@ footer a{color:inherit}
 <main>
 """
 
-PAGE_TAIL = """</main>
+PAGE_TAIL_ZH = """</main>
 <footer>
 本分册由大书的通俗层与 <a href="illustration-gallery.html">26 幅手绘插图</a> 组成；
 画风体系来自 <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
@@ -272,6 +347,145 @@ PAGE_TAIL = """</main>
 </body>
 </html>
 """
+
+PAGE_HEAD_EN = """<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yù Yú · Beginner Reader — Agent Harness in Pictures</title>
+<style>
+body{margin:0;font:16px/1.8 "Iowan Old Style",Palatino,Georgia,"Noto Serif SC",serif;background:#F5F0E6;color:#26221B}
+header{padding:34px 30px 10px;max-width:820px;margin:0 auto}
+h1{font-size:24px;margin:0 0 6px;font-weight:650}
+.brush{width:190px;height:9px;color:#B4472F;display:block;margin:2px 0 8px}
+.sub{color:#5C5448;font-size:13.5px}
+.hint{color:#6E6353;font-size:12.5px;margin:10px 0 0}
+main{max-width:820px;margin:0 auto;padding:6px 30px 50px}
+.st{border:1.5px solid rgba(38,34,27,.3);border-radius:12px 7px 11px 8px/8px 11px 7px 12px;
+    padding:26px 30px 24px;margin:0 0 26px;display:flex;gap:26px;align-items:center;
+    box-shadow:2px 3px 0 rgba(38,34,27,.08)}
+.st-hero{flex-direction:column;text-align:center;gap:10px;padding-top:34px}
+.st-hero .st-body{text-align:center}
+.st-art{flex:0 0 auto;line-height:0}
+.st-art svg{width:100%;height:auto}
+.st-body{flex:1}
+.st-part{margin:0 0 6px;font-size:12px;letter-spacing:.14em;color:#8A7D68}
+.st-tier{color:#B4472F}
+h2{font-size:21px;margin:0 0 8px}
+.st-cap{margin:0 0 10px;font-size:13px;color:#B4472F;letter-spacing:.02em}
+.st-trans{margin:0 0 8px;font-size:13.5px;color:#8A7D68}
+.st-plain{margin:0 0 8px;font-size:15.5px}
+.st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
+.st-vids{margin:0 0 10px;font-size:12.5px}
+.st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
+  text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
+.st-vids .st-vid:hover{color:#B4472F;border-bottom-color:#B4472F}
+.st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
+       padding-bottom:1px;transition:color .16s ease}
+.st-go:hover{color:#B4472F}
+.st,.st-body,.st-cap,.st-plain,.st-ana{animation:ink-rise .8s cubic-bezier(.22,.9,.3,1) both;
+  animation-timeline:view();animation-range:cover 0% cover 46%}
+.st-art svg path,.st-art svg circle{animation:ink-draw 1.1s ease-out both;
+  animation-timeline:view();animation-range:cover 0% cover 55%}
+@media screen and (prefers-reduced-motion: reduce){
+  .st,.st-body,.st-cap,.st-plain,.st-ana,.st-art svg path,.st-art svg circle{animation:none}}
+footer{max-width:820px;margin:0 auto;padding:0 30px 46px;color:#675F4F;font-size:12.5px}
+footer a{color:inherit}
+@keyframes ink-rise{from{opacity:0;transform:translateY(12px)}}
+@keyframes ink-draw{from{stroke-dashoffset:100}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Yù Yú · Beginner Reader</h1>
+  <svg class="brush" viewBox="0 0 190 10" aria-hidden="true"><path d="M4 6q30-4.5 62-2.5t72-1q24 .2 46 1.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M152 5.6q10-.6 20-.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".45"/><circle cx="178" cy="5.8" r="1.5" fill="currentColor" stroke="none"/></svg>
+  <p class="sub">Understanding Agent Harness in pictures — one concept per station, one sentence at a time</p>
+  <p class="hint">Every sentence comes from the book's own plain-language layer; the paper darkens station by station — that is the shallow-to-deep order. When a station clicks, push open the “go deeper” door and read the full principle in the book.</p>
+</header>
+<main>
+"""
+
+PAGE_TAIL_EN = """</main>
+<footer>
+This reader is assembled from the full book's plain-language layer and the
+<a href="illustration-gallery.html">26 hand-inked figures</a>; the style system comes
+from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
+(MIT with Attribution). Full book: <a href="yuyu-agent-harness-en.html">Yù Yú: Decoding Agent Harness</a>.
+<br>📺 Videos are official-channel and community resources — <b>non-normative</b>
+(existence verified 2026-10-31); every technical fact defers to the book and its
+normative sources.
+</footer>
+</body>
+</html>
+"""
+
+LANGS = {
+    "zh": {
+        "dist": "yuyu-agent-harness-zh.html",
+        "book": "yuyu-agent-harness-zh.html",
+        "out": "beginner-reader.html",
+        "order": ORDER, "parts": PARTS, "total": 16,
+        "widths": WIDTH,
+        "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
+        "station_word": "第 {num} / {total} 站",
+        "go_deeper": "想深入？翻开大书这一章 →",
+        "hero_tag": "开卷 · 人人可读",
+        "hero_h2": "这本书在讲一件什么事？",
+        "hero_plain": ("大模型很聪明，但让它真正替你干活，还需要一整套“驾车”的装备"
+                       "——这本书把这套装备拆开给你看。不用先懂编程，跟着图往下走就行。"),
+        "hero_link": "想深入？翻开前言 →",
+        "appendix_tag": "附录", "appendix_tier": "随身",
+        "appendix_h2": "路上遇到生词？",
+        "appendix_plain": "术语表、源码地图、工具清单、功能开关——都在附录里，随时折回去查。",
+        "appendix_link": "想深入？翻开附录 D →",
+        "keeper_tag": "到站 · 老驿卒的话",
+        "keeper_h2": "路走完了，接下来呢？",
+        "keeper_plain": ("这本分册只是地图，真正的风景在大书里——每站都有「想深入」的门，"
+                         "推门进去，那里有完整的原理、代码与练习。"),
+        "keeper_link": "回到大书 →",
+        "analogy_label": "打个比方：",
+        "page_head": PAGE_HEAD_ZH,
+        "page_tail": PAGE_TAIL_ZH,
+    },
+    "en": {
+        "dist": "yuyu-agent-harness-en.html",
+        "book": "yuyu-agent-harness-en.html",
+        "out": "beginner-reader.en.html",
+        "order": ORDER_EN, "parts": PARTS_EN, "total": 16,
+        "widths": {u: 148 for u in ORDER_EN},
+        "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
+        "videos": VIDEOS_EN,
+        "station_word": "Station {num} / {total}",
+        "go_deeper": "Go deeper — open this chapter in the full book →",
+        "hero_tag": "Opening · for everyone",
+        "hero_h2": "What is this book about?",
+        "hero_plain": ("LLMs are brilliant, but to make one truly work for you takes a "
+                       "whole set of driving gear — this book takes that gear apart, "
+                       "piece by piece. No programming required; just follow the pictures."),
+        "hero_link": "Want depth? Open the preface →",
+        "appendix_tag": "Appendix", "appendix_tier": "At hand",
+        "appendix_h2": "New words on the road?",
+        "appendix_plain": ("Glossary, source map, tool inventory, feature flags — all in "
+                           "the appendices, ready to be looked up."),
+        "appendix_link": "Depth? Open Appendix D →",
+        "keeper_tag": "Arrived · a word from the old courier",
+        "keeper_h2": "The road ends — what next?",
+        "keeper_plain": ("This reader is just the map; the real scenery is in the full "
+                         "book — every station has a door marked “go deeper”."),
+        "keeper_link": "Back to the full book →",
+        "analogy_label": "Think of it as: ",
+        "page_head": PAGE_HEAD_EN,
+        "page_tail": PAGE_TAIL_EN,
+    },
+}
+
+
+def main():
+    for lang in ("zh", "en"):
+        out, n = build(lang)
+        print(f"{out} ({n} stations)")
+
 
 if __name__ == "__main__":
     main()
