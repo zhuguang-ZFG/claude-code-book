@@ -766,7 +766,8 @@ article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
     .ch-head-row h1,.h1-sub,.page-title,
     .chapter-body h2,.chapter-body h3,
     .callout,.lead-band,.compass-card,.route-card,.keeper-note,.new-terms,
-    .pd-title,.pd-motto,.pd-goal,.rm-head,.pd-list li{
+    .pd-title,.pd-motto,.pd-goal,.rm-head,.pd-list li,
+    .diagram-frame,.fig-cap{
       animation:ink-rise .9s cubic-bezier(.22,.9,.3,1) both;
       animation-timeline:view();
       animation-range:cover 0% cover 42%}

@@ -528,6 +528,22 @@ class DesignVocabulary(unittest.TestCase):
         self.assertIn("justify-content:space-between", print_block)
         self.assertNotIn("outline:", _rule(".cover-inner"))
 
+    def test_motion_stays_inside_its_guards(self):
+        """Scroll-driven motion ships only behind both hands — screen media
+        and the view()-support probe — and print never carries a runner."""
+        body = CSS[:CSS.index("@media print{")]
+        probe_at = body.index("@supports (animation-timeline: view())")
+        self.assertNotIn("animation-timeline", body[:probe_at])
+        self.assertGreaterEqual(
+            body[probe_at:].count("animation-timeline:view()"), 1)
+        self.assertNotIn("animation:", CSS[CSS.index("@media print{"):])
+
+    def test_the_motion_budget_stays_under_the_ceiling(self):
+        # ~800 scroll-driven shapes and hundreds of text reveals ride on a
+        # few dozen rules; the ceiling exists so a future verb cannot
+        # quietly triple the compositor load on a 5.5 MB single page.
+        self.assertLessEqual(CSS.count("animation-timeline:view()"), 40)
+
 
 class ChapterOpening(unittest.TestCase):
     """A chapter opens on its own argument.
