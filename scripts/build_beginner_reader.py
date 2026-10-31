@@ -95,10 +95,12 @@ TAKEAWAYS = {
 
 VIDEOS = {
     "front": [("YouTube · Anthropic 官方频道", YT_CHANNEL),
-              ("YouTube · 搜「Mastering Claude Code in 30 minutes」（官方）",
-               YT_SEARCH + "Mastering+Claude+Code+in+30+minutes")],
+              ("YouTube · Mastering Claude Code in 30 minutes（官方，已核验）",
+               "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
     "ch01": [("B 站 · Claude Code 教程（社区，已核验）",
-              "https://www.bilibili.com/video/BV1uS9UBQEuH")],
+              "https://www.bilibili.com/video/BV1uS9UBQEuH"),
+             ("YouTube · Mastering Claude Code in 30 minutes（官方，已核验）",
+              "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
     "ch02": [("B 站 · 搜「Claude Code 对话」", B_SEARCH + "Claude%20Code%20%E5%AF%B9%E8%AF%9D")],
     "ch03": [("B 站 · 搜「Claude Code 工具」", B_SEARCH + "Claude%20Code%20%E5%B7%A5%E5%85%B7")],
     "ch04": [("B 站 · 搜「Claude Code 权限」", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
@@ -109,7 +111,8 @@ VIDEOS = {
     "ch09": [("B 站 · 搜「Claude Code 子智能体」", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93")],
     "ch10": [("YouTube · Anthropic 官方频道（多智能体）", YT_CHANNEL)],
     "ch11": [("B 站 · 搜「Claude Skills」", B_SEARCH + "Claude%20Skills")],
-    "ch12": [("B 站 · 搜「MCP 教程」", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
+    "ch12": [("B 站 · MCP 教程（社区，已核验）", "https://www.bilibili.com/video/BV1qkHrzHEh4"),
+             ("B 站 · 搜「MCP 教程」", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
              ("YouTube · Anthropic 官方频道（MCP）", YT_CHANNEL)],
     "ch13": [("B 站 · 搜「Claude Code 流式」", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
     "ch14": [("B 站 · 搜「Claude Code Plan」", B_SEARCH + "Claude%20Code%20Plan")],
@@ -195,10 +198,12 @@ TAKEAWAYS_EN = {
 
 VIDEOS_EN = {
     "front": [("YouTube · Anthropic official channel", YT_CHANNEL),
-              ("YouTube · search “Mastering Claude Code in 30 minutes” (official)",
-               YT_SEARCH + "Mastering+Claude+Code+in+30+minutes")],
+              ("YouTube · Mastering Claude Code in 30 minutes (official, verified)",
+               "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
     "ch01": [("Bilibili · Claude Code tutorial (community, verified)",
-              "https://www.bilibili.com/video/BV1uS9UBQEuH")],
+              "https://www.bilibili.com/video/BV1uS9UBQEuH"),
+             ("YouTube · Mastering Claude Code in 30 minutes (official, verified)",
+              "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
     "ch02": [("Bilibili · search “Claude Code conversation”", B_SEARCH + "Claude%20Code%20%E5%AF%B9%E8%AF%9D")],
     "ch03": [("Bilibili · search “Claude Code tools”", B_SEARCH + "Claude%20Code%20%E5%B7%A5%E5%85%B7")],
     "ch04": [("Bilibili · search “Claude Code permissions”", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
@@ -209,7 +214,8 @@ VIDEOS_EN = {
     "ch09": [("Bilibili · search “Claude Code sub-agents”", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93")],
     "ch10": [("YouTube · Anthropic official channel (multi-agent)", YT_CHANNEL)],
     "ch11": [("Bilibili · search “Claude Skills”", B_SEARCH + "Claude%20Skills")],
-    "ch12": [("Bilibili · search “MCP tutorial”", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
+    "ch12": [("Bilibili · MCP tutorial (community, verified)", "https://www.bilibili.com/video/BV1qkHrzHEh4"),
+             ("Bilibili · search “MCP tutorial”", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
              ("YouTube · Anthropic official channel (MCP)", YT_CHANNEL)],
     "ch13": [("Bilibili · search “Claude Code streaming”", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
     "ch14": [("Bilibili · search “Claude Code plan mode”", B_SEARCH + "Claude%20Code%20Plan")],
@@ -230,10 +236,12 @@ def extract_units(html: str, uids: list) -> dict:
         title = STRIP.sub("", title_m.group(1)).strip() if title_m else uid
         plain_m = re.search(r'class="lb-plain">(.*?)</p>', seg, re.S)
         analogy_m = re.search(r'class="lb-a-tag">[^<]*</span>(.*?)</p>', seg, re.S)
+        question_m = re.search(r'class="cc-tag">[^<]*</h4><p>(.*?)</p>', seg, re.S)
         units[uid] = {
             "title": title,
             "plain": STRIP.sub("", plain_m.group(1)).strip() if plain_m else "",
             "analogy": STRIP.sub("", analogy_m.group(1)).strip() if analogy_m else "",
+            "question": STRIP.sub("", question_m.group(1)).strip() if question_m else "",
         }
     return units
 
@@ -251,13 +259,17 @@ def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
     vids_html = f'<p class="st-vids">{vids}</p>' if vids else ""
     take = t["takeaways"].get(uid, "")
     take_html = f'<p class="st-take">🔖 {take}</p>' if take else ""
+    question = unit.get("question", "")
+    quiz_html = (f'<details class="st-quiz"><summary>{t["quiz_label"]}'
+                 f'</summary><p>{question}</p></details>') if question else ""
     return f"""<article class="st" style="background:{bg}">
-  <div class="st-art" style="width:{width}px">{svg}</div>
+  <div class="st-art" style="width:{width}px" tabindex="0" role="button"
+       aria-label="{t["replay_label"].format(name=unit["title"])}">{svg}</div>
   <div class="st-body">
     <p class="st-part">{t["station_word"].format(num=num, total=t["total"])} · {part} · <b class="st-tier">{tier}</b></p>
     <h2>{unit["title"]}</h2>
     <p class="st-cap">{t["captions"].get(uid, "")}</p>
-    {trans_html}{plain}{analogy}{take_html}{vids_html}
+    {trans_html}{plain}{analogy}{take_html}{quiz_html}{vids_html}
     <a class="st-go" href="{t["book"]}#{uid}">{t["go_deeper"]}</a>
   </div>
 </article>"""
@@ -357,6 +369,8 @@ h2{font-size:21px;margin:0 0 8px}
 .st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
        padding-bottom:1px;transition:color .16s ease}
 .st-go:hover{color:#B4472F}
+.st-art{cursor:pointer}
+.st-art:focus-visible{outline:2px solid #B4472F;outline-offset:4px}
 .st,.st-body,.st-cap,.st-plain,.st-ana{animation:ink-rise .8s cubic-bezier(.22,.9,.3,1) both;
   animation-timeline:view();animation-range:cover 0% cover 46%}
 .st-art svg path,.st-art svg circle{animation:ink-draw 1.1s ease-out both;
@@ -387,6 +401,42 @@ PAGE_TAIL_ZH = """</main>
 <br>📺 页内视频为官方频道与社区资源，属<b>非规范来源</b>（仅核验存在性，
 核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。
 </footer>
+<script>
+/* click or Enter re-inks the drawing — the reader takes part in it */
+document.querySelectorAll(".st-art").forEach(art => {
+  const fig = art.closest(".st");
+  const replay = (cx, cy) => {
+    const svg = art.querySelector("svg");
+    if (!svg) return;
+    svg.querySelectorAll("path, circle").forEach(el => {
+      el.style.strokeDasharray = "100 100";
+      const a = el.animate([{strokeDashoffset:"100"},{strokeDashoffset:"0"}],
+        {duration:700, delay:Math.random()*250, fill:"both", easing:"ease-out"});
+      a.onfinish = () => { el.style.strokeDasharray = ""; };
+    });
+    if (cx !== undefined) {
+      for (let i = 0; i < 8; i++) {
+        const sp = document.createElement("i");
+        sp.style.cssText = "position:fixed;width:6px;height:6px;border-radius:60% 40% 55% 45%;pointer-events:none;z-index:99;background:" + (i % 3 ? "#26221B" : "#B4472F");
+        sp.style.left = cx + "px"; sp.style.top = cy + "px";
+        document.body.appendChild(sp);
+        const ang = (i / 8) * Math.PI * 2, d = 16 + Math.random() * 22;
+        const an = sp.animate([{transform:"translate(0,0) scale(1)",opacity:1},
+          {transform:`translate(${Math.cos(ang)*d}px,${Math.sin(ang)*d+8}px) scale(.25)`,opacity:0}],
+          {duration:460, easing:"cubic-bezier(.34,1.56,.64,1)", fill:"both"});
+        an.onfinish = () => sp.remove();
+      }
+    }
+  };
+  art.addEventListener("click", e => replay(e.clientX, e.clientY));
+  art.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    const r = art.getBoundingClientRect();
+    replay(r.left + r.width / 2, r.top + r.height / 2);
+  });
+});
+</script>
 </body>
 </html>
 """
@@ -428,6 +478,8 @@ h2{font-size:21px;margin:0 0 8px}
 .st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
        padding-bottom:1px;transition:color .16s ease}
 .st-go:hover{color:#B4472F}
+.st-art{cursor:pointer}
+.st-art:focus-visible{outline:2px solid #B4472F;outline-offset:4px}
 .st,.st-body,.st-cap,.st-plain,.st-ana{animation:ink-rise .8s cubic-bezier(.22,.9,.3,1) both;
   animation-timeline:view();animation-range:cover 0% cover 46%}
 .st-art svg path,.st-art svg circle{animation:ink-draw 1.1s ease-out both;
@@ -460,6 +512,42 @@ from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 (existence verified 2026-10-31); every technical fact defers to the book and its
 normative sources.
 </footer>
+<script>
+/* click or Enter re-inks the drawing — the reader takes part in it */
+document.querySelectorAll(".st-art").forEach(art => {
+  const fig = art.closest(".st");
+  const replay = (cx, cy) => {
+    const svg = art.querySelector("svg");
+    if (!svg) return;
+    svg.querySelectorAll("path, circle").forEach(el => {
+      el.style.strokeDasharray = "100 100";
+      const a = el.animate([{strokeDashoffset:"100"},{strokeDashoffset:"0"}],
+        {duration:700, delay:Math.random()*250, fill:"both", easing:"ease-out"});
+      a.onfinish = () => { el.style.strokeDasharray = ""; };
+    });
+    if (cx !== undefined) {
+      for (let i = 0; i < 8; i++) {
+        const sp = document.createElement("i");
+        sp.style.cssText = "position:fixed;width:6px;height:6px;border-radius:60% 40% 55% 45%;pointer-events:none;z-index:99;background:" + (i % 3 ? "#26221B" : "#B4472F");
+        sp.style.left = cx + "px"; sp.style.top = cy + "px";
+        document.body.appendChild(sp);
+        const ang = (i / 8) * Math.PI * 2, d = 16 + Math.random() * 22;
+        const an = sp.animate([{transform:"translate(0,0) scale(1)",opacity:1},
+          {transform:`translate(${Math.cos(ang)*d}px,${Math.sin(ang)*d+8}px) scale(.25)`,opacity:0}],
+          {duration:460, easing:"cubic-bezier(.34,1.56,.64,1)", fill:"both"});
+        an.onfinish = () => sp.remove();
+      }
+    }
+  };
+  art.addEventListener("click", e => replay(e.clientX, e.clientY));
+  art.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    const r = art.getBoundingClientRect();
+    replay(r.left + r.width / 2, r.top + r.height / 2);
+  });
+});
+</script>
 </body>
 </html>
 """
@@ -473,6 +561,8 @@ LANGS = {
         "widths": WIDTH,
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
         "takeaways": TAKEAWAYS,
+        "quiz_label": "自测一下 · 答案在大书这一章",
+        "replay_label": "重播「{name}」的手绘过程",
         "verified_note": "链接存在性核验 2026-10-31（非规范来源）",
         "station_word": "第 {num} / {total} 站",
         "go_deeper": "想深入？翻开大书这一章 →",
@@ -503,6 +593,8 @@ LANGS = {
         "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
         "videos": VIDEOS_EN,
         "takeaways": TAKEAWAYS_EN,
+        "quiz_label": "Test yourself · the answer is in the chapter",
+        "replay_label": "Replay the ink drawing of “{name}”",
         "verified_note": "link existence verified 2026-10-31 (non-normative)",
         "station_word": "Station {num} / {total}",
         "go_deeper": "Go deeper — open this chapter in the full book →",
