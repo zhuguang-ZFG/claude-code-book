@@ -5,8 +5,7 @@ handbook. Ink style, bilingual labels, hand-cut cards."""
 import sys
 from pathlib import Path
 
-OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/portal.html")
-OUT.parent.mkdir(parents=True, exist_ok=True)
+DEFAULT_OUT = Path("docs/portal.html")
 COVER = "cover.png"
 
 PAGE = """<!doctype html>
@@ -42,6 +41,9 @@ a.card:nth-child(2){animation-delay:.22s}
 a.card:nth-child(3){animation-delay:.34s}
 a.card:nth-child(4){animation-delay:.46s}
 @keyframes card-in{from{opacity:0;transform:translateY(18px) rotate(-.8deg)}}
+@media screen and (prefers-reduced-motion: reduce){
+  a.card{animation:none;transition:box-shadow .18s ease,border-color .18s ease}
+  a.card:hover{transform:none}}
 a.card:hover{transform:translateY(-3px) rotate(-.4deg);border-color:#B4472F;
   box-shadow:3px 5px 0 rgba(180,71,47,.22)}
 .card h2{font-size:17px;margin:0 0 6px}
@@ -105,5 +107,12 @@ footer a{color:inherit}
 </html>
 """
 
-OUT.write_text(PAGE, encoding="utf-8")
-print(f"{OUT} ({len(PAGE)} bytes)")
+def main() -> None:
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_OUT
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(PAGE, encoding="utf-8")
+    print(f"{out} ({len(PAGE)} bytes)")
+
+
+if __name__ == "__main__":
+    main()

@@ -538,6 +538,13 @@ class DesignVocabulary(unittest.TestCase):
             body[probe_at:].count("animation-timeline:view()"), 1)
         self.assertNotIn("animation:", CSS[CSS.index("@media print{"):])
 
+    def test_smooth_scroll_waits_for_the_readers_consent(self):
+        # line-anchored: the guarded rule contains the same declaration
+        self.assertNotIn("\nhtml{scroll-behavior:smooth}", CSS)
+        self.assertIn(
+            "@media (prefers-reduced-motion: no-preference)"
+            "{html{scroll-behavior:smooth}}", CSS)
+
     def test_the_motion_budget_stays_under_the_ceiling(self):
         # ~800 scroll-driven shapes and hundreds of text reveals ride on a
         # few dozen rules; the ceiling exists so a future verb cannot

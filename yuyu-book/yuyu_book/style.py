@@ -388,7 +388,7 @@ body.lang-en{--measure:37rem;--furniture:53rem}
   body:not(.force-light) .diagram-frame{background:#F5EFE2}
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
 body{margin:0;background:var(--paper);color:var(--ink);
   font:400 17px/1.8 var(--serif);
   font-feature-settings:"kern";text-rendering:optimizeLegibility;
