@@ -291,11 +291,13 @@ def extract_units(html: str, uids: list) -> dict:
         plain_m = re.search(r'class="lb-plain">(.*?)</p>', seg, re.S)
         analogy_m = re.search(r'class="lb-a-tag">[^<]*</span>(.*?)</p>', seg, re.S)
         question_m = re.search(r'class="cc-tag">[^<]*</h4><p>(.*?)</p>', seg, re.S)
+        deliver_m = re.search(r'compass-card deliverable"><h4 class="cc-tag">[^<]*</h4><p>(.*?)</p>', seg, re.S)
         units[uid] = {
             "title": title,
             "plain": STRIP.sub("", plain_m.group(1)).strip() if plain_m else "",
             "analogy": STRIP.sub("", analogy_m.group(1)).strip() if analogy_m else "",
             "question": STRIP.sub("", question_m.group(1)).strip() if question_m else "",
+            "deliver": STRIP.sub("", deliver_m.group(1)).strip() if deliver_m else "",
         }
     return units
 
@@ -315,6 +317,9 @@ def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
     vids_html = f'<p class="st-vids">{vids}</p>' if vids else ""
     take = t["takeaways"].get(uid, "")
     take_html = f'<p class="st-take">🔖 {take}</p>' if take else ""
+    gain = unit.get("deliver", "")
+    gain_html = (f'<p class="st-gain">{t["gain_label"]}{gain}</p>'
+                 if gain else "")
     question = unit.get("question", "")
     quiz_html = (f'<details class="st-quiz"><summary>{t["quiz_label"]}'
                  f'</summary><p>{question}</p></details>') if question else ""
@@ -325,7 +330,7 @@ def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
     <p class="st-part">{t["station_word"].format(num=num, total=t["total"])} · {part} · <b class="st-tier">{tier}</b></p>
     <h2>{unit["title"]}</h2>
     <p class="st-cap">{t["captions"].get(uid, "")}</p>
-    {trans_html}{plain}{analogy}{take_html}{quiz_html}{vids_html}
+    {trans_html}{plain}{analogy}{take_html}{gain_html}{quiz_html}{vids_html}
     <a class="st-go" href="{t["book"]}#{uid}">{t["go_deeper"]}</a>
   </div>
 </article>"""
@@ -418,6 +423,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
+.st-gain{margin:0 0 10px;font-size:13.5px;color:#4E6E5D}
 .gl{border-bottom:1px dashed #8A7D68;cursor:help}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
@@ -603,6 +609,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
+.st-gain{margin:0 0 10px;font-size:13.5px;color:#4E6E5D}
 .gl{border-bottom:1px dashed #8A7D68;cursor:help}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
@@ -707,6 +714,7 @@ LANGS = {
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
         "takeaways": TAKEAWAYS,
         "quiz_label": "自测一下 · 答案在大书这一章",
+        "gain_label": "读完你能：",
         "replay_label": "重播「{name}」的手绘过程",
         "verified_note": "链接存在性核验 2026-10-31（非规范来源）",
         "station_word": "第 {num} / {total} 站",
@@ -740,6 +748,7 @@ LANGS = {
         "videos": VIDEOS_EN,
         "takeaways": TAKEAWAYS_EN,
         "quiz_label": "Test yourself · the answer is in the chapter",
+        "gain_label": "After this chapter you can: ",
         "replay_label": "Replay the ink drawing of “{name}”",
         "verified_note": "link existence verified 2026-10-31 (non-normative)",
         "station_word": "Station {num} / {total}",
