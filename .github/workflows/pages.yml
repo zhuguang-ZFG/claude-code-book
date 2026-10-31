@@ -71,9 +71,6 @@ jobs:
           python scripts/build_beginner_reader.py
           python scripts/build_illustration_gallery.py
 
-      - name: Build the site portal
-        run: python scripts/build_site_portal.py site/portal.html
-
       - name: Assemble the site
         run: |
           mkdir -p site
