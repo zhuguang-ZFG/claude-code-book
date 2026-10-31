@@ -24,7 +24,7 @@ MM_DIR = CACHE_DIR / "mermaid"
 # book's own plates, not like library defaults.
 THEME = {
     "themeVariables": {
-        "fontFamily": "'PingFang SC','Microsoft YaHei','Segoe UI',sans-serif",
+        "fontFamily": "'Noto Serif SC','Source Han Serif SC','思源宋体','Songti SC','SimSun',Georgia,serif",
         "fontSize": "13px",
         "primaryColor": "#F3EAD8",
         "primaryTextColor": "#26221B",
