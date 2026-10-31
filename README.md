@@ -1,10 +1,16 @@
 <div align="center">
 
+<img src="docs/banner.svg" width="100%" alt="御舆：解码 Agent Harness" />
+
 # 御舆：解码 Agent Harness
 
-Claude Code 架构深度剖析
+<a href="https://zhuguang-zfg.github.io/claude-code-book/beginner-reader.html"><img src="docs/tagline.svg" width="660" alt="对话循环 · 工具系统 · 权限管线 · 记忆 · 上下文 · 钩子 · 子智能体 · 编排 · 技能 · MCP · 流式 · Plan" /></a>
 
 **中文** · [English](en/README.md)
+
+[![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-9C4630)](LICENSE)
+[![Book CI](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml/badge.svg)](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml)
+[![阅读站点](https://img.shields.io/website?url=https%3A%2F%2Fzhuguang-zfg.github.io%2Fclaude-code-book%2F&label=%E9%98%85%E8%AF%BB%E7%AB%99%E7%82%B9)](https://zhuguang-zfg.github.io/claude-code-book/)
 
 <table align="center">
 <tr><td><img src="cover.png" width="420" alt="御舆：解码 Agent Harness — Claude Code 架构深度剖析，LinTsinghua" /></td></tr>

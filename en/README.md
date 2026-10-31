@@ -1,10 +1,16 @@
 <div align="center">
 
+<img src="../docs/banner.svg" width="100%" alt="Yù Yú: Decoding Agent Harness" />
+
 # Yù Yú: Decoding Agent Harness
 
-A Deep Architectural Analysis of Claude Code
+<a href="../docs/beginner-reader.en.html"><img src="../docs/tagline.svg" width="660" alt="Conversation loop · Tools · Permissions · Memory · Context · Hooks · Sub-agents · Orchestration · Skills · MCP · Streaming · Plan" /></a>
 
 [中文](../README.md) · **English**
+
+[![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-9C4630)](../LICENSE)
+[![Book CI](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml/badge.svg)](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml)
+[![Reading site](https://img.shields.io/website?url=https%3A%2F%2Fzhuguang-zfg.github.io%2Fclaude-code-book%2F&label=reading%20site)](https://zhuguang-zfg.github.io/claude-code-book/)
 
 <table align="center">
 <tr><td><img src="../cover.png" width="420" alt="御舆：解码 Agent Harness — Claude Code 架构深度剖析，LinTsinghua" /></td></tr>
