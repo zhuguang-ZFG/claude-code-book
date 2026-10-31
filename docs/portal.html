@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>御舆 · 站点导航 — 解码 Agent Harness</title>
+<style>
+body{margin:0;font:16px/1.9 "Noto Serif SC","Source Han Serif SC","思源宋体","Songti SC","SimSun",Georgia,serif;background:#F5F0E6;color:#26221B}
+header{padding:44px 30px 8px;max-width:860px;margin:0 auto;text-align:center}
+h1{font-size:28px;margin:0 0 4px;font-weight:650}
+.brush{width:210px;height:9px;color:#B4472F;display:block;margin:4px auto 10px}
+.sub{color:#5C5448;font-size:14px}
+.hint{color:#6E6353;font-size:12.5px;margin:12px 0 0}
+.cover{display:block;margin:26px auto 6px;width:min(360px,80%);
+  border:1.5px solid rgba(38,34,27,.3);border-radius:10px 6px 12px 6px/6px 12px 6px 10px;
+  box-shadow:3px 4px 0 rgba(38,34,27,.14)}
+main{max-width:860px;margin:0 auto;padding:14px 30px 56px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+a.card{display:block;background:#FFFDF8;border:1.5px solid rgba(38,34,27,.3);
+  border-radius:10px 6px 12px 6px/6px 12px 6px 10px;padding:20px 22px;
+  text-decoration:none;color:#26221B;box-shadow:2px 3px 0 rgba(38,34,27,.1);
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s ease,border-color .18s ease}
+a.card:hover{transform:translateY(-3px) rotate(-.4deg);border-color:#B4472F;
+  box-shadow:3px 5px 0 rgba(180,71,47,.22)}
+.card h2{font-size:17px;margin:0 0 6px}
+.card h2 .ico{margin-right:6px}
+.card p{margin:0;font-size:13px;color:#5C5448;line-height:1.7}
+.card .go{display:inline-block;margin-top:10px;font-size:12px;color:#B4472F;
+  border-bottom:1.5px solid #B4472F;padding-bottom:1px}
+footer{max-width:860px;margin:0 auto;padding:0 30px 46px;color:#675F4F;font-size:12px;text-align:center}
+footer a{color:inherit}
+</style>
+</head>
+<body>
+<header>
+  <h1>御舆 · 站点导航</h1>
+  <svg class="brush" viewBox="0 0 190 10" aria-hidden="true"><path d="M4 6q30-4.5 62-2.5t72-1q24 .2 46 1.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M152 5.6q10-.6 20-.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".45"/><circle cx="178" cy="5.8" r="1.5" fill="currentColor" stroke="none"/></svg>
+  <p class="sub">解码 Agent Harness —— 一本书、一册入门、一廊插画、一份手册</p>
+  <p class="hint">全部页面离线自包含、无脚本依赖（入门分册与画廊内建的动效除外）；
+  由 GitHub Actions 每次推送自动构建发布。</p>
+  <img class="cover" src="cover.png" alt="御舆：解码 Agent Harness 封面">
+</header>
+<main>
+  <div class="cards">
+    <a class="card" href="book.html">
+      <h2><span class="ico">📖</span>大书 · 御舆：解码 Agent Harness<span lang="en"></span></h2>
+      <p>全书 15 章 + 4 附录：对话循环、工具、权限、记忆、上下文、钩子、子智能体、
+      编排、技能、MCP、流式、Plan、亲手造一个 Harness。滚动阅读时，26 幅手绘插图
+      与 314 张图版会随你前进。</p>
+      <span class="go">开始阅读 →</span>
+    </a>
+    <a class="card" href="beginner-reader.html">
+      <h2><span class="ico">🌱</span>入门分册 · 看图读懂<span lang="en"></span></h2>
+      <p>人人可读的 18 站看图入门：每站一幅手绘插图、一句白话、一个比方、
+      一句记忆、一道自测、一段视频。由浅入深——底色一层比一层深。</p>
+      <span class="go">15 分钟入门 →</span>
+    </a>
+    <a class="card" href="beginner-reader.en.html" hreflang="en">
+      <h2><span class="ico">🌱</span>Beginner reader · illustrated<span lang="en"></span></h2>
+      <p>The same 18-station picture walk in English — plain language,
+      shallow to deep, every station with a sketch, a takeaway, a self-check
+      and curated videos.</p>
+      <span class="go">15-minute on-ramp →</span>
+    </a>
+    <a class="card" href="illustration-gallery.html">
+      <h2><span class="ico">🎨</span>插画画廊 · 看图说话<span lang="en"></span></h2>
+      <p>26 幅手绘插图的中英双语题注画廊：点击任意一幅，看墨线逐笔重演、
+      悬停读白话、点击迸发墨点。</p>
+      <span class="go">逛画廊 →</span>
+    </a>
+  </div>
+</main>
+<footer>
+  画风体系来自 <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
+  （MIT with Attribution）· 提示词手册见
+  <a href="illustration-prompts.md">docs/illustration-prompts.md</a> ·
+  大书内容 CC BY-NC-SA 4.0
+</footer>
+</body>
+</html>

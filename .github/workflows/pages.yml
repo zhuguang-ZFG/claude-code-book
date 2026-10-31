@@ -71,14 +71,21 @@ jobs:
           python scripts/build_beginner_reader.py
           python scripts/build_illustration_gallery.py
 
+      - name: Build the site portal
+        run: python scripts/build_site_portal.py site/portal.html
+
       - name: Assemble the site
         run: |
           mkdir -p site
-          cp yuyu-book/dist/yuyu-agent-harness-zh.html site/index.html
+          cp yuyu-book/dist/yuyu-agent-harness-zh.html site/book.html
+          cp yuyu-book/dist/yuyu-agent-harness-zh.html site/yuyu-agent-harness-zh.html
+          cp yuyu-book/dist/yuyu-agent-harness-en.html site/yuyu-agent-harness-en.html
           cp docs/beginner-reader.html site/beginner-reader.html
           cp docs/beginner-reader.en.html site/beginner-reader.en.html
           cp docs/illustration-gallery.html site/illustration-gallery.html
+          cp docs/illustration-prompts.md site/illustration-prompts.md
           cp cover.png site/cover.png
+          python scripts/build_site_portal.py site/index.html
 
       - uses: actions/configure-pages@v5
 
