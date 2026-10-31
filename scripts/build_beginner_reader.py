@@ -96,7 +96,8 @@ TAKEAWAYS = {
 VIDEOS = {
     "front": [("YouTube · Anthropic 官方频道", YT_CHANNEL),
               ("YouTube · Mastering Claude Code in 30 minutes（官方，已核验）",
-               "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
+               "https://www.youtube.com/watch?v=6eBSHbLKuN0"),
+              ("官方课程 · Claude Code 101（已核验）", "https://academy.claude.com/courses/claude-code-101")],
     "ch01": [("B 站 · Claude Code 教程（社区，已核验）",
               "https://www.bilibili.com/video/BV1uS9UBQEuH"),
              ("YouTube · Mastering Claude Code in 30 minutes（官方，已核验）",
@@ -104,16 +105,21 @@ VIDEOS = {
     "ch02": [("B 站 · 搜「Claude Code 对话」", B_SEARCH + "Claude%20Code%20%E5%AF%B9%E8%AF%9D")],
     "ch03": [("B 站 · 搜「Claude Code 工具」", B_SEARCH + "Claude%20Code%20%E5%B7%A5%E5%85%B7")],
     "ch04": [("B 站 · 搜「Claude Code 权限」", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
-    "ch05": [("B 站 · 搜「Claude Code 配置」", B_SEARCH + "Claude%20Code%20%E9%85%8D%E7%BD%AE")],
+    "ch05": [("B 站 · 搜「Claude Code 配置」", B_SEARCH + "Claude%20Code%20%E9%85%8D%E7%BD%AE"),
+             ("官方课程 · Claude Code 101（已核验）", "https://academy.claude.com/courses/claude-code-101")],
     "ch06": [("B 站 · 搜「Claude Code 记忆」", B_SEARCH + "Claude%20Code%20%E8%AE%B0%E5%BF%86")],
-    "ch07": [("B 站 · 搜「Claude Code 上下文」", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87")],
-    "ch08": [("B 站 · 搜「Claude Code Hooks」", B_SEARCH + "Claude%20Code%20Hooks")],
-    "ch09": [("B 站 · 搜「Claude Code 子智能体」", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93")],
+    "ch07": [("B 站 · 搜「Claude Code 上下文」", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87"),
+             ("官方课程 · Claude Code 101（已核验）", "https://academy.claude.com/courses/claude-code-101")],
+    "ch08": [("B 站 · 搜「Claude Code Hooks」", B_SEARCH + "Claude%20Code%20Hooks"),
+             ("官方课程 · Claude Code 101（已核验）", "https://academy.claude.com/courses/claude-code-101")],
+    "ch09": [("B 站 · 搜「Claude Code 子智能体」", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93"),
+             ("官方课程 · Claude Code 101（已核验）", "https://academy.claude.com/courses/claude-code-101")],
     "ch10": [("YouTube · Anthropic 官方频道（多智能体）", YT_CHANNEL)],
     "ch11": [("B 站 · 搜「Claude Skills」", B_SEARCH + "Claude%20Skills")],
     "ch12": [("B 站 · MCP 教程（社区，已核验）", "https://www.bilibili.com/video/BV1qkHrzHEh4"),
              ("B 站 · 搜「MCP 教程」", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
-             ("YouTube · Anthropic 官方频道（MCP）", YT_CHANNEL)],
+             ("YouTube · Anthropic 官方频道（MCP）", YT_CHANNEL),
+             ("官方课程 · Claude Code 101（已核验）", "https://academy.claude.com/courses/claude-code-101")],
     "ch13": [("B 站 · 搜「Claude Code 流式」", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
     "ch14": [("B 站 · 搜「Claude Code Plan」", B_SEARCH + "Claude%20Code%20Plan")],
     "ch15": [("YouTube · Anthropic 官方频道（agent 深讲）", YT_CHANNEL)],
@@ -199,7 +205,8 @@ TAKEAWAYS_EN = {
 VIDEOS_EN = {
     "front": [("YouTube · Anthropic official channel", YT_CHANNEL),
               ("YouTube · Mastering Claude Code in 30 minutes (official, verified)",
-               "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
+               "https://www.youtube.com/watch?v=6eBSHbLKuN0"),
+              ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
     "ch01": [("Bilibili · Claude Code tutorial (community, verified)",
               "https://www.bilibili.com/video/BV1uS9UBQEuH"),
              ("YouTube · Mastering Claude Code in 30 minutes (official, verified)",
@@ -209,14 +216,17 @@ VIDEOS_EN = {
     "ch04": [("Bilibili · search “Claude Code permissions”", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
     "ch05": [("Bilibili · search “Claude Code settings”", B_SEARCH + "Claude%20Code%20%E9%85%8D%E7%BD%AE")],
     "ch06": [("Bilibili · search “Claude Code memory”", B_SEARCH + "Claude%20Code%20%E8%AE%B0%E5%BF%86")],
-    "ch07": [("Bilibili · search “Claude Code context”", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87")],
+    "ch07": [("Bilibili · search “Claude Code context”", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87"),
+             ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
     "ch08": [("Bilibili · search “Claude Code Hooks”", B_SEARCH + "Claude%20Code%20Hooks")],
-    "ch09": [("Bilibili · search “Claude Code sub-agents”", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93")],
+    "ch09": [("Bilibili · search “Claude Code sub-agents”", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93"),
+             ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
     "ch10": [("YouTube · Anthropic official channel (multi-agent)", YT_CHANNEL)],
     "ch11": [("Bilibili · search “Claude Skills”", B_SEARCH + "Claude%20Skills")],
     "ch12": [("Bilibili · MCP tutorial (community, verified)", "https://www.bilibili.com/video/BV1qkHrzHEh4"),
              ("Bilibili · search “MCP tutorial”", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
-             ("YouTube · Anthropic official channel (MCP)", YT_CHANNEL)],
+             ("YouTube · Anthropic official channel (MCP)", YT_CHANNEL),
+             ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
     "ch13": [("Bilibili · search “Claude Code streaming”", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
     "ch14": [("Bilibili · search “Claude Code plan mode”", B_SEARCH + "Claude%20Code%20Plan")],
     "ch15": [("YouTube · Anthropic official channel (agent deep dive)", YT_CHANNEL)],
@@ -405,7 +415,7 @@ PAGE_TAIL_ZH = """</main>
 画风体系来自 <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 （MIT with Attribution）。大书：<a href="yuyu-agent-harness-zh.html">御舆：解码 Agent Harness</a>。
 <br>📺 页内视频为官方频道与社区资源，属<b>非规范来源</b>（仅核验存在性，
-核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。
+核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。本分册对应大书 v0.3.3 构建基线。
 </footer>
 <div class="resume" id="resume" style="display:none">
   <span>上次读到第 <b id="resume-station"></b> 站</span>
@@ -591,7 +601,7 @@ from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 (MIT with Attribution). Full book: <a href="yuyu-agent-harness-en.html">Yù Yú: Decoding Agent Harness</a>.
 <br>📺 Videos are official-channel and community resources — <b>non-normative</b>
 (existence verified 2026-10-31); every technical fact defers to the book and its
-normative sources.
+normative sources. This reader tracks book baseline v0.3.3.
 </footer>
 <div class="resume" id="resume" style="display:none">
   <span>You stopped at station <b id="resume-station"></b></span>
