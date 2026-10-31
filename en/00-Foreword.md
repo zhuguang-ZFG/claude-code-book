@@ -1,5 +1,34 @@
 # Foreword
 
+## Yù Yú: From Chariot-Making to Agent-Building
+
+> *"Of all artifacts that bring many crafts together, the chariot calls upon the most."* -- *Kǎo Gōng Jì* (The Book of Crafts)
+
+Twenty-three hundred years ago, the author of the *Kǎo Gōng Jì* wrote that line. In the pre-Qin age, the horse-drawn chariot was the most complex systems-engineering artifact humans had ever built -- without exception.
+
+How many trades went into one chariot? The woodworker built the **yú** (the carriage body), the metalworker cast the **wèi xiá** (the axle fittings), the leatherworker cut the harness, the lacquerer finished the surfaces, the wheelwright shaped the **fú** (the spokes). The *Kǎo Gōng Jì* says that heaven has its seasons, earth has its energies, materials have their virtues, and craftsmen have their craft; only when the four come together is a good chariot made.
+
+Each part carries its own meaning, and together they form a metaphor that reaches across two thousand years to the architecture of the Agent Harness this book dissects:
+
+| Ancient chariot | Meaning | Agent Harness |
+|:--------:|------|------|
+| **Yú** (carriage body) | The core structure that carries the rider | **Harness runtime** -- the engineering frame that carries the LLM |
+| **Yuán** (shafts) | Set the direction, transmit the pull | **Dialog loop** -- the main loop that drives the agent forward |
+| **Fú** (spokes) | Join the hub to the rim | **Tool system** -- the bridge between the LLM and the outside world |
+| **Wèi xiá** (axle fittings) | Pin the axle so the wheel cannot come off | **Permission pipeline** -- the safety mechanism that constrains the agent |
+| **Shì** (front crossbar) | The rail a rider grasps in salute | **Hook system** -- ceremonial extension points in the lifecycle |
+| **Yù** (driving) | The charioteer's craft | **Architectural understanding** -- the ability to comprehend and control an agent system |
+
+Confucius compared trust to a chariot: "A large carriage without its nǐ, a small one without its yuè -- how is it to go anywhere?" A chariot that loses its securing pin cannot travel, just as an agent without permission guardrails cannot be trusted. The *Kǎo Gōng Jì* also records that the shaft must curve just so: too deep and it snaps, too shallow and it cannot bear the load -- just as an agent's autonomy has to find the balance point between capability and safety.
+
+In the oracle-bone script, Luo Zhenyu read the character for *yú* as "the shape of many hands building a chariot" -- many hands making one vehicle. A production agent system needs the same many hands today: tool system, permission pipeline, context management, state persistence, streaming communication, error recovery. Each subsystem is one craftsman's trade; only together do they put an agent on the road.
+
+**The ancients drove the chariot, the most precise machine between heaven and earth; we drive the chariot, the most complex intelligent system of the silicon age.**
+
+This is where the book's title **Yù Yú** -- driving the chariot -- comes from, and why its readers call it the **Yú Shū**, the Chariot Book.
+
+---
+
 ## Why This Book
 
 ### The Three Waves of AI-Assisted Programming
