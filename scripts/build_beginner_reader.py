@@ -10,6 +10,7 @@ on-ramp.
 Run after `python yuyu-book/build.py [--lang en]` (reads the built HTML for
 the plain-language layer; anchors link back into it).
 """
+import json
 import re
 from pathlib import Path
 
@@ -235,6 +236,49 @@ VIDEOS_EN = {
 STRIP = re.compile(r"<[^>]+>")
 
 
+GLOSS = json.load(open(ROOT / "yuyu-book" / "glosses.json", encoding="utf-8"))
+
+
+def glossify(text: str, lang: str, limit: int = 3) -> str:
+    """Wrap the first few glossary terms with a hover definition.
+
+    作者在 glosses.json 里为每个术语写好了白话释义——分册直接借用，
+    不新增任何解释。最长形态优先、互不重叠、每站限量，避免满屏虚线。
+    """
+    if not text:
+        return text
+    forms = []
+    for gid, g in GLOSS.items():
+        d = g["plain"].get(lang, "")
+        if not d:
+            continue
+        for f in g["forms"].get(lang, []):
+            f = f.strip()
+            if len(f) >= (2 if lang == "zh" else 4):
+                forms.append((f, d))
+    forms.sort(key=lambda x: -len(x[0]))
+    taken = []
+    for f, d in forms:
+        start = 0
+        while True:
+            i = text.find(f, start)
+            if i < 0:
+                break
+            end = i + len(f)
+            if all(end <= a or i >= b for a, b, _, _ in taken):
+                taken.append((i, end, f, d))
+                if len(taken) >= limit:
+                    break
+            start = i + len(f)
+        if len(taken) >= limit:
+            break
+    for i, end, f, d in sorted(taken, reverse=True):
+        safe = d.replace('"', "'")
+        text = (text[:i] + f'<span class="gl" title="{safe}">{f}</span>'
+                + text[end:])
+    return text
+
+
 def extract_units(html: str, uids: list) -> dict:
     marks = {u: html.find(f'id="{u}"') for u in uids}
     order = sorted(marks.items(), key=lambda kv: kv[1])
@@ -258,9 +302,11 @@ def extract_units(html: str, uids: list) -> dict:
 
 def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
             bg: str, width: int, t) -> str:
-    analogy = (f'<p class="st-ana">{t["analogy_label"]}{unit["analogy"]}</p>'
+    ana_txt = glossify(unit["analogy"], t["lang"]) if unit["analogy"] else ""
+    analogy = (f'<p class="st-ana">{t["analogy_label"]}{ana_txt}</p>'
                if unit["analogy"] else "")
-    plain = (f'<p class="st-plain">{unit["plain"]}</p>' if unit["plain"] else "")
+    plain_txt = glossify(unit["plain"], t["lang"]) if unit["plain"] else ""
+    plain = (f'<p class="st-plain">{plain_txt}</p>' if unit["plain"] else "")
     trans = t["transitions"].get(uid, "")
     trans_html = f'<p class="st-trans">{trans}</p>' if trans else ""
     vids = "".join(f'<a class="st-vid" href="{url}" target="_blank"'
@@ -372,6 +418,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
+.gl{border-bottom:1px dashed #8A7D68;cursor:help}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
@@ -404,7 +451,7 @@ footer a{color:inherit}
   <h1>御舆 · 入门分册</h1>
   <svg class="brush" viewBox="0 0 190 10" aria-hidden="true"><path d="M4 6q30-4.5 62-2.5t72-1q24 .2 46 1.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M152 5.6q10-.6 20-.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".45"/><circle cx="178" cy="5.8" r="1.5" fill="currentColor" stroke="none"/></svg>
   <p class="sub">看图读懂 Agent Harness —— 一站一个概念，一句一句说清楚</p>
-  <p class="hint">每一站的句子都取自大书作者自己的通俗层；底色一层比一层深，就是"由浅入深"的顺序。某站看懂了，就推开「想深入」的门，去大书里读完整的原理。</p>
+  <p class="hint">每一站的句子都取自大书作者自己的通俗层；底色一层比一层深，就是"由浅入深"的顺序；句中带虚线的词，悬停即出白话释义。某站看懂了，就推开「想深入」的门，去大书里读完整的原理。</p>
 </header>
 <main>
 """
@@ -556,6 +603,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
+.gl{border-bottom:1px dashed #8A7D68;cursor:help}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
@@ -588,7 +636,7 @@ footer a{color:inherit}
   <h1>Yù Yú · Beginner Reader</h1>
   <svg class="brush" viewBox="0 0 190 10" aria-hidden="true"><path d="M4 6q30-4.5 62-2.5t72-1q24 .2 46 1.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M152 5.6q10-.6 20-.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".45"/><circle cx="178" cy="5.8" r="1.5" fill="currentColor" stroke="none"/></svg>
   <p class="sub">Understanding Agent Harness in pictures — one concept per station, one sentence at a time</p>
-  <p class="hint">Every sentence comes from the book's own plain-language layer; the paper darkens station by station — that is the shallow-to-deep order. When a station clicks, push open the “go deeper” door and read the full principle in the book.</p>
+  <p class="hint">Every sentence comes from the book's own plain-language layer; the paper darkens station by station — that is the shallow-to-deep order. Dotted terms show a plain-language definition on hover. When a station clicks, push open the “go deeper” door and read the full principle in the book.</p>
 </header>
 <main>
 """
@@ -655,6 +703,7 @@ LANGS = {
         "out": "beginner-reader.html",
         "order": ORDER, "parts": PARTS, "total": 16,
         "widths": WIDTH,
+        "lang": "zh",
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
         "takeaways": TAKEAWAYS,
         "quiz_label": "自测一下 · 答案在大书这一章",
@@ -686,6 +735,7 @@ LANGS = {
         "out": "beginner-reader.en.html",
         "order": ORDER_EN, "parts": PARTS_EN, "total": 16,
         "widths": {u: 148 for u in ORDER_EN},
+        "lang": "en",
         "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
         "videos": VIDEOS_EN,
         "takeaways": TAKEAWAYS_EN,
