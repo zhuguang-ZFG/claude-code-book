@@ -507,7 +507,11 @@ section.front-page{break-before:page}
 .rev-v{display:flex;justify-content:space-between;align-items:baseline;
   font-size:1.05rem;margin:1.15rem 0 .3rem;color:var(--bronze-3)}
 .rev-v .rev-d{font-size:.78rem;color:var(--ink-3);font-weight:400}
-.revisions ul{margin:.2rem 0 0;padding-left:1.4rem;font-size:.96rem;color:var(--ink-2)}
+.revisions ul{margin:.2rem 0 0;padding-left:1.4rem;font-size:.96rem;color:var(--ink-2);
+  list-style-type:none}
+ul>li{position:relative}
+ul>li::before{content:"◆";position:absolute;left:-1.15em;top:0;
+  font-size:.55em;color:var(--bronze-2);line-height:2.8}
 .revisions li::marker{color:var(--bronze-2)}
 /* four routes, one row: at 15rem the sheet broke 3+1 and the orphan card left
    two empty cells the reader scans as missing content */
@@ -579,6 +583,8 @@ section.front-page{break-before:page}
 .toc-row{display:flex;align-items:baseline;text-decoration:none;color:var(--ink);
   padding:.32rem 0 .3rem;font-size:.99rem;border-radius:var(--r-1)}
 .toc-row:hover{color:var(--cinnabar)}
+.toc-row:hover{transform:translateX(3px)}
+.toc-row{transition:transform .16s ease,color .16s ease}
 .toc-row:hover .toc-n{color:var(--cinnabar);border-color:var(--cinnabar)}
 .toc-n{flex:0 0 auto;min-width:2.1rem;margin-inline-end:.75rem;text-align:center;
   font-family:var(--sans);font-size:.7rem;font-weight:700;color:var(--bronze-3);
@@ -843,7 +849,7 @@ article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
 article h1 .h1-sub{display:block;font-weight:400;font-size:1.05rem;
   color:var(--ink-3);margin-top:.35rem;font-family:var(--serif)}
 article h2{font-size:1.28rem;margin:1.9rem 0 .7rem;padding-left:.7rem;
-  border-left:4px solid var(--bronze-2)}
+  border-left:3.5px solid var(--cinnabar)}
 article h3{font-size:1.06rem;margin:1.4rem 0 .45rem;color:var(--bronze-3)}
 article h4{font-size:.95rem;margin:1.05rem 0 .35rem;color:var(--ink-2)}
 article h2 .sec-no{color:var(--bronze);margin-right:.45rem;font-variant-numeric:tabular-nums}
@@ -907,6 +913,7 @@ hr{border:none;text-align:center;margin:1.8rem 0}
 .callout-tip .callout-tag{color:var(--jade)}
 .callout-warning{border-left-color:var(--cinnabar);background:linear-gradient(90deg,
   rgba(180,71,47,.10),var(--card) 46%)}
+.callout:hover{box-shadow:0 2px 8px rgba(38,34,27,.06)}
 .callout-warning .callout-tag{color:var(--cinnabar)}
 .callout-info{border-left-color:var(--bronze);background:linear-gradient(90deg,
   rgba(138,107,63,.10),var(--card) 46%)}
