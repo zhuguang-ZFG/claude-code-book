@@ -124,6 +124,8 @@ VIDEOS = {
     "ch13": [("B 站 · 搜「Claude Code 流式」", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
     "ch14": [("B 站 · 搜「Claude Code Plan」", B_SEARCH + "Claude%20Code%20Plan")],
     "ch15": [("YouTube · Anthropic 官方频道（agent 深讲）", YT_CHANNEL)],
+    "keeper": [("YouTube · Code w/ Claude 开发者大会全场合集（官方）",
+                "https://www.youtube.com/playlist?list=PLf2m23nhTg1P5BsOHUOXyQz5RhfUSSVUi")],
 }
 
 # ---------------- English edition ----------------
@@ -231,6 +233,8 @@ VIDEOS_EN = {
     "ch13": [("Bilibili · search “Claude Code streaming”", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
     "ch14": [("Bilibili · search “Claude Code plan mode”", B_SEARCH + "Claude%20Code%20Plan")],
     "ch15": [("YouTube · Anthropic official channel (agent deep dive)", YT_CHANNEL)],
+    "keeper": [("YouTube · Code w/ Claude full conference (official)",
+                "https://www.youtube.com/playlist?list=PLf2m23nhTg1P5BsOHUOXyQz5RhfUSSVUi")],
 }
 
 STRIP = re.compile(r"<[^>]+>")
@@ -370,6 +374,9 @@ def build(lang: str) -> tuple[str, int]:
                                     t["widths"].get(uid, 148), t))
 
     num += 1
+    vids_keep = "".join(
+        f'<a class="st-vid" href="{url}" target="_blank" rel="noopener">📺 {label}</a>'
+        for label, url in t["videos"].get("keeper", []))
     stations.append(f"""<article class="st" style="background:#FBF6EC">
   <div class="st-art" style="width:148px">{svgs.get("apxd", "")}</div>
   <div class="st-body">
@@ -387,6 +394,7 @@ def build(lang: str) -> tuple[str, int]:
     <h2>{t["keeper_h2"]}</h2>
     <p class="st-cap">{t["captions"]["keeper"]}</p>
     <p class="st-plain">{t["keeper_plain"]}</p>
+    <p class="st-vids">{vids_keep}</p>
     <a class="st-go" href="{t["book"]}">{t["keeper_link"]}</a>
   </div>
 </article>""")
