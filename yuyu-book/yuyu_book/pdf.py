@@ -38,6 +38,18 @@ HEAD_BAND = 60.0      # anything painted above this is the running head
 FOOT_BAND = 45.0      # ...and below the page bottom minus this is the folio
 
 
+def sheet_count(pdf_path: Path) -> int:
+    """How many sheets the printed book runs to.
+
+    README quotes a page count; this is the only honest way to get one, since
+    the count follows whatever CJK face the build found on the machine."""
+    doc = fitz.open(str(pdf_path))
+    try:
+        return doc.page_count
+    finally:
+        doc.close()
+
+
 def empty_sheets(doc) -> list[int]:
     """1-based page numbers of sheets that carry nothing but furniture.
 

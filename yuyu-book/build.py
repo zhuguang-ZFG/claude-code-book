@@ -312,7 +312,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                            encoding="utf-8")
         p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios)
         print(f"  {p.name}: {p.stat().st_size / 1e6:.1f} MB, "
-              f"{len(outline)} bookmarks, {len(folios)} index folios")
+              f"{pdf.sheet_count(p)} pages, {len(outline)} bookmarks, "
+              f"{len(folios)} index folios")
     return out
 
 
