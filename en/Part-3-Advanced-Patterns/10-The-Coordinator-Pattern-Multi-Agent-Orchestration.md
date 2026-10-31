@@ -221,7 +221,7 @@ Team deletion is not a simple "delete everything" operation but a process with m
 >
 > If the coordinator forcefully deletes a team while workers are still running, the workers will lose their association with the team, which may lead to:
 > - Worker task notifications failing to reach the coordinator
-> - Scratchpad files being deleted while in-use workers read empty data
+> - Scratchpad files being deleted mid-read, so a running worker gets empty data
 > - Worktrees being cleaned up, causing workers' file modifications to be lost
 >
 > This is why team deletion requires the precondition that "all members have completed."

@@ -619,7 +619,7 @@ flowchart LR
     class REPORT endNode
 ```
 
-Applicable to operations automation, CI/CD integration scenarios. Event-triggered rather than user-initiated, Plan Mode ensures automated operations' safety and controllability.
+This pattern fits operations automation and CI/CD integration: the run is triggered by an event rather than by a user, and Plan Mode is what keeps such an automation safe and controllable.
 
 **Pattern 3: Polling Loop with Escalation**
 
@@ -639,7 +639,7 @@ flowchart TD
     class ESCALATE escalateNode
 ```
 
-Applicable to continuous monitoring scenarios. Low-cost polling only triggers high-cost Agent reasoning when anomaly detected.
+This pattern fits continuous monitoring: low-cost polling runs on a timer and only triggers high-cost Agent reasoning when an anomaly is detected.
 
 **Anti-pattern 1: Unplanned complex tasks**
 

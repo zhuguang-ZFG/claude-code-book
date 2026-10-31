@@ -831,7 +831,7 @@ flowchart TD
 1. **Stream error interception:** Errors returned by the model are wrapped as `AssistantMessage` (with `isApiErrorMessage` flag) rather than thrown as exceptions
 2. **Delayed display:** Recoverable errors (such as prompt-too-long) are temporarily withheld, with a recovery attempt made before deciding whether to display
 3. **Circuit breaker:** Compression failure count is tracked (`consecutiveFailures`), and retries stop after reaching the threshold
-4. **Fallback strategy:** When the model is unavailable, it automatically switches to a fallback model, cleaning state before retrying
+4. **Fallback strategy:** an unavailable model triggers an automatic switch to a fallback model, with state cleaned before retrying
 
 The circuit breaker implementation is straightforward. In the source code, the `autoCompactTracking`'s `consecutiveFailures` field increments after each compression failure and resets on success. When the consecutive failure count exceeds the threshold, the loop exits directly rather than retrying indefinitely.
 
@@ -964,7 +964,7 @@ flowchart TD
 
 ### Multi-Environment Adaptation: CLI / IDE / SDK / Server
 
-Claude Code's dependency injection pattern provides a multi-environment adaptation solution. By abstracting I/O operations into dependency injection interfaces (such as model calls, message compression, UUID generation, etc.), the core loop doesn't need to know what environment it's running in.
+Claude Code's dependency injection pattern handles this by putting I/O behind injected interfaces (model calls, message compression, UUID generation), so the core loop never needs to know which environment it is running in.
 
 In a CLI environment, production dependencies provide real file system access and model calls. In tests, mock implementations can be injected. In SDK mode, different UI feedback mechanisms can be substituted. This "core + adapter" architecture allows the same Harness logic to run seamlessly across different platforms.
 

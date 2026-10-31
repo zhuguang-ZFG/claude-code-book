@@ -1040,7 +1040,7 @@ Design a complete hook configuration solution meeting above requirements.
 
 ## Key Takeaways
 
-1. **Five hook types**: command (Shell command), prompt (LLM evaluation), agent (Agentic validation), http (HTTP call), function (runtime callback); first four are persistable, last one only exists in session memory. Decision tree for choosing hook type: need to execute system commands use Command, need intelligent judgment use Prompt, need multi-step validation use Agent, need external system integration use HTTP, need deep runtime interaction use Function.
+1. **Five hook types**: command (Shell command), prompt (LLM evaluation), agent (Agentic validation), http (HTTP call), function (runtime callback); the first four are persistable, the last lives only in session memory. The decision tree reads: use Command to run a system command, Prompt when a step needs judgment, Agent for multi-step validation, HTTP to integrate an external system, Function for deep runtime interaction.
 
 2. **22 lifecycle events**: Covering complete Agent lifecycle including tool calls, user interaction, session management, sub-agents, compression, permissions, configuration changes. Each event has clear trigger timing, input structure, and exit code semantics.
 
