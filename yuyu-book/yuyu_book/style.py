@@ -458,11 +458,20 @@ section.front-page{break-before:page}
    border, which at book size reads as a plate that printed twice */
 .cover-inner{position:relative;display:inline-block;text-align:center;
   padding:clamp(2.2rem,5vw,4rem) clamp(1.6rem,5vw,4.2rem) 2.6rem;margin:2.4rem 0;
-  border:1px solid var(--line-2);
-  background:linear-gradient(180deg,var(--card),var(--paper))}
+  border:none;
+  background:linear-gradient(180deg,var(--card),var(--paper));
+  box-shadow:inset 0 0 0 1px var(--line-2),inset 0 0 0 4px var(--card),
+             inset 0 0 0 5.5px var(--bronze-2),inset 0 0 0 6.5px var(--card);
+}
+.cover-inner::before{content:"";position:absolute;top:0;bottom:0;left:0;
+  width:5px;background:linear-gradient(180deg,var(--cinnabar),var(--bronze-2));
+  border-radius:0}
+.cover-inner::after{content:"";position:absolute;top:0;bottom:0;right:0;
+  width:2px;background:linear-gradient(180deg,rgba(180,71,47,.15),rgba(67,57,43,.1));
+  pointer-events:none}
 .cover-kicker{font-family:var(--sans);font-size:.7rem;letter-spacing:.42em;
   color:var(--bronze);text-transform:uppercase;margin:0 0 1.6rem}
-.book-title{margin:0;line-height:1.12}
+.book-title{margin:0;line-height:1.12;font-weight:750;letter-spacing:.06em}
 .bt-main{display:block;font-size:clamp(3.1rem,9vw,4.9rem);letter-spacing:.14em;
   text-indent:.14em;color:var(--ink);font-weight:700;
   font-family:"STSong","Songti SC","Noto Serif SC",var(--serif)}
@@ -1364,7 +1373,7 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      a third of the sheet below the foot, which is the one place a cover may
      not be empty. */
   .front-page.cover{min-height:250mm;display:flex;align-items:stretch}
-  .cover-inner{margin:0;width:100%;border-color:var(--line-2);
+  .cover-inner{margin:0;width:100%;border:none;box-shadow:inset 0 0 0 1px var(--line-2),inset 0 0 0 5px var(--card),inset 0 0 0 5.5px var(--bronze-2),inset 0 0 0 6px var(--card);
     display:flex;flex-direction:column;justify-content:space-between}
   .diagram-frame,.codehilite,.table-scroll,.compass-card,.route-card{
     box-shadow:none}
