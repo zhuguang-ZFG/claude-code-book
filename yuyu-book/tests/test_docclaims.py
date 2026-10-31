@@ -158,6 +158,15 @@ class ShippedCounts(Data):
                                         str(plates_zh + plates_en)]),
             ("README.md", r"`yuyu-book/` 把 (\d+) 个单元装配成",
              [str(len(self.units))]),
+            ("en/README.md", r"assembles the (\d+) units into",
+             [str(len(self.units))]),
+            # the same registry is quoted by size in both READMEs
+            ("README.md", r"`yuyu-book/sources\.json`（(\d+) 条，"
+                          r"其中 (\d+) 条是 GitHub 开源仓库）",
+             [src, str(self.kinds()["github"])]),
+            ("en/README.md", r"`yuyu-book/sources\.json` \((\d+) entries, "
+                             r"(\d+) of them GitHub repositories\)",
+             [src, str(self.kinds()["github"])]),
         ]
 
     def test_doc_counts_match_the_data(self):
