@@ -271,7 +271,7 @@ Below introduces core events grouped by function, with detailed explanation of t
 
 ### Tool Call Lifecycle
 
-Tool call lifecycle events are the most frequently used and powerful set of events in the hook system. They form a "sandwich" structure: PreToolUse intercepts before execution, PostToolUse handles after success, PostToolUseFailure catches after failure.
+Tool call lifecycle events are the most frequently used set of events in the hook system. They form a "sandwich" structure: PreToolUse intercepts before execution, PostToolUse handles after success, PostToolUseFailure catches after failure.
 
 **PreToolUse** (Before tool execution)
 
@@ -418,7 +418,7 @@ Typical use cases:
 
 Triggered just before Claude is about to end response. Exit code 2 can inject stderr to model and force continued conversation. This is the key event for implementing "ensure task completion" logic.
 
-This event's design motivation is clever: LLMs sometimes stop generating before a task is fully complete (e.g., due to token limits or "feeling the answer is sufficient"). Stop hooks give users a chance to "pull the model's sleeve" to continue working.
+This event addresses a concrete problem: LLMs sometimes stop generating before a task is fully complete (e.g., due to token limits or "feeling the answer is sufficient"). Stop hooks give users a chance to "pull the model's sleeve" to continue working.
 
 Typical use cases:
 
@@ -584,7 +584,7 @@ This field's design follows the "default allow, explicit block" principle. If ho
 - `permissionDecisionReason`: Decision reason
 - `updatedInput`: Runtime modification of tool input
 
-`updatedInput` is a powerful capability -- hooks can modify parameters actually sent to tools without changing user intent. For example, automatically adding specific prefixes to all Bash commands, or filtering sensitive parameters.
+`updatedInput` lets hooks change the parameters actually sent to a tool without changing user intent. For example, automatically adding specific prefixes to all Bash commands, or filtering sensitive parameters.
 
 > **Best practice:** `updatedInput` is a double-edged sword. Used well, it can enhance security without modifying user operations (like auto-adding `--dry-run` flag); abused, it breaks user expectations (like silently modifying file paths causing operations to wrong locations). When using, follow the "transparency principle" -- modifications should be predictable, documented, and visible to users.
 
@@ -592,7 +592,7 @@ This field's design follows the "default allow, explicit block" principle. If ho
 
 - `additionalContext`: Inject additional context into user prompt
 
-This field allows hooks to attach extra context information before user message reaches model, without modifying user's original input. This design is elegant: it preserves user input integrity while providing richer background information to the model.
+This field allows hooks to attach extra context information before user message reaches model, without modifying user's original input. This preserves the integrity of user input while giving the model richer background information.
 
 ### additionalContext: Injecting Additional Context
 

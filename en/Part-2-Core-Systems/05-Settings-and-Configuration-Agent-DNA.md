@@ -6,7 +6,7 @@
 
 Claude Code's behavior is not determined by a single configuration file, but by six layers of configuration sources merged in sequence. These configuration sources are like the Agent's "DNA" -- they are written before the Agent starts, determining what the Agent can do, what it cannot do, and how it does things. Understanding this system is the first step toward mastering Claude Code's behavior customization capabilities.
 
-The analogy of the configuration system as "DNA" is fitting: just as an organism's genes are determined at the moment of fertilization and expressed layer by layer during development, Claude Code's configuration is loaded at startup and takes effect layer by layer at runtime. The difference is that the Agent's "DNA" can be precisely edited and overridden -- this is both a powerful capability and a security challenge.
+The analogy of the configuration system as "DNA" is fitting: just as an organism's genes are determined at the moment of fertilization and expressed layer by layer during development, Claude Code's configuration is loaded at startup and takes effect layer by layer at runtime. The difference is that the Agent's "DNA" can be precisely edited and overridden -- this is both a capability and a risk.
 
 ## 5.1 The Priority System of Six Configuration Sources
 
@@ -14,7 +14,7 @@ The analogy of the configuration system as "DNA" is fitting: just as an organism
 
 Claude Code's configuration sources are defined as an ordered array in the configuration constants module, containing five configuration origins: user global settings (userSettings), project shared settings (projectSettings), project local settings (localSettings, gitignored), CLI flag settings (flagSettings), and enterprise policy settings (policySettings).
 
-The configuration loading function `loadSettingsFromDisk()` follows a key principle: **later-loaded sources override earlier ones**. The merge is not a simple full replacement, but uses a deep merge strategy with custom rules.
+The configuration loading function `loadSettingsFromDisk()` follows a key principle: **later-loaded sources override earlier ones**. The merge is not a wholesale replacement: it deep-merges by field and layers custom rules on top.
 
 In practice, there is also a hidden lowest-priority layer: **pluginSettings** (plugin settings). In the configuration loading process, plugin settings are loaded first as the base for merging, and subsequent configuration layers are stacked on top of this base.
 
@@ -280,7 +280,7 @@ Within locked surfaces, only the following sources are trusted:
 
 User-level (`~/.claude/*`) and project-level (`.claude/*`) customizations are completely blocked.
 
-The elegance of this design lies in "selective locking." Enterprise administrators don't need to bluntly prohibit all customization but can finely control which customization surfaces need to be locked. For example:
+The key here is "selective locking." Enterprise administrators don't need to bluntly prohibit all customization but can finely control which customization surfaces need to be locked. For example:
 
 - Lock `mcp`: Prevent developers from connecting to unapproved MCP servers (preventing data leaks)
 - Lock `hooks`: Prevent developers from executing unaudited custom scripts
@@ -406,7 +406,7 @@ flowchart TD
 
 ## 5.4 State Management System
 
-State management is the "nervous system" of an Agent system -- configuration is the DNA that determines the Agent's potential; state is the nervous system that transmits and coordinates the Agent's runtime behavior in real time. Claude Code has chosen a minimalist yet powerful state management solution whose design philosophy deserves in-depth analysis.
+State management is the "nervous system" of an Agent system -- configuration is the DNA that determines the Agent's potential; state is the nervous system that transmits and coordinates the Agent's runtime behavior in real time. Claude Code's state management is minimal, and its design philosophy deserves a closer look.
 
 ### 5.4.1 Store: A Minimalist Immutable State Container
 
@@ -420,7 +420,7 @@ Three key design decisions:
 
 **Why Only 34 Lines? -- The "Less Is More" Philosophy of State Management**
 
-In today's frontend ecosystem, state management libraries keep proliferating -- Redux, MobX, Recoil, Jotai, Valtio... each trying to solve different pain points. Claude Code's Store has chosen a minimalist path, which is not laziness but a precise grasp of requirements.
+Redux, MobX, Recoil, Jotai, Valtio... frontend state management libraries keep coming, each solving a different problem. Claude Code's Store takes a minimalist path -- not laziness, but a precise reading of its requirements.
 
 The state management needs of an Agent CLI tool are fundamentally different from those of a complex Web application:
 

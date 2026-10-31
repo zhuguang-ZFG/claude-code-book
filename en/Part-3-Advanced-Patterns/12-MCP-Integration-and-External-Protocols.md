@@ -345,7 +345,7 @@ After each MCP tool is mapped to a Claude Code internal `Tool` object, it contai
 
 The three "Hint" mappings in the table above deserve special attention. The MCP protocol defines tool behavioral annotations (such as `readOnlyHint`, `destructiveHint`), while Claude Code's tool system has its own semantic model (such as `isConcurrencySafe()`, `isDestructive()`). The mapping between these two semantic systems is not 1:1 — MCP's annotations are "suggestive" (hint), while Claude Code's methods are "decisive" (decision).
 
-The elegance of this bridging design is that it allows MCP servers to describe their tool behavior in standardized language, while Claude Code can make final decisions based on its own security policies. If an MCP server's annotations are inaccurate (for example, a tool marked `readOnlyHint` that actually modifies data), Claude Code's permission pipeline will still perform a secondary check at runtime.
+The key to this bridging design is that it allows MCP servers to describe their tool behavior in standardized language, while Claude Code can make final decisions based on its own security policies. If an MCP server's annotations are inaccurate (for example, a tool marked `readOnlyHint` that actually modifies data), Claude Code's permission pipeline will still perform a secondary check at runtime.
 
 > **Cross-reference:** The concurrency safety (`isConcurrencySafe()`) here directly affects the concurrency partitioning strategy described in Chapter 3. MCP tools marked as concurrency-safe can execute in parallel with other safe tools, while unsafe tools must wait serially.
 
@@ -910,7 +910,7 @@ The v2 adapter wraps SSETransport (read) + CCRClient (write to CCR v2 endpoints)
 
 **1. SSE Sequence Number Continuation**
 
-This is v2's most elegant design. In traditional SSE implementations, when a client disconnects and reconnects, the server typically needs to replay all events since the connection began (because the client doesn't know what it missed). For long-running sessions, this can cause a "message storm" — thousands of historical messages replayed at once, consuming significant bandwidth and processing time.
+This is v2's design most worth a closer look. In traditional SSE implementations, when a client disconnects and reconnects, the server typically needs to replay all events since the connection began (because the client doesn't know what it missed). For long-running sessions, this can cause a "message storm" — thousands of historical messages replayed at once, consuming significant bandwidth and processing time.
 
 v2's solution is: carry the previous stream's high-water sequence number mark during transport switching. When the client reconnects, it tells the server "I've processed up to sequence number N, please start from N+1." This way, the server only needs to send incremental messages, not the complete history.
 

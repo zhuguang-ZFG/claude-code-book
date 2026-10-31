@@ -300,7 +300,7 @@ flowchart TD
     class summary,keep keep_node
 ```
 
-**Why is the dual-phase design so important?** If you directly ask the model to output a summary (without an analysis phase), the model will often miss important information -- because it lacks "thinking" space. But if you keep the analysis in the context, you waste valuable tokens. The dual-phase design perfectly resolves this contradiction: **thinking is the process, the summary is the result**. The process is not counted; only the result enters the context.
+**Why is the dual-phase design so important?** If you directly ask the model to output a summary (without an analysis phase), the model will often miss important information -- because it lacks "thinking" space. But if you keep the analysis in the context, you waste valuable tokens. The dual-phase design splits the contradiction in two: **thinking is the process, the summary is the result**. The process is not counted; only the result enters the context.
 
 > **Best Practice:** If you need to customize compression behavior in a PreCompact hook, you can adjust the priority of the 9 sections within `<summary>`. For example, if your work focuses on API design, you can inject an instruction in the hook: "In the summary, specifically preserve all API endpoint definitions and their rationale for changes."
 

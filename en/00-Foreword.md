@@ -102,13 +102,13 @@ In early 2025, Anthropic released Claude Code -- an AI programming agent that ru
 
 On March 31, 2026, an unexpected event propelled Claude Code into the spotlight of the tech community: security researcher [Chaofan Shou (@Fried_rice)](https://x.com/Fried_rice) discovered that the `@anthropic-ai/claude-code` package published in the npm registry contained a source map file referencing a complete source code archive in an Anthropic R2 storage bucket, and the bucket had no access controls. The disclosure tweet received over 17 million views, and the tech community engaged in an unprecedented in-depth discussion about Agent architecture. Anthropic subsequently patched the configuration issue.
 
-It was this discussion that made us realize: Agent Harness had evolved from an obscure engineering concept into a topic the entire developer community cares about. But most of the discussions on the market were scattered and fragmented -- some focused on tool call design, others discussed permission models, and still others analyzed streaming architecture, yet no one had assembled these pieces into a complete picture.
+After that discussion, Agent Harness went from an obscure engineering concept to a topic the entire developer community cares about. But most of the discussions on the market were scattered and fragmented -- some focused on tool call design, others discussed permission models, and still others analyzed streaming architecture, yet no one had assembled these pieces into a complete picture.
 
 This book attempts to fill that gap. We explain Agent Harness design using public documentation, product behavior, and community discussion.
 
 ### Why Now
 
-You might ask: is the timing right for such a book? The answer is yes, for three reasons:
+The timing for this book is right, for three reasons:
 
 1. **Architectural patterns are converging.** Although different Agent frameworks vary in implementation details, the core architectural patterns -- dialog-loop-driven execution, tool type systems, layered permission pipelines, and streaming state management -- have converged across multiple mainstream projects. This means the design patterns summarized here have broad applicability and will not become outdated by any single framework's version update.
 
@@ -130,7 +130,7 @@ To use an analogy: studying Claude Code's architecture is like a medical student
 - Why does the permission system use a four-stage pipeline instead of a simple allowlist/blocklist? (The answer involves defense in depth and separation of concerns -- see Chapter 4 for details)
 - Why does the tool type design include fine-grained control interfaces for concurrency safety and interrupt behavior? (The answer involves parallel scheduling strategies and user experience -- see Chapter 3 for details)
 
-The insights behind these decisions come from deep understanding of real production scenarios and are far more valuable than abstract architectural discussions. The answer to every "why" is a design lesson.
+These decisions come from real production scenarios and are far more useful than abstract architectural discussions. Every "why" ends up turning on a concrete engineering trade-off.
 
 **Third, modernity of the technology stack.** Claude Code chose Bun as its runtime, React + Ink for terminal UI rendering, Zod v4 for runtime validation, and Commander.js for CLI handling -- these technology choices are themselves a reference blueprint for modern TypeScript engineering. Even if you are not interested in Agent architecture, Claude Code is worth studying purely from an engineering practices perspective.
 
@@ -138,7 +138,7 @@ The insights behind these decisions come from deep understanding of real product
 
 ## Features of This Book
 
-This book has three core features that distinguish it from other AI-related books on the market:
+This book differs from other AI books on the market in three ways:
 
 **Based on architectural analysis, not API documentation.** We will not teach you "how to call the Claude API to build a chatbot." Instead, starting from Claude Code's product behavior and public information, we progressively reconstruct its core architecture -- how the dialog loop drives execution, how permissions are checked in layers, and how context is compressed. Through systematic architectural deduction, we present the complete design picture of Agent Harness.
 

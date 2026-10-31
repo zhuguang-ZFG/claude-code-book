@@ -346,9 +346,9 @@ User experience is the most critical consideration. At the end of a long convers
 
 ### 6.3.2 Mutex Mechanism
 
-The mutex check function in the memory extraction module implements an elegant mechanism: if the main Agent has already written a memory file during the current conversation, the background extraction is skipped entirely. The main conversation's system prompt already includes complete memory saving instructions. When the main Agent actively saves a memory, the forked background Agent detects this fact and skips the current extraction -- the two are **mutually exclusive**, preventing duplicate writes.
+The mutex check function in the memory extraction module is straightforward: if the main Agent has already written a memory file during the current conversation, the background extraction is skipped entirely. The main conversation's system prompt already includes complete memory saving instructions. When the main Agent actively saves a memory, the forked background Agent detects this fact and skips the current extraction -- the two are **mutually exclusive**, preventing duplicate writes.
 
-**The mutex mechanism's implementation is an elegant "eventual consistency" design.**
+**The mutex mechanism is an "eventual consistency" design.**
 
 ```mermaid
 sequenceDiagram
@@ -388,7 +388,7 @@ The background Agent's tool permissions are strictly controlled through the `cre
 
 This design gives the background Agent sufficient read capabilities to understand conversation content, while write capabilities are restricted to the memory directory -- it cannot modify project code or execute dangerous commands.
 
-**Perfect Embodiment of the Principle of Least Privilege**
+**The Principle of Least Privilege in Practice**
 
 The tool permission allowlist embodies the Principle of Least Privilege in security design: the background Agent is granted only the minimum set of permissions needed to fulfill its responsibilities. Specifically:
 

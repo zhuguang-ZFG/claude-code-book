@@ -174,7 +174,7 @@ sequenceDiagram
 
 `ToolPermissionContext` is the core data structure of the entire permission system. It carries all the context information needed for permission checking. It includes fields such as permission mode, extra working directories, rules at all levels (allow/deny/ask), bypass mode availability flag, and whether permission prompts should be avoided.
 
-The elegance of this type lies in its immutability (all fields are readonly). Every permission update produces a new `ToolPermissionContext` object rather than modifying the existing one. This immutable data pattern ensures consistency in concurrent environments -- when multiple tools check permissions simultaneously, the context each reads will not change unexpectedly due to another tool's permission update.
+The immutability is written into the type: all fields are readonly. Every permission update produces a new `ToolPermissionContext` object rather than modifying the existing one. This immutable data pattern ensures consistency in concurrent environments -- when multiple tools check permissions simultaneously, the context each reads will not change unexpectedly due to another tool's permission update.
 
 The necessity of immutability here can be understood through a concrete scenario: suppose Tool A and Tool B simultaneously begin permission checking. During the check process, Tool A's user confirmation triggers a permission rule update (the user selects "always allow"). If PermissionContext were mutable, Tool B might see the rules modified mid-check, leading to inconsistency between the front and back checks of the same request. Immutability ensures that each permission check uses a deterministic snapshot.
 
@@ -253,7 +253,7 @@ In plan mode, write tools (Edit, Write) have their permission checks return `den
 
 ### 4.3.3 auto Mode: Automatic Approval (with Classifier)
 
-The `auto` mode is one of Claude Code's most sophisticated modes. It uses an AI classifier (referred to as the "YOLO classifier") to replace manual approval. When the permission pipeline reaches the `ask` state and the mode is `auto`, the system invokes the classifier for AI judgment, formatting the tool name and input into a classifier-understandable format, and sending the conversation context and tool list for the classifier's reference.
+The `auto` mode hands approval to an AI classifier (referred to as the "YOLO classifier"). When the permission pipeline reaches the `ask` state and the mode is `auto`, the system invokes the classifier for AI judgment, formatting the tool name and input into a classifier-understandable format, and sending the conversation context and tool list for the classifier's reference.
 
 The core challenge of auto mode is finding the balance between "automation efficiency" and "security." Pure automatic approval is too dangerous, and pure per-use confirmation is too slow. The AI classifier is a compromise between the two -- it uses another AI to judge whether the current AI's operation is safe, implementing an "AI supervising AI" architecture.
 
@@ -327,7 +327,7 @@ flowchart LR
 
 The wildcard matching engine implements full pattern matching, handles escape sequences, converts the `*` wildcard to regular expressions, and supports escaped `\*` and `\\`.
 
-An elegant detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. This means the rule `git *` matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. This "equivalent syntax" design reduces users' cognitive burden -- you don't need to remember two different syntax rules; `git:*` and `git *` do the same thing.
+One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. This means the rule `git *` matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. This "equivalent syntax" design reduces users' cognitive burden -- you don't need to remember two different syntax rules; `git:*` and `git *` do the same thing.
 
 ### 4.4.2 Prefix Extraction Rules
 
@@ -404,7 +404,7 @@ The persistence function returns a boolean value indicating whether a persistent
 
 ### Exercise 1: Configuring Project-Level .claude/settings.json
 
-Let's understand permission configuration through a practical scenario. Suppose you are developing a Node.js project and want Claude Code to automatically perform the following operations:
+Here is a practical permission configuration scenario. Suppose you are developing a Node.js project and want Claude Code to automatically perform the following operations:
 
 1. Run `npm test` and `npm run lint` without requiring confirmation each time
 2. Allow execution of all `git` commands

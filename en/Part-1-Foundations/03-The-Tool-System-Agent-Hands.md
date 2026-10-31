@@ -8,7 +8,7 @@
 - Master the design patterns of Claude Code's 55 registered tools and understand the design philosophy of the five-element protocol
 - Understand the complete architecture of the tool definition protocol, registration mechanism, and orchestration engine
 - Analyze the scheduling principles and practical effects of concurrency partitioning strategies
-- Understand the elegant design of the StreamingToolExecutor four-stage state machine
+- Understand how the StreamingToolExecutor four-stage state machine works
 - Evaluate the engineering value of the deferred tool discovery mechanism
 
 ---
@@ -101,7 +101,7 @@ The coverage of these six rendering methods is noteworthy: it spans the entire "
 
 This design philosophy can be understood through an analogy: in airport security, the default assumption is that all luggage needs to be inspected (fail-closed), and only specially certified passengers (such as diplomats) can use the fast track. If it were the other way around -- defaulting to pass-through and only intercepting when problems are found (fail-open) -- then any missed check could cause a security incident.
 
-The type system, through clever type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; if omitted, the default signature is used. This "optional override, safe default" pattern is highly effective in engineering practice -- simple tools need only a few lines of code, while complex tools can be fully customized.
+The type system, through type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; if omitted, the default signature is used. This "optional override, safe default" pattern is highly effective in engineering practice -- simple tools need only a few lines of code, while complex tools can be fully customized.
 
 ---
 
@@ -184,7 +184,7 @@ flowchart LR
 
 ### BashTool: The Swiss Army Knife of Command Execution
 
-BashTool is one of Claude Code's most powerful tools, and also the most complex. It is not merely a simple Shell executor, but an execution environment with multiple layers of security protection. If the tool system is the Agent's hands, BashTool is the most powerful among them -- and the one that most needs to be constrained.
+BashTool is the most complex tool in Claude Code. It is not a simple Shell executor -- it integrates multiple layers of security protection. If the tool system is the Agent's hands, BashTool is the strongest of them -- and the one that most needs to be constrained.
 
 BashTool's special status in the tool system is reflected in the following aspects:
 
@@ -341,7 +341,7 @@ stateDiagram-v2
 
 Key design decisions of StreamingToolExecutor:
 
-1. **Order guarantee**: Even though tools can complete in parallel during streaming execution, the yielding of results still maintains the same order as the requests. The result collection function, when traversing the tool list, stops when it encounters an incomplete non-safe tool, ensuring the ordering constraint is not violated. This is a delicate balance between parallelism and consistency -- allowing parallel execution for speed, while guaranteeing ordered result presentation to simplify upper-layer processing logic.
+1. **Order guarantee**: Even though tools can complete in parallel during streaming execution, the yielding of results still maintains the same order as the requests. The result collection function, when traversing the tool list, stops when it encounters an incomplete non-safe tool, ensuring the ordering constraint is not violated. This is a balance between parallelism and consistency -- allowing parallel execution for speed, while guaranteeing ordered result presentation to simplify upper-layer processing logic.
 
 2. **Error propagation**: BashTool execution failure cancels all parallel sibling tools. Non-Bash tool errors do not propagate -- because read/search operations are typically independent. This distinction is important: Bash command failures usually mean something is wrong with the environment (e.g., disk full, network down), and continuing to execute other commands at that point will likely also fail. File read or search operation failures are typically localized (e.g., file doesn't exist, pattern doesn't match) and don't affect other operations.
 
@@ -424,7 +424,7 @@ Record the input token count difference in both cases, and calculate how many to
 
 3. **Concurrency partitioning is key to performance**: The `isConcurrencySafe` determination decides whether tools can execute in parallel. Correctly marking read-only tools as concurrency-safe allows the Agent to simultaneously execute multiple search/read operations in a single turn, dramatically reducing response time. But the cost of incorrect marking is data races and unpredictable behavior -- this is a design decision that requires careful consideration.
 
-4. **StreamingToolExecutor is a zero-wait tool scheduler**: It starts executing tools while the model is still generating tool_use blocks, and through a four-stage state machine and ordering guarantees, it strikes a balance between parallelism and consistency. It is the perfect embodiment of the "async streaming first" design principle at the tool system level.
+4. **StreamingToolExecutor is a zero-wait tool scheduler**: It starts executing tools while the model is still generating tool_use blocks, and through a four-stage state machine and ordering guarantees, it strikes a balance between parallelism and consistency. It is where the "async streaming first" design principle lands at the tool system level.
 
 5. **Tool system extensibility comes from the type contract**: The generic design of `Tool<Input, Output, Progress>` gives each tool its own type space, while `ToolUseContext` provides a unified execution environment. Adding new tools requires no modifications to the orchestration engine's code -- this is exactly the realization of the "progressive capability extension" principle mentioned in Chapter 1 at the tool level.
 

@@ -133,7 +133,7 @@ This circuit breaker defense reveals a subtle time window issue: when entering P
 
 ### 14.1.4 Plan Mode Complete Case: From Requirement to Plan to Implementation
 
-Let's demonstrate Plan Mode's actual operation through a complete case.
+A complete case shows how Plan Mode actually operates.
 
 **User requirement:** "Add pagination support for project's REST API"
 
@@ -543,7 +543,7 @@ flowchart LR
     class AGENT agentNode
 ```
 
-> **Best practice:** Combining remote triggers with Plan Mode can build powerful automation workflows. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze failure causes, generate fix plan, then automatically execute fix. This "trigger -> plan -> execute" pattern is the core paradigm of Agent-driven automation.
+> **Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze failure causes, generate fix plan, then automatically execute fix. This "trigger -> plan -> execute" pattern is the core paradigm of Agent-driven automation.
 
 ### 14.4.4 Session-scoped Lifecycle of Scheduled Tasks
 
@@ -691,7 +691,7 @@ Key isolation designs include:
 
 `lastCacheSafeParams` is a global slot, used to save current turn's cache-safe params in post-turn hooks. This enables post-turn forks (like promptSuggestion, postTurnSummary) to directly reuse main loop's prompt cache without each caller manually passing parameters.
 
-**The design elegance of lastCacheSafeParams lies in "implicit context passing".** Explicit approach would pass parameters from main loop wherever cache-safe params are needed, but this causes function signature bloat -- each new call point needs modifying parameter list. Through global slot, callers only need to read slot value at right timing without knowing where value comes from. This reduces coupling between components.
+**lastCacheSafeParams takes the "implicit context passing" route.** Explicit approach would pass parameters from main loop wherever cache-safe params are needed, but this causes function signature bloat -- each new call point needs modifying parameter list. Through global slot, callers only need to read slot value at right timing without knowing where value comes from. This reduces coupling between components.
 
 Of course, global state has its risks: if read timing is wrong (like delayed read in async operation), slot value might have been overwritten by subsequent turns. Claude Code avoids this by immediately reading slot value in post-turn hook's synchronous execution segment -- slot's write and read happen in same synchronous execution segment, no race condition.
 

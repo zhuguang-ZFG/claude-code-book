@@ -6,7 +6,7 @@
 > - Learn how to design and create custom agents for specific scenario requirements
 > - Understand the design philosophy of the adversarial Verification Agent and its engineering significance
 
-The true power of Claude Code lies not in its single-turn conversational ability, but in its capacity to delegate complex tasks to specialized sub-agents for parallel processing. Imagine a large symphony orchestra: the conductor (the main agent) does not need to personally play every instrument, but instead delegates the performance of different sections to experts in their respective domains (sub-agents). This chapter will provide an in-depth analysis of the complete AgentTool architecture, reveal the design philosophy of built-in agents, and focus on how the Fork pattern achieves true parallel execution without wasting tokens through an ingenious caching strategy.
+Claude Code's capability goes beyond single-turn conversation. Complex tasks can be split and handed to specialized sub-agents (Subagents) for parallel processing. The main agent is like an orchestra conductor: it does not play every instrument itself but hands each section to its own expert. This chapter covers the complete AgentTool architecture, the design philosophy of built-in agents, and how the Fork pattern uses cache sharing to run in parallel without wasting tokens.
 
 ---
 
@@ -225,7 +225,7 @@ flowchart TD
 
 ## 9.3 Fork Pattern: Cache-Safe Parallel Execution
 
-The Fork pattern is one of the most sophisticated architectural innovations in Claude Code. It allows the main agent to "fork" the complete context at a given moment to multiple parallel sub-tasks while leveraging the Anthropic API's prompt cache mechanism to avoid retransmitting large numbers of tokens.
+The Fork pattern lets the main agent "fork" the complete context at a given moment to multiple parallel sub-tasks while leveraging the Anthropic API's prompt cache mechanism to avoid retransmitting large numbers of tokens.
 
 ### Intuitive Understanding of the Fork Pattern
 
@@ -292,7 +292,7 @@ These five dimensions correspond to the components of the Anthropic API cache ke
 
 The Fork path ensures tool definitions remain unchanged through the `useExactTools` flag — when Fork mode is activated, it uses the parent's tool pool directly rather than re-resolving agent tools, thereby maintaining byte-level consistency of tool definitions.
 
-### The Ingenious Design of buildForkedMessages
+### How buildForkedMessages Builds Messages
 
 The Fork message construction function is the core of cache sharing. Its processing logic is as follows: first, preserve the complete parent assistant message (including all tool_use blocks, thinking, and text, but with new UUIDs assigned); then collect all tool_use blocks; generate a uniform fixed-string placeholder tool_result for each tool_use; and finally construct a single user message containing the placeholder results and the sub-task directive.
 

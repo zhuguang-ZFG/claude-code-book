@@ -133,7 +133,7 @@ flowchart TD
 
 ### 14.1.4 Plan 模式完整案例：从需求到计划到实施
 
-让我们通过一个完整的案例来展示 Plan 模式的实际运作过程。
+一个完整的案例，看看 Plan 模式实际怎么运作。
 
 **用户需求：** "为项目的 REST API 添加分页支持"
 
@@ -542,7 +542,7 @@ flowchart LR
     class AGENT agentNode
 ```
 
-> **最佳实践：** 远程触发结合 Plan 模式可以构建强大的自动化工作流。例如，CI 失败时触发一个 Agent，Agent 自动进入 Plan 模式分析失败原因，生成修复计划，然后自动执行修复。这种"触发 -> 规划 -> 执行"的模式是 Agent 驱动自动化的核心范式。
+> **最佳实践：** 远程触发结合 Plan 模式可以搭出一套完整的自动化工作流。例如，CI 失败时触发一个 Agent，Agent 自动进入 Plan 模式分析失败原因，生成修复计划，然后自动执行修复。这种"触发 -> 规划 -> 执行"的模式是 Agent 驱动自动化的核心范式。
 
 ### 14.4.4 定时任务的会话级生命周期
 
@@ -690,7 +690,7 @@ SleepTool 的设计看似简单（就是等待指定时间），但它在 Agent 
 
 `lastCacheSafeParams` 是一个全局 slot，用于在 post-turn hooks 中保存当前轮次的 cache-safe params。这使得 post-turn fork（如 promptSuggestion、postTurnSummary）可以直接复用主循环的 prompt cache，无需每个调用者手动传递参数。
 
-**lastCacheSafeParams 的设计精妙之处在于"隐式上下文传递"。** 显式的做法是在每个需要 cache-safe params 的地方都从主循环传递参数，但这会导致函数签名膨胀 -- 每个新增的调用点都需要修改参数列表。通过全局 slot，调用者只需要在正确的时机读取 slot 值，而不需要知道值从哪里来。这降低了组件之间的耦合度。
+**lastCacheSafeParams 的设计走的是"隐式上下文传递"这条路。** 显式的做法是在每个需要 cache-safe params 的地方都从主循环传递参数，但这会导致函数签名膨胀 -- 每个新增的调用点都需要修改参数列表。通过全局 slot，调用者只需要在正确的时机读取 slot 值，而不需要知道值从哪里来。这降低了组件之间的耦合度。
 
 当然，全局状态也有其风险：如果读取时机不对（比如在一个异步操作中延迟读取），slot 值可能已经被后续轮次覆盖。Claude Code 通过在 post-turn hook 的同步执行段中立即读取 slot 值来避免这个问题 -- slot 的写入和读取发生在同一个同步执行段中，不存在竞态条件。
 

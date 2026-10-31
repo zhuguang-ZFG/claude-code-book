@@ -19,7 +19,7 @@ Claude Code's dialog main loop is an async generator defined with `async functio
 
 This design choice deserves more space to fully understand. In traditional programming models, function calls are synchronous: the caller initiates a request, the callee performs a computation, and returns a result. But the Agent's interaction pattern breaks this synchronous assumption -- the model may take tens of seconds to complete a response, and responses arrive token by token; tool execution may take minutes, during which real-time progress feedback is needed; the user may interrupt the operation at any time, demanding an immediate stop.
 
-Faced with these requirements, the traditional function call model falls short. Async generators provide the perfect answer: they act like a "coroutine" that can be paused and resumed at any time, establishing a real-time event pipeline between the "producer" (the dialog loop) and the "consumer" (the UI rendering layer).
+Faced with these requirements, the traditional function call model falls short. Async generators fill exactly this gap: they act like a "coroutine" that can be paused and resumed at any time, establishing a real-time event pipeline between the "producer" (the dialog loop) and the "consumer" (the UI rendering layer).
 
 ```mermaid
 flowchart TD
@@ -189,7 +189,7 @@ Before calling the model, the loop executes a series of preprocessing steps. The
 
 2. **Snip compression**: When history trimming is enabled, the system trims the message sequence and passes the returned messages and freed-token count downstream. This is distinct from truncating a single oversized tool result or replacing its body during MicroCompact.
 
-3. **Microcompact**: Performs lightweight compression before auto-compaction, using cached editing techniques to reduce token consumption. The elegance of Microcompact lies in being "cache-friendly" -- it tries to reuse tokens already cached on the API side, avoiding complete cache invalidation caused by compression.
+3. **Microcompact**: Performs lightweight compression before auto-compaction, using cached editing techniques to reduce token consumption. Microcompact is designed to be "cache-friendly" -- it tries to reuse tokens already cached on the API side, avoiding complete cache invalidation caused by compression.
 
 4. **Context Collapse**: A more fine-grained compression strategy that collapses consecutive messages into a compact view without losing information. You can think of Context Collapse as folding acknowledgments like "hello," "okay," "I understand" in a conversation into a single line -- the information is preserved, but it takes up less space.
 
@@ -303,7 +303,7 @@ In the main loop, dependencies are obtained via parameters, falling back to prod
 
 This comment reveals an important engineering insight: without dependency injection, test code needs to replace external dependencies through module-level spy/mock. This spy-per-module pattern has several problems: it couples test code to module internal structure, requiring synchronized changes when modules are renamed or moved; it repeats the same mock boilerplate code across multiple test files; and it may cause state leakage between tests due to module caching.
 
-Dependency injection elegantly solves these problems: tests only need to pass in a custom dependency object, without caring about module internal structure; each test case creates an independent dependency instance, avoiding state leakage; the dependency interface is explicit, and when the interface changes, the compiler points out which tests need updating.
+Dependency injection solves all three problems at once: tests only need to pass in a custom dependency object, without caring about module internal structure; each test case creates an independent dependency instance, avoiding state leakage; the dependency interface is explicit, and when the interface changes, the compiler points out which tests need updating.
 
 ### Why the Dialog Loop Uses a Functional Design
 
@@ -331,7 +331,7 @@ The State type defines the loop's complete mutable state, including the message 
 
 Terminal and Continue types are defined in a separate module. Terminal marks the dialog's termination (carrying a reason field), while Continue marks the decision to continue the loop (carrying a reason and optional additional information).
 
-The elegance of this three-element model (State + Continue + Terminal) lies in how the type system enforces loop correctness:
+This three-element model (State + Continue + Terminal) turns loop correctness into a compile-time constraint:
 
 - State is a "mutable but controlled" data container, with a new instance created each continue
 - Continue is a "continue" signal, carrying the reason and additional information, guiding the behavior of the next iteration
@@ -377,7 +377,7 @@ Key transition paths include:
 
 2. **max_output_tokens_recovery**: When model output is truncated, a recovery message is injected and the loop continues. The recovery message instructs the model to continue from the truncation point. Maximum 3 retries. This path exists because LLMs are sometimes truncated by the API when output is too long -- not an error, but the model "said too much." The recovery message is equivalent to telling the model "your words were cut off midway; please continue from where you were interrupted."
 
-3. **max_output_tokens_escalate**: On first truncation, attempts to increase the output token limit rather than injecting a recovery message. This is a more elegant recovery strategy -- rather than having the model continue from the interruption point, it gives it more output space to complete in one go. Only when the limit increase still results in truncation does it fall back to the recovery path.
+3. **max_output_tokens_escalate**: On first truncation, attempts to increase the output token limit rather than injecting a recovery message. This is a more direct recovery strategy -- rather than having the model continue from the interruption point, it gives it more output space to complete in one go. Only when the limit increase still results in truncation does it fall back to the recovery path.
 
 4. **reactive_compact_retry**: When context is too long, recovers through reactive compaction. If compaction fails, the loop terminates. This path is the dialog loop's "emergency brake" -- when all preventive compression methods have failed to prevent context overflow, reactive compact serves as the last recovery attempt to salvage the conversation.
 
@@ -432,11 +432,11 @@ Send Claude Code a series of requests that require substantial context (such as 
 
 ## Key Takeaways
 
-1. **AsyncGenerator is the ideal vehicle for Agent loops**: `yield` provides natural streaming output, `yield*` provides sub-generator delegation, and `.return()` provides deterministic cancellation. These characteristics perfectly match the Agent's core loop of "call model -> execute tools -> backfill results -> call again." This is not a compromise where "other approaches could also work," but the optimal choice where "all other approaches have clear shortcomings."
+1. **AsyncGenerator suits the Agent loop as a vehicle**: `yield` provides natural streaming output, `yield*` provides sub-generator delegation, and `.return()` provides deterministic cancellation. These characteristics line up exactly with the Agent's core loop of "call model -> execute tools -> backfill results -> call again." This is not a compromise where "other approaches could also work," but the choice that remains once the other approaches are ruled out.
 
 2. **The preprocessing pipeline is the core of context management**: The four-layer compression strategy of Snip, Microcompact, Context Collapse, and Autocompact progresses step by step, from lightweight trimming to full summarization, ensuring the Agent always stays within the token budget during infinite conversations. Understanding the design principles of this four-layer pipeline (arranged from lightweight to heavyweight) helps you design context management strategies in your own Agent systems.
 
-3. **State is immutable, transitions are traceable**: Each continue constructs a new `State`, and combined with the `transition` field, every jump in the loop is traceable. This is an elegant compromise of functional design within an imperative loop. In practice debugging, the transition chain is the "breadcrumb trail" for tracing Agent behavior.
+3. **State is immutable, transitions are traceable**: Each continue constructs a new `State`, and combined with the `transition` field, every jump in the loop is traceable. This is a trade-off between functional design and an imperative loop. In practice debugging, the transition chain is the "breadcrumb trail" for tracing Agent behavior.
 
 4. **Dependency injection makes testing possible**: The four dependencies of `QueryDeps` (callModel, microcompact, autocompact, uuid) cover the loop's core side effects, enabling tests to verify state transition logic without accessing the API. The selection of these four dependencies is also well considered -- they are exactly all the "boundary points of interaction with the external world" in the loop. Abstracting them into interfaces turns the loop internals into pure logic.
 

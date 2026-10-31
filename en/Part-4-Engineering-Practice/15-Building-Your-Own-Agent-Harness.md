@@ -187,7 +187,7 @@ Don't be misled by the number "six steps" -- this is not a linear waterfall proc
 
 ### Step 1: Dialog Loop
 
-The dialog loop is the heart of an Agent Harness. Claude Code's core query function is an `AsyncGenerator`. Let's draw inspiration from its design essence to implement a streamlined but complete dialog loop.
+The dialog loop is the heart of an Agent Harness. Claude Code's core query function is an `AsyncGenerator`. Following this design, implement a streamlined but complete dialog loop.
 
 First, define the core types:
 
@@ -349,7 +349,7 @@ This implementation embodies key design decisions distilled from Claude Code's s
 
 ### Step 2: Tool System
 
-Claude Code's tool system implements elegant default value population through the `buildTool` factory function. Each tool only needs to define its unique parts, while common behavior is provided by the factory. Let's implement a streamlined version:
+Claude Code's tool system moves default value population into the `buildTool` factory function. Each tool only needs to define its unique parts, while common behavior is provided by the factory. Let's implement a streamlined version:
 
 ```typescript
 // toolSystem.ts
@@ -419,7 +419,7 @@ const readFileTool = buildTool({
 })
 ```
 
-The essence of `buildTool` lies in **fail-closed defaults**: `isConcurrencySafe` defaults to `false`, and `isReadOnly` defaults to `false`. This means the system assumes the most dangerous scenario for new tools until they explicitly declare their safety. This is emphasized in Claude Code's source code comments -- "assume not safe" and "assume writes."
+The key to `buildTool` is **fail-closed defaults**: `isConcurrencySafe` defaults to `false`, and `isReadOnly` defaults to `false`. This means the system assumes the most dangerous scenario for new tools until they explicitly declare their safety. This is emphasized in Claude Code's source code comments -- "assume not safe" and "assume writes."
 
 **Fail-closed vs. Fail-open trade-offs:**
 
@@ -833,7 +833,7 @@ flowchart TD
 3. **Circuit breaker:** Compression failure count is tracked (`consecutiveFailures`), and retries stop after reaching the threshold
 4. **Fallback strategy:** When the model is unavailable, it automatically switches to a fallback model, cleaning state before retrying
 
-The circuit breaker implementation is particularly elegant. In the source code, the `autoCompactTracking`'s `consecutiveFailures` field increments after each compression failure and resets on success. When the consecutive failure count exceeds the threshold, the loop exits directly rather than retrying indefinitely.
+The circuit breaker implementation is straightforward. In the source code, the `autoCompactTracking`'s `consecutiveFailures` field increments after each compression failure and resets on success. When the consecutive failure count exceeds the threshold, the loop exits directly rather than retrying indefinitely.
 
 ```mermaid
 stateDiagram-v2
@@ -964,7 +964,7 @@ flowchart TD
 
 ### Multi-Environment Adaptation: CLI / IDE / SDK / Server
 
-Claude Code's dependency injection pattern provides an elegant multi-environment adaptation solution. By abstracting I/O operations into dependency injection interfaces (such as model calls, message compression, UUID generation, etc.), the core loop doesn't need to know what environment it's running in.
+Claude Code's dependency injection pattern provides a multi-environment adaptation solution. By abstracting I/O operations into dependency injection interfaces (such as model calls, message compression, UUID generation, etc.), the core loop doesn't need to know what environment it's running in.
 
 In a CLI environment, production dependencies provide real file system access and model calls. In tests, mock implementations can be injected. In SDK mode, different UI feedback mechanisms can be substituted. This "core + adapter" architecture allows the same Harness logic to run seamlessly across different platforms.
 

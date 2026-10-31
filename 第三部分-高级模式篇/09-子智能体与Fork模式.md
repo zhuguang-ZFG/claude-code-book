@@ -6,7 +6,7 @@
 > - 学会设计和创建自定义智能体以应对特定场景需求
 > - 理解对抗性验证 Agent 的设计哲学及其工程意义
 
-Claude Code 的真正威力不仅在于单轮对话的能力，更在于它可以将复杂任务委派给专门的子智能体（Subagent）并行处理。想象一个大型交响乐团：指挥家（主智能体）不需要亲自演奏每一种乐器，而是将不同声部的演奏交给各自领域的专家（子智能体）。本章将深入解析 AgentTool 的完整架构，揭示内置智能体的设计哲学，并重点拆解 Fork 模式如何通过精巧的缓存策略实现真正的并行执行而不浪费 token。
+Claude Code 的能力不止于单轮对话。复杂任务可以拆开，交给专门的子智能体（Subagent）并行处理。主智能体像乐团的指挥，不亲自演奏每一种乐器，而是把不同声部交给各自的专家。本章讲 AgentTool 的完整架构、内置智能体的设计哲学，以及 Fork 模式怎么靠缓存共享实现并行、又不浪费 token。
 
 ---
 
@@ -225,7 +225,7 @@ flowchart TD
 
 ## 9.3 Fork 模式：缓存安全的并行执行
 
-Fork 模式是 Claude Code 中最精巧的架构创新之一。它允许主智能体将同一时刻的完整上下文"分叉"给多个并行子任务，同时利用 Anthropic API 的 prompt cache 机制避免重复传输大量 token。
+Fork 模式让主智能体把同一时刻的完整上下文"分叉"给多个并行子任务，同时利用 Anthropic API 的 prompt cache 机制避免重复传输大量 token。
 
 ### Fork 模式的直觉理解
 
@@ -292,7 +292,7 @@ graph TD
 
 Fork 路径通过 `useExactTools` 标志确保工具定义不变——当 Fork 模式激活时，直接使用父工具池而非重新解析智能体工具，从而保持工具定义的字节一致性。
 
-### buildForkedMessages 的巧妙设计
+### buildForkedMessages 的消息构建逻辑
 
 Fork 消息构建函数是缓存共享的核心。它的处理逻辑如下：首先保留完整的父 assistant 消息（包含所有 tool_use 块、thinking、text，但分配新的 UUID）；然后收集所有 tool_use 块；为每个 tool_use 生成统一的固定字符串占位符 tool_result；最后构建单条 user 消息，包含占位符结果和子任务指令。
 

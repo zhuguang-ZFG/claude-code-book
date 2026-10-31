@@ -84,7 +84,7 @@ The most critical fields include:
 
 #### Security Design of File Extraction
 
-File extraction employs an elegant lazy singleton pattern, using the `??=` operator to ensure concurrent calls share the same extraction Promise, avoiding race conditions. File writes use `O_NOFOLLOW | O_EXCL` flags to prevent symlink attacks, directory permissions are set to `0o700`, and file permissions are set to `0o600`.
+File extraction uses a lazy singleton pattern, using the `??=` operator to ensure concurrent calls share the same extraction Promise, avoiding race conditions. File writes use `O_NOFOLLOW | O_EXCL` flags to prevent symlink attacks, directory permissions are set to `0o700`, and file permissions are set to `0o600`.
 
 The implications of these security measures:
 
@@ -361,7 +361,7 @@ Key security design: Skills in directories ignored by `.gitignore` are automatic
 
 > **Practical Use Case: Project-specific Skills in a Monorepo**
 >
-> In a Monorepo structure, each sub-project may have its own skill requirements. The dynamic skill discovery mechanism perfectly addresses this problem:
+> In a Monorepo structure, each sub-project may have its own skill requirements. The dynamic skill discovery mechanism targets exactly this problem:
 >
 > ```
 > my-monorepo/
@@ -601,7 +601,7 @@ Continuously improve based on usage feedback:
 
 ### Best Practices for Skill Composition
 
-Skills are not used in isolation — they can be combined with other skills, agents, and tools to form powerful workflows.
+Skills can be combined with other skills, agents, and tools into complete workflows.
 
 #### Pattern 1: Skill Chain
 

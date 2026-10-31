@@ -187,7 +187,7 @@ flowchart TD
 
 ### Step 1：对话循环
 
-对话循环是 Agent Harness 的心脏。Claude Code 的核心查询函数是一个 `AsyncGenerator`。让我们从设计精髓中提取灵感，实现一个精简但完整的对话循环。
+对话循环是 Agent Harness 的心脏。Claude Code 的核心查询函数是一个 `AsyncGenerator`。照着这个设计，实现一个精简但完整的对话循环。
 
 首先定义核心类型：
 
@@ -349,7 +349,7 @@ export async function* agentLoop(
 
 ### Step 2：工具系统
 
-Claude Code 的工具系统通过 `buildTool` 工厂函数实现了优雅的默认值填充。每个工具只需定义自己特有的部分，通用行为由工厂提供。让我们实现一个精简版本：
+Claude Code 的工具系统通过 `buildTool` 工厂函数把默认值填充收进了工厂。每个工具只需定义自己特有的部分，通用行为由工厂提供。让我们实现一个精简版本：
 
 ```typescript
 // toolSystem.ts
@@ -419,7 +419,7 @@ const readFileTool = buildTool({
 })
 ```
 
-`buildTool` 的精髓在于 **fail-closed 默认值**：`isConcurrencySafe` 默认为 `false`，`isReadOnly` 默认为 `false`。这意味着新工具在显式声明安全性之前，系统会假设最危险的情况。这是 Claude Code 源码中注释所强调的 -- "assume not safe" 和 "assume writes"。
+`buildTool` 的关键是 **fail-closed 默认值**：`isConcurrencySafe` 默认为 `false`，`isReadOnly` 默认为 `false`。这意味着新工具在显式声明安全性之前，系统会假设最危险的情况。这是 Claude Code 源码中注释所强调的 -- "assume not safe" 和 "assume writes"。
 
 **Fail-closed vs. Fail-open 的权衡：**
 
@@ -817,7 +817,7 @@ flowchart TD
 3. **断路器：** 压缩失败次数被追踪（`consecutiveFailures`），达到阈值后停止重试
 4. **降级策略：** 模型不可用时自动切换到 fallback 模型，清理状态后重试
 
-断路器的实现尤为精妙。源码中 `autoCompactTracking` 的 `consecutiveFailures` 字段在每次压缩失败后递增，并在成功后重置。当连续失败次数超过阈值，循环直接退出而非无限重试。
+断路器的实现很直接。源码中 `autoCompactTracking` 的 `consecutiveFailures` 字段在每次压缩失败后递增，并在成功后重置。当连续失败次数超过阈值，循环直接退出而非无限重试。
 
 ```mermaid
 stateDiagram-v2
@@ -948,7 +948,7 @@ flowchart TD
 
 ### 多环境适配：CLI / IDE / SDK / Server
 
-Claude Code 的依赖注入模式提供了一种优雅的多环境适配方案。通过将 I/O 操作抽象为依赖注入接口（如模型调用、消息压缩、UUID 生成等），核心循环无需关心自己运行在何种环境中。
+Claude Code 的依赖注入模式给出了一个多环境适配方案。通过将 I/O 操作抽象为依赖注入接口（如模型调用、消息压缩、UUID 生成等），核心循环无需关心自己运行在何种环境中。
 
 在 CLI 环境中，生产环境依赖提供真实的文件系统和模型调用。在测试中，可以注入模拟实现。在 SDK 模式中，可以替换为不同的 UI 反馈机制。这种 "核心 + 适配器" 的架构使得同一套 Harness 逻辑能够无缝运行在不同平台上。
 
