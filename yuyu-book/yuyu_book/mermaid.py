@@ -55,9 +55,9 @@ THEME = {
         "critBkgColor": "#B4472F",
         "activeTaskBkgColor": "#E7D9BC",
     },
-    "flowchart": {"htmlLabels": True, "curve": "basis"},
+    "flowchart": {"htmlLabels": True, "curve": "natural"},
     "themeCSS": ".node rect,.node circle,.node ellipse{filter:none}"
-                " .node .label text{fill:#26221B}",
+                " .node .label text{fill:#26221B} .flowchart-link{stroke-linecap:round}",
 }
 
 # ------- re-inking the author's own colours ------------------------------
