@@ -30,7 +30,7 @@ PARTS = [
     ("第三部分 · 高级模式篇", "深入", "#EADFC7", ["ch09", "ch10", "ch11", "ch12"]),
     ("第四部分 · 工程实践篇", "实战", "#E0D4B8", ["ch13", "ch14", "ch15"]),
 ]
-ORDER = ["front"] + [u for _, _, _, us in PARTS for u in us] + ["apxd"]
+ORDER = ["front"] + [u for _, _, _, us in PARTS for u in us] + ["apxa", "apxb", "apxc", "apxd"]
 WIDTH = {u: 148 for u in ORDER}
 
 CAPTIONS = {
@@ -51,6 +51,9 @@ CAPTIONS = {
     "ch14": "小红旗：先画路线再出发，插旗为证",
     "ch15": "辘轳：亲手摇一架，你也造一个 Agent",
     "apxd": "小词典：生词太多？翻这一册",
+    "apxa": "藏宝图：源码去哪儿翻，一图定位",
+    "apxb": "工具清单：所有家当，逐项打勾",
+    "apxc": "开关排：哪些功能开着，一眼看清",
     "keeper": "老驿卒：每章结尾替你守夜总结的人",
     "cover": "四马古车：书名「御舆」——驾驭一辆车，也驾驭一个 Agent",
 }
@@ -72,6 +75,9 @@ TRANSITIONS = {
     "ch14": "大席面开炉之前，先像搬家列清单——老板签字才叫车。",
     "ch15": "各章手艺都齐了——照邻居厨房搭你自己的灶，六步开火。",
     "apxd": "路上的生词，都在这本小词典里。",
+    "apxa": "附录是随书的工具——先用藏宝图把源码的路认一遍。",
+    "apxb": "工具清单按类查——家当一件件对。",
+    "apxc": "功能开关速查——哪些门开着，为什么。",
 }
 
 # 带走这一句：只复述当页已有的比方与白话，不新增任何技术断言
@@ -92,6 +98,9 @@ TAKEAWAYS = {
     "ch14": "记住：清单可读回、可审批、可定时——收进抽屉下次接着用。",
     "ch15": "记住：六步搭灶、反复回改，最后能自己开火。",
     "apxd": "记住：生词不查词典，路会越走越糊涂。",
+    "apxa": "记住：概念图不是文件清单——顺着数据流走一遍才记得住。",
+    "apxb": "记住：工具按分类查——并行、破坏性、标志，三问定位。",
+    "apxc": "记住：能力不见，先查门控。",
 }
 
 VIDEOS = {
@@ -204,6 +213,9 @@ TRANSITIONS_EN = {
     "ch14": "Before the banquet, plan like moving house — list, appraise, sign, then book the truck.",
     "ch15": "Every craft is in hand — build your own stove after the neighbor's kitchen, six steps.",
     "apxd": "New words on the road all live in this little dictionary.",
+    "apxa": "The appendices are the book's own toolkit — walk the source map first.",
+    "apxb": "The tool inventory, sorted by class — every belonging, ticked.",
+    "apxc": "Flag quick reference — when a capability vanishes, check the gate first.",
 }
 
 # Take one sentence home: restates only the analogy already on the page
@@ -224,7 +236,10 @@ TAKEAWAYS_EN = {
     "ch14": "Remember: the list can be re-read, approved and scheduled — filed for next time.",
     "ch15": "Remember: six steps, repeated visits — and the stove finally cooks.",
     "apxd": "Remember: un-checked words make the road confusing.",
-}
+
+    "apxa": "Remember: the concept map isn't a file list — walk one data flow end to end.",
+    "apxb": "Remember: tools sorted by class — parallel, destructive, flag-gated.",
+    "apxc": "Remember: capability missing? Check the flag gate first.",}
 
 VIDEOS_EN = {
     "front": [("YouTube · Anthropic official channel", YT_CHANNEL),
@@ -341,11 +356,11 @@ def extract_units(html: str, uids: list) -> dict:
 def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
             bg: str, width: int, t) -> str:
     gloss_link = t["book"] + "#apxd"
-    ana_txt = glossify(unit["analogy"], t["lang"], 2, gloss_link) if unit["analogy"] else ""
+    ana_txt = glossify(unit.get("analogy", ""), t["lang"], 2, gloss_link) if unit.get("analogy", "") else ""
     analogy = (f'<p class="st-ana">{t["analogy_label"]}{ana_txt}</p>'
-               if unit["analogy"] else "")
-    plain_txt = glossify(unit["plain"], t["lang"], 3, gloss_link) if unit["plain"] else ""
-    plain = (f'<p class="st-plain">{plain_txt}</p>' if unit["plain"] else "")
+               if unit.get("analogy", "") else "")
+    plain_txt = glossify(unit.get("plain", ""), t["lang"], 3, gloss_link) if unit.get("plain", "") else ""
+    plain = (f'<p class="st-plain">{plain_txt}</p>' if unit.get("plain", "") else "")
     trans = t["transitions"].get(uid, "")
     trans_html = f'<p class="st-trans">{trans}</p>' if trans else ""
     vids = "".join(f'<a class="st-vid" href="{url}" target="_blank"'
@@ -368,10 +383,10 @@ def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
                  f'</summary><p>{question}</p></details>') if question else ""
     return f"""<article class="st" style="background:{bg}">
   <div class="st-art" style="width:{width}px" tabindex="0" role="button"
-       aria-label="{t["replay_label"].format(name=unit["title"])}">{svg}</div>
+       aria-label="{t["replay_label"].format(name=unit.get("title", ""))}">{svg}</div>
   <div class="st-body">
     <p class="st-part">{t["station_word"].format(num=num, total=t["total"])} · {part} · <b class="st-tier">{tier}</b></p>
-    <h2>{unit["title"]}</h2>
+    <h2>{unit.get("title", "")}</h2>
     <p class="st-cap">{t["captions"].get(uid, "")}</p>
     {trans_html}{plain}{analogy}{take_html}{gain_html}{bound_html}{quiz_html}{note_html}{vids_html}
     <a class="st-go" href="{t["book"]}#{uid}">{t["go_deeper"]}</a>
@@ -445,6 +460,11 @@ def build(lang: str) -> tuple[str, int]:
                                     svgs.get(uid, ""), tier, part, bg,
                                     t["widths"].get(uid, 148), t))
 
+    for uid in ("apxa", "apxb", "apxc"):
+        num += 1
+        stations.append(station(uid, num, units.get(uid, {"title": uid}),
+                                svgs.get(uid, ""), t["appendix_tier"],
+                                t["appendix_part"], "#DDD2B8", 148, t))
     num += 1
     vids_keep = "".join(
         f'<a class="st-vid" href="{url}" target="_blank" rel="noopener">📺 {label}</a>'
@@ -893,13 +913,14 @@ LANGS = {
         "dist": "yuyu-agent-harness-zh.html",
         "book": "yuyu-agent-harness-zh.html",
         "out": "beginner-reader.html",
-        "order": ORDER, "parts": PARTS, "total": 16,
+        "order": ORDER, "parts": PARTS, "total": 19,
         "widths": WIDTH,
         "lang": "zh",
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
         "takeaways": TAKEAWAYS,
         "part_link": "想深入？翻开大书{part} →",
         "quiz_label": "自测一下 · 答案在大书这一章",
+        "appendix_part": "附录",
         "gain_label": "读完你能：",
         "bound_label": "本站不展开：",
         "note_label": "驿卒按语 · 作者章末总结",
@@ -929,7 +950,7 @@ LANGS = {
         "dist": "yuyu-agent-harness-en.html",
         "book": "yuyu-agent-harness-en.html",
         "out": "beginner-reader.en.html",
-        "order": ORDER_EN, "parts": PARTS_EN, "total": 16,
+        "order": ORDER_EN, "parts": PARTS_EN, "total": 19,
         "widths": {u: 148 for u in ORDER_EN},
         "lang": "en",
         "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
@@ -937,6 +958,7 @@ LANGS = {
         "takeaways": TAKEAWAYS_EN,
         "part_link": "Depth? Open {part} in the full book →",
         "quiz_label": "Test yourself · the answer is in the chapter",
+        "appendix_part": "Appendix",
         "gain_label": "After this chapter you can: ",
         "bound_label": "Not covered here: ",
         "note_label": "The courier's note · author's chapter summary",
