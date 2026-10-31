@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "version": "0.3.4",
+      "date": "2026-10-31",
+      "zh": [
+        "全书做了第二轮去 AI 味校对：把替读者下结论的评价词（精妙、精巧、巧妙、完美、最强大）换回它所指的机制，把“让我们……”“在当今……”这类模板开场改成直接陈述，删掉列表末尾的自我总结。中文与英文各 60 行原地改写，行号未动，术语表与插图的证据锚点仍逐行可回指。构建器测试 422 项全绿。"
+      ],
+      "en": [
+        "A second de-AI pass reads every chapter again: verdict words that pre-judge for the reader (ingenious, elegant, clever, perfect, most powerful) give way to the mechanism they point at, template openings such as “Let's...” and “In today's...” become direct statements, and list endings stop praising their own contents. Sixty lines per language were rewritten in place; line numbers did not move, so the gloss and illustration evidence still resolves line by line. 422 builder tests green."
+      ]
+    },
+    {
       "version": "0.3.3",
       "date": "2026-10-28",
       "zh": [
