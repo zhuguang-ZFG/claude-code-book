@@ -281,6 +281,10 @@ def glossify(text: str, lang: str, limit: int = 3) -> str:
 
 def extract_units(html: str, uids: list) -> dict:
     marks = {u: html.find(f'id="{u}"') for u in uids}
+    missing = [u for u, pos in marks.items() if pos < 0]
+    if missing:
+        raise SystemExit(f"beginner reader: anchors missing in dist: {missing} "
+                         "(run yuyu-book/build.py first)")
     order = sorted(marks.items(), key=lambda kv: kv[1])
     units = {}
     for i, (uid, pos) in enumerate(order):
@@ -415,18 +419,18 @@ main{max-width:820px;margin:0 auto;padding:6px 30px 50px}
 .st-art{flex:0 0 auto;line-height:0}
 .st-art svg{width:100%;height:auto}
 .st-body{flex:1}
-.st-part{margin:0 0 6px;font-size:12px;letter-spacing:.14em;color:#8A7D68}
+.st-part{margin:0 0 6px;font-size:12px;letter-spacing:.14em;color:#5C5448}
 .st-tier{color:#B4472F}
 h2{font-size:21px;margin:0 0 8px}
-.st-cap{margin:0 0 10px;font-size:13px;color:#B4472F;letter-spacing:.02em}
-.st-trans{margin:0 0 8px;font-size:13.5px;color:#8A7D68}
+.st-cap{margin:0 0 10px;font-size:13px;color:#9C3A26;letter-spacing:.02em}
+.st-trans{margin:0 0 8px;font-size:13.5px;color:#5C5448}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
-.st-gain{margin:0 0 10px;font-size:13.5px;color:#4E6E5D}
+.st-gain{margin:0 0 10px;font-size:13.5px;color:#3E5A4C}
 .gl{border-bottom:1px dashed #8A7D68;cursor:help}
 .st-vids{margin:0 0 10px;font-size:12.5px}
-.st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
+.st-vids .st-vid{display:inline-block;margin-right:14px;color:#3A5A78;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
 .st-vids .st-vid:hover{color:#B4472F;border-bottom-color:#B4472F}
 .st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
@@ -601,18 +605,18 @@ main{max-width:820px;margin:0 auto;padding:6px 30px 50px}
 .st-art{flex:0 0 auto;line-height:0}
 .st-art svg{width:100%;height:auto}
 .st-body{flex:1}
-.st-part{margin:0 0 6px;font-size:12px;letter-spacing:.14em;color:#8A7D68}
+.st-part{margin:0 0 6px;font-size:12px;letter-spacing:.14em;color:#5C5448}
 .st-tier{color:#B4472F}
 h2{font-size:21px;margin:0 0 8px}
-.st-cap{margin:0 0 10px;font-size:13px;color:#B4472F;letter-spacing:.02em}
-.st-trans{margin:0 0 8px;font-size:13.5px;color:#8A7D68}
+.st-cap{margin:0 0 10px;font-size:13px;color:#9C3A26;letter-spacing:.02em}
+.st-trans{margin:0 0 8px;font-size:13.5px;color:#5C5448}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
-.st-gain{margin:0 0 10px;font-size:13.5px;color:#4E6E5D}
+.st-gain{margin:0 0 10px;font-size:13.5px;color:#3E5A4C}
 .gl{border-bottom:1px dashed #8A7D68;cursor:help}
 .st-vids{margin:0 0 10px;font-size:12.5px}
-.st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
+.st-vids .st-vid{display:inline-block;margin-right:14px;color:#3A5A78;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
 .st-vids .st-vid:hover{color:#B4472F;border-bottom-color:#B4472F}
 .st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
