@@ -119,7 +119,7 @@ Scenario 3: Team conventions. The user says "our team agreed that all API respon
 
 **reference -- External References**
 
-Pointers to external systems -- Linear projects, Grafana dashboards, Slack channels. This information is not in the code repository but you need them to understand project context.
+Pointers to external systems -- Linear projects, Grafana dashboards, Slack channels. This information is not in the code repository but you need it to understand the project context.
 
 ```
 when_to_save: When learning about external system resources and their purposes
@@ -398,7 +398,7 @@ The tool permission allowlist embodies the Principle of Least Privilege in secur
 
 ### 6.3.4 Throttling and Coordination
 
-Extraction does not run after every conversation. The system implements a counter-based throttling mechanism: extraction is triggered only after every several rounds, with the threshold configured through feature flags.
+Extraction does not run after every conversation. The system implements a counter-based throttling mechanism: extraction is triggered only every several rounds, with the threshold configured through feature flags.
 
 Additionally, there is a **trailing extraction** mechanism to handle concurrency issues. When an extraction is in progress and another conversation completes, the new context is staged. After the current extraction completes, a trailing extraction runs using the latest staged context. Trailing extraction bypasses the throttle counter -- it handles already-completed work and should not be delayed by throttling.
 

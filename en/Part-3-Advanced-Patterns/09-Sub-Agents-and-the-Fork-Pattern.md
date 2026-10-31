@@ -6,7 +6,7 @@
 > - Learn how to design and create custom agents for specific scenario requirements
 > - Understand the design philosophy of the adversarial Verification Agent and its engineering significance
 
-Claude Code's capability goes beyond single-turn conversation. Complex tasks can be split and handed to specialized sub-agents (Subagents) for parallel processing. The main agent is like an orchestra conductor: it does not play every instrument itself but hands each section to its own expert. This chapter covers the complete AgentTool architecture, the design philosophy of built-in agents, and how the Fork pattern uses cache sharing to run in parallel without wasting tokens.
+Claude Code's capability goes beyond a single-turn conversation. Complex tasks can be split and handed to specialized sub-agents (Subagents) for parallel processing. The main agent is like an orchestra conductor: it does not play every instrument itself but hands each section to its own expert. This chapter covers the complete AgentTool architecture, the design philosophy of built-in agents, and how the Fork pattern uses cache sharing to run in parallel without wasting tokens.
 
 ---
 
@@ -33,7 +33,7 @@ The core design principle of this architecture is **separation of concerns**: th
 
 ### BaseAgentDefinition Type Definition
 
-All agents are based on the `BaseAgentDefinition` type defined in the agent loading module, which includes the following key fields: unique agent identifier (agentType), usage scenario description (whenToUse), allowed/disallowed tool lists, preloaded skill names, agent-specific MCP servers, lifecycle hooks, UI display color, model specification, reasoning effort level, permission mode, maximum turn limit, whether to run in background, isolation mode, and whether to omit CLAUDE.md context.
+All agents are based on the `BaseAgentDefinition` type defined in the agent loading module, which includes the following key fields: unique agent identifier (agentType), usage scenario description (whenToUse), allowed/disallowed tool lists, preloaded skill names, agent-specific MCP servers, lifecycle hooks, UI display color, model specification, reasoning effort level, permission mode, maximum turn limit, whether to run in the background, isolation mode, and whether to omit CLAUDE.md context.
 
 These fields are not arbitrarily assembled; they can be categorized into four major groups by functional dimension:
 
@@ -176,7 +176,7 @@ The Plan Agent's output typically contains the following structured information:
 
 ### General Purpose Agent: General Agent
 
-The General Purpose Agent is the most flexible agent, with full tool permissions (using the wildcard `'*'` to allow all tools). However, the actually available tools are still constrained by the global filtering function. It is the "executor" that does the actual work — Explore handles reconnaissance, Plan creates the plan, and General Purpose handles the modifications.
+The General Purpose Agent is the most flexible agent, with full tool permissions (using the wildcard `'*'` to allow all tools). However, the tools actually available are still constrained by the global filtering function. It is the "executor" that does the actual work — Explore handles reconnaissance, Plan creates the plan, and General Purpose handles the modifications.
 
 The design philosophy of the General Purpose Agent is "trust by default, push boundaries to the perimeter." It does not impose preset restrictions at the tool level; instead, it relies on the global security layer (permission system, tool filtering function) to ensure safety. The benefit of this design is maximum flexibility — different tasks can dynamically combine different tool sets without needing to predefine tool whitelists for each type of task.
 
@@ -192,7 +192,7 @@ When enabled and invoked, the Verification Agent is a unique "adversarial" agent
 
 The Verification Agent's system prompt explicitly warns of two failure modes:
 
-1. **Verification Avoidance**: The model tends to find excuses not to run tests, such as "this code logic looks correct" or "the test environment is complex to configure." The system prompt lists common self-rationalization excuses and requires the Agent to actually execute verification rather than providing verbal confirmation.
+1. **Verification Avoidance**: The model tends to find excuses not to run tests, such as "this code logic looks correct" or "the test environment is complex to configure." The system prompt lists common self-rationalization excuses and requires the Agent to actually execute verification rather than provide verbal confirmation.
 
 2. **Surface Correctness Trap**: The code may pass basic happy-path tests but harbor hidden issues at boundary conditions, concurrency scenarios, and error paths. The system prompt requires the Agent to pay special attention to "less obvious" failure modes.
 
@@ -242,7 +242,7 @@ If you are familiar with the `fork()` system call in Unix, Claude Code's Fork pa
 
 ### Core Design of the forkSubagent Module
 
-Activating the Fork pattern requires three conditions: feature gate enabled, non-Coordinator mode, and non-non-interactive mode. When Coordinator mode is active, Fork mode is automatically disabled because the Coordinator already has its own task delegation model.
+Activating the Fork pattern requires three conditions: the feature gate enabled, non-Coordinator mode, and non-non-interactive mode. When Coordinator mode is active, Fork mode is automatically disabled because the Coordinator already has its own task delegation model.
 
 > **Cross-Reference:** The mutual exclusivity of Coordinator mode and Fork mode will be discussed in detail in Chapter 10. In short, the Coordinator is a heavier orchestration pattern suited for scenarios requiring fine-grained task management; Fork is a lightweight parallel pattern suited for distributing the same context to multiple independent sub-tasks.
 

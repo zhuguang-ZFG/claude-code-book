@@ -12,7 +12,7 @@ When an Agent executes tasks autonomously, it may invoke dozens of tools in a si
 
 To understand the permission pipeline through a physical-world analogy: a modern office building's access control system doesn't just place a single security guard at the entrance (a single checkpoint). Instead, it sets up different levels of security checks in different areas -- the lobby only requires a card swipe, meeting rooms require reservation confirmation, and the server room requires fingerprint verification plus dual-person authorization. Each layer of security check is independent; even if one layer is bypassed, the next layer can still prevent unauthorized access. Claude Code's permission pipeline is precisely the embodiment of this "defense in depth" philosophy in a software system.
 
-This chapter will start from architectural design, deeply dissect each stage of the permission pipeline, understand its design decisions, and master configuration methods through hands-on exercises.
+This chapter will start from architectural design, deeply dissect each stage of the permission pipeline, help you understand its design decisions, and let you master configuration methods through hands-on exercises.
 
 ## 4.1 The Four Stages of the Permission Pipeline
 
@@ -141,7 +141,7 @@ When the pipeline flows to the `ask` state, the permission confirmation Hook tak
 
 The most critical branch is the interactive handling branch, which pushes the permission request into a confirmation queue, renders the confirmation interface in the terminal, and waits for the user to make choices such as "allow/deny/allow this time."
 
-Before the user responds, the system may also run an asynchronous classifier check (`pendingClassifierCheck`). This means that after the user sees the prompt, the classifier may have already automatically approved the operation while the user is still thinking, implementing a "race" mechanism -- whoever makes a decision first, that decision takes effect.
+Before the user responds, the system may also run an asynchronous classifier check (`pendingClassifierCheck`). This means that after the user sees the prompt, the classifier may have already automatically approved the operation while the user is still thinking, implementing a "race" mechanism -- the first decision made takes effect.
 
 ```mermaid
 sequenceDiagram
@@ -174,11 +174,11 @@ sequenceDiagram
 
 `ToolPermissionContext` is the core data structure of the entire permission system. It carries all the context information needed for permission checking. It includes fields such as permission mode, extra working directories, rules at all levels (allow/deny/ask), bypass mode availability flag, and whether permission prompts should be avoided.
 
-The immutability is written into the type: all fields are readonly. Every permission update produces a new `ToolPermissionContext` object rather than modifying the existing one. This immutable data pattern ensures consistency in concurrent environments -- when multiple tools check permissions simultaneously, the context each reads will not change unexpectedly due to another tool's permission update.
+Immutability is written into the type: all fields are readonly. Every permission update produces a new `ToolPermissionContext` object rather than modifying the existing one. This immutable data pattern ensures consistency in concurrent environments -- when multiple tools check permissions simultaneously, the context each reads will not change unexpectedly due to another tool's permission update.
 
 The necessity of immutability here can be understood through a concrete scenario: suppose Tool A and Tool B simultaneously begin permission checking. During the check process, Tool A's user confirmation triggers a permission rule update (the user selects "always allow"). If PermissionContext were mutable, Tool B might see the rules modified mid-check, leading to inconsistency between the front and back checks of the same request. Immutability ensures that each permission check uses a deterministic snapshot.
 
-Among these, rules are indexed by source. This design allows the system to precisely track the origin of each rule and display information such as "this rule comes from project-level settings" in the rule management interface. Multi-level configuration scenarios lean on this capability -- when a rule is defined by multiple sources, users need to know which rule is in effect, where it comes from, and how to modify it.
+Rules are indexed by source. This design allows the system to precisely track the origin of each rule and display information such as "this rule comes from project-level settings" in the rule management interface. Multi-level configuration scenarios lean on this capability -- when a rule is defined by multiple sources, users need to know which rule is in effect, where it comes from, and how to modify it.
 
 ### 4.2.2 PermissionDecision Sources: hook, user, classifier
 
@@ -249,7 +249,7 @@ In plan mode, write tools (Edit, Write) have their permission checks return `den
 
 **Applicable scenario:** Code review and architecture analysis. Developers want the Agent to first "look at" the code without modifying anything, provide analysis and suggestions, and then decide whether to execute modifications.
 
-**Design Philosophy:** The plan mode embodies a "understand before acting" workflow -- the Agent first understands the codebase in read-only mode, proposes modification plans, and switches to execution mode after receiving user approval. This two-phase workflow is particularly effective when working with large codebases, preventing the Agent from making inappropriate modifications without sufficient understanding.
+**Design Philosophy:** The plan mode embodies an "understand before acting" workflow -- the Agent first understands the codebase in read-only mode, proposes modification plans, and switches to execution mode after receiving user approval. This two-phase workflow is particularly effective when working with large codebases, preventing the Agent from making inappropriate modifications without sufficient understanding.
 
 ### 4.3.3 auto Mode: Automatic Approval (with Classifier)
 
@@ -259,7 +259,7 @@ The core challenge of auto mode is finding the balance between "automation effic
 
 Auto mode implements multiple layers of optimization to reduce the classifier's API call overhead:
 
-1. **acceptEdits fast path:** Before calling the classifier, first check with acceptEdits mode whether the tool would be permitted. If it passes under acceptEdits mode, it is approved directly without needing to call the classifier. This is a "short-circuit optimization" -- if it's known to be safe, there's no need to waste an API call.
+1. **acceptEdits fast path:** Before calling the classifier, the system first checks under acceptEdits mode whether the tool would be permitted. If it passes under acceptEdits mode, it is approved directly without needing to call the classifier. This is a "short-circuit optimization" -- if it's known to be safe, there's no need to waste an API call.
 
 2. **Safe tool allowlist:** Safe tools that do not require classifier checking include Read, Grep, Glob, TodoWrite, and other read-only or low-risk tools. The design philosophy of this allowlist is "explicitly declare safety" -- only tools in the allowlist skip classifier checking; new tools require checking by default.
 
@@ -271,7 +271,7 @@ An important security design of auto mode is: decisions for certain security che
 
 ### 4.3.4 bypassPermissions Mode: Full Bypass
 
-The `bypassPermissions` mode is the permission system's "off switch." When activated, all tool calls are automatically approved except those blocked by deny rules and non-bypassable security checks. When determining whether permissions should be bypassed, it checks whether the current mode is bypassPermissions, or whether the mode is plan but the bypass flag is available.
+The `bypassPermissions` mode is the permission system's "off switch." When activated, all tool calls are automatically approved except those blocked by deny rules and non-bypassable security checks. When determining whether permissions should be bypassed, the system checks whether the current mode is bypassPermissions, or whether the mode is plan but the bypass flag is available.
 
 But even bypass mode cannot break through the following defenses:
 - Step 1a's deny rules (executed before the bypass check)
@@ -359,7 +359,7 @@ The combination of six operations and five configuration sources yields 30 possi
 
 `applyPermissionUpdates` applies updates to the in-memory permission context and takes effect immediately. It iterates through all updates, applies each to the context object, and returns the updated new context.
 
-`applyPermissionUpdate` handles each update type. Taking `addRules` as an example, it adds the rule string to the rule list corresponding to the behavior type (allow/deny/ask) and the corresponding source, producing a new context object through immutable updates.
+`applyPermissionUpdate` handles each update type. In the `addRules` case, it adds the rule string to the rule list corresponding to the behavior type (allow/deny/ask) and the corresponding source, producing a new context object through immutable updates.
 
 Meanwhile, `persistPermissionUpdates` writes updates to the file system, ensuring they remain in effect after restarts. Only local settings, user settings, and project settings targets support persistence. Session-level and command-line argument-level updates are only effective at runtime.
 

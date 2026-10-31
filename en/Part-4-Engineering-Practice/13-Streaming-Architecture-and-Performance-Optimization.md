@@ -11,9 +11,9 @@
 
 ### 13.1.1 QueryEngine: The Manager of Query Lifecycle
 
-Claude Code's core interaction model is streaming. `QueryEngine` is the owner of query lifecycle and session state, extracting core logic originally scattered across query functions into an independent class, serving the headless/SDK path. This chapter covers the headless/SDK implementation; REPL reuse is a future integration phase.
+Claude Code's core interaction model is streaming. `QueryEngine` is the owner of the query lifecycle and session state, extracting core logic originally scattered across query functions into an independent class, serving the headless/SDK path. This chapter covers the headless/SDK implementation; REPL reuse is a future integration phase.
 
-One session corresponds to one `QueryEngine` instance. Each time a user sends a message, `submitMessage()` starts a new turn, with state (messages, file cache, usage, etc.) persisting across turns. `QueryEngine` internally maintains core state including message list, abort controller, permission denial records, usage statistics, file state cache, and discovered skill names.
+One session corresponds to one `QueryEngine` instance. Each time a user sends a message, `submitMessage()` starts a new turn, with state (messages, file cache, usage, etc.) persisting across turns. `QueryEngine` internally maintains core state including the message list, abort controller, permission denial records, usage statistics, file state cache, and discovered skill names.
 
 **Why introduce a class instead of using functional APIs directly?** The answer lies in the complexity of state management. If session state is passed as parameters between functions, the call chain becomes extremely fragile -- any new state field requires modifying all function signatures. Classes encapsulate state as instance properties; adding new state only requires initialization in the constructor without breaking existing interfaces. This also binds the state's lifecycle to the instance: unreachable state can be garbage-collected, but timers, listeners, subprocesses, and external references still need explicit cleanup.
 
@@ -58,7 +58,7 @@ Inside QueryEngine's query loop, streaming events are processed one by one. The 
 
 This phased design enables the system to process tool calls and progress messages in real-time without waiting for complete responses.
 
-**Where is the real value of streaming processing?** Let's understand with a comparison. Suppose the model generates a response requiring three tool calls, with a total time of 5 seconds:
+**Where is the real value of streaming processing?** Let's understand it with a comparison. Suppose the model generates a response requiring three tool calls, with a total time of 5 seconds:
 
 | Strategy | Model outputs tool1 (1s) | Model outputs tool2 (2s) | Model outputs tool3 (2s) | Total time |
 |----------|--------------------------|--------------------------|--------------------------|------------|
@@ -277,7 +277,7 @@ This "selective cascading" strategy is a pragmatic approach: it doesn't pursue t
 
 ## 13.3 Startup Performance Optimization
 
-Claude Code's startup time directly affects user experience. CLI tool psychology research shows that startup delays over 2 seconds make users feel the tool is "clunky", and over 5 seconds triggers "is it frozen?" anxiety. The system shortens the latency from command line input to first response through three optimization strategies: parallel prefetching, lazy loading, and lazy module evaluation.
+Claude Code's startup time directly affects user experience. CLI tool psychology research shows that startup delays over 2 seconds make users feel the tool is "clunky", and delays over 5 seconds trigger "is it frozen?" anxiety. The system shortens the latency from command line input to first response through three optimization strategies: parallel prefetching, lazy loading, and lazy module evaluation.
 
 These optimizations are not independent tricks but constitute a systematic startup optimization methodology: **Identify critical path -> Parallelize non-critical paths -> Defer non-essential modules -> Eliminate dead code**.
 
@@ -285,7 +285,7 @@ These optimizations are not independent tricks but constitute a systematic start
 
 The top of Claude Code's entry file is the core of the parallel prefetching strategy. The system starts two subprocesses at the earliest stage of module evaluation, letting them execute in parallel with the subsequent ~65ms import chain. The two key prefetch operations are MDM configuration reading and Keychain credential prefetching.
 
-**startMdmRawRead** spawns multiple `plutil` processes in parallel on macOS to read MDM plist configurations, and spawns `reg query` on Windows to read registry. It uses `existsSync` to quickly skip non-existent plist files, avoiding unnecessary 5ms spawn overhead.
+**startMdmRawRead** spawns multiple `plutil` processes in parallel on macOS to read MDM plist configurations, and spawns `reg query` on Windows to read the registry. It uses `existsSync` to quickly skip non-existent plist files, avoiding unnecessary 5ms spawn overhead.
 
 **startKeychainPrefetch** changes two keychain reads (OAuth tokens ~32ms, legacy API key ~33ms) from serial to parallel, and executes in parallel with the import chain. The design document comments precisely explain the optimization motivation: serial cost is ~65ms, while starting two subprocesses here lets them execute in parallel with the entry file's ~65ms imports.
 
@@ -426,7 +426,7 @@ Understanding Claude Code's cost tracking mechanism, let's summarize a set of be
 
 **1. Establish Cost Budget Awareness**
 
-Set a token budget ceiling at the start of each session. Claude Code implements this through the `maxBudgetUsd` parameter. When cumulative cost approaches the budget limit, the system should proactively remind users rather than silently exhausting the budget.
+Set a token budget ceiling at the start of each session. Claude Code implements this through the `maxBudgetUsd` parameter. When cumulative cost approaches the budget limit, the system should proactively remind users rather than silently exhaust the budget.
 
 ```
 +------------------+---------------------------+
@@ -566,7 +566,7 @@ The system records each fork's cache hit rate through telemetry events, calculat
 
 When `cache_read_input_tokens` is much lower than expected, it means the fork didn't hit the parent request's cache, possibly because cache-safe params are inconsistent. Log output shows complete token distribution: high `cacheRead` + low `input` indicates good cache hits; high `cacheCreate` indicates cache break.
 
-`skipCacheWrite` parameter is an additional optimization: for fire-and-forget forks (like speculation), no need to write new cache entries because no subsequent requests will read this prefix.
+The `skipCacheWrite` parameter is an additional optimization: for fire-and-forget forks (like speculation), there is no need to write new cache entries because no subsequent requests will read this prefix.
 
 ### 13.5.4 Practical Strategies for Cache Optimization
 

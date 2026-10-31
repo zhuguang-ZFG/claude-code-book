@@ -496,7 +496,7 @@ graph TD
 
 `AppStateProvider` wraps the Store as a React Context. The Store is created only once (through `useState` lazy initialization), and the Provider itself does not re-render due to state changes. Consumers access state through two hooks:
 
-- **`useAppState(selector)`**: Uses `useSyncExternalStore` to subscribe to a state slice. It only triggers re-render when the selector's return value changes by `Object.is`. This is a fine-grained subscription mechanism that avoids the problem of "subscribing to the entire state tree causing the entire component tree to re-render."
+- **`useAppState(selector)`**: Uses `useSyncExternalStore` to subscribe to a state slice. It only triggers a re-render when the selector's return value changes by `Object.is`. This is a fine-grained subscription mechanism that avoids the problem of "subscribing to the entire state tree causing the entire component tree to re-render."
 - **`useSetAppState()`**: Only retrieves the `setState` function without subscribing to any state. The returned reference never changes, so components using this hook do not re-render due to state changes.
 
 There is also a safe variant `useAppStateMaybeOutsideOfProvider` for components that may render outside of `AppStateProvider` -- it returns `undefined` instead of throwing an exception when there is no Provider.

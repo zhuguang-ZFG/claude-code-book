@@ -257,7 +257,7 @@ In terms of state management, cross-iteration state is encapsulated in an immuta
 
 #### Tool Type System Foundation
 
-The tool type module defines the type contract that all tools in Claude Code must follow. This is a classic case of "interface as architecture" -- by defining clear type interfaces, the architectural constraints of the tool system are enforced by the compiler.
+The tool type module defines the type contract that all tools in Claude Code must follow. This is a classic case of "interface as architecture" -- through the definition of clear type interfaces, the architectural constraints of the tool system are enforced by the compiler.
 
 This type definition contains rich architectural decisions:
 
@@ -332,7 +332,7 @@ Claude Code's permission system is not an add-on security layer; it is embedded 
 
 The design philosophy of this four-stage pipeline is "Defense in Depth" -- no single security checkpoint is a "silver bullet," but each layer can independently short-circuit and block unsafe operations.
 
-**Why not use a simple allowlist?** The allowlist approach seems simple but has a fatal flaw: it assumes all operations can be pre-classified as "safe" or "unsafe." In reality, security is context-dependent -- `rm -rf node_modules` is safe in a development environment, but `rm -rf /etc` is dangerous. The same Bash tool and the same command pattern have completely different risk levels under different parameters. The four-stage pipeline allows each layer to make more fine-grained judgments based on context.
+**Why not use a simple allowlist?** The allowlist approach seems simple but has a fatal flaw: it assumes all operations can be pre-classified as "safe" or "unsafe." In reality, security is context-dependent -- `rm -rf node_modules` is safe in a development environment, but `rm -rf /etc` is dangerous. The same Bash tool and the same command pattern have completely different risk levels with different parameters. The four-stage pipeline allows each layer to make more fine-grained judgments based on context.
 
 > **Cross-Reference:** Chapter 4 will provide an in-depth analysis of the four stages of the permission pipeline, including rule matching priority, classifier auto-approval, and permission persistence mechanisms.
 
@@ -346,7 +346,7 @@ In the LLM API pricing model, Prompt Caching can significantly reduce costs and 
 
 Cache-aware design pays off twice: API costs drop, and response speeds rise as redundant computation shrinks -- exactly the two savings an Agent system talking to an LLM all day needs.
 
-**What if we didn't design it this way?** An Agent system that doesn't care about caching might rebuild the system prompt on every API call, leading to: (1) every API call needing to process the full prompt, increasing latency and cost; (2) minor configuration changes (such as tool list reordering) potentially causing complete cache invalidation; (3) in sub-agent scenarios, parent and child agents being unable to share cached prompts, leading to redundant computation. For a production-grade Agent making hundreds of API calls per day, these wastes quickly accumulate into significant costs.
+**What if we didn't design it this way?** An Agent system that doesn't care about caching might rebuild the system prompt on every API call, leading to: (1) every API call needing to process the full prompt, increasing latency and cost; (2) minor configuration changes (such as tool list reordering) potentially causing complete cache invalidation; (3) in sub-agent scenarios, parent and child agents being unable to share cached prompts, leading to redundant computation. For a production-grade Agent making hundreds of API calls per day, such waste quickly accumulates into significant costs.
 
 ### Principle Four: Progressive Capability Extension
 
@@ -437,7 +437,7 @@ Try sending a simple request to Claude Code, such as "list all TypeScript files 
 2. **Tool Call Phase**: You will see the tool name and parameters (such as `GlobTool("*.ts")`), along with execution results.
 3. **Response Phase**: Based on the tool results, Claude Code provides its final response.
 
-Behind this simple interaction lies the "dialog main loop" we described in Section 1.2 at work. Try to mentally trace each step to the corresponding architectural module.
+Behind this simple interaction lies the "dialog main loop" we described in Section 1.2. Try to mentally trace each step to the corresponding architectural module.
 
 ### Step 5: Reflection Questions
 

@@ -1002,7 +1002,7 @@ The core principle of this architecture is "the core doesn't know where it's run
 
 ### Security Auditing
 
-An Agent Harness's security boundary is more complex than traditional applications because LLM output is unpredictable. Claude Code takes a multi-layered defense approach to security:
+An Agent Harness's security boundary is more complex than that of traditional applications because LLM output is unpredictable. Claude Code takes a multi-layered defense approach to security:
 
 1. **Tool permission tiers:** Each tool declares `isReadOnly`, `isDestructive`, and `isConcurrencySafe`; the system determines the approval flow based on these annotations
 2. **Workspace trust check:** `shouldSkipHookDueToTrust()` ensures hooks don't execute in untrusted workspaces

@@ -189,7 +189,7 @@ This design decision reflects an important principle: **workers are executors an
 
 ### TeamCreateTool / TeamDeleteTool
 
-The Coordinator pattern shares team infrastructure with Agent Teams (multi-agent swarms). The team creation tool is responsible for creating teams, and its core process includes: checking whether already in a team (a leader can only manage one team), generating a unique team name, creating a team file (containing team name, leader ID, session ID, member list, etc.), then writing the team file, updating global state, and setting up the task list.
+The Coordinator pattern shares team infrastructure with Agent Teams (multi-agent swarms). The team creation tool is responsible for creating teams, and its core process includes: checking whether the leader is already in a team (a leader can only manage one team), generating a unique team name, creating a team file (containing team name, leader ID, session ID, member list, etc.), then writing the team file, updating global state, and setting up the task list.
 
 ```mermaid
 flowchart TD
@@ -379,7 +379,7 @@ This means the coordinator cannot simply forward a worker's findings to another 
 >
 > This is one of the most core design principles of the Coordinator pattern. In traditional master-slave architectures, the master node can simply forward a slave node's results to another slave node. But in an AI agent system, this forwarding leads to severe context loss issues:
 >
-> - **Format inconsistency**: Different workers produce output in different formats; direct forwarding causes the recipient to be unable to understand
+> - **Format inconsistency**: Different workers produce output in different formats; direct forwarding leaves the recipient unable to understand it
 > - **Coexistence of information redundancy and gaps**: Worker A's report may contain many irrelevant details while missing critical information
 > - **Lack of global perspective**: Each worker only sees the portion it investigated and cannot make globally optimal decisions
 >
@@ -572,7 +572,7 @@ flowchart TD
 
 When a research-phase worker only completes a partial investigation (e.g., analyzed the API layer but not the database layer), the coordinator faces a choice: proceed with available information, or wait for a complete analysis.
 
-The guiding principle in the system prompt is: **the coordinator should make full use of completed work rather than waiting for perfect information**. If Worker A completed 80% of the code investigation, the coordinator should write the implementation spec based on that 80% of information, flagging uncertain portions in the spec so the implementation worker can conduct supplementary investigation when encountering uncovered areas.
+The guiding principle in the system prompt is: **the coordinator should make full use of completed work rather than waiting for perfect information**. If Worker A completed 80% of the code investigation, the coordinator should write the implementation spec based on that 80% of the information, flagging uncertain portions in the spec so the implementation worker can conduct a supplementary investigation when encountering uncovered areas.
 
 > **Best Practice: Use "Confidence Annotations" in the Scratchpad**
 >

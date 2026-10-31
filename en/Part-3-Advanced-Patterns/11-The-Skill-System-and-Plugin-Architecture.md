@@ -73,7 +73,7 @@ graph TD
 
 ### 11.1.2 Built-in Skill Registration Mechanism
 
-Each built-in skill is registered through a registration function, receiving a skill definition object that contains the following key fields: name, description, aliases, usage scenario hints, argument hints, allowed tools list, model specification, whether to disable model invocation, whether it is user-invocable, runtime gating callback, lifecycle hooks, execution context (inline or fork), associated agents, referenced file collection, and most importantly, the prompt generator function.
+Each built-in skill is registered through a registration function that receives a skill definition object containing the following key fields: name, description, aliases, usage scenario hints, argument hints, allowed tools list, model specification, whether to disable model invocation, whether it is user-invocable, runtime gating callback, lifecycle hooks, execution context (inline or fork), associated agents, referenced file collection, and most importantly, the prompt generator function.
 
 The most critical fields include:
 
@@ -223,7 +223,7 @@ Skill prompt content supports flexible parameter substitution:
 
 **Positional parameters**: `$ARGUMENTS` is replaced with the full argument string; `$ARGUMENTS[0]`, `$ARGUMENTS[1]` are replaced with indexed arguments; `$0`, `$1` are shorthand forms.
 
-**Named parameters**: When frontmatter defines `arguments: foo bar`, `$foo` and `$bar` are mapped to the user input values at the corresponding positions.
+**Named parameters**: When the frontmatter defines `arguments: foo bar`, `$foo` and `$bar` are mapped to the user input values at the corresponding positions.
 
 The substitution logic executes in order: named parameters are replaced first, then indexed parameters, then full arguments, and finally if there are no placeholders, the argument text is appended.
 
@@ -268,7 +268,7 @@ Additionally, the skill body supports inline Shell command execution and environ
 
 The source of a skill is identified by the `LoadedFrom` type, which includes six sources: legacy command directory (commands_DEPRECATED), new skill directory (skills), plugin-provided (plugin), enterprise managed policy (managed), built-in compiled (bundled), and MCP server-provided (mcp).
 
-This type records provenance and selects loading policy. For example, MCP skills do not receive Shell command expansion. Read the diagram below as “source to policy branch,” not as an absolute reputation ranking from high to low.
+This type records provenance and selects the loading policy. For example, MCP skills do not receive Shell command expansion. Read the diagram below as “source to policy branch,” not as an absolute reputation ranking from high to low.
 
 ```mermaid
 flowchart TB
@@ -304,7 +304,7 @@ Description of each tier:
 
 **Managed Policy Level**: Distributed by enterprise administrators through centralized configuration. The path is `{managedPath}/.claude/skills/`. Can be disabled via the `CLAUDE_CODE_DISABLE_POLICY_SKILLS` environment variable.
 
-**User Level**: Stored in the user's home directory `~/.claude/skills/`. Available across all projects. Requires `userSettings` source to be enabled and not restricted by `pluginOnly` policy.
+**User Level**: Stored in the user's home directory `~/.claude/skills/`. Available across all projects. Requires the `userSettings` source to be enabled and not restricted by the `pluginOnly` policy.
 
 **Project Level**: Stored in the project directory `.claude/skills/`. Only takes effect within that project context. Supports nested directory discovery (see next section).
 
@@ -470,7 +470,7 @@ flowchart TD
 >
 > Plugin loading adopts a "best-effort" strategy — even if one component of a plugin fails to load (for example, a command's Markdown format is incorrect), other components can still load normally. This avoids the "one bad apple spoils the bunch" problem. Errors are collected into `PluginLoadResult.errors` and can be diagnosed and fixed later.
 >
-> This fault-tolerant design is very important in plugin systems. Imagine if a format error in a third-party plugin caused the entire Claude Code to fail to start — the user experience would be disastrous.
+> This fault-tolerant design is very important in plugin systems. Imagine if a format error in a third-party plugin caused Claude Code to fail to start — the user experience would be disastrous.
 
 ### 11.4.3 Indirect Registration of MCP Skills
 

@@ -221,7 +221,7 @@ If the model did request tool calls, the loop executes the tools: depending on w
 
 Tool execution is also an async generator. For each result message produced, the loop yields it to the upper-level consumer (UI) while also collecting it into the tool results array.
 
-This design embodies an important engineering principle: **"result collection" and "result passing" are decoupled.** Tool results are both collected into an array for the next API call and yielded to the UI for real-time display. These two concerns are accomplished simultaneously through the same yield operation, avoiding additional state synchronization logic.
+This design embodies an important engineering principle: **"result collection" and "result passing" are decoupled.** Tool results are both collected into an array for the next API call and yielded to the UI for real-time display. These two concerns are handled simultaneously through the same yield operation, avoiding additional state synchronization logic.
 
 ### Phase 5: Tool Result Backfill and Next Round
 
@@ -248,7 +248,7 @@ The dialog loop's termination occurs at multiple points, with each termination r
 | `hook_stopped` | Tool hook prevented continuation | Agent stops and explains why | Decision from external Hook script |
 | `image_error` | Image size/format error | Agent reports error and exits | Input data format issue |
 
-> **Design Insight:** The fine-grained classification of ten termination reasons is not over-engineering. When debugging Agent behavior, the accurate termination reason is the first clue for identifying problems. If all errors return a generic "error," developers would have no way to determine whether the issue was an API timeout, context overflow, or user interrupt. Fine-grained termination reasons are the foundation of "observability."
+> **Design Insight:** The fine-grained classification of ten termination reasons is not over-engineering. When you debug Agent behavior, the accurate termination reason is the first clue for identifying problems. If all errors return a generic "error," developers would have no way to determine whether the issue was an API timeout, context overflow, or user interrupt. Fine-grained termination reasons are the foundation of "observability."
 
 These termination reasons can also be categorized into three groups:
 
@@ -411,13 +411,13 @@ Send Claude Code a request that requires tool calling (such as "read the package
 
 In a test environment, inject custom dependencies so that the model calling function returns an assistant message with truncated output. Observe how the loop skips the first yield (the withheld mechanism), attempts to increase the token limit, and finally surfaces the error after retries are exhausted.
 
-**Extended Reflection:** Modify the truncation count threshold and observe the switching conditions between the escalate and recovery paths. What happens if truncation occurs exactly inside a tool call block (the tool name is only half-output)? How does the system handle this?
+**Extended Reflection:** Modify the truncation count threshold and observe the switching conditions between the escalate and recovery paths. What happens if truncation occurs exactly inside a tool call block (only half of the tool name is output)? How does the system handle this?
 
 **Exercise 3: Understanding the Value of Dependency Injection**
 
 Reflection: If the model calling function were hard-coded directly in the loop, how many mocks would tests need to cover the various branches of the main loop? Compare this with the current dependency injection approach and evaluate its impact on test maintainability.
 
-**Specific Estimation:** Suppose the main loop has 7 Continue paths and 10 termination reasons. Without dependency injection, testing each branch would require: (a) intercepting module-level API calls, (b) controlling the compression function's behavior, (c) fixing UUID generation. Estimate the total amount of mock boilerplate code, then consider how much maintenance work these mocks would need when module structure changes.
+**Specific Estimation:** Suppose the main loop has 7 Continue paths and 10 termination reasons. Without dependency injection, testing each branch would require: (a) intercepting module-level API calls, (b) controlling the compression function's behavior, (c) fixing UUID generation. Estimate the total amount of mock boilerplate code, then consider how much maintenance work these mocks would need when the module structure changes.
 
 **Exercise 4: Context Compression Pipeline in Practice**
 
@@ -436,7 +436,7 @@ Send Claude Code a series of requests that require substantial context (such as 
 
 2. **The preprocessing pipeline is the core of context management**: The four-layer compression strategy of Snip, Microcompact, Context Collapse, and Autocompact progresses step by step, from lightweight trimming to full summarization, ensuring the Agent always stays within the token budget during infinite conversations. Understanding the design principles of this four-layer pipeline (arranged from lightweight to heavyweight) helps you design context management strategies in your own Agent systems.
 
-3. **State is immutable, transitions are traceable**: Each continue constructs a new `State`, and combined with the `transition` field, every jump in the loop is traceable. This is a trade-off between functional design and an imperative loop. In practice debugging, the transition chain is the "breadcrumb trail" for tracing Agent behavior.
+3. **State is immutable, transitions are traceable**: Each continue constructs a new `State`, and combined with the `transition` field, every jump in the loop is traceable. This is a trade-off between functional design and an imperative loop. When debugging in practice, the transition chain is the "breadcrumb trail" for tracing Agent behavior.
 
 4. **Dependency injection makes testing possible**: The four dependencies of `QueryDeps` (callModel, microcompact, autocompact, uuid) cover the loop's core side effects, enabling tests to verify state transition logic without accessing the API. The selection of these four dependencies is also well considered -- they are exactly all the "boundary points of interaction with the external world" in the loop. Abstracting them into interfaces turns the loop internals into pure logic.
 

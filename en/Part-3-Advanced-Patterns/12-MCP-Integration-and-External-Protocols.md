@@ -240,7 +240,7 @@ flowchart LR
 
 **The Deeper Meaning of State Transitions**
 
-Each state represents not only the technical state of the connection but also corresponds to different user interaction strategies:
+Each state not only represents the technical state of the connection but also corresponds to different user interaction strategies:
 
 - **Connected**: The server is connected and tools are available. `ConnectedMCPServer` contains the complete MCP Client instance, server capability declarations, configuration information, and a cleanup function (for graceful disconnection).
 - **Failed**: The connection attempt failed. The system records the failure reason (network error, authentication failure, server not responding, etc.) and decides whether to enter the retry flow. Not all failures should be retried — authentication failures require user intervention, while network timeouts can be retried automatically.
@@ -371,7 +371,7 @@ Key design details:
 
 **SDK prefix skip**: When the environment variable `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` is set and the server type is `sdk`, tools are registered with their original names. This design supports an advanced use case: allowing MCP tools to override built-in tools by name. For example, an SDK-registered `Read` tool can override Claude Code's built-in Read tool, implementing custom behavior. This is a "backdoor" mechanism typically used in SDK embedding scenarios (e.g., integrating Claude Code into another application that needs custom file reading behavior).
 
-**Permission checks use fully qualified names**: The `getToolNameForPermissionCheck` function ensures permission rule matching uses the `mcp__server__tool` format. This solves a subtle security problem: if an MCP server provides a tool named `Write` (without prefix), its permission check should not match the built-in `Write` tool's rules — otherwise, a user's permission grant for the built-in Write tool could be exploited by the MCP Write tool.
+**Permission checks use fully qualified names**: The `getToolNameForPermissionCheck` function ensures permission rule matching uses the `mcp__server__tool` format. This solves a subtle security problem: if an MCP server provides a tool named `Write` (without a prefix), its permission check should not match the built-in `Write` tool's rules — otherwise, a user's permission grant for the built-in Write tool could be exploited by the MCP Write tool.
 
 **Edge Cases in Name Resolution**
 
@@ -417,7 +417,7 @@ Permission rules support both exact matching and wildcard matching:
 
 **Permission Hierarchy Overview**
 
-Placing the MCP tool permission model within Claude Code's overall permission system:
+The diagram below places the MCP tool permission model within Claude Code's overall permission system:
 
 ```mermaid
 flowchart TD
@@ -539,7 +539,7 @@ In enterprise environments, MCP servers can pose serious security risks: a malic
 
 The denylist has absolute priority — servers on the denylist will never be connected, regardless of which scope they appear in. Three matching methods are supported:
 
-1. **Match by server name**: The simplest and most direct, matching by the server's registered name in the configuration.
+1. **Match by server name**: The simplest and most direct method, matching by the server's registered name in the configuration.
 2. **Match by command array**: For stdio servers, matching by the complete command-line arguments (`command` + `args`). This prevents users from bypassing the denylist by using a different name.
 3. **Match by URL pattern**: For remote servers (SSE/HTTP/WS), supporting wildcard URL matching.
 
@@ -912,7 +912,7 @@ The v2 adapter wraps SSETransport (read) + CCRClient (write to CCR v2 endpoints)
 
 This is v2's design most worth a closer look. In traditional SSE implementations, when a client disconnects and reconnects, the server typically needs to replay all events since the connection began (because the client doesn't know what it missed). For long-running sessions, this can cause a "message storm" — thousands of historical messages replayed at once, consuming significant bandwidth and processing time.
 
-v2's solution is: carry the previous stream's high-water sequence number mark during transport switching. When the client reconnects, it tells the server "I've processed up to sequence number N, please start from N+1." This way, the server only needs to send incremental messages, not the complete history.
+v2's solution is to carry the previous stream's high-water sequence number mark during transport switching. When the client reconnects, it tells the server "I've processed up to sequence number N, please start from N+1." This way, the server only needs to send incremental messages, not the complete history.
 
 ```mermaid
 sequenceDiagram
@@ -947,7 +947,7 @@ sequenceDiagram
 
 **2. Epoch Management and Heartbeat**
 
-CCRClient periodically sends heartbeats to maintain the lease. The Epoch is a monotonically increasing logical clock that increments with each transport switch. Through the Epoch, the system can distinguish between "delayed messages from old connections" and "new messages from new connections," avoiding processing of stale messages.
+CCRClient periodically sends heartbeats to maintain the lease. The Epoch is a monotonically increasing logical clock that increments with each transport switch. Through the Epoch, the system can distinguish between "delayed messages from old connections" and "new messages from new connections," avoiding the processing of stale messages.
 
 The heartbeat mechanism ensures connection liveness detection — if a heartbeat times out, the system considers the connection broken and triggers the reconnection flow. This works in conjunction with the exponential backoff retry mechanism described in Section 12.1.4.
 

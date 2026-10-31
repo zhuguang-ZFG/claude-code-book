@@ -14,7 +14,7 @@ Plan Mode is one of Claude Code's most unique designs. It separates Agent behavi
 
 This design philosophy can be compared to the construction industry: no architect would start laying bricks immediately upon receiving requirements. They would first draw blueprints (plan), confirm design intent with the client, evaluate structural feasibility, then begin construction (execution). During the planning phase, architects can modify plans at zero cost -- revising a drawing is much cheaper than demolishing a wall. Similarly, in Plan Mode, Agent's exploration and thinking produce no side effects (no file modifications, no command execution), and the cost of correcting "directional errors" is almost zero.
 
-The core problem Plan Mode solves is **"Premature Action"**. Without Plan Mode, an Agent faces a dilemma: when facing complex tasks, either blindly act in the first round (high risk), or repeatedly read code without making decisions in every round (inefficient). Plan Mode provides Agent a "legitimate thinking space" -- in this space, Agent can freely explore without expectation to produce actual results, until it's confident it understands the full picture of the problem.
+The core problem Plan Mode solves is **"Premature Action"**. Without Plan Mode, an Agent faces a dilemma: when facing complex tasks, either blindly act in the first round (high risk), or repeatedly read code without making decisions in every round (inefficient). Plan Mode provides the Agent with a "legitimate thinking space" -- in this space, the Agent can freely explore without the expectation of producing actual results, until it's confident it understands the full picture of the problem.
 
 EnterPlanModeTool is the entry point to planning mode. Its prompt system provides different guidance strategies for different user types (external users vs internal ant users).
 
@@ -33,7 +33,7 @@ This differentiated strategy reflects different usage scenarios: external users 
 
 ### 14.1.2 Mode Switching Mechanism
 
-After user approves entering Plan Mode, EnterPlanModeTool's `call` method executes mode switching. Core logic includes: checking if in Agent context (if so throws error), calling permission transition handler to switch to plan mode, and through state update function switching permission context to plan mode configuration.
+After user approves entering Plan Mode, EnterPlanModeTool's `call` method executes mode switching. Core logic includes: checking if it is in an Agent context (if so it throws an error), calling the permission transition handler to switch to plan mode, and through the state update function switching the permission context to plan mode configuration.
 
 ```mermaid
 flowchart TD
@@ -143,7 +143,7 @@ Agent judges this is a non-trivial task involving multiple file modifications an
 
 **Step 2: Read-only exploration (in Plan Mode)**
 
-Agent performs following read-only operations:
+The Agent performs the following read-only operations:
 
 ```
 Tool call sequence (all read-only):
@@ -214,7 +214,7 @@ After user approves plan, ExitPlanMode restores original mode, Agent enters exec
 
 Verification hooks must be registered after context clear because context clear removes all hooks. This means verification agent runs in the phase after "clear context and start implementation", as an independent background Agent to verify whether implementation results match the plan.
 
-**Design philosophy of verification agent.** Why need an independent verification agent instead of letting execution agent check itself? This involves the cognitive bias of "self-review" -- executioners tend to judge their work using their own understanding rather than strictly comparing against original plan text. Independent verification agent holds a snapshot of original plan file, able to review implementation results from a "bystander" perspective.
+**Design philosophy of verification agent.** Why do we need an independent verification agent instead of letting the execution agent check itself? This involves the cognitive bias of "self-review" -- executioners tend to judge their work using their own understanding rather than strictly comparing against the original plan text. The independent verification agent holds a snapshot of the original plan file, able to review implementation results from a "bystander" perspective.
 
 This is like code review in software engineering: having author review their own code is far less effective than having another engineer do it. Verification agent plays the role of this "other engineer".
 
@@ -416,7 +416,7 @@ flowchart TD
 
 Fork Agent's state isolation strategy can be compared to a "sandbox": sub-agent runs in sandbox, can see outside world (through cloned file state), but cannot affect outside world (cannot modify parent Agent state, cannot control UI). The only communication channel with outside world is tool results -- sub-agent's execution results return to parent Agent through structured `tool_result` messages.
 
-> **Best practice:** When designing sub-agents, follow "principle of least privilege". Only pass minimum context sub-agent needs to complete task, don't indiscriminately pass entire parent Agent state. This not only improves security but also reduces token consumption (sub-agent's input tokens also count toward cost).
+> **Best practice:** When designing sub-agents, follow "principle of least privilege". Only pass the minimum context the sub-agent needs to complete the task; don't indiscriminately pass the entire parent Agent state. This not only improves security but also reduces token consumption (the sub-agent's input tokens also count toward the cost).
 
 ---
 
@@ -459,13 +459,13 @@ Therefore, `durable` flag provides a "lightweight task" mechanism: tasks needing
 
 `createCronScheduler` implements a complete scheduler, including following key features:
 
-**File lock**: Through `tryAcquireSchedulerLock` ensures multiple Claude sessions in same project directory don't repeatedly trigger same on-disk task. Non-owner sessions probe lock every 5 seconds, taking over if owner crashes.
+**File lock**: `tryAcquireSchedulerLock` ensures multiple Claude sessions in the same project directory don't repeatedly trigger the same on-disk task. Non-owner sessions probe the lock every 5 seconds, taking over if the owner crashes.
 
-This file lock mechanism solves an actual distributed problem: developers might simultaneously open multiple terminal windows, each running a Claude Code instance. Without file lock, same scheduled task would be triggered once by each instance, causing duplicate operations (like repeatedly sending notifications, repeatedly executing deploy checks).
+This file lock mechanism solves an actual distributed problem: developers might simultaneously open multiple terminal windows, each running a Claude Code instance. Without the file lock, the same scheduled task would be triggered once by each instance, causing duplicate operations (like repeatedly sending notifications, repeatedly executing deploy checks).
 
 File lock implementation is based on filesystem atomic operations (like `O_EXCL` create), reliable across all mainstream operating systems. Lock timeout and takeover mechanism ensures no deadlock when owner crashes -- other instances will detect and take over within reasonable time.
 
-**Jitter mechanism**: To avoid massive sessions triggering inference requests at same moment (thundering herd), recurring tasks add deterministic positive delay. Delay is proportional to interval between triggers, default max 15 minutes. For hourly tasks, actual trigger time randomly disperses between `:00` to `:06`.
+**Jitter mechanism**: To avoid large numbers of sessions triggering inference requests at the same moment (thundering herd), recurring tasks add a deterministic positive delay. The delay is proportional to the interval between triggers, default max 15 minutes. For hourly tasks, the actual trigger time randomly disperses between `:00` and `:06`.
 
 One-shot tasks use reverse jitter (trigger early), controlled by `oneShotMinuteMod`: default value 30, meaning only `:00` and `:30` exact triggers add jitter.
 
@@ -500,7 +500,7 @@ flowchart LR
 
 **Missed task detection**: At startup, check if any task's next trigger time has passed, notify user if so.
 
-**Auto-expiration**: Recurring tasks auto-expire after 7 days by default (`recurringMaxAgeMs`), preventing infinite recursion causing memory leaks. Tasks with `permanent` flag (like assistant mode's built-in tasks) are exempt from this limit.
+**Auto-expiration**: Recurring tasks auto-expire after 7 days by default (`recurringMaxAgeMs`), preventing infinite recursion from causing memory leaks. Tasks with the `permanent` flag (like assistant mode's built-in tasks) are exempt from this limit.
 
 7-day expiration policy is a pragmatic choice. If a recurring task runs continuously for 7 days without anyone noticing or modifying it, it's likely no longer needed. Tasks without expiration mechanism would continue consuming resources like "zombie processes": each trigger produces API call, consumes tokens, occupies scheduler memory.
 
@@ -514,7 +514,7 @@ Tool enablement is gated by two conditions: feature flag `tengu_surreal_dali` an
 
 **Remote trigger application scenarios:**
 
-1. **CI/CD integration**: When CI pipeline fails, automatically trigger Agent to analyze failure cause and generate fix suggestions.
+1. **CI/CD integration**: When the CI pipeline fails, automatically trigger an Agent to analyze the failure cause and generate fix suggestions.
 2. **Monitoring alert response**: When monitoring system detects abnormal metrics, trigger Agent for root cause analysis.
 3. **Code repository events**: When PR is created or updated, trigger Agent for automatic code review.
 4. **Scheduled reports**: Regularly trigger Agent to generate project status reports.
@@ -543,7 +543,7 @@ flowchart LR
     class AGENT agentNode
 ```
 
-> **Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze failure causes, generate fix plan, then automatically execute fix. This "trigger -> plan -> execute" pattern is the core paradigm of Agent-driven automation.
+> **Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze the failure causes, generate a fix plan, then automatically execute the fix. This "trigger -> plan -> execute" pattern is the core paradigm of Agent-driven automation.
 
 ### 14.4.4 Session-scoped Lifecycle of Scheduled Tasks
 
@@ -665,7 +665,7 @@ Synchronously wait for scheduled task results in main conversation (via Sleep + 
 
 SleepTool is listed as part of background task management. In Claude Code's tool registration, it's registered together with other scheduling-related tools. SleepTool allows Agent to pause for a period during execution, particularly useful in long-running background task scenarios like polling deploy status or waiting for external system to complete operations.
 
-SleepTool's design seems simple (just wait specified time), but it plays an important role in Agent interaction model. Without SleepTool, Agent facing "waiting" scenarios has only two choices: either return result immediately (even if external operation not yet complete), or frequently poll in loop (wasting tokens). SleepTool provides third choice: Agent can pause execution, wait a while before continuing, without producing token consumption during wait.
+SleepTool's design seems simple (just wait a specified time), but it plays an important role in the Agent interaction model. Without SleepTool, an Agent facing "waiting" scenarios has only two choices: either return a result immediately (even if the external operation is not yet complete), or poll frequently in a loop (wasting tokens). SleepTool provides a third choice: the Agent can pause execution, wait a while before continuing, without producing token consumption during the wait.
 
 **SleepTool usage scenarios:**
 

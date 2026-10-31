@@ -19,7 +19,7 @@ Maslow's quote could not be more fitting when applied to Agent tool systems. If 
 
 Every tool in Claude Code follows a unified type contract -- `Tool<Input, Output, Progress>`. This contract is defined in the tool type core module and serves as the cornerstone of the entire tool system. Understanding it means understanding the anatomical structure of the Agent's "hands."
 
-The design philosophy of this protocol can be summarized as "interface as architecture": by defining strict type interfaces, all architectural constraints of the tool system -- permission checks, concurrency control, progress reporting, UI rendering -- are enforced by the compiler. Developers cannot "forget" to implement a method, because the type checker will immediately raise an error.
+The design philosophy of this protocol can be summarized as "interface as architecture": through the definition of strict type interfaces, all architectural constraints of the tool system -- permission checks, concurrency control, progress reporting, UI rendering -- are enforced by the compiler. Developers cannot "forget" to implement a method, because the type checker will immediately raise an error.
 
 ### Core Types: Tool, Tools, ToolDef, buildTool
 
@@ -190,7 +190,7 @@ BashTool's special status in the tool system is reflected in the following aspec
 
 - **Error propagation**: When BashTool execution fails, all parallel Bash tool calls are canceled. This is because Bash commands often have implicit dependency chains (e.g., after `mkdir` fails, subsequent commands are meaningless). This design embodies the "fail fast" principle -- rather than letting subsequent commands continue executing in a corrupted environment and producing more errors, it is better to immediately stop the entire batch.
 
-- **Interruption behavior**: BashTool can customize its behavior when the user interrupts. Some long-running commands (such as test suites) may choose to block rather than cancel. This design reflects a nuanced understanding of user intent: interrupting a running `npm install` should stop immediately (the user changed their mind), but interrupting a test suite might just mean the user wants to see current progress (the results are still valuable once tests complete).
+- **Interruption behavior**: BashTool can customize its behavior when the user interrupts. Some long-running commands (such as test suites) may choose to block rather than cancel. This design reflects a nuanced understanding of user intent: interrupting a running `npm install` should stop the command immediately (the user changed their mind), but interrupting a test suite might just mean the user wants to see current progress (the results are still valuable once tests complete).
 
 - **Semantic analysis**: BashTool performs AST parsing and semantic analysis on commands, determining whether a command is a search/read operation (`isSearchOrReadCommand`), used for UI collapsible display. This embodies the "intelligent tool" design philosophy -- tools are not just passive pipelines for executing commands, but can understand command semantics and make corresponding UI decisions.
 
@@ -225,7 +225,7 @@ The design of these two tools embodies the principle of "specialization over gen
 
 1. **Structured output**: Search tools return structured result lists rather than the text output of Shell commands. The model can parse structured data more accurately.
 2. **Permission control**: Search tools are read-only by default, with more lenient permission checks. If every search had to go through BashTool, users would face more permission confirmation prompts.
-3. **Performance optimization**: Dedicated search tools can be optimized for specific scenarios (e.g., limiting result counts, parallel searching), while Shell commands have limited optimization room.
+3. **Performance optimization**: Dedicated search tools can be optimized for specific scenarios (e.g., limiting result counts, parallel searching), while Shell commands have limited room for optimization.
 
 When Ant native builds embed dedicated fast search tools, GlobTool and GrepTool are disabled because the `find` and `grep` commands in the Shell have been aliased to these fast tools, and BashTool can use them directly.
 

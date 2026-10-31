@@ -101,9 +101,9 @@ Configuration example:
 
 **2. Prompt Hook** (`PromptHookSchema`)
 
-Calls LLM to evaluate hook input, outputs JSON response. Supports specifying model (defaults to fast small model) and `$ARGUMENTS` placeholder to reference hook input.
+Calls an LLM to evaluate the hook input, outputs a JSON response. Supports specifying the model (defaults to a fast small model) and the `$ARGUMENTS` placeholder to reference the hook input.
 
-Applicable scenarios: Approval flows requiring "intelligent judgment" rather than hardcoded rules. For example, determining whether a code modification is safe relies not on regex matching keywords but letting LLM understand code semantics to make judgments.
+Applicable scenarios: Approval flows requiring "intelligent judgment" rather than hardcoded rules. For example, determining whether a code modification is safe relies not on regex matching of keywords but on letting an LLM understand code semantics to make judgments.
 
 Configuration example:
 
@@ -129,7 +129,7 @@ Applicable scenarios: Complex approval flows requiring multi-step, iterable vali
 
 **4. HTTP Hook** (`HttpHookSchema`)
 
-POSTs hook input JSON to specified URL. Supports custom request headers, environment variable interpolation (controlled through `allowedEnvVars` whitelist), suitable for integration with external systems.
+POSTs the hook input JSON to a specified URL. Supports custom request headers, environment variable interpolation (controlled through the `allowedEnvVars` whitelist), suitable for integration with external systems.
 
 Applicable scenarios: Integration with CI/CD systems (like Jenkins, GitHub Actions), sending audit logs to SIEM systems, calling enterprise internal approval services.
 
@@ -158,7 +158,7 @@ Configuration example:
 
 **5. Function Hook**
 
-In-memory hooks that only exist at runtime, executing TypeScript callback functions. Cannot be persisted to configuration files, lifecycle bound to session. Callbacks receive message arrays and optional abort signal, returning boolean indicating success.
+In-memory hooks that only exist at runtime, executing TypeScript callback functions. Cannot be persisted to configuration files, with a lifecycle bound to the session. Callbacks receive message arrays and an optional abort signal, returning a boolean indicating success.
 
 Applicable scenarios: Scenarios requiring deep interaction with Claude Code runtime state, such as dynamic behavior control in SDK embedding mode.
 
@@ -170,7 +170,7 @@ Command hooks support three execution modes:
 
 - **Synchronous mode** (default): Blocks current operation, waits for hook completion before deciding whether to continue. This is the most common and safest mode, suitable for "approve before execute" scenarios.
 - **Asynchronous mode** (`async: true`): Runs in background, doesn't block current operation. Hook results are not visible to the model. Suitable for "fire-and-forget" logging or notification scenarios.
-- **Async-rewake mode** (`asyncRewake: true`): Runs in background, but when hook exits with code 2, injects error message to wake model for continued conversation. This implies `async` attribute. Suitable for long-running monitoring tasks -- normal operation doesn't disturb Agent, only intervenes when anomaly detected.
+- **Async-rewake mode** (`asyncRewake: true`): Runs in the background, but when the hook exits with code 2, it injects an error message to wake the model for continued conversation. This implies the `async` attribute. Suitable for long-running monitoring tasks -- normal operation doesn't disturb the Agent, and it only intervenes when an anomaly is detected.
 
 ```mermaid
 flowchart TD
@@ -267,7 +267,7 @@ flowchart TD
     class ToolExec,AgentProcess,SubagentExec,CompactExec,UserLoop process
 ```
 
-Below introduces core events grouped by function, with detailed explanation of trigger timing, input structure, and usage scenarios for each event.
+Below, we introduce the core events grouped by function, with a detailed explanation of the trigger timing, input structure, and usage scenarios for each event.
 
 ### Tool Call Lifecycle
 
@@ -592,7 +592,7 @@ This field's design follows the "default allow, explicit block" principle. If ho
 
 - `additionalContext`: Inject additional context into user prompt
 
-This field allows hooks to attach extra context information before user message reaches model, without modifying user's original input. This preserves the integrity of user input while giving the model richer background information.
+This field allows hooks to attach extra context information before the user message reaches the model, without modifying the user's original input. This preserves the integrity of user input while giving the model richer background information.
 
 ### additionalContext: Injecting Additional Context
 
@@ -607,9 +607,9 @@ This field allows hooks to attach extra context information before user message 
 
 ### continue Field
 
-`continue` field controls whether assistant should continue responding. When set to `false`, assistant stops generating, `stopReason` field can provide stop reason. This allows hooks to force assistant stop when detecting specific conditions.
+The `continue` field controls whether the assistant should continue responding. When set to `false`, the assistant stops generating, and the `stopReason` field can provide the stop reason. This allows hooks to force the assistant to stop when detecting specific conditions.
 
-Typical application: In Stop event, when hook detects model has output sufficient content, or detects model is drifting off-topic, it can force generation termination via `continue: false`.
+Typical application: In the Stop event, when the hook detects that the model has output sufficient content, or detects that the model is drifting off-topic, it can force generation termination via `continue: false`.
 
 ### Collaboration Between Exit Codes and JSON Response
 
@@ -798,7 +798,7 @@ Same event can have multiple matchers, each targeting different tools:
 }
 ```
 
-In this configuration, if model executes `rm -rf /tmp/test`, only first matcher triggers; if executing `npm publish`, only second matcher triggers; if write file operation, only third matcher triggers. Matchers provide "precise interception" capability.
+In this configuration, if the model executes `rm -rf /tmp/test`, only the first matcher triggers; if it executes `npm publish`, only the second matcher triggers; if it is a file write operation, only the third matcher triggers. Matchers provide "precise interception" capability.
 
 ### Emergency Disable Switches
 
@@ -829,7 +829,7 @@ flowchart TD
 
 **Restrict to managed hooks only**: Check `allowManagedHooksOnly` field in policy settings; when this mode is enabled, hooks in user/project/local configs are all blocked, only allowing hooks deployed by enterprise admins through policy configuration.
 
-**Workspace trust check**: All hooks in interactive mode require workspace to be trusted. The check function determines whether current is non-interactive session (SDK mode trust implicitly granted) and whether user has accepted trust dialog.
+**Workspace trust check**: All hooks in interactive mode require the workspace to be trusted. The check function determines whether the current session is non-interactive (SDK mode trust implicitly granted) and whether the user has accepted the trust dialog.
 
 All hooks in interactive mode require workspace to be trusted. This is a defense-in-depth measure -- hook configuration is stored in `.claude/settings.json`; executing these commands in an untrusted workspace is unsafe. Imagine: you cloned an open-source project, the project's `.claude/settings.json` might contain malicious hooks (like PreToolUse hook sending your sensitive data to external servers). Workspace trust check is the key defense against this "supply chain attack".
 
@@ -839,7 +839,7 @@ The `executeHooks` function chains these checks together, forming complete secur
 
 Session hooks use `Map` instead of `Record` to store state, a deliberate performance design.
 
-In parallel workflows, N Agents might register hooks in the same synchronous clock cycle. Using `Record` spread operations would cause O(N^2) total overhead, while `Map.set()` is O(1), and by returning unmodified `prev` reference avoids triggering ~30 store listeners.
+In parallel workflows, N Agents might register hooks in the same synchronous clock cycle. Using `Record` spread operations would cause O(N^2) total overhead, while `Map.set()` is O(1), and returning the unmodified `prev` reference avoids triggering ~30 store listeners.
 
 > **Performance analysis:** Why is this optimization so important? In a typical parallel Agent scenario, assume 10 sub-agents simultaneously register hooks. Using `Record`, each registration creates new object and triggers all listeners, total overhead is 10 * 10 = 100 listener triggers. Using `Map`, `set()` operation is in-place modification returning same reference, listeners don't trigger. In high-frequency hook registration/deregistration scenarios, this difference is significantly amplified. This embodies the engineering philosophy that "in high-concurrency paths, data structure choice is not a preference question but a correctness question".
 
@@ -863,7 +863,7 @@ Don't register a hook without matcher on `PreToolUse` then judge tool type in sc
 
 **4. Document your hook intent**
 
-Use comments in config files (or adjacent README files) to explain each hook's purpose and behavior. You returning to look at config three months later will thank yourself for writing comments now.
+Use comments in config files (or adjacent README files) to explain each hook's purpose and behavior. You, returning to look at the config three months later, will thank yourself for writing comments now.
 
 **5. Follow principle of least privilege**
 
@@ -886,7 +886,7 @@ Only intercept events you need, only use response fields you need. Don't registe
 }
 ```
 
-This causes waiting 5 minutes for code review before every tool call. Correct approach is only using async mode for review in `Write` tool's `PostToolUse`.
+This makes you wait 5 minutes for code review before every tool call. The correct approach is to use async mode only for review in the `Write` tool's `PostToolUse`.
 
 **Anti-pattern 2: Circular dependencies between hooks**
 
@@ -911,7 +911,7 @@ Adding `sudo` to all commands may cause privilege escalation risk. `updatedInput
 
 **Anti-pattern 4: Ignoring timeout settings**
 
-Command hooks have default timeout, but if not explicitly set, may infinitely block Agent due to script hang. Always set reasonable timeout values for your hooks.
+Command hooks have a default timeout, but if it is not explicitly set, the hook may block the Agent indefinitely due to a script hang. Always set reasonable timeout values for your hooks.
 
 ### Complete Practical Case: Enterprise-level Security Audit System
 

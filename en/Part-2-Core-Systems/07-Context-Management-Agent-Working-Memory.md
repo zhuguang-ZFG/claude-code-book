@@ -15,7 +15,7 @@ All of a large language model's reasoning capabilities rest on a single premise:
 
 You can think of the context window as a **whiteboard of limited size**. All of the Agent's working memory -- conversation history, tool results, intermediate reasoning -- must be written on this whiteboard. When the whiteboard runs out of space, you must erase old content before writing new content. The key question is: **what to erase, what to keep, and how to erase it**?
 
-This is not Claude Code's problem alone; every long-conversation Agent system has to solve it. Many Agent frameworks opt for "brute-force truncation" on this problem -- simply discarding the oldest messages. Claude Code's approach is far more refined.
+This is not Claude Code's problem alone; every long-conversation Agent system has to solve it. Many Agent frameworks solve this problem with "brute-force truncation" -- simply discarding the oldest messages. Claude Code's approach is far more refined.
 
 ### The Effective Window Formula
 
