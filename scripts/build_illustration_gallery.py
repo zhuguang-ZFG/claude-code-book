@@ -117,6 +117,7 @@ PAGE_HEAD = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23B4472F'/%3E%3C/svg%3E">
 <title>御舆插图 · 看图说话 — 手绘逐笔回放</title>
 <style>
 body{margin:0;font:14px/1.6 system-ui,"Microsoft YaHei",sans-serif;background:#F5F0E6;color:#26221B}
