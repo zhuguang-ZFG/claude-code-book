@@ -73,6 +73,26 @@ TRANSITIONS = {
     "apxd": "路上的生词，都在这本小词典里。",
 }
 
+# 带走这一句：只复述当页已有的比方与白话，不新增任何技术断言
+TAKEAWAYS = {
+    "ch01": "记住：范式换了——瞄准的方式也要跟着换。",
+    "ch02": "记住：心跳不停，对话循环就不会断。",
+    "ch03": "记住：工具是它的双手——手越多，能干的越多。",
+    "ch04": "记住：护栏不是限制，是让它敢放手动力的前提。",
+    "ch05": "记住：配置是基因——性格一层一层定下来。",
+    "ch06": "记住：长期记忆是一本只记要点的折角册页。",
+    "ch07": "记住：工作记忆是量器——装太满会洒。",
+    "ch08": "记住：钩子是装在生命周期节点上的小动作。",
+    "ch09": "记住：分叉就是把活交给小助手，各办各的。",
+    "ch10": "记住：编排者是中枢——四方小队听它调。",
+    "ch11": "记住：技能是兜里的卡片——插上就会。",
+    "ch12": "记住：外接线接进来的是整个世界的工具。",
+    "ch13": "记住：流式 = 一边生成，一边已经看到。",
+    "ch14": "记住：先画路线、插好旗，再出发。",
+    "ch15": "记住：Harness 你也可以亲手造——辘轳摇起来。",
+    "apxd": "记住：生词不查词典，路会越走越糊涂。",
+}
+
 VIDEOS = {
     "front": [("YouTube · Anthropic 官方频道", YT_CHANNEL),
               ("YouTube · 搜「Mastering Claude Code in 30 minutes」（官方）",
@@ -153,6 +173,26 @@ TRANSITIONS_EN = {
     "apxd": "New words on the road all live in this little dictionary.",
 }
 
+# Take one sentence home: restates only the analogy already on the page
+TAKEAWAYS_EN = {
+    "ch01": "Remember: the paradigm changed — so does the way you aim.",
+    "ch02": "Remember: keep the heartbeat steady and the loop never breaks.",
+    "ch03": "Remember: tools are its hands — more hands, more it can do.",
+    "ch04": "Remember: guardrails aren't limits; they let it act boldly.",
+    "ch05": "Remember: settings are genes — character settles layer by layer.",
+    "ch06": "Remember: long-term memory is a folded notebook of key points.",
+    "ch07": "Remember: working memory is a gauge — overfill it and it spills.",
+    "ch08": "Remember: hooks are small actions on lifecycle milestones.",
+    "ch09": "Remember: forking means handing work to small helpers.",
+    "ch10": "Remember: the orchestrator is the hub — four squads on call.",
+    "ch11": "Remember: skills are cards in your pocket — plug in and they work.",
+    "ch12": "Remember: that one line connects it to the world's tools.",
+    "ch13": "Remember: streaming = generated and watched at the same time.",
+    "ch14": "Remember: draw the route, plant the flag, then set out.",
+    "ch15": "Remember: you can build a Harness yourself — crank the windlass.",
+    "apxd": "Remember: skip the dictionary and the road gets confusing.",
+}
+
 VIDEOS_EN = {
     "front": [("YouTube · Anthropic official channel", YT_CHANNEL),
               ("YouTube · search “Mastering Claude Code in 30 minutes” (official)",
@@ -206,16 +246,18 @@ def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
     trans = t["transitions"].get(uid, "")
     trans_html = f'<p class="st-trans">{trans}</p>' if trans else ""
     vids = "".join(f'<a class="st-vid" href="{url}" target="_blank"'
-                   f' rel="noopener">📺 {label}</a>'
+                   f' rel="noopener" title="{t["verified_note"]}">📺 {label}</a>'
                    for label, url in t["videos"].get(uid, []))
     vids_html = f'<p class="st-vids">{vids}</p>' if vids else ""
+    take = t["takeaways"].get(uid, "")
+    take_html = f'<p class="st-take">🔖 {take}</p>' if take else ""
     return f"""<article class="st" style="background:{bg}">
   <div class="st-art" style="width:{width}px">{svg}</div>
   <div class="st-body">
     <p class="st-part">{t["station_word"].format(num=num, total=t["total"])} · {part} · <b class="st-tier">{tier}</b></p>
     <h2>{unit["title"]}</h2>
     <p class="st-cap">{t["captions"].get(uid, "")}</p>
-    {trans_html}{plain}{analogy}{vids_html}
+    {trans_html}{plain}{analogy}{take_html}{vids_html}
     <a class="st-go" href="{t["book"]}#{uid}">{t["go_deeper"]}</a>
   </div>
 </article>"""
@@ -307,6 +349,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-trans{margin:0 0 8px;font-size:13.5px;color:#8A7D68}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
+.st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
@@ -377,6 +420,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-trans{margin:0 0 8px;font-size:13.5px;color:#8A7D68}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
+.st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
@@ -428,6 +472,8 @@ LANGS = {
         "order": ORDER, "parts": PARTS, "total": 16,
         "widths": WIDTH,
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
+        "takeaways": TAKEAWAYS,
+        "verified_note": "链接存在性核验 2026-10-31（非规范来源）",
         "station_word": "第 {num} / {total} 站",
         "go_deeper": "想深入？翻开大书这一章 →",
         "hero_tag": "开卷 · 人人可读",
@@ -456,6 +502,8 @@ LANGS = {
         "widths": {u: 148 for u in ORDER_EN},
         "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
         "videos": VIDEOS_EN,
+        "takeaways": TAKEAWAYS_EN,
+        "verified_note": "link existence verified 2026-10-31 (non-normative)",
         "station_word": "Station {num} / {total}",
         "go_deeper": "Go deeper — open this chapter in the full book →",
         "hero_tag": "Opening · for everyone",
