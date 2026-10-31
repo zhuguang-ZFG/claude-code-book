@@ -1540,6 +1540,16 @@ def page(lang: str, title: str, css: str, body_class: str, content: str,
            "cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' "
            "stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' "
            "fill='%23B4472F'/%3E%3C/svg%3E\">")
+    desc = ("Claude Code 架构深度剖析——对话循环、工具、权限、记忆、上下文、"
+            "钩子、子智能体、编排、技能、MCP、流式、Plan，逐步构建自己的 "
+            "Agent Harness。" if lang == "zh" else
+            "A deep architectural analysis of Claude Code — the conversation "
+            "loop, tools, permissions, memory, context, hooks, sub-agents, "
+            "orchestration, skills, MCP, streaming, Plan.")
+    og = (f'<meta property="og:title" content="{title}">'
+          f'<meta property="og:description" content="{desc}">'
+          '<meta property="og:type" content="book">'
+          '<meta property="og:image" content="cover.png">')
     return f"""<!doctype html>
 <html lang="{'zh-CN' if lang == 'zh' else 'en'}">
 <head>
@@ -1549,6 +1559,7 @@ def page(lang: str, title: str, css: str, body_class: str, content: str,
 <meta name="author" content="LinTsinghua">
 <meta name="generator" content="yuyu-book">
 {fav}
+{og}
 <title>{title}</title>
 <style>{css}</style>
 </head>
