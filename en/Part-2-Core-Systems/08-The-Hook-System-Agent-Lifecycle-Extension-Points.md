@@ -841,7 +841,7 @@ Session hooks use `Map` instead of `Record` to store state, a deliberate perform
 
 In parallel workflows, N Agents might register hooks in the same synchronous clock cycle. Using `Record` spread operations would cause O(N^2) total overhead, while `Map.set()` is O(1), and returning the unmodified `prev` reference avoids triggering ~30 store listeners.
 
-> **Performance analysis:** Why is this optimization so important? In a typical parallel Agent scenario, assume 10 sub-agents simultaneously register hooks. Using `Record`, each registration creates new object and triggers all listeners, total overhead is 10 * 10 = 100 listener triggers. Using `Map`, `set()` operation is in-place modification returning same reference, listeners don't trigger. In high-frequency hook registration/deregistration scenarios, this difference is significantly amplified. This embodies the engineering philosophy that "in high-concurrency paths, data structure choice is not a preference question but a correctness question".
+> **Performance analysis:** Why is this optimization so important? In a typical parallel Agent scenario, assume 10 sub-agents simultaneously register hooks. With `Record`, each registration creates a new object and triggers every listener, so the overhead is 10 * 10 = 100 listener triggers. With `Map`, `set()` modifies in place and returns the same reference, so listeners do not fire. In high-frequency hook registration/deregistration, the gap widens: on a high-concurrency path, data structure choice is not a preference question but a correctness question.
 
 ---
 

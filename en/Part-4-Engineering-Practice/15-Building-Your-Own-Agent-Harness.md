@@ -1066,7 +1066,7 @@ Current tool systems are text-centric, but multimodal interaction is changing th
 - **Visual understanding tools:** Screenshot analysis, UI element location, chart interpretation
 - **Voice interaction:** Voice input triggers tool calls, voice output announces tool results
 
-Multimodal interaction forces Agent Harness architecture to move. The current `ContentBlock` type system needs extending to support binary data, tool `inputSchema` needs to support file references rather than text-only parameters, and streaming needs to support chunked binary data. These changes aren't simple feature additions, but a refactoring of the core data model.
+Multimodal interaction forces Agent Harness architecture to move. The current `ContentBlock` type system needs extending to support binary data, tool `inputSchema` needs to support file references rather than text-only parameters, and streaming needs to support chunked binary data. These changes land in the core data model.
 
 **New challenges in multimodal scenarios:**
 

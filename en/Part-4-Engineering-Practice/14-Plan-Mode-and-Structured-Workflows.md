@@ -88,7 +88,7 @@ Remember: DO NOT write or edit any files yet.
 This is a read-only exploration and planning phase.
 ```
 
-The design of these six instructions implies a cognitive model: **Understand -> Discover -> Compare -> Clarify -> Design -> Present**. This is not a random list but a thinking process from divergence (broad exploration) to convergence (concrete solution). Steps 1-2 are divergence phase, Agent collects information as broadly as possible; Steps 3-4 are convergence transition phase, Agent starts focusing but still open; Steps 5-6 are complete convergence, Agent produces a definite implementation plan.
+The design of these six instructions implies a cognitive model: **Understand -> Discover -> Compare -> Clarify -> Design -> Present**. The order itself is a thinking process, from divergence (broad exploration) to convergence (concrete solution). Steps 1-2 are divergence phase, Agent collects information as broadly as possible; Steps 3-4 are convergence transition phase, Agent starts focusing but still open; Steps 5-6 are complete convergence, Agent produces a definite implementation plan.
 
 ### 14.1.3 Exiting Plan Mode
 

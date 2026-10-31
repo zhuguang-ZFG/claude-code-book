@@ -328,7 +328,7 @@ The core tool mapping logic includes several key steps:
 
 2. **Prefix Decision**: Based on configuration, the system decides whether to add a server name prefix to tool names. In most modes, the prefix is mandatory (ensuring tool names don't conflict across servers); but in SDK mode, when the environment variable `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` is set, tools are registered with their original names, allowing MCP tools to override built-in tools by name.
 
-3. **Tool Object Construction**: Each MCP tool is mapped to a Claude Code internal `Tool` object. This mapping isn't simple field copying but a complete "protocol adaptation" — MCP semantics are translated into Claude Code tool system semantics.
+3. **Tool Object Construction**: Each MCP tool is mapped to a Claude Code internal `Tool` object. The mapping is a full "protocol adaptation" — MCP semantics are translated into Claude Code tool system semantics.
 
 After each MCP tool is mapped to a Claude Code internal `Tool` object, it contains the following key properties:
 
@@ -677,7 +677,7 @@ The Bridge system is the core layer for bidirectional communication between Clau
 
 ### 12.4.1 Architecture Overview
 
-The Bridge system is located in the bridge communication directory, containing over 30 module files that form a complete communication layer. Its scale alone demonstrates the complexity of IDE integration and remote control — this isn't simple message forwarding but a complete communication middleware that includes routing, deduplication, authentication, transport abstraction, and session management.
+The Bridge system is located in the bridge communication directory, containing over 30 module files that form a complete communication layer. Its scale alone demonstrates the complexity of IDE integration and remote control — routing, deduplication, authentication, transport abstraction and session management all live in this layer.
 
 Key components are as follows:
 

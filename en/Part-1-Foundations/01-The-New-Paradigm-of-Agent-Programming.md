@@ -283,7 +283,7 @@ Conditional registration and lazy loading amount to loading on demand. In Agent 
 
 ## 1.3 Five Principles of Agent Harness Design Philosophy
 
-By reading Claude Code's architecture, we can distill five design principles that run throughout. These principles are not isolated techniques but rather a mutually reinforcing network of architectural decisions. Each principle answers a core "why": why not choose a simpler approach? What would happen if we didn't design it this way?
+By reading Claude Code's architecture, we can distill five design principles that run throughout. They reinforce one another; together they make up a network of architectural decisions. Each principle answers a core "why": why not choose a simpler approach? What would happen if we didn't design it this way?
 
 ```mermaid
 flowchart TD
@@ -457,6 +457,6 @@ This chapter establishes the conceptual framework for understanding Claude Code.
 
 3. **Five core modules define the architectural skeleton**: Entry module, query engine, dialog loop, tool types, and tool registry. Understanding the responsibilities and interrelationships of these five modules means grasping Claude Code's macro architecture. Their relationship is a strict layered calling relationship: the entry module creates the query engine, the query engine drives the dialog loop, the dialog loop uses the tool system, and the tool system is managed by the tool registry.
 
-4. **The five design principles are the thread running through everything**: Async-streaming-first, embedded security boundaries, cache-aware design, progressive capability extension, and immutable state flow -- these five principles are not isolated design points but a mutually reinforcing network of architectural decisions. In subsequent chapters, we will repeatedly see them embodied in specific subsystems. Whenever you encounter a "why is it designed this way" question, the answer can almost always be traced back to one of these five principles.
+4. **The five design principles are the thread running through everything**: Async-streaming-first, embedded security boundaries, cache-aware design, progressive capability extension, and immutable state flow -- the five interlock into a network of architectural decisions. In subsequent chapters, we will repeatedly see them embodied in specific subsystems. Whenever you encounter a "why is it designed this way" question, the answer can almost always be traced back to one of these five principles.
 
 In the next chapter, we will dive into the internals of the dialog main loop, progressively analyzing that AsyncGenerator dialog loop to understand how the Agent autonomously advances tasks through the cycle of "call LLM - parse tool calls - execute tools - inject results." This is the most core chapter in the book -- because the dialog main loop is the "heart" of Agent Harness, and understanding it means understanding the Agent's "pulse."

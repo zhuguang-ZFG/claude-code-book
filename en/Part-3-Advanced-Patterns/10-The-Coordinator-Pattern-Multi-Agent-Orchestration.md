@@ -211,7 +211,7 @@ The team deletion tool handles cleanup: it first checks whether there are still 
 
 ### Safety Guarantees for Team Deletion
 
-Team deletion is not a simple "delete everything" operation but a process with multiple safety checks:
+Deleting a team runs several safety checks first:
 
 1. **Active member check**: If workers are still running, deletion is refused and the list of still-running members is returned
 2. **Resource cleanup order**: Clean team directory (Scratchpad, etc.) first, then worktree, then team context

@@ -279,7 +279,7 @@ This "selective cascading" strategy is a pragmatic approach: it doesn't pursue t
 
 Claude Code's startup time directly affects user experience. CLI tool psychology research shows that startup delays over 2 seconds make users feel the tool is "clunky", and delays over 5 seconds trigger "is it frozen?" anxiety. The system shortens the latency from command line input to first response through three optimization strategies: parallel prefetching, lazy loading, and lazy module evaluation.
 
-These optimizations are not independent tricks but constitute a systematic startup optimization methodology: **Identify critical path -> Parallelize non-critical paths -> Defer non-essential modules -> Eliminate dead code**.
+The optimizations line up as one startup methodology: **Identify critical path -> Parallelize non-critical paths -> Defer non-essential modules -> Eliminate dead code**.
 
 ### 13.3.1 Parallel Prefetching: Racing Against Module Evaluation
 
