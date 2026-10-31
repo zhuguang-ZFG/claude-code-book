@@ -27,7 +27,56 @@ PARTS = [
 ]
 ORDER = ["front"] + [u for _, _, _, us in PARTS for u in us] + ["apxd"]
 BIG = {"front": 200, "cover": 260}
-WIDTH = {u: (BIG.get(u, 132)) for u in ORDER}
+WIDTH = {u: (BIG.get(u, 148)) for u in ORDER}
+
+# 视频指路：只收录存在性经核验的链接（官方频道 + 核验过的 B 站稿件 +
+# 站内搜索页）。视频属社区/官方宣传资源，非本书规范来源；技术事实
+# 以大书正文与官方文档为准。核验日期 2026-10-31。
+YT_CHANNEL = "https://www.youtube.com/@anthropic-ai"
+YT_SEARCH = "https://www.youtube.com/results?search_query="
+B_SEARCH = "https://search.bilibili.com/all?keyword="
+VIDEOS = {
+    "front": [("YouTube · Anthropic 官方频道", YT_CHANNEL),
+              ("YouTube · 搜「Mastering Claude Code in 30 minutes」（官方）",
+               YT_SEARCH + "Mastering+Claude+Code+in+30+minutes")],
+    "ch01": [("B 站 · Claude Code 教程（社区，已核验）",
+              "https://www.bilibili.com/video/BV1uS9UBQEuH")],
+    "ch02": [("B 站 · 搜「Claude Code 对话」", B_SEARCH + "Claude%20Code%20%E5%AF%B9%E8%AF%9D")],
+    "ch03": [("B 站 · 搜「Claude Code 工具」", B_SEARCH + "Claude%20Code%20%E5%B7%A5%E5%85%B7")],
+    "ch04": [("B 站 · 搜「Claude Code 权限」", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
+    "ch05": [("B 站 · 搜「Claude Code 配置」", B_SEARCH + "Claude%20Code%20%E9%85%8D%E7%BD%AE")],
+    "ch06": [("B 站 · 搜「Claude Code 记忆」", B_SEARCH + "Claude%20Code%20%E8%AE%B0%E5%BF%86")],
+    "ch07": [("B 站 · 搜「Claude Code 上下文」", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87")],
+    "ch08": [("B 站 · 搜「Claude Code Hooks」", B_SEARCH + "Claude%20Code%20Hooks")],
+    "ch09": [("B 站 · 搜「Claude Code 子智能体」", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93")],
+    "ch10": [("YouTube · Anthropic 官方频道（多智能体）", YT_CHANNEL)],
+    "ch11": [("B 站 · 搜「Claude Skills」", B_SEARCH + "Claude%20Skills")],
+    "ch12": [("B 站 · 搜「MCP 教程」", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
+             ("YouTube · Anthropic 官方频道（MCP）", YT_CHANNEL)],
+    "ch13": [("B 站 · 搜「Claude Code 流式」", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
+    "ch14": [("B 站 · 搜「Claude Code Plan」", B_SEARCH + "Claude%20Code%20Plan")],
+    "ch15": [("YouTube · Anthropic 官方频道（agent 深讲）", YT_CHANNEL)],
+}
+
+# 站间衔接：只做承上启下，不新增任何技术断言
+TRANSITIONS = {
+    "ch01": "先站上起点：看清这场范式转移把程序员带到了哪里。",
+    "ch02": "方向既明，先听 Agent 的心跳——它怎么跟你一来一回。",
+    "ch03": "心跳会转了，还得有手：这一站看它凭什么能动手。",
+    "ch04": "手有了力气，就要有护栏——别让它碰不该碰的。",
+    "ch05": "护栏立好，回头给它定性格：配置是它的基因。",
+    "ch06": "基因定了，它还得记住你们相处的每一件事。",
+    "ch07": "记性太好也是负担——这一站看它如何打理工作记忆。",
+    "ch08": "想在它的生命周期里插手？钩子就是那些接口。",
+    "ch09": "一个助手不够用？让它分身出小助手。",
+    "ch10": "分身多了就要有指挥——编排者模式登场。",
+    "ch11": "指挥有序，还要给它发技能卡：能力即插即用。",
+    "ch12": "墙外的世界靠外接线：MCP 把外部工具接进来。",
+    "ch13": "都接好了，让回答像水一样流出来。",
+    "ch14": "让它放开了跑之前，先学会画路线、插红旗。",
+    "ch15": "看完全程，现在亲手摇一架自己的辘轳。",
+    "apxd": "路上的生词，都在这本小词典里。",
+}
 
 STRIP = re.compile(r"<[^>]+>")
 
@@ -74,18 +123,24 @@ CAPTIONS = {
 }
 
 
-def station(uid: str, unit: dict, svg: str, tier: str, part: str,
+def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
             bg: str, width: int) -> str:
     analogy = (f'<p class="st-ana">打个比方：{unit["analogy"]}</p>'
                if unit["analogy"] else "")
     plain = (f'<p class="st-plain">{unit["plain"]}</p>' if unit["plain"] else "")
+    trans = TRANSITIONS.get(uid, "")
+    trans_html = f'<p class="st-trans">{trans}</p>' if trans else ""
+    vids = "".join(f'<a class="st-vid" href="{url}" target="_blank"'
+                   f' rel="noopener">📺 {label}</a>'
+                   for label, url in VIDEOS.get(uid, []))
+    vids_html = f'<p class="st-vids">{vids}</p>' if vids else ""
     return f"""<article class="st" style="background:{bg}">
   <div class="st-art" style="width:{width}px">{svg}</div>
   <div class="st-body">
-    <p class="st-part">{part} · <b class="st-tier">{tier}</b></p>
+    <p class="st-part">第 {num} 站 · {part} · <b class="st-tier">{tier}</b></p>
     <h2>{unit["title"]}</h2>
     <p class="st-cap">{CAPTIONS.get(uid, "")}</p>
-    {plain}{analogy}
+    {trans_html}{plain}{analogy}{vids_html}
     <a class="st-go" href="{BOOK}#{uid}">想深入？翻开大书这一章 →</a>
   </div>
 </article>"""
@@ -109,16 +164,21 @@ def main():
   </div>
 </article>"""]
 
+    num = 0
+    total = sum(len(us) for _, _, _, us in PARTS) + 1  # + 附录 D 站
     for part, tier, bg, us in PARTS:
         for uid in us:
+            num += 1
             svg = svgs.get(uid, "")
-            stations.append(station(uid, units.get(uid, {"title": uid}), svg,
+            stations.append(station(uid, f"{num} / {total}",
+                                    units.get(uid, {"title": uid}), svg,
                                     tier, part, bg, WIDTH[uid]))
 
+    num += 1
     stations.append(f"""<article class="st" style="background:#FBF6EC">
-  <div class="st-art" style="width:132px">{svgs.get("apxd", "")}</div>
+  <div class="st-art" style="width:148px">{svgs.get("apxd", "")}</div>
   <div class="st-body">
-    <p class="st-part">附录 · <b class="st-tier">随身</b></p>
+    <p class="st-part">第 {num} / {total} 站 · 附录 · <b class="st-tier">随身</b></p>
     <h2>路上遇到生词？</h2>
     <p class="st-cap">小词典：生词太多？翻这一册</p>
     <p class="st-plain">术语表、源码地图、工具清单、功能开关——都在附录里，
@@ -127,7 +187,7 @@ def main():
   </div>
 </article>
 <article class="st st-hero" style="background:#FBF6EC">
-  <div class="st-art" style="width:132px">{svgs.get("keeper", "")}</div>
+  <div class="st-art" style="width:148px">{svgs.get("keeper", "")}</div>
   <div class="st-body">
     <p class="st-part">到站 · <b class="st-tier">老驿卒的话</b></p>
     <h2>路走完了，接下来呢？</h2>
@@ -169,8 +229,13 @@ main{max-width:820px;margin:0 auto;padding:6px 30px 50px}
 .st-tier{color:#B4472F}
 h2{font-size:21px;margin:0 0 8px}
 .st-cap{margin:0 0 10px;font-size:13px;color:#B4472F;letter-spacing:.02em}
+.st-trans{margin:0 0 8px;font-size:13.5px;color:#8A7D68}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
+.st-vids{margin:0 0 10px;font-size:12.5px}
+.st-vids .st-vid{display:inline-block;margin-right:14px;color:#4C7093;
+  text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
+.st-vids .st-vid:hover{color:#B4472F;border-bottom-color:#B4472F}
 .st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
        padding-bottom:1px;transition:color .16s ease}
 .st-go:hover{color:#B4472F}
@@ -201,6 +266,8 @@ PAGE_TAIL = """</main>
 本分册由大书的通俗层与 <a href="illustration-gallery.html">26 幅手绘插图</a> 组成；
 画风体系来自 <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 （MIT with Attribution）。大书：<a href="yuyu-agent-harness-zh.html">御舆：解码 Agent Harness</a>。
+<br>📺 页内视频为官方频道与社区资源，属<b>非规范来源</b>（仅核验存在性，
+核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。
 </footer>
 </body>
 </html>
