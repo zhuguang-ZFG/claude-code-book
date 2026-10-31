@@ -466,6 +466,12 @@ h2{font-size:21px;margin:0 0 8px}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
+.st-navrow{display:flex;justify-content:space-between;gap:8px;margin-top:14px;
+  border-top:1px dashed rgba(38,34,27,.25);padding-top:9px;font-size:12.5px}
+.st-navrow a{color:#3A5A78;text-decoration:none}
+.st-navrow a:hover{color:#B4472F}
+.st-navrow .st-non{color:#8A7D68}
+.prog{position:fixed;top:0;left:0;height:3px;background:#B4472F;z-index:100;width:0}
 .st-gain{margin:0 0 10px;font-size:13.5px;color:#3E5A4C}
 .gl{border-bottom:1px dashed #8A7D68;cursor:help;color:inherit;text-decoration:none}
 .st-vids{margin:0 0 10px;font-size:12.5px}
@@ -595,6 +601,89 @@ document.querySelectorAll(".st-art").forEach(art => {
 })();
 </script>
 <script>
+/* 站间导航与阅读进度：教材的翻页体验 */
+(function () {
+  const en = document.documentElement.lang === "en";
+  const L = en ? {prev: "← prev", next: "next →"} : {prev: "← 上一站", next: "下一站 →"};
+  const arts = Array.from(document.querySelectorAll("main .st"));
+  arts.forEach((a, i) => {
+    a.id = "st-" + i;
+    const nav = document.createElement("p");
+    nav.className = "st-navrow";
+    nav.innerHTML =
+      (i > 0 ? '<a href="#st-' + (i - 1) + '">' + L.prev + '</a>' : '<span></span>')
+      + '<span class="st-non">' + (i + 1) + ' / ' + arts.length + '</span>'
+      + (i < arts.length - 1 ? '<a href="#st-' + (i + 1) + '">' + L.next + ' →</a>' : '<span></span>');
+    a.appendChild(nav);
+  });
+  const bar = document.createElement("div");
+  bar.className = "prog";
+  document.body.appendChild(bar);
+  const upd = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? Math.min(100, h.scrollTop / max * 100) : 0) + "%";
+  };
+  window.addEventListener("scroll", upd, {passive: true});
+  window.addEventListener("resize", upd); upd();
+})();
+</script>
+</body>
+</html>
+"""
+
+PAGE_TAIL_EN = """</main>
+<footer>
+This reader is assembled from the full book's plain-language layer and the
+<a href="illustration-gallery.html">26 hand-inked figures</a>; the style system comes
+from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
+(MIT with Attribution). Full book: <a href="yuyu-agent-harness-en.html">Yù Yú: Decoding Agent Harness</a>.
+<br>📺 Videos are official-channel and community resources — <b>non-normative</b>
+(existence verified 2026-10-31); every technical fact defers to the book and its
+normative sources. This reader tracks book baseline v0.3.3.
+</footer>
+<div class="resume" id="resume" style="display:none">
+  <span>You stopped at station <b id="resume-station"></b> 站</span>
+  <button id="resume-go">Continue →</button>
+  <button id="resume-no" class="ghost">Start over</button>
+</div>
+<script>
+/* click or Enter re-inks the drawing — the reader takes part in it */
+document.querySelectorAll(".st-art").forEach(art => {
+  const fig = art.closest(".st");
+  const replay = (cx, cy) => {
+    const svg = art.querySelector("svg");
+    if (!svg) return;
+    svg.querySelectorAll("path, circle").forEach(el => {
+      el.style.strokeDasharray = "100 100";
+      const a = el.animate([{strokeDashoffset:"100"},{strokeDashoffset:"0"}],
+        {duration:700, delay:Math.random()*250, fill:"both", easing:"ease-out"});
+      a.onfinish = () => { el.style.strokeDasharray = ""; };
+    });
+    if (cx !== undefined) {
+      for (let i = 0; i < 8; i++) {
+        const sp = document.createElement("i");
+        sp.style.cssText = "position:fixed;width:6px;height:6px;border-radius:60% 40% 55% 45%;pointer-events:none;z-index:99;background:" + (i % 3 ? "#26221B" : "#B4472F");
+        sp.style.left = cx + "px"; sp.style.top = cy + "px";
+        document.body.appendChild(sp);
+        const ang = (i / 8) * Math.PI * 2, d = 16 + Math.random() * 22;
+        const an = sp.animate([{transform:"translate(0,0) scale(1)",opacity:1},
+          {transform:`translate(${Math.cos(ang)*d}px,${Math.sin(ang)*d+8}px) scale(.25)`,opacity:0}],
+          {duration:460, easing:"cubic-bezier(.34,1.56,.64,1)", fill:"both"});
+        an.onfinish = () => sp.remove();
+      }
+    }
+  };
+  art.addEventListener("click", e => replay(e.clientX, e.clientY));
+  art.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    const r = art.getBoundingClientRect();
+    replay(r.left + r.width / 2, r.top + r.height / 2);
+  });
+});
+</script>
+<script>
 (function () {
   const KEY = "yy-reader-en";
   let saved = 0;
@@ -624,6 +713,34 @@ document.querySelectorAll(".st-art").forEach(art => {
       banner.style.display = "none";
     };
   }
+})();
+</script>
+<script>
+/* 站间导航与阅读进度：教材的翻页体验 */
+(function () {
+  const en = document.documentElement.lang === "en";
+  const L = en ? {prev: "← prev", next: "next →"} : {prev: "← 上一站", next: "下一站 →"};
+  const arts = Array.from(document.querySelectorAll("main .st"));
+  arts.forEach((a, i) => {
+    a.id = "st-" + i;
+    const nav = document.createElement("p");
+    nav.className = "st-navrow";
+    nav.innerHTML =
+      (i > 0 ? '<a href="#st-' + (i - 1) + '">' + L.prev + '</a>' : '<span></span>')
+      + '<span class="st-non">' + (i + 1) + ' / ' + arts.length + '</span>'
+      + (i < arts.length - 1 ? '<a href="#st-' + (i + 1) + '">' + L.next + ' →</a>' : '<span></span>');
+    a.appendChild(nav);
+  });
+  const bar = document.createElement("div");
+  bar.className = "prog";
+  document.body.appendChild(bar);
+  const upd = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? Math.min(100, h.scrollTop / max * 100) : 0) + "%";
+  };
+  window.addEventListener("scroll", upd, {passive: true});
+  window.addEventListener("resize", upd); upd();
 })();
 </script>
 </body>
@@ -707,60 +824,6 @@ footer a{color:inherit}
 <main>
 """
 
-PAGE_TAIL_EN = """</main>
-<footer>
-This reader is assembled from the full book's plain-language layer and the
-<a href="illustration-gallery.html">26 hand-inked figures</a>; the style system comes
-from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
-(MIT with Attribution). Full book: <a href="yuyu-agent-harness-en.html">Yù Yú: Decoding Agent Harness</a>.
-<br>📺 Videos are official-channel and community resources — <b>non-normative</b>
-(existence verified 2026-10-31); every technical fact defers to the book and its
-normative sources. This reader tracks book baseline v0.3.3.
-</footer>
-<div class="resume" id="resume" style="display:none">
-  <span>You stopped at station <b id="resume-station"></b></span>
-  <button id="resume-go">Continue →</button>
-  <button id="resume-no" class="ghost">Start over</button>
-</div>
-<script>
-/* click or Enter re-inks the drawing — the reader takes part in it */
-document.querySelectorAll(".st-art").forEach(art => {
-  const fig = art.closest(".st");
-  const replay = (cx, cy) => {
-    const svg = art.querySelector("svg");
-    if (!svg) return;
-    svg.querySelectorAll("path, circle").forEach(el => {
-      el.style.strokeDasharray = "100 100";
-      const a = el.animate([{strokeDashoffset:"100"},{strokeDashoffset:"0"}],
-        {duration:700, delay:Math.random()*250, fill:"both", easing:"ease-out"});
-      a.onfinish = () => { el.style.strokeDasharray = ""; };
-    });
-    if (cx !== undefined) {
-      for (let i = 0; i < 8; i++) {
-        const sp = document.createElement("i");
-        sp.style.cssText = "position:fixed;width:6px;height:6px;border-radius:60% 40% 55% 45%;pointer-events:none;z-index:99;background:" + (i % 3 ? "#26221B" : "#B4472F");
-        sp.style.left = cx + "px"; sp.style.top = cy + "px";
-        document.body.appendChild(sp);
-        const ang = (i / 8) * Math.PI * 2, d = 16 + Math.random() * 22;
-        const an = sp.animate([{transform:"translate(0,0) scale(1)",opacity:1},
-          {transform:`translate(${Math.cos(ang)*d}px,${Math.sin(ang)*d+8}px) scale(.25)`,opacity:0}],
-          {duration:460, easing:"cubic-bezier(.34,1.56,.64,1)", fill:"both"});
-        an.onfinish = () => sp.remove();
-      }
-    }
-  };
-  art.addEventListener("click", e => replay(e.clientX, e.clientY));
-  art.addEventListener("keydown", e => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    e.preventDefault();
-    const r = art.getBoundingClientRect();
-    replay(r.left + r.width / 2, r.top + r.height / 2);
-  });
-});
-</script>
-</body>
-</html>
-"""
 
 LANGS = {
     "zh": {

@@ -279,7 +279,7 @@ from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 normative sources. This reader tracks book baseline v0.3.3.
 </footer>
 <div class="resume" id="resume" style="display:none">
-  <span>You stopped at station <b id="resume-station"></b></span>
+  <span>You stopped at station <b id="resume-station"></b> 站</span>
   <button id="resume-go">Continue →</button>
   <button id="resume-no" class="ghost">Start over</button>
 </div>
@@ -318,6 +318,66 @@ document.querySelectorAll(".st-art").forEach(art => {
     replay(r.left + r.width / 2, r.top + r.height / 2);
   });
 });
+</script>
+<script>
+(function () {
+  const KEY = "yy-reader-en";
+  let saved = 0;
+  try { saved = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  let lastSave = 0;
+  window.addEventListener("scroll", () => {
+    const now = Date.now();
+    if (now - lastSave < 800) return;
+    lastSave = now;
+    try { localStorage.setItem(KEY, String(window.scrollY)); } catch (e) {}
+  }, {passive: true});
+  if (saved > 600) {
+    const banner = document.getElementById("resume");
+    banner.style.display = "flex";
+    const st = document.querySelectorAll(".st");
+    let idx = 0;
+    st.forEach((el, i) => {
+      if (el.getBoundingClientRect().top + window.scrollY <= saved) idx = i;
+    });
+    document.getElementById("resume-station").textContent = idx + 1;
+    document.getElementById("resume-go").onclick = () => {
+      window.scrollTo({top: saved, behavior: "smooth"});
+      banner.style.display = "none";
+    };
+    document.getElementById("resume-no").onclick = () => {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      banner.style.display = "none";
+    };
+  }
+})();
+</script>
+<script>
+/* 站间导航与阅读进度：教材的翻页体验 */
+(function () {
+  const en = document.documentElement.lang === "en";
+  const L = en ? {prev: "← prev", next: "next →"} : {prev: "← 上一站", next: "下一站 →"};
+  const arts = Array.from(document.querySelectorAll("main .st"));
+  arts.forEach((a, i) => {
+    a.id = "st-" + i;
+    const nav = document.createElement("p");
+    nav.className = "st-navrow";
+    nav.innerHTML =
+      (i > 0 ? '<a href="#st-' + (i - 1) + '">' + L.prev + '</a>' : '<span></span>')
+      + '<span class="st-non">' + (i + 1) + ' / ' + arts.length + '</span>'
+      + (i < arts.length - 1 ? '<a href="#st-' + (i + 1) + '">' + L.next + ' →</a>' : '<span></span>');
+    a.appendChild(nav);
+  });
+  const bar = document.createElement("div");
+  bar.className = "prog";
+  document.body.appendChild(bar);
+  const upd = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? Math.min(100, h.scrollTop / max * 100) : 0) + "%";
+  };
+  window.addEventListener("scroll", upd, {passive: true});
+  window.addEventListener("resize", upd); upd();
+})();
 </script>
 </body>
 </html>

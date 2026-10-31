@@ -28,6 +28,12 @@ h2{font-size:21px;margin:0 0 8px}
 .st-plain{margin:0 0 8px;font-size:15.5px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
+.st-navrow{display:flex;justify-content:space-between;gap:8px;margin-top:14px;
+  border-top:1px dashed rgba(38,34,27,.25);padding-top:9px;font-size:12.5px}
+.st-navrow a{color:#3A5A78;text-decoration:none}
+.st-navrow a:hover{color:#B4472F}
+.st-navrow .st-non{color:#8A7D68}
+.prog{position:fixed;top:0;left:0;height:3px;background:#B4472F;z-index:100;width:0}
 .st-gain{margin:0 0 10px;font-size:13.5px;color:#3E5A4C}
 .gl{border-bottom:1px dashed #8A7D68;cursor:help;color:inherit;text-decoration:none}
 .st-vids{margin:0 0 10px;font-size:12.5px}
@@ -350,35 +356,31 @@ document.querySelectorAll(".st-art").forEach(art => {
 })();
 </script>
 <script>
+/* 站间导航与阅读进度：教材的翻页体验 */
 (function () {
-  const KEY = "yy-reader-en";
-  let saved = 0;
-  try { saved = +localStorage.getItem(KEY) || 0; } catch (e) {}
-  let lastSave = 0;
-  window.addEventListener("scroll", () => {
-    const now = Date.now();
-    if (now - lastSave < 800) return;
-    lastSave = now;
-    try { localStorage.setItem(KEY, String(window.scrollY)); } catch (e) {}
-  }, {passive: true});
-  if (saved > 600) {
-    const banner = document.getElementById("resume");
-    banner.style.display = "flex";
-    const st = document.querySelectorAll(".st");
-    let idx = 0;
-    st.forEach((el, i) => {
-      if (el.getBoundingClientRect().top + window.scrollY <= saved) idx = i;
-    });
-    document.getElementById("resume-station").textContent = idx + 1;
-    document.getElementById("resume-go").onclick = () => {
-      window.scrollTo({top: saved, behavior: "smooth"});
-      banner.style.display = "none";
-    };
-    document.getElementById("resume-no").onclick = () => {
-      try { localStorage.removeItem(KEY); } catch (e) {}
-      banner.style.display = "none";
-    };
-  }
+  const en = document.documentElement.lang === "en";
+  const L = en ? {prev: "← prev", next: "next →"} : {prev: "← 上一站", next: "下一站 →"};
+  const arts = Array.from(document.querySelectorAll("main .st"));
+  arts.forEach((a, i) => {
+    a.id = "st-" + i;
+    const nav = document.createElement("p");
+    nav.className = "st-navrow";
+    nav.innerHTML =
+      (i > 0 ? '<a href="#st-' + (i - 1) + '">' + L.prev + '</a>' : '<span></span>')
+      + '<span class="st-non">' + (i + 1) + ' / ' + arts.length + '</span>'
+      + (i < arts.length - 1 ? '<a href="#st-' + (i + 1) + '">' + L.next + ' →</a>' : '<span></span>');
+    a.appendChild(nav);
+  });
+  const bar = document.createElement("div");
+  bar.className = "prog";
+  document.body.appendChild(bar);
+  const upd = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? Math.min(100, h.scrollTop / max * 100) : 0) + "%";
+  };
+  window.addEventListener("scroll", upd, {passive: true});
+  window.addEventListener("resize", upd); upd();
 })();
 </script>
 </body>
