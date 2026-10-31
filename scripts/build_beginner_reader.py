@@ -128,6 +128,27 @@ VIDEOS = {
                 "https://www.youtube.com/playlist?list=PLf2m23nhTg1P5BsOHUOXyQz5RhfUSSVUi")],
 }
 
+# 每站的 YouTube 搜索词（官方内容以英文为主，搜索直达）
+TOPICS_EN = {
+    "front": "Claude Code overview",
+    "ch01": "Claude Code paradigm shift",
+    "ch02": "Claude Code conversation loop",
+    "ch03": "Claude Code tools",
+    "ch04": "Claude Code permissions",
+    "ch05": "Claude Code settings",
+    "ch06": "Claude Code memory",
+    "ch07": "Claude Code context management",
+    "ch08": "Claude Code hooks",
+    "ch09": "Claude Code sub-agents",
+    "ch10": "Claude Code multi-agent orchestration",
+    "ch11": "Claude Code skills",
+    "ch12": "Claude Code MCP",
+    "ch13": "Claude Code streaming",
+    "ch14": "Claude Code plan mode",
+    "ch15": "build a Claude Code agent",
+    "apxd": "Claude Code glossary",
+}
+
 # ---------------- English edition ----------------
 PARTS_EN = [
     ("Part I · Foundations", "Start", "#FBF6EC", ["ch01", "ch02", "ch03", "ch04"]),
@@ -243,7 +264,8 @@ STRIP = re.compile(r"<[^>]+>")
 GLOSS = json.load(open(ROOT / "yuyu-book" / "glosses.json", encoding="utf-8"))
 
 
-def glossify(text: str, lang: str, limit: int = 3) -> str:
+def glossify(text: str, lang: str, limit: int = 3,
+             book_link: str = "") -> str:
     """Wrap the first few glossary terms with a hover definition.
 
     作者在 glosses.json 里为每个术语写好了白话释义——分册直接借用，
@@ -278,8 +300,10 @@ def glossify(text: str, lang: str, limit: int = 3) -> str:
             break
     for i, end, f, d in sorted(taken, reverse=True):
         safe = d.replace('"', "'")
-        text = (text[:i] + f'<span class="gl" title="{safe}">{f}</span>'
-                + text[end:])
+        tag = (f'<a class="gl" href="{book_link}" title="{safe}">{f}</a>'
+               if book_link else
+               f'<span class="gl" title="{safe}">{f}</span>')
+        text = text[:i] + tag + text[end:]
     return text
 
 
@@ -312,10 +336,11 @@ def extract_units(html: str, uids: list) -> dict:
 
 def station(uid: str, num: str, unit: dict, svg: str, tier: str, part: str,
             bg: str, width: int, t) -> str:
-    ana_txt = glossify(unit["analogy"], t["lang"]) if unit["analogy"] else ""
+    gloss_link = t["book"] + "#apxd"
+    ana_txt = glossify(unit["analogy"], t["lang"], 2, gloss_link) if unit["analogy"] else ""
     analogy = (f'<p class="st-ana">{t["analogy_label"]}{ana_txt}</p>'
                if unit["analogy"] else "")
-    plain_txt = glossify(unit["plain"], t["lang"]) if unit["plain"] else ""
+    plain_txt = glossify(unit["plain"], t["lang"], 3, gloss_link) if unit["plain"] else ""
     plain = (f'<p class="st-plain">{plain_txt}</p>' if unit["plain"] else "")
     trans = t["transitions"].get(uid, "")
     trans_html = f'<p class="st-trans">{trans}</p>' if trans else ""
@@ -368,6 +393,12 @@ def build(lang: str) -> tuple[str, int]:
     for part, tier, bg, us in t["parts"]:
         for uid in us:
             num += 1
+            topic = TOPICS_EN.get(uid, "")
+            if topic and "YouTube · 搜" not in "".join(
+                    l for l, _ in t["videos"].get(uid, [])):
+                t["videos"].setdefault(uid, []).append(
+                    ("YouTube · 搜「" + topic + "」",
+                     YT_SEARCH + topic.replace(" ", "+")))
             stations.append(station(uid, num,
                                     units.get(uid, {"title": uid}),
                                     svgs.get(uid, ""), tier, part, bg,
@@ -436,7 +467,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
 .st-gain{margin:0 0 10px;font-size:13.5px;color:#3E5A4C}
-.gl{border-bottom:1px dashed #8A7D68;cursor:help}
+.gl{border-bottom:1px dashed #8A7D68;cursor:help;color:inherit;text-decoration:none}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#3A5A78;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
@@ -477,7 +508,7 @@ footer a{color:inherit}
   <h1>御舆 · 入门分册</h1>
   <svg class="brush" viewBox="0 0 190 10" aria-hidden="true"><path d="M4 6q30-4.5 62-2.5t72-1q24 .2 46 1.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M152 5.6q10-.6 20-.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".45"/><circle cx="178" cy="5.8" r="1.5" fill="currentColor" stroke="none"/></svg>
   <p class="sub">看图读懂 Agent Harness —— 一站一个概念，一句一句说清楚</p>
-  <p class="hint">每一站的句子都取自大书作者自己的通俗层；底色一层比一层深，就是"由浅入深"的顺序；句中带虚线的词，悬停即出白话释义。某站看懂了，就推开「想深入」的门，去大书里读完整的原理。</p>
+  <p class="hint">每一站的句子都取自大书作者自己的通俗层；底色一层比一层深，就是"由浅入深"的顺序；句中带虚线的词，悬停出白话释义、点击跳术语表。某站看懂了，就推开「想深入」的门，去大书里读完整的原理。</p>
 </header>
 <main>
 """
@@ -630,7 +661,7 @@ h2{font-size:21px;margin:0 0 8px}
 .st-ana{margin:0 0 10px;font-size:14px;color:#5C5448}
 .st-take{margin:0 0 10px;font-size:13.5px;color:#8A4A34}
 .st-gain{margin:0 0 10px;font-size:13.5px;color:#3E5A4C}
-.gl{border-bottom:1px dashed #8A7D68;cursor:help}
+.gl{border-bottom:1px dashed #8A7D68;cursor:help;color:inherit;text-decoration:none}
 .st-vids{margin:0 0 10px;font-size:12.5px}
 .st-vids .st-vid{display:inline-block;margin-right:14px;color:#3A5A78;
   text-decoration:none;border-bottom:1px dashed rgba(76,112,147,.5)}
@@ -671,7 +702,7 @@ footer a{color:inherit}
   <h1>Yù Yú · Beginner Reader</h1>
   <svg class="brush" viewBox="0 0 190 10" aria-hidden="true"><path d="M4 6q30-4.5 62-2.5t72-1q24 .2 46 1.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M152 5.6q10-.6 20-.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity=".45"/><circle cx="178" cy="5.8" r="1.5" fill="currentColor" stroke="none"/></svg>
   <p class="sub">Understanding Agent Harness in pictures — one concept per station, one sentence at a time</p>
-  <p class="hint">Every sentence comes from the book's own plain-language layer; the paper darkens station by station — that is the shallow-to-deep order. Dotted terms show a plain-language definition on hover. When a station clicks, push open the “go deeper” door and read the full principle in the book.</p>
+  <p class="hint">Every sentence comes from the book's own plain-language layer; the paper darkens station by station — that is the shallow-to-deep order. Dotted terms show a plain-language definition on hover and link to the glossary. When a station clicks, push open the “go deeper” door and read the full principle in the book.</p>
 </header>
 <main>
 """
