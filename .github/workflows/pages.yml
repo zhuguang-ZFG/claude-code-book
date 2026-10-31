@@ -62,9 +62,9 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       # the same plates Book CI warms; the reader/gallery generators read
-      # the dist HTML for their plain-language extracts
-      - name: Build the book (zh)
-        run: python yuyu-book/build.py --lang zh
+      # the dist HTML (both languages) for their plain-language extracts
+      - name: Build the book (both editions)
+        run: python yuyu-book/build.py --lang both
 
       - name: Build the beginner readers
         run: |
