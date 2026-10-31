@@ -59,6 +59,35 @@ PLAIN = {
 }
 
 
+PLAIN_EN = {
+    "front": "An old map: the whole book is one road",
+    "ch01": "Compass: from chatbot to co-worker — a new way to aim",
+    "ch02": "Heartbeat: one message in, one out",
+    "ch03": "Nut: the agent's hands — more tools, more skill",
+    "ch04": "Gate: risky actions pass a checked guardrail",
+    "ch05": "Layer cake: settings are genes, layer by layer",
+    "ch06": "Folded notebook: where long-term memory lives",
+    "ch07": "Gauge: how much working memory is left",
+    "ch08": "Hooks: small actions at life's milestones",
+    "ch09": "Fork: small helpers in parallel",
+    "ch10": "Conductor: one orchestrator, four squads",
+    "ch11": "Skill cards: the manual in your pocket",
+    "ch12": "One line to the world's tools",
+    "ch13": "Funnel: answers flow like water",
+    "ch14": "Flag: draw the route first, plant the flag",
+    "ch15": "Windlass: crank one yourself",
+    "apxa": "Treasure map: where the source lives",
+    "apxb": "Tool inventory: tick every box",
+    "apxc": "Switch bank: what's on, at a glance",
+    "apxd": "Pocket dictionary for new words",
+    "keeper": "The old courier, summing up each chapter",
+    "part-p1": "The great compass: foundations",
+    "part-p2": "The chest: core systems inside",
+    "part-p3": "Mountain path: the hill shortcut",
+    "part-p4": "Gateway: the road out of town",
+    "cover": "The four-horse chariot: drive a chariot, drive an agent",
+}
+
 def main():
     svgs = {n: (ART / f"{n}.svg").read_text(encoding="utf-8").strip()
             for n in ORDER}
@@ -68,7 +97,8 @@ def main():
         f' style="width:{WIDTH[n]+18}px">'
         f'<div class="art" style="width:{WIDTH[n]}px">{svgs[n]}</div>'
         f'<figcaption>{n}</figcaption>'
-        f'<div class="plain">{PLAIN[n]}</div></figure>'
+        f'<div class="plain">{PLAIN[n]}</div>'
+        f'<div class="plain-en">{PLAIN_EN[n]}</div></figure>'
         for n in ORDER)
     grid_light = f'<div class="grid" id="light">{cells}</div>'
     grid_dark = f'<div class="grid" id="dark">{cells}</div>'
@@ -113,6 +143,8 @@ h2{font-size:13px;color:#675F4F;margin:16px 0 10px;font-weight:600;letter-spacin
 .c figcaption{margin-top:6px;font-size:11px;color:#675F4F;letter-spacing:.03em}
 .c .plain{margin-top:2px;font-size:11px;line-height:1.5;color:#6E6353;
           max-width:150px;margin-inline:auto}
+.c .plain-en{font-size:10px;line-height:1.4;color:#8A7D68;
+             max-width:150px;margin-inline:auto}
 .c:hover .art svg{transform:scale(1.05)}
 .c .art svg{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
 .c:hover figcaption{color:#B4472F}
@@ -122,6 +154,7 @@ h2{font-size:13px;color:#675F4F;margin:16px 0 10px;font-weight:600;letter-spacin
            padding:14px 0 22px;color:#E9E4D8}
 .dark-wrap h2{color:#BDB4A2;padding-left:16px}
 .dark-wrap .c figcaption{color:#A59C8A}
+.dark-wrap .c .plain-en{color:#8F8878}
 .dark-wrap .c:hover figcaption{color:#E07B5F}
 .dark-wrap .c .plain{color:#B3AA99}
 .dark-wrap button{background:#26241D;border-color:#BDB4A2;color:#E9E4D8}

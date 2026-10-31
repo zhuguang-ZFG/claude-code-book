@@ -54,6 +54,14 @@ h2{font-size:21px;margin:0 0 8px}
 footer{max-width:820px;margin:0 auto;padding:0 30px 46px;color:#675F4F;font-size:12.5px}
 footer a{color:inherit}
 @keyframes ink-rise{from{opacity:0;transform:translateY(12px)}}
+@media print{
+  .resume,.replay-badge,.bar,.st-vids,.st-go{display:none!important}
+  .st,.st-body,.st-cap,.st-plain,.st-ana,.st-trans,.st-take,.st-gain,
+  .st-art svg path,.st-art svg circle{animation:none!important}
+  .st{break-inside:avoid;box-shadow:none}
+  body{background:#fff}
+  .dark-strip,.dark-wrap{background:#fff}
+}
 @keyframes ink-draw{from{stroke-dashoffset:100}}
 </style>
 </head>
