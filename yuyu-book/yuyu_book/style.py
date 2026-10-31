@@ -398,12 +398,13 @@ body.lang-en{font-family:"Iowan Old Style",Palatino,Georgia,var(--serif);
 /* book blocks: flush both edges; CJK breaks strictly, Latin hyphenates */
 .chapter-body p,.chapter-body li{text-align:justify}
 body.lang-zh .chapter-body p,body.lang-zh .chapter-body li,
-body.lang-zh .chapter-body blockquote{line-break:strict}
+body.lang-zh .chapter-body blockquote{line-break:strict;border-inline-start:2.5px solid rgba(180,71,47,.3);padding-inline-start:.8rem}
 body.lang-en .chapter-body p,body.lang-en .chapter-body li{hyphens:auto}
 /* ragged-right beats a grid of gaps once the line is short enough that one
    unbreakable token costs the whole row its spacing -- see the contract test */
 @media (max-width:30rem){body.lang-zh .chapter-body p,body.lang-zh .chapter-body li{text-align:left}}
-::selection{background:rgba(200,164,92,.32)}
+::selection{background:rgba(180,71,47,.16)}
+::selection-dark{background:rgba(224,123,95,.2)}
 a{color:inherit}
 a.ext::after{content:"↗";font-size:.72em;vertical-align:.15em;
   margin-inline:.12em .2em;color:var(--bronze);font-family:var(--sans)}
@@ -891,6 +892,7 @@ hr{border:none;text-align:center;margin:1.8rem 0}
 
 /* ------- callouts ------- */
 .callout{margin:1.15rem 0;padding:.75rem 1.05rem .3rem;border-radius:var(--r-2);
+.callout:hover{box-shadow:0 2px 8px rgba(38,34,27,.07)}
   border:1px solid var(--line);border-left-width:4px;background:var(--card);
   font-size:.96rem}
 .callout .callout-tag{margin:0 0 .2rem;font-family:var(--sans);font-weight:700}
@@ -951,7 +953,9 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
   color:var(--code-fg);font-family:var(--mono);font-size:.83rem;line-height:1.68;
   background:transparent;overflow-x:auto;white-space:pre;
   scrollbar-width:thin;scrollbar-color:rgba(200,164,92,.4) transparent}
-.codehilite pre::-webkit-scrollbar{height:7px}
+.codehilite pre::-webkit-scrollbar{height:7px
+  ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}}
 .codehilite pre::-webkit-scrollbar-thumb{background:rgba(200,164,92,.35);
   border-radius:999px}
 /* the ring is drawn inside because the frame clips what sticks out, and in
@@ -988,6 +992,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 .table-scroll::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .table-scroll:focus-visible{outline:2px solid var(--bronze)}
 table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
+ tbody tr:nth-child(even){background:rgba(243,234,216,.35)}
 th{font-family:var(--sans);font-weight:700;color:var(--bronze-3);
   background:var(--paper-2);text-align:start;padding:.6rem .9rem;
   border-bottom:2px solid var(--line-2);white-space:nowrap}
