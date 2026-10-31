@@ -71,6 +71,17 @@ jobs:
           python scripts/build_beginner_reader.py
           python scripts/build_illustration_gallery.py
 
+      # The committed docs/ is what the repository itself shows and what the
+      # site contracts quote. A rewrite here means the shipped copy was stale —
+      # usually a chapter was edited and the reader was never rebuilt.
+      - name: The committed readers match the generators
+        run: |
+          git diff --exit-code docs/ || {
+            echo "::error::docs/ is stale; commit the regenerated readers and gallery"
+            git --no-pager diff --stat docs/
+            exit 1
+          }
+
       - name: Assemble the site
         run: |
           mkdir -p site
