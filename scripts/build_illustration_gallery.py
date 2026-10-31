@@ -63,7 +63,9 @@ def main():
     svgs = {n: (ART / f"{n}.svg").read_text(encoding="utf-8").strip()
             for n in ORDER}
     cells = "".join(
-        f'<figure class="c" data-name="{n}" style="width:{WIDTH[n]+18}px">'
+        f'<figure class="c" data-name="{n}" tabindex="0" role="button"'
+        f' aria-label="重播 {n}：{PLAIN[n]}"'
+        f' style="width:{WIDTH[n]+18}px">'
         f'<div class="art" style="width:{WIDTH[n]}px">{svgs[n]}</div>'
         f'<figcaption>{n}</figcaption>'
         f'<div class="plain">{PLAIN[n]}</div></figure>'
@@ -107,6 +109,7 @@ section{padding:6px 28px 30px}
 h2{font-size:13px;color:#675F4F;margin:16px 0 10px;font-weight:600;letter-spacing:.04em}
 .grid{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
 .c{margin:0;text-align:center;cursor:pointer}
+.c:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
 .c figcaption{margin-top:6px;font-size:11px;color:#675F4F;letter-spacing:.03em}
 .c .plain{margin-top:2px;font-size:11px;line-height:1.5;color:#6E6353;
           max-width:150px;margin-inline:auto}
@@ -337,12 +340,21 @@ document.getElementById("speed").addEventListener("click", e => {
   speedIdx = (speedIdx + 1) % SPEEDS.length;
   e.target.textContent = "速度 ×" + SPEEDS[speedIdx];
 });
-document.querySelectorAll("figure.c").forEach(fig =>
-  fig.addEventListener("click", e => {
-    burst(e.clientX, e.clientY);
-    fig.querySelector("svg").classList.add("alive");
-    playFigure(fig, 0, SPEEDS[speedIdx] * 0.8);
-  }));
+function replayFigure(fig, cx, cy) {
+  burst(cx, cy);
+  fig.querySelector("svg").classList.add("alive");
+  playFigure(fig, 0, SPEEDS[speedIdx] * 0.8);
+}
+document.querySelectorAll("figure.c").forEach(fig => {
+  fig.addEventListener("click", e => replayFigure(fig, e.clientX, e.clientY));
+  /* keyboard parity: Enter or Space replays from the card's own center */
+  fig.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    const r = fig.getBoundingClientRect();
+    replayFigure(fig, r.left + r.width / 2, r.top + r.height / 2);
+  });
+});
 
 /* the title lands one character at a time, like a brush that cannot wait */
 (function typeTitle() {
