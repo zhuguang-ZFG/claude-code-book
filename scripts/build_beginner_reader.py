@@ -374,8 +374,22 @@ def build(lang: str) -> tuple[str, int]:
     dist = ROOT / "yuyu-book" / "dist" / t["dist"]
     html = dist.read_text(encoding="utf-8")
     svgs = {u: (ART / f"{u}.svg").read_text(encoding="utf-8").strip()
-            for u in t["order"] + ["cover", "keeper"]
+            for u in t["order"] + ["cover", "keeper",
+                                   "part-p1", "part-p2", "part-p3", "part-p4"]
             if (ART / f"{u}.svg").exists()}
+    part_meta = {}
+    for pn in ("p1", "p2", "p3", "p4"):
+        i = html.find(f'id="{pn}"')
+        if i < 0:
+            continue
+        seg = html[i:i + 12000]
+
+        def grab(cls, seg=seg):
+            m = re.search(cls + r'">([^<]*)', seg)
+            return m.group(1).strip() if m else ""
+        part_meta[pn] = {"no": grab("pd-no"), "title": grab("pd-title"),
+                         "motto": grab("pd-motto"),
+                         "goal": re.sub(r"<[^>]+>", "", grab("pd-goal"))}
     units = extract_units(html, t["order"])
 
     stations = [f"""<article class="st st-hero" style="background:#FBF6EC">
@@ -390,7 +404,24 @@ def build(lang: str) -> tuple[str, int]:
 </article>"""]
 
     num = 0
-    for part, tier, bg, us in t["parts"]:
+    for pi, (part, tier, bg, us) in enumerate(t["parts"]):
+        pn = f"p{pi + 1}"
+        pm = part_meta.get(pn)
+        plate = svgs.get(f"part-{pn}", "")
+        if pm and plate:
+            goal_txt = glossify(pm["goal"], t["lang"], 2,
+                                t["book"] + f"#{pn}")
+            stations.append(f"""<article class="st st-divider" id="st-{pn}"
+                style="background:{bg}">
+  <div class="st-art" style="width:300px">{plate}</div>
+  <div class="st-body">
+    <p class="st-part">{pm["no"]} · <b class="st-tier">{tier}</b></p>
+    <h2>{pm["title"]}</h2>
+    <p class="st-motto">{pm["motto"]}</p>
+    <p class="st-plain">{goal_txt}</p>
+    <a class="st-go" href="{t["book"]}#{pn}">{t["part_link"].format(part=pm["no"])}</a>
+  </div>
+</article>""")
         for uid in us:
             num += 1
             topic = TOPICS_EN.get(uid, "")
@@ -612,13 +643,15 @@ document.querySelectorAll(".st-art").forEach(art => {
   const L = en ? {prev: "← prev", next: "next →"} : {prev: "← 上一站", next: "下一站 →"};
   const arts = Array.from(document.querySelectorAll("main .st"));
   arts.forEach((a, i) => {
-    a.id = "st-" + i;
+    if (!a.id) a.id = "st-" + i;
     const nav = document.createElement("p");
     nav.className = "st-navrow";
     nav.innerHTML =
-      (i > 0 ? '<a href="#st-' + (i - 1) + '">' + L.prev + '</a>' : '<span></span>')
-      + '<span class="st-non">' + (i + 1) + ' / ' + arts.length + '</span>'
-      + (i < arts.length - 1 ? '<a href="#st-' + (i + 1) + '">' + L.next + ' →</a>' : '<span></span>');
+      const prev = i > 0 ? arts[i - 1] : null;
+      const next = i < arts.length - 1 ? arts[i + 1] : null;
+      (prev ? `<a href="#${prev.id}">${L.prev}</a>` : '<span></span>')
+      + `<span class="st-non">${i + 1} / ${arts.length}</span>`
+      + (next ? `<a href="#${next.id}">${L.next} →</a>` : '<span></span>');
     a.appendChild(nav);
   });
   const bar = document.createElement("div");
@@ -727,13 +760,15 @@ document.querySelectorAll(".st-art").forEach(art => {
   const L = en ? {prev: "← prev", next: "next →"} : {prev: "← 上一站", next: "下一站 →"};
   const arts = Array.from(document.querySelectorAll("main .st"));
   arts.forEach((a, i) => {
-    a.id = "st-" + i;
+    if (!a.id) a.id = "st-" + i;
     const nav = document.createElement("p");
     nav.className = "st-navrow";
     nav.innerHTML =
-      (i > 0 ? '<a href="#st-' + (i - 1) + '">' + L.prev + '</a>' : '<span></span>')
-      + '<span class="st-non">' + (i + 1) + ' / ' + arts.length + '</span>'
-      + (i < arts.length - 1 ? '<a href="#st-' + (i + 1) + '">' + L.next + ' →</a>' : '<span></span>');
+      const prev = i > 0 ? arts[i - 1] : null;
+      const next = i < arts.length - 1 ? arts[i + 1] : null;
+      (prev ? `<a href="#${prev.id}">${L.prev}</a>` : '<span></span>')
+      + `<span class="st-non">${i + 1} / ${arts.length}</span>`
+      + (next ? `<a href="#${next.id}">${L.next} →</a>` : '<span></span>');
     a.appendChild(nav);
   });
   const bar = document.createElement("div");
@@ -845,6 +880,7 @@ LANGS = {
         "lang": "zh",
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
         "takeaways": TAKEAWAYS,
+        "part_link": "想深入？翻开大书{part} →",
         "quiz_label": "自测一下 · 答案在大书这一章",
         "gain_label": "读完你能：",
         "replay_label": "重播「{name}」的手绘过程",
@@ -879,6 +915,7 @@ LANGS = {
         "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
         "videos": VIDEOS_EN,
         "takeaways": TAKEAWAYS_EN,
+        "part_link": "Depth? Open {part} in the full book →",
         "quiz_label": "Test yourself · the answer is in the chapter",
         "gain_label": "After this chapter you can: ",
         "replay_label": "Replay the ink drawing of “{name}”",
