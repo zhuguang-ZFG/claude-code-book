@@ -91,7 +91,7 @@ Tools have a rich set of rendering methods that cover the complete UI lifecycle:
 - `renderToolUseErrorMessage`: Display when execution encounters an error
 - `renderGroupedToolUse`: Grouped display for multiple parallel tools
 
-Each rendering method returns `React.ReactNode`, enabling deep integration between the tool system and the React rendering pipeline. This design choice means that a tool's UI presentation can be as flexible as React components -- progress bars, color highlighting, collapsible panels, table layouts can all be implemented through React components.
+Every render method returns `React.ReactNode`, so the tool system plugs straight into the React rendering pipeline. A tool's UI can then be as flexible as any React component -- progress bars, color highlighting, collapsible panels, table layouts can all be implemented through React components.
 
 The coverage of these six rendering methods is noteworthy: it spans the entire "life cycle" of a tool call -- from start (renderToolUseMessage), to in-progress (renderToolUseProgressMessage), to success (renderToolResultMessage), rejected (renderToolUseRejectedMessage), error (renderToolUseErrorMessage), and grouped display for parallel execution (renderGroupedToolUse). This complete lifecycle coverage ensures that users always see clear, meaningful UI feedback regardless of the state.
 
@@ -211,7 +211,7 @@ FileEditTool's `isDestructive` method determines whether an edit is a destructiv
 
 **FileWriteTool** is responsible for creating or completely overwriting files. This is the "heaviest" file operation with the strictest permission checks. The difference between FileWriteTool and FileEditTool lies in scope -- Edit only modifies specific fragments within a file, while Write can completely overwrite file contents. Therefore, Write has higher permission check standards.
 
-All three tools support `contextModifier`, which updates the file state cache after execution, enabling subsequent tool calls and memory attachment injection to see the latest file state.
+All three tools support `contextModifier`, which updates the file state cache after execution, so later tool calls and memory attachment injections see the latest state.
 
 > **Best Practice:** When designing your own Agent tools, follow the "least privilege" principle -- prefer Edit over Write, prefer Read over Bash. The rule is about efficiency as well as safety: a precise Edit is faster than writing an entire file and less error-prone.
 
@@ -345,7 +345,7 @@ Key design decisions of StreamingToolExecutor:
 
 2. **Error propagation**: BashTool execution failure cancels all parallel sibling tools. Non-Bash tool errors do not propagate -- because read/search operations are typically independent. This distinction is important: Bash command failures usually mean something is wrong with the environment (e.g., disk full, network down), and continuing to execute other commands at that point will likely also fail. File read or search operation failures are typically localized (e.g., file doesn't exist, pattern doesn't match) and don't affect other operations.
 
-3. **Immediate progress yielding**: Progress messages during tool execution bypass the ordering constraint and are immediately yielded to the upper layer. This allows the UI to display tool execution progress in real-time without waiting for preceding tools to complete. This design reflects the priority of user experience -- progress messages are "informational" and don't need strict ordering guarantees; result messages are "factual" and must maintain order.
+3. **Immediate progress yielding**: Progress messages during tool execution bypass the ordering constraint and are immediately yielded to the upper layer. The UI shows progress as it happens, without waiting on the tools ahead of it. The ordering follows the kind of message: progress messages are "informational" and don't need strict ordering guarantees; result messages are "factual" and must maintain order.
 
 4. **Discard mechanism**: When a streaming fallback occurs (the model switches to a fallback model), all pending and executing tools are marked as discarded, preventing stale results from leaking. This is equivalent to an "emergency brake" -- when the model decides to change strategy, all tool call results based on the old strategy should be discarded.
 

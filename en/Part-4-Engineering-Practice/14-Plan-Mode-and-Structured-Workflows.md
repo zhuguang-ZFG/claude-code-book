@@ -683,7 +683,7 @@ Key isolation designs include:
 
 1. **File state cache cloning** (`cloneFileStateCache`): Sub-agent's file reads don't affect parent Agent's cache. This ensures parent Agent's file state view isn't polluted by sub-agent's intermediate operations. For example, if sub-agent reads a file then file is modified, parent Agent still holds pre-modification cached version, not refreshed due to sub-agent's read.
 
-2. **Independent AbortController**: Sub-agent can be independently aborted without affecting parent Agent. This enables parent Agent to start multiple sub-agents, selectively canceling one sub-agent when needed without affecting other ongoing subtasks.
+2. **Independent AbortController**: Sub-agent can be independently aborted without affecting parent Agent. The parent Agent can therefore run several sub-agents at once and cancel one of them, leaving the others to finish.
 
 3. **Permission prompt suppression**: Background Agent's `getAppState` wraps `shouldAvoidPermissionPrompts: true`, avoiding background operations popping UI prompts. This is because background Agents usually execute pre-authorized tasks (like Plan verification, session summary), don't need and shouldn't interrupt users.
 

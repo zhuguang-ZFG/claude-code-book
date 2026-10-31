@@ -308,7 +308,7 @@ flowchart TD
 
 After each compression is completed, the system inserts a `CompactBoundaryMessage` into the message stream as a dividing line between pre-compression and post-compression. This marker carries compression metadata: trigger type (manual/automatic), pre-compression token count, and number of messages involved in the compression. The `logicalParentUuid` field associates the boundary marker with the last message before compression, constructing logical continuity of the message chain.
 
-The presence of the boundary marker enables subsequent compression operations to accurately identify "which messages have already been compressed," avoiding redundant compression of already-summarized content.
+The boundary marker tells later compression runs "which messages have already been compressed," so they do not get compressed twice.
 
 > **Cross-Reference:** `CompactBoundaryMessage` is directly related to the message chain mechanism in the conversation loop from Chapter 2. When building API requests, the conversation loop needs to correctly handle boundary markers -- messages before the boundary marker have been replaced by summaries and should not be sent again.
 

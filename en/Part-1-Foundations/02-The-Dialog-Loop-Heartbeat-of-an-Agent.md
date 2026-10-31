@@ -317,7 +317,7 @@ Claude Code's dialog loop chooses `async function*` over a class, and this choic
 
 4. **Composability**: The `yield*` delegation syntax allows sub-generator output to be forwarded directly. The main loop's results are passed to the outer generator through delegation syntax, and tool execution is chained through the same mechanism. This "generator chain" pattern allows code at different levels to compose seamlessly -- the dialog loop produces events, tool execution also produces events, and the upper-level UI only needs a single unified `for await...of` loop to consume events from all levels.
 
-> **Anti-Pattern Warning:** If you are building your own Agent loop, avoid storing dialog state in global variables or class instance properties. Global state makes concurrent testing impossible; class instance state allows multiple dialog instances to interfere with each other. Function closures are the safest state container -- they are naturally isolated and naturally unshareable.
+> **Anti-Pattern Warning:** If you are building your own Agent loop, avoid storing dialog state in global variables or class instance properties. Global state rules out concurrent testing; class instance state lets separate dialog instances interfere with one another. Function closures are the safest state container -- they are naturally isolated and naturally unshareable.
 
 ---
 

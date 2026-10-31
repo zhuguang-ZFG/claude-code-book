@@ -253,7 +253,7 @@ The key benefit of using `AsyncGenerator` instead of a regular function is that 
 
 > **Cross-Reference:** Chapter 2 will provide an in-depth analysis of this async generator's internal implementation, including the preprocessing pipeline, state transition model, and dependency injection design.
 
-In terms of state management, cross-iteration state is encapsulated in an immutable State object, updated through wholesale replacement rather than field-by-field modification in each iteration. This immutable state flow pattern makes every state change traceable.
+In terms of state management, cross-iteration state is encapsulated in an immutable State object, updated through wholesale replacement rather than field-by-field modification in each iteration. Every change stays traceable.
 
 #### Tool Type System Foundation
 
@@ -273,7 +273,7 @@ This type definition contains rich architectural decisions:
 
 The core function in the tool registration module returns the complete list of all available tools and is the "Single Source of Truth" for the tool system. A few design details:
 
-1. **Conditional Registration**: Some tools are controlled by Feature Flags, such as REPL tools only available in internal builds, and scheduled task tools only enabled under specific feature modes. This allows the same codebase to serve different product forms.
+1. **Conditional Registration**: Some tools are controlled by Feature Flags, such as REPL tools only available in internal builds, and scheduled task tools only enabled under specific feature modes. One codebase therefore serves several product forms.
 2. **Lazy Loading**: Some tools use dynamic imports instead of static imports to avoid circular dependencies and reduce startup time.
 3. **Tool Filtering**: The tool filtering function, before sending the tool list to the LLM, filters out forbidden tools based on the permission context, ensuring the model cannot even "see" tools it should not use.
 
@@ -315,7 +315,7 @@ Traditional LLM calls typically use a request-response pattern: send a prompt, w
 - **Interruptibility**: The caller can terminate the generator at any time via `generator.return()` or `generator.throw()`.
 - **Backpressure Control**: If the consumer cannot keep up with the producer, the generator automatically pauses, avoiding memory overflow.
 
-This design makes Claude Code's dialog loop an "event stream" rather than a "request-response pair." Upper-layer code only needs a `for await...of` loop to consume all events from the entire dialog process.
+By this design, Claude Code's dialog loop is an "event stream" rather than a "request-response pair." Upper-layer code only needs a `for await...of` loop to consume all events from the entire dialog process.
 
 **What if we didn't design it this way?** If we used a callback pattern, every new event type would require registering a new callback function. As event types increase, the code would become an unmaintainable "callback hell." If we used Promise chains, although callback hell is solved, the ability to cancel mid-stream is lost -- when the user presses Ctrl+C, the ongoing API call does not stop cleanly. If we used EventEmitter, although cancellation is solved, it introduces memory leak risks (forgetting to remove listeners) and type safety issues (event names are strings).
 

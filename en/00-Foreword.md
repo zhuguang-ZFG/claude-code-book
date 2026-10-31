@@ -200,7 +200,7 @@ This book is based on an in-depth analysis of Claude Code's product architecture
 
 ## Acknowledgments
 
-This book could not have been written without the excellent engineering practices of the Claude Code development team. It is their carefully designed product architecture that makes in-depth technical analysis possible. The analysis in this book is based on Claude Code's public documentation and product behavior, and is intended solely for educational and academic purposes.
+This book could not have been written without the excellent engineering practices of the Claude Code development team. Their carefully designed product architecture holds up under close technical reading. The analysis in this book is based on Claude Code's public documentation and product behavior, and is intended solely for educational and academic purposes.
 
 ---
 

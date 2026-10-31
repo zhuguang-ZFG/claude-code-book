@@ -693,7 +693,7 @@ Requirements:
 
 3. **Tool isolation strategy**: The coordinator has only four core orchestration tools, while workers have the full development toolset but exclude team management tools. Independent assembly of the tool pool ensures workers are not affected by parent-level restrictions. Simple mode and Full mode adapt to different resource environments.
 
-4. **SendMessage's intelligent routing** supports point-to-point, broadcast, cross-process, and cross-session communication, and implements the ability to automatically resume stopped workers, enabling "stop-continue" workflows.
+4. **SendMessage's intelligent routing** supports point-to-point, broadcast, cross-process, and cross-session communication, and a stopped worker resumes on its own, so a "stop-continue" workflow holds.
 
 5. **The Scratchpad collaboration space** provides a permission-prompt-free shared directory across workers, with each session being independent and structurally free. It serves as the bridge for persistent knowledge transfer between workers, compensating for the limitation that workers cannot communicate directly with each other.
 

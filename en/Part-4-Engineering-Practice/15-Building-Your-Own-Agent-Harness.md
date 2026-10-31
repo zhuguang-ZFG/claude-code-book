@@ -55,7 +55,7 @@ flowchart LR
 
 The benefit of this pipeline design is "early rejection" (Fail Fast). If input parameters are invalid (Stage 1), there's no need to waste time checking permission rules (Stage 2); if permission rules explicitly deny (Stage 2), there's no need to pop up a user confirmation dialog (Stage 4). Each stage acts as a "sieve," intercepting requests that don't need further processing as early as possible.
 
-**Principle 4: Streaming first.** From model responses to tool execution results, all data flows through `AsyncGenerator`'s `yield`. Consumers can process messages one by one without waiting for the entire turn to complete. This makes real-time UI updates and streaming to SDK consumers possible.
+**Principle 4: Streaming first.** From model responses to tool execution results, all data flows through `AsyncGenerator`'s `yield`. Consumers can process messages one by one without waiting for the entire turn to complete. Real-time UI updates and streaming out to SDK consumers rest on it.
 
 **Principle 5: Pluggable extensions.** The hook system provides extension points at over twenty lifecycle nodes, from `SessionStart` to `PostToolUse`, from `PreCompact` to `Stop`. Each hook is an independent Shell command or HTTP endpoint that interacts with the Harness through a standardized JSON input/output protocol.
 
