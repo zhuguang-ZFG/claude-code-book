@@ -311,7 +311,7 @@ Claude Code's dialog loop chooses `async function*` over a class, and this choic
 
 1. **Natural State Isolation**: Each call to the dialog function creates a brand-new closure, and all mutable state is local to the function. There is no risk of cross-call state leakage. Contrast with a class approach: if the dialog loop were a method on a class, multiple concurrent dialog instances might accidentally share properties on the class instance, leading to state pollution.
 
-2. **Generator Backpressure Semantics**: `yield` pauses execution until the consumer requests the next value. This means if the UI layer can't keep up with the production speed, the generator automatically pauses without accumulating memory. This is a concern production systems must address -- when tool execution produces large amounts of output (such as the full `npm install` log), a system without backpressure control could crash from memory accumulation.
+2. **Generator Backpressure Semantics**: `yield` pauses execution until the consumer requests the next value. If the UI layer can't keep up with production speed, the generator pauses on its own and the output never piles up in memory. This is a concern production systems must address -- when tool execution produces large amounts of output (such as the full `npm install` log), a system without backpressure control could crash from memory accumulation.
 
 3. **Cancellation propagation**: `.return()` requests generator closure and runs applicable `finally` blocks, but cannot interrupt a pending `await` or cancel external I/O on its own. Cancellation requires an `AbortController` and operations that observe its signal; resource cleanup remains the responsibility of explicit cleanup paths.
 

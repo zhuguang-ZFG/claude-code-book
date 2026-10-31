@@ -212,7 +212,7 @@ After user approves plan, ExitPlanMode restores original mode, Agent enters exec
 
 `registerPlanVerificationHook` is referenced in `ExitPlanModeV2Tool`, its comment reveals an important design decision: verification hooks must be registered after context clear because context clear removes all hooks.
 
-Verification hooks must be registered after context clear because context clear removes all hooks. This means verification agent runs in the phase after "clear context and start implementation", as an independent background Agent to verify whether implementation results match the plan.
+Verification hooks must be registered after context clear because context clear removes all hooks. So the verification agent is an independent background Agent running in the phase after "clear context and start implementation", checking whether implementation results match the plan.
 
 **Design philosophy of verification agent.** Why do we need an independent verification agent instead of letting the execution agent check itself? This involves the cognitive bias of "self-review" -- executioners tend to judge their work using their own understanding rather than strictly comparing against the original plan text. The independent verification agent holds a snapshot of the original plan file, able to review implementation results from a "bystander" perspective.
 

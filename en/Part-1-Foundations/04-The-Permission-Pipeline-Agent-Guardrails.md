@@ -141,7 +141,7 @@ When the pipeline flows to the `ask` state, the permission confirmation Hook tak
 
 The most critical branch is the interactive handling branch, which pushes the permission request into a confirmation queue, renders the confirmation interface in the terminal, and waits for the user to make choices such as "allow/deny/allow this time."
 
-Before the user responds, the system may also run an asynchronous classifier check (`pendingClassifierCheck`). This means that after the user sees the prompt, the classifier may have already automatically approved the operation while the user is still thinking, implementing a "race" mechanism -- the first decision made takes effect.
+Before the user responds, the system may also run an asynchronous classifier check (`pendingClassifierCheck`). So the classifier may already have approved the operation while the user is still thinking -- a race, and the first decision made takes effect.
 
 ```mermaid
 sequenceDiagram
@@ -327,7 +327,7 @@ flowchart LR
 
 The wildcard matching engine implements full pattern matching, handles escape sequences, converts the `*` wildcard to regular expressions, and supports escaped `\*` and `\\`.
 
-One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. This means the rule `git *` matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. This "equivalent syntax" design reduces users' cognitive burden -- you don't need to remember two different syntax rules; `git:*` and `git *` do the same thing.
+One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. The rule `git *` therefore matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. This "equivalent syntax" design reduces users' cognitive burden -- you don't need to remember two different syntax rules; `git:*` and `git *` do the same thing.
 
 ### 4.4.2 Prefix Extraction Rules
 

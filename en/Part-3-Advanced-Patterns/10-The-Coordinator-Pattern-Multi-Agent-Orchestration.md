@@ -373,7 +373,7 @@ The key constraint of this workflow is that **the coordinator must understand th
 
 > "Never write 'based on your findings' or 'based on the research.' These phrases delegate understanding to the worker instead of doing it yourself. You never hand off understanding to another worker."
 
-This means the coordinator cannot simply forward a worker's findings to another worker -- it must first digest those findings, then write an implementation spec that includes specific file paths, line numbers, and modification instructions.
+So the coordinator cannot simply forward a worker's findings to another worker -- it must first digest those findings, then write an implementation spec that includes specific file paths, line numbers, and modification instructions.
 
 > **Design Philosophy: Why Can't "Understanding" Be Delegated?**
 >

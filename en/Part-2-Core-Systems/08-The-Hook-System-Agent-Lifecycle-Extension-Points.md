@@ -281,7 +281,7 @@ The most important interception point. Input is the tool call's parameter JSON. 
 - Exit code 2: Show stderr to model and block tool call (active block)
 - Other exit codes: Show stderr to user but don't block (warning mode)
 
-> **Cross-reference with Chapter 4:** PreToolUse hooks occur after the permission pipeline. The permission pipeline determines "whether the tool is allowed to execute", while PreToolUse hooks determine "given allowed execution, whether to attach additional conditions or modify parameters". This means even if the permission pipeline passes, PreToolUse hooks can still "veto".
+> **Cross-reference with Chapter 4:** PreToolUse hooks occur after the permission pipeline. The permission pipeline determines "whether the tool is allowed to execute", while PreToolUse hooks determine "given allowed execution, whether to attach additional conditions or modify parameters". So a PreToolUse hook can still "veto" even after the permission pipeline passes.
 
 Typical use cases:
 

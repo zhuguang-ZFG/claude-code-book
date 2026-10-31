@@ -212,7 +212,7 @@ Agent 通过 ExitPlanMode 呈现以下计划：
 
 `registerPlanVerificationHook` 在 `ExitPlanModeV2Tool` 中被引用，其注释揭示了一个重要设计决策：验证钩子必须在 context clear 之后注册，因为 context clear 会清除所有 hooks。
 
-验证钩子必须在 context clear 之后注册，因为 context clear 会清除所有 hooks。这意味着验证智能体运行在"清除上下文并开始实施"之后的阶段，作为一个独立的后台 Agent 来检验实施结果是否符合计划。
+验证钩子必须在 context clear 之后注册，因为 context clear 会清除所有 hooks。所以验证智能体是一个独立的后台 Agent，运行在"清除上下文并开始实施"之后的阶段，检验实施结果是否符合计划。
 
 **验证智能体的设计理念。** 为什么需要一个独立的验证智能体，而不是让执行智能体自己检查？这涉及"自我审查"的认知偏差 -- 执行者倾向于用自己的理解来评判自己的工作，而非严格按照计划原文对照。独立的验证智能体持有原始计划文件的快照，能够以"旁观者"的视角审查实施结果。
 

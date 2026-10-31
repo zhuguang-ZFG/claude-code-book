@@ -384,7 +384,7 @@ mcp__my__special__tool        → server="my", tool="special__tool"     ⚠ Ambi
 mcp__server__name__with__dupes → server="server", tool="name__with__dupes" ⚠ Ambiguous
 ```
 
-The parsing function splits on the first occurrence of double underscores — in the portion after `mcp`, everything before the first double underscore is the server name, and everything after is the tool name. This means that if the server name itself contains double underscores, the parsing result may not match expectations. But as mentioned earlier, this situation rarely occurs in practice.
+The parsing function splits on the first occurrence of double underscores — in the portion after `mcp`, everything before the first double underscore is the server name, and everything after is the tool name. If the server name itself contains double underscores, the parsing result may not match expectations. But as mentioned earlier, this situation rarely occurs in practice.
 
 > **Best Practice:** When naming MCP servers, avoid using double underscores. Use single underscores (e.g., `my_server`) or hyphens (e.g., `my-server`) as separators in server names.
 
@@ -663,7 +663,7 @@ The allowlist's design philosophy is the "principle of least privilege" — IDE 
 
 **When the Allowlist Is Enforced**
 
-The allowlist check occurs during the tool discovery stage — after Claude Code retrieves the tool list from an IDE-type MCP server, it filters out tools not on the allowlist. This means tools not on the allowlist never appear in Claude Code's tool registry; the model doesn't even know they exist. This is more secure than "register but forbid invocation" because it eliminates the possibility of accidentally invoking these tools through configuration errors or permission bypasses.
+The allowlist check occurs during the tool discovery stage — after Claude Code retrieves the tool list from an IDE-type MCP server, it filters out tools not on the allowlist. Tools not on the allowlist never appear in Claude Code's tool registry; the model doesn't even know they exist. This is more secure than "register but forbid invocation" because it eliminates the possibility of accidentally invoking these tools through configuration errors or permission bypasses.
 
 > **Relationship to the Bridge System:** The IDE tool allowlist is part of the Bridge system's (Section 12.4) security model. IDEs communicate with Claude Code through the Bridge channel, and the tool allowlist ensures that even if the Bridge channel is exploited by a malicious extension, the attack surface is strictly limited to two safe tools.
 

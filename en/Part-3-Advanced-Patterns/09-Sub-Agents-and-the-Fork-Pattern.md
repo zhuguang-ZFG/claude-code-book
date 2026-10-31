@@ -256,7 +256,7 @@ In the Fork path, the system prioritizes using the system prompt bytes already r
 
 > **Why byte-level rather than semantic-level?**
 >
-> Prompt cache is a low-level infrastructure optimization of the Anthropic API that reuses processed tokens through byte prefix matching. This means that even if two pieces of text are "semantically identical," a single character difference at the byte level (even an extra space or newline) will cause the cache to miss. This is why the Fork pattern needs to pass the rendered raw bytes rather than reconstructing — reconstruction may produce differences in whitespace characters, attribute order, and other subtle areas, and these differences are sufficient to invalidate the entire cache prefix.
+> Prompt cache is a low-level infrastructure optimization of the Anthropic API that reuses processed tokens through byte prefix matching. So even if two pieces of text are "semantically identical," a single character difference at the byte level (even an extra space or newline) will cause the cache to miss. This is why the Fork pattern needs to pass the rendered raw bytes rather than reconstructing — reconstruction may produce differences in whitespace characters, attribute order, and other subtle areas, and these differences are sufficient to invalidate the entire cache prefix.
 >
 > An apt analogy: prompt cache is like the ETag in HTTP caching — it compares exact hash values of content. Even if you reformat the indentation of an HTML document, the browser rendering result is the same, but the ETag has changed and the cache is invalidated.
 
@@ -296,7 +296,7 @@ The Fork path ensures tool definitions remain unchanged through the `useExactToo
 
 The Fork message construction function is the core of cache sharing. Its processing logic is as follows: first, preserve the complete parent assistant message (including all tool_use blocks, thinking, and text, but with new UUIDs assigned); then collect all tool_use blocks; generate a uniform fixed-string placeholder tool_result for each tool_use; and finally construct a single user message containing the placeholder results and the sub-task directive.
 
-The key point is that the placeholder results are shared across all Fork sub-agents as the fixed string "Fork started -- processing in background." This means:
+The key point is that the placeholder results are shared across all Fork sub-agents as the fixed string "Fork started -- processing in background." What follows:
 
 - **All Fork sub-agents share the same prefix**: `[...history, assistant(all_tool_uses), user(placeholder_results..., directive)]`
 - **Only the final directive text differs**: Maximizing the cache hit area
