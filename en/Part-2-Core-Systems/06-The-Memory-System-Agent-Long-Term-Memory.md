@@ -390,7 +390,7 @@ This design gives the background Agent sufficient read capabilities to understan
 
 **The Principle of Least Privilege in Practice**
 
-The tool permission allowlist embodies the Principle of Least Privilege in security design: the background Agent is granted only the minimum set of permissions needed to fulfill its responsibilities. Specifically:
+The tool permission allowlist follows the Principle of Least Privilege: the background Agent is granted only the minimum set of permissions needed to fulfill its responsibilities. Specifically:
 
 - **Why is Glob allowed?** The background Agent may need to discover relevant files to verify memory accuracy (e.g., whether a file mentioned in memory still exists)
 - **Why is Bash restricted to read-only?** To prevent the background Agent from executing destructive commands (like `rm -rf`) without the user's knowledge

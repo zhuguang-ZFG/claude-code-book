@@ -390,7 +390,7 @@ sequenceDiagram
 
 **最小权限原则的落地**
 
-工具权限白名单体现了安全设计中的最小权限原则（Principle of Least Privilege）：后台 Agent 只被授予完成其职责所需的最小权限集合。具体来说：
+工具权限白名单照最小权限原则（Principle of Least Privilege）发放：后台 Agent 只被授予完成其职责所需的最小权限集合。具体来说：
 
 - **为什么允许 Glob？** 后台 Agent 可能需要发现相关文件来验证记忆的准确性（例如，记忆中提到的文件是否还存在）
 - **为什么 Bash 限制为只读？** 防止后台 Agent 在用户不知情的情况下执行破坏性命令（如 `rm -rf`）

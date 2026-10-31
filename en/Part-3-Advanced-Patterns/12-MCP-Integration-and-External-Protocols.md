@@ -598,7 +598,7 @@ flowchart TD
 
 SDK-type servers being exempt from policy checks is an important design decision. The reason is that SDK servers are transport placeholders managed by the SDK — the CLI doesn't start processes or open network connections for them. They run in the same process as Claude Code, with security boundaries guaranteed by the host application (i.e., the application embedding the Claude Code SDK), so CLI-level policy control is unnecessary.
 
-> **Security Consideration:** The approval mechanism embodies the "Shift Left Security" philosophy. Rather than checking permissions at tool invocation time (when it may already be too late), it's better to intercept untrusted servers before connections are established. This preventive security measure costs very little (just configuration checks) but yields high returns (completely eliminates untrusted server access).
+> **Security Consideration:** The approval mechanism practices "Shift Left Security". Rather than checking permissions at tool invocation time (when it may already be too late), it's better to intercept untrusted servers before connections are established. This preventive security measure costs very little (just configuration checks) but yields high returns (completely eliminates untrusted server access).
 
 ### 12.3.3 Plugin Deduplication
 

@@ -489,7 +489,7 @@ Each hook receives a structured context object containing event type, tool infor
 
 ## A.5 Architectural Design Pattern Quick Reference
 
-Claude Code's architecture embodies multiple classic design patterns. Understanding these patterns helps readers more deeply grasp the system's design intent.
+Claude Code's architecture contains several classic design patterns; naming them makes the system's design intent easier to follow.
 
 | Design Pattern | Application Location | Design Intent |
 |---------|---------|---------|

@@ -750,7 +750,7 @@ graph TD
 
 Plugin hooks and built-in hooks are assigned lowest priority values in sorting, ensuring they don't override user-configured hooks.
 
-> **Design reflection:** Why does user global settings have highest priority? This embodies the "user sovereignty" principle -- users' personal configuration should be able to override project configuration and plugin defaults. This aligns with Chapter 4's permission pipeline design philosophy of "user decisions take precedence over auto-mode classifier". In a multi-user collaborative project, each developer should be able to customize hook behavior according to their own security preferences.
+> **Design reflection:** Why do the user's global settings rank highest? Because of user sovereignty -- users' personal configuration should be able to override project configuration and plugin defaults. This aligns with Chapter 4's permission pipeline design philosophy of "user decisions take precedence over auto-mode classifier". In a multi-user collaborative project, each developer should be able to customize hook behavior according to their own security preferences.
 
 ### Priority Conflict Resolution Case Studies
 

@@ -188,7 +188,7 @@ BashTool is the most complex tool in Claude Code. It is not a simple Shell execu
 
 BashTool's special status in the tool system is reflected in the following aspects:
 
-- **Error propagation**: When BashTool execution fails, all parallel Bash tool calls are canceled. This is because Bash commands often have implicit dependency chains (e.g., after `mkdir` fails, subsequent commands are meaningless). This design embodies the "fail fast" principle -- rather than letting subsequent commands continue executing in a corrupted environment and producing more errors, it is better to immediately stop the entire batch.
+- **Error propagation**: When BashTool execution fails, all parallel Bash tool calls are canceled. This is because Bash commands often have implicit dependency chains (e.g., after `mkdir` fails, subsequent commands are meaningless). The rule here is fail fast -- rather than letting subsequent commands continue executing in a corrupted environment and producing more errors, it is better to immediately stop the entire batch.
 
 - **Interruption behavior**: BashTool can customize its behavior when the user interrupts. Some long-running commands (such as test suites) may choose to block rather than cancel. This design reflects a nuanced understanding of user intent: interrupting a running `npm install` should stop the command immediately (the user changed their mind), but interrupting a test suite might just mean the user wants to see current progress (the results are still valuable once tests complete).
 

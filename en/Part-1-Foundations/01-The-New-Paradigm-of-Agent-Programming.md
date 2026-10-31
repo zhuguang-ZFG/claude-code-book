@@ -195,7 +195,7 @@ This diagram reveals the layered nature of Claude Code's architecture: from the 
 
 ### Technology Stack
 
-Claude Code's technology stack choices embody the engineering philosophy of "using the right tool for the right problem":
+Claude Code picks its stack by one test -- the right tool for the right problem:
 
 | Technology Component | Choice | Design Considerations | Why Not Alternatives |
 |---------------------|--------|----------------------|---------------------|
@@ -277,7 +277,7 @@ The core function in the tool registration module returns the complete list of a
 2. **Lazy Loading**: Some tools use dynamic imports instead of static imports to avoid circular dependencies and reduce startup time.
 3. **Tool Filtering**: The tool filtering function, before sending the tool list to the LLM, filters out forbidden tools based on the permission context, ensuring the model cannot even "see" tools it should not use.
 
-The combination of conditional registration and lazy loading embodies the "load on demand" engineering philosophy. In Agent systems, the number of tools can reach dozens or even hundreds (especially after MCP protocol extension). If all tools were loaded at startup, it would not only slow down startup but also potentially cause initialization errors due to circular dependencies. Claude Code's approach ensures that only the tools actually needed are loaded into memory.
+Conditional registration and lazy loading amount to loading on demand. In Agent systems, the number of tools can reach dozens or even hundreds (especially after MCP protocol extension). If all tools were loaded at startup, it would not only slow down startup but also potentially cause initialization errors due to circular dependencies. Claude Code's approach ensures that only the tools actually needed are loaded into memory.
 
 ---
 

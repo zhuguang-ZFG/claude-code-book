@@ -93,7 +93,7 @@ Rule matching is the core of the permission pipeline. The `hasPermissionsToUseTo
 
 The `getDenyRuleForTool` function traverses deny rules from all sources (userSettings, projectSettings, localSettings, flagSettings, policySettings, cliArg, command, session) for matching. The matching logic supports exact tool name matching and MCP server-level wildcards -- for example, the rule `mcp__server1__*` can match all tools under that server.
 
-The priority ordering of the seven rule sources reflects the "principle of proximity": session-level rules (the most recently set) take priority over command-line arguments, command-line arguments take priority over project configuration, and project configuration takes priority over global user configuration. This priority ordering ensures that more specific, more recent rules can override more general, earlier ones.
+The seven rule sources are ordered by proximity: session-level rules (the most recently set) take priority over command-line arguments, command-line arguments take priority over project configuration, and project configuration takes priority over global user configuration. This priority ordering ensures that more specific, more recent rules can override more general, earlier ones.
 
 ```mermaid
 flowchart BT
@@ -192,7 +192,7 @@ Permission decisions (PermissionDecision) come from three sources, each with dif
 
 `PermissionDecision` itself is a union type containing the three behaviors: allow, ask, and deny.
 
-> **Design Insight:** The trust level ordering of the three decision sources (hook > user > classifier) embodies the principle of "trust matching capability": Hook scripts are written by system administrators and have the highest level of system understanding, hence the highest trust level; the classifier is an AI making automatic judgments, and while its accuracy is very high, it can still make errors, hence the lowest trust level.
+> **Design Insight:** The three decision sources rank by trust matching capability (hook > user > classifier): Hook scripts are written by system administrators and have the highest level of system understanding, hence the highest trust level; the classifier is an AI making automatic judgments, and while its accuracy is very high, it can still make errors, hence the lowest trust level.
 
 ### 4.2.3 The ResolveOnce Pattern: Atomic Race Resolution
 
@@ -249,7 +249,7 @@ In plan mode, write tools (Edit, Write) have their permission checks return `den
 
 **Applicable scenario:** Code review and architecture analysis. Developers want the Agent to first "look at" the code without modifying anything, provide analysis and suggestions, and then decide whether to execute modifications.
 
-**Design Philosophy:** The plan mode embodies an "understand before acting" workflow -- the Agent first understands the codebase in read-only mode, proposes modification plans, and switches to execution mode after receiving user approval. This two-phase workflow is particularly effective when working with large codebases, preventing the Agent from making inappropriate modifications without sufficient understanding.
+**Design Philosophy:** Plan mode makes "understand before acting" two separate steps -- the Agent first understands the codebase in read-only mode, proposes modification plans, and switches to execution mode after receiving user approval. This two-phase workflow is particularly effective when working with large codebases, preventing the Agent from making inappropriate modifications without sufficient understanding.
 
 ### 4.3.3 auto Mode: Automatic Approval (with Classifier)
 
