@@ -471,11 +471,13 @@ class DesignVocabulary(unittest.TestCase):
     The sheet had grown four ways to end a row (dashed, dotted, solid and a
     boxed pill) and seven corner radii, so a rule stopped meaning anything and
     every page read as several books printed together. These contracts keep the
-    vocabulary small enough to be a style rather than a pile."""
+    vocabulary small enough to be a style rather than a pile. Since the ink
+    rebrand the two radii are cut by hand — four unequal corners apiece — but
+    there are still exactly two of them."""
 
     def test_the_radius_tokens_exist(self):
-        self.assertRegex(CSS, r"--r-1:4px")
-        self.assertRegex(CSS, r"--r-2:10px")
+        self.assertRegex(CSS, r"--r-1:\d+px \d+px \d+px \d+px/\d+px \d+px \d+px \d+px")
+        self.assertRegex(CSS, r"--r-2:\d+px \d+px \d+px \d+px/\d+px \d+px \d+px \d+px")
 
     def test_only_the_two_radii_the_pill_and_a_circle_are_used(self):
         allowed = {"var(--r-1)", "var(--r-2)", "999px", "50%", "0"}

@@ -8,13 +8,17 @@ from __future__ import annotations
 
 import math
 import random
+import re
 
 WHEEL_SVG = """<svg class="wheel" viewBox="0 0 200 200" role="img" aria-hidden="true">
-<defs><line id="spoke" x1="100" y1="100" x2="100" y2="18"
- stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></defs>
-<circle cx="100" cy="100" r="88" fill="none" stroke="currentColor" stroke-width="5"/>
-<circle cx="100" cy="100" r="72" fill="none" stroke="currentColor" stroke-width="2" opacity=".55"/>
-<circle cx="100" cy="100" r="16" fill="none" stroke="currentColor" stroke-width="7"/>
+<defs><path id="spoke" d="M100 100q2.6-18.5.4-38.5t1.2-43.5"
+ stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></defs>
+<path d="M104.5 12.6a88 89 0 0 1-2.4 175.4A89 87.2 0 0 1 104.5 12.6"
+ fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+<path d="M101 28.4a72 73 0 0 1-1.6 143.2A72.8 71 0 0 1 101 28.4"
+ fill="none" stroke="currentColor" stroke-width="2" opacity=".55" stroke-linecap="round"/>
+<path d="M97 84.2a16 16.6 0 0 1 11.4 3.2 15.4 15 0 0 1-4.6 25.6 16.2 15.6 0 0 1-21-7.2 15.8 16.4 0 0 1 8.4-20.8"
+ fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
 <circle cx="100" cy="100" r="4" fill="currentColor"/>
 <g opacity=".9">
 <use href="#spoke"/><use href="#spoke" transform="rotate(15 100 100)"/>
@@ -44,6 +48,25 @@ def wheel(size: int = 44) -> str:
             .replace('viewBox', f'width="{size}" height="{size}" viewBox', 1)
             .replace('id="spoke"', f'id="{sid}"')
             .replace('href="#spoke"', f'href="#{sid}"'))
+
+
+_INK_TAG = re.compile(r"<(path|circle)\b([^>]*?)(/?)>")
+_INK_FILL = re.compile(r'fill\s*=\s*"currentColor"')
+
+
+def _self_inking(svg: str) -> str:
+    """Normalize every stroked shape to pathLength="100", so the stylesheet's
+    scroll-driven ink-draw runs on generated marks exactly as it runs on the
+    shipped illustrations. Dashed strokes keep their real-unit rhythm and fade
+    instead; filled ink dots pop. Same rules as the emblem layer, one choke
+    point for every generator that draws a road."""
+    def _add(m: re.Match) -> str:
+        tag, attrs, close = m.group(1), m.group(2), m.group(3)
+        if ("pathLength" in attrs or "stroke-dasharray" in attrs
+                or _INK_FILL.search(attrs)):
+            return m.group(0)
+        return f'<{tag}{attrs} pathLength="100"{close}>'
+    return _INK_TAG.sub(_add, svg)
 
 
 # ------------------------------------------------------- hand-inked marks ----
@@ -120,9 +143,10 @@ def trace(seed: str) -> str:
                        f'l{rng.choice((5, 6, 7))} {3.4 * down}"/>')
     ex, ey = nodes[-1]
     out.append(f'<path stroke-width="1.2" d="M{ex + 1.8:.1f} {ey - 3.3:.1f}v6.6"/>')
-    return (f'<svg class="ch-trace" viewBox="0 0 250 22" aria-hidden="true"'
-            f' fill="none" stroke="currentColor" stroke-linecap="round"'
-            f' stroke-linejoin="round">{"".join(out)}</svg>')
+    return _self_inking(
+        f'<svg class="ch-trace" viewBox="0 0 250 22" aria-hidden="true"'
+        f' fill="none" stroke="currentColor" stroke-linecap="round"'
+        f' stroke-linejoin="round">{"".join(out)}</svg>')
 
 
 def _mini_wheel(cx: float, cy: float, r: float, n: int = 8,
@@ -175,9 +199,10 @@ def route_map(seed: str, count: int) -> str:
                    f' stroke-width="1.2"/>'
                    f'<circle cx="{sx:.1f}" cy="{sy:.1f}" r="1.1" fill="currentColor"'
                    f' stroke="none"/>')
-    return (f'<svg class="pd-route" viewBox="0 0 320 40" aria-hidden="true"'
-            f' fill="none" stroke="currentColor" stroke-linecap="round"'
-            f' stroke-linejoin="round">{"".join(out)}</svg>')
+    return _self_inking(
+        f'<svg class="pd-route" viewBox="0 0 320 40" aria-hidden="true"'
+        f' fill="none" stroke="currentColor" stroke-linecap="round"'
+        f' stroke-linejoin="round">{"".join(out)}</svg>')
 
 
 def rut(seed: str) -> str:
@@ -250,7 +275,7 @@ def itinerary(seed: str, legs: list[tuple[str, list[tuple[str, str]]]],
         dashed = dashed_last and i == len(legs) - 1
         road = f'<path stroke-width="1.3" d="{run([(sx, y)] + list(zip(xs, ys)) + [(ex, y)])}"'
         if dashed:
-            road = road[:-1] + ' stroke-dasharray="6 5" opacity=".8"/>'
+            road += ' class="march m110" stroke-dasharray="6 5" opacity=".8"/>'
         else:
             road += "/>"
         out.append(road)
@@ -282,9 +307,10 @@ def itinerary(seed: str, legs: list[tuple[str, list[tuple[str, str]]]],
             out.append(f'<circle cx="{ex + d * 16:.1f}" cy="{y:.1f}" r="5.4" '
                        f'stroke-width="1.1" opacity=".75"/>'
                        f'<circle cx="{ex + d * 16:.1f}" cy="{y:.1f}" r="2.2"/>')
-    return (f'<svg class="itinerary" viewBox="0 0 {width:.0f} {height:.0f}"'
-            f' aria-hidden="true" fill="none" stroke="currentColor"'
-            f' stroke-linecap="round" stroke-linejoin="round">{"".join(out)}</svg>')
+    return _self_inking(
+        f'<svg class="itinerary" viewBox="0 0 {width:.0f} {height:.0f}"'
+        f' aria-hidden="true" fill="none" stroke="currentColor"'
+        f' stroke-linecap="round" stroke-linejoin="round">{"".join(out)}</svg>')
 
 
 def key_mark(kind: str) -> str:
@@ -323,7 +349,11 @@ CSS = r"""
   --paper:#FBF7EF; --paper-2:#F3EAD8; --paper-3:#EADFC7;
   --card:#FFFDF8; --ink:#26221B; --ink-2:#5C5448; --ink-3:#675F4F;
   --line:#E3D8C1; --line-2:#D2C4A6;
-  --bronze:#8A6B3F; --bronze-2:#C8A45C; --bronze-3:#6E5B3A;
+  /* the drawing inks, transposed from the style library's C-32 charcoal:
+     the old bronze fitting colours now hold the ink scale (浓墨/次墨/淡墨)
+     so every hand-inked line — emblems, routes, ruts, seals — reads as the
+     same charcoal stick, with cinnabar left as the only accent (C-15). */
+  --bronze:#43392B; --bronze-2:#8A7D68; --bronze-3:#5A5040;
   --cinnabar:#B4472F; --jade:#4E6E5D; --sky:#4C7093;
   --code-bg:#211E19; --code-fg:#EDE6D6; --code-line:#3A352C;
   --serif:"Noto Serif SC","Source Han Serif SC","思源宋体","Songti SC",
@@ -335,8 +365,11 @@ CSS = r"""
   --furniture:56rem; /* plates, tables, code and reference grids fill this */
   /* two corners and a circle: --r-1 turns a tag, --r-2 turns a box, and 999px
      is left to the things that really are pills (a scrollbar, a 3px rule).
-     A fifth radius is a fifth book on the same sheet. */
-  --r-1:4px; --r-2:10px;
+     A fifth radius is a fifth book on the same sheet. Both are cut by hand:
+     four unequal corners apiece, so every card, seal and chip reads as cut
+     paper rather than stamped metal. */
+  --r-1:5px 4px 6px 3px/3px 6px 4px 5px;
+  --r-2:13px 8px 12px 8px/8px 12px 8px 13px;
 }
 /* Latin needs a shorter measure than CJK for the same comfort: 46rem of 17px
    Palatino is a 90-character line, which no one reads without losing the
@@ -348,7 +381,7 @@ body.lang-en{--measure:37rem;--furniture:53rem}
     --paper:#181814; --paper-2:#22221C; --paper-3:#2B2A22;
     --card:#1E1D18; --ink:#E9E4D8; --ink-2:#BDB4A2; --ink-3:#A59C8A;
     --line:#37342A; --line-2:#4A4536;
-    --bronze:#C8A45C; --bronze-2:#8A6B3F; --bronze-3:#DCC188;
+    --bronze:#CFC6B4; --bronze-2:#A89E8C; --bronze-3:#E2DBCB;
     --cinnabar:#E07B5F; --jade:#9DBFA9; --sky:#8FB2D4;
     --code-bg:#12110D; --code-fg:#E4DDCC;
   }
@@ -439,7 +472,7 @@ section.front-page{break-before:page}
   align-items:center;justify-content:center;gap:.05rem;width:2.9rem;
   padding:.42rem 0;background:var(--cinnabar);color:#FBF7EF;
   font-family:var(--kai);font-size:1.05rem;line-height:1.15;letter-spacing:0;
-  writing-mode:vertical-rl;border-radius:var(--r-1);
+  writing-mode:vertical-rl;border-radius:var(--r-1);transform:rotate(1.8deg);
   box-shadow:inset 0 0 0 2px rgba(251,247,239,.55)}
 .cover-rule{display:flex;align-items:center;justify-content:center;gap:.9rem;
   margin:1.7rem auto 1.2rem;max-width:26rem}
@@ -615,11 +648,12 @@ article.chapter,article.unit{padding:1.7rem 0 2.2rem;break-before:page;
 article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
 .ch-head-row{display:flex;align-items:flex-start;gap:1.05rem}
 .ch-seal{flex:0 0 auto;display:grid;place-items:center;width:3.05rem;height:3.05rem;
-  margin-top:.25rem;border:2px solid var(--bronze-2);border-radius:var(--r-1);
-  color:var(--bronze-3);background:var(--card);
+  margin-top:.25rem;border:2px solid var(--cinnabar);border-radius:var(--r-1);
+  color:var(--cinnabar);background:var(--card);
+  transform:rotate(-1.7deg);
   font-family:Georgia,var(--sans);font-weight:700;font-size:1.32rem;
   letter-spacing:.02em;font-variant-numeric:tabular-nums;
-  box-shadow:inset 0 0 0 1px var(--paper-2)}
+  box-shadow:inset 0 0 0 1px rgba(180,71,47,.16)}
 .ch-head-row h1{margin-bottom:1.05rem}
 .appendix .ch-seal{border-color:var(--cinnabar);color:var(--cinnabar)}
 /* the unit emblem: drawn with currentColor so it re-inks itself in dark mode
@@ -630,6 +664,170 @@ article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
 .ch-emblem svg{width:100%;height:100%;display:block}
 .appendix .ch-emblem{color:var(--cinnabar);opacity:.8}
 @media (max-width:44rem){.ch-emblem{width:3.2rem;height:3.2rem}}
+/* the ink draws itself as a unit scrolls into view. Triple-guarded so the
+   drawing can never half-exist where motion cannot run: print/PDF (screen
+   only), reduced-motion readers, and browsers without scroll-driven
+   animations all fall through to the fully inked static drawing. The
+   animation targets only shapes carrying pathLength="100" — dashed strokes
+   keep their real-unit dash rhythm and fade instead, and ink dots pop. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .ch-emblem path[pathLength],.ch-emblem circle[pathLength],
+    .kp-art path[pathLength],.kp-art circle[pathLength],
+    .pd-art path[pathLength],.pd-art circle[pathLength],
+    .cover-art path[pathLength],.cover-art circle[pathLength],
+    .ch-trace path[pathLength],.ch-trace circle[pathLength],
+    .pd-route path[pathLength],.pd-route circle[pathLength],
+    .itinerary path[pathLength],.itinerary circle[pathLength]{
+      stroke-dasharray:100 100;
+      animation:ink-draw 1.2s ease-out both;
+      animation-timeline:view();
+      animation-range:cover 0% cover 60%}
+    .ch-emblem [stroke-dasharray],.kp-art [stroke-dasharray],
+    .pd-art [stroke-dasharray],.cover-art [stroke-dasharray],
+    .itinerary [stroke-dasharray]{
+      animation:ink-fade 1s ease-out both;
+      animation-timeline:view();
+      animation-range:cover 0% cover 55%}
+    .ch-emblem [fill="currentColor"],.kp-art [fill="currentColor"],
+    .pd-art [fill="currentColor"],.cover-art [fill="currentColor"],
+    .ch-trace [fill="currentColor"],.pd-route [fill="currentColor"],
+    .itinerary [fill="currentColor"]{
+      transform-box:fill-box;transform-origin:center;
+      animation:ink-pop .7s cubic-bezier(.2,1.4,.4,1) both;
+      animation-timeline:view();
+      animation-range:cover 8% cover 62%}
+    .ch-rut,.hr-knot,.ink-mark,.rmk{
+      animation:ink-fade 1s ease-out both;
+      animation-timeline:view();
+      animation-range:cover 0% cover 55%}
+    /* character: hovering wakes a drawing up. Spring easings, squash and
+       stretch — the twelve-principles vocabulary in three-line keyframes.
+       Each figure carries its pivot in a class, so one verb per drawing. */
+    .a-compass:hover .spin{animation:ink-spin-c 26s linear infinite}
+    .a-chase .spin{transform-box:view-box;transform-origin:32px 32px}
+    .a-chase:hover .spin{animation:ink-spin 7s linear infinite}
+    .a-nut .wiggle{transform-box:view-box;transform-origin:32px 32px}
+    .a-nut:hover .wiggle{animation:ink-wiggle 1s cubic-bezier(.36,.07,.19,.97) infinite alternate}
+    .a-gauge .sweep{transform-box:view-box;transform-origin:32px 44px}
+    .a-gauge:hover .sweep{animation:ink-sweep 1.5s ease-in-out infinite alternate}
+    .a-hook .nudge{transform-box:fill-box;transform-origin:center}
+    .a-hook:hover .nudge{animation:ink-nudge .7s cubic-bezier(.36,.07,.19,.97) infinite alternate}
+    .a-hub .pulse{transform-box:fill-box;transform-origin:center}
+    .a-hub:hover .pulse{animation:ink-pulse 1.1s cubic-bezier(.34,1.56,.64,1) infinite}
+    .a-wire .sway{transform-box:view-box;transform-origin:32px 14px}
+    .a-wire:hover .sway{animation:ink-sway 1.7s ease-in-out infinite alternate}
+    .a-funnel .drip{transform-box:fill-box;transform-origin:center}
+    .a-funnel:hover .drip{animation:ink-drip 1s cubic-bezier(.55,0,1,.45) infinite}
+    .a-flag .wave{transform-box:view-box;transform-origin:47px 12px}
+    .a-flag:hover .wave{animation:ink-wave 1.3s ease-in-out infinite alternate}
+    .a-toggle .knob{transform-box:fill-box;transform-origin:center}
+    .a-toggle:hover .knob{animation:ink-toggle 1s cubic-bezier(.34,1.56,.64,1) infinite alternate}
+    .a-keeper .swing{transform-box:view-box;transform-origin:45.2px 39.3px}
+    /* row-level trigger: the hop moves the drawing itself, so hovering the
+       small svg directly would push it out from under the cursor and flicker */
+    .keeper:hover .a-keeper .swing,.keeper:focus-within .a-keeper .swing{
+      animation:ink-swing 1.5s ease-in-out infinite alternate}
+    .keeper:hover .a-keeper,.keeper:focus-within .a-keeper{
+      animation:ink-hop .9s cubic-bezier(.36,.07,.19,.97) infinite alternate}
+    /* the chariot rides as the reader does: wheels roll, the team bobs */
+    .cover-art .roll{transform-box:view-box;transform-origin:668px 336px;
+      animation:ink-roll 1.1s linear both;animation-timeline:view();
+      animation-range:cover 0% cover 85%}
+    .cover-art .bob{animation:ink-bob 1.3s ease-in-out both;
+      animation-timeline:view();animation-range:cover 0% cover 70%}
+    .pd-art .turn{transform-box:view-box;transform-origin:100px 64px;
+      animation:ink-turn 1.2s ease-out both;animation-timeline:view();
+      animation-range:cover 0% cover 70%}
+    /* and the roads walk: a dashed route marches one period at a time, so
+       the 驿路 itself travels under the reader's eye */
+    .a-front:hover .m75{animation:ink-march-75 1s linear infinite}
+    .a-flag:hover .m92{animation:ink-march-92 1.1s linear infinite}
+    .a-path:hover .m80{animation:ink-march-80 1.05s linear infinite}
+    .itinerary .m110{animation:ink-march-110 1.3s linear infinite}
+    .a-gate:hover .redraw{animation:ink-redraw 1.1s ease-out infinite}
+    .a-memo:hover .write{animation:ink-redraw 1.3s ease-out infinite}
+    .a-list:hover .tick{animation:ink-redraw .8s ease-out infinite}
+    .a-list:hover .t2{animation-delay:.15s}
+    .a-list:hover .t3{animation-delay:.3s}
+    .a-stack .ripple{transform-box:fill-box;transform-origin:center}
+    .a-stack:hover .d1{animation:ink-ripple .9s ease-out infinite}
+    .a-stack:hover .d2{animation:ink-ripple .9s ease-out .15s infinite}
+    .a-fork .pulse,.a-locate .pulse{transform-box:fill-box;transform-origin:center}
+    .a-fork:hover .pulse{animation:ink-pulse 1s cubic-bezier(.34,1.56,.64,1) infinite}
+    .a-locate:hover .pulse{animation:ink-pulse 1.2s cubic-bezier(.34,1.56,.64,1) infinite}
+    .a-plug:hover .blink{animation:ink-blink 1.1s linear infinite}
+    .a-plug:hover .b2{animation-delay:.55s}
+    .a-gloss .flutter{transform-box:fill-box;transform-origin:50% 0%}
+    .a-gloss:hover .f1{animation:ink-flutter .8s ease-in-out infinite alternate}
+    .a-gloss:hover .f2{animation:ink-flutter .8s ease-in-out .2s infinite alternate}
+    /* text rises the way the drawings land: headings, callouts and cards
+       settle onto the sheet as the reader reaches them */
+    .ch-head-row h1,.h1-sub,.page-title,
+    .chapter-body h2,.chapter-body h3,
+    .callout,.lead-band,.compass-card,.route-card,.keeper-note,.new-terms,
+    .pd-title,.pd-motto,.pd-goal,.rm-head,.pd-list li{
+      animation:ink-rise .9s cubic-bezier(.22,.9,.3,1) both;
+      animation-timeline:view();
+      animation-range:cover 0% cover 42%}
+    /* the ghost wheel behind a part divider slowly turns as the reader rides */
+    .pd-ghost svg{transform-box:view-box;transform-origin:100px 100px;
+      animation:ink-ghost 1.6s ease-out both;animation-timeline:view();
+      animation-range:cover 0% cover 80%}
+  }
+  /* load- and hover-driven text motion needs no scroll timeline, only the
+     reduced-motion hand */
+  .front-page.cover .cover-kicker{animation:ink-rise .7s ease-out both}
+  .front-page.cover .book-title{animation:ink-rise .8s ease-out .12s both}
+  .front-page.cover .book-sub{animation:ink-rise .8s ease-out .24s both}
+  .front-page.cover .book-epi{animation:ink-rise .8s ease-out .36s both}
+  .front-page.cover .cover-foot{animation:ink-rise .8s ease-out .48s both}
+  .gloss:hover .gloss-pop,.gloss:focus .gloss-pop,
+  .gloss:focus-within .gloss-pop{
+    animation:ink-gloss .32s cubic-bezier(.34,1.56,.64,1)}
+  .source-chip,.tier-chip{transition:transform .16s ease,box-shadow .16s ease}
+  .source-chip:hover,.tier-chip:hover{transform:translateY(-1.5px);
+    box-shadow:0 3px 8px rgba(38,34,27,.14)}
+  .toc-row{transition:transform .18s ease}
+  .toc-row:hover{transform:translateX(3px)}
+  /* the compass ring keeps its hand-set phase even where motion is off */
+  .a-compass .spin{transform:rotate(9deg);transform-box:view-box;
+    transform-origin:32px 32px}
+}
+@keyframes ink-draw{from{stroke-dashoffset:100}}
+@keyframes ink-fade{from{opacity:0}}
+@keyframes ink-pop{0%{transform:scale(0)}60%{transform:scale(1.25,.75)}
+  80%{transform:scale(.92,1.12)}100%{transform:scale(1)}}
+@keyframes ink-spin{to{transform:rotate(360deg)}}
+@keyframes ink-spin-c{from{transform:rotate(9deg)}to{transform:rotate(369deg)}}
+@keyframes ink-wiggle{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes ink-sweep{from{transform:rotate(-12deg)}to{transform:rotate(14deg)}}
+@keyframes ink-nudge{from{transform:translateX(0)}to{transform:translateX(3px)}}
+@keyframes ink-pulse{0%{transform:scale(1)}45%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes ink-sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+@keyframes ink-drip{0%{transform:translateY(0);opacity:.55}
+  70%{opacity:.55}100%{transform:translateY(6px);opacity:0}}
+@keyframes ink-wave{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+@keyframes ink-toggle{0%{transform:translateX(0)}55%{transform:translateX(-25px)}
+  75%{transform:translateX(-19px)}100%{transform:translateX(-21px)}}
+@keyframes ink-swing{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+@keyframes ink-hop{from{transform:translateY(0)}to{transform:translateY(-2px)}}
+@keyframes ink-roll{to{transform:rotate(-160deg)}}
+@keyframes ink-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes ink-turn{to{transform:rotate(45deg)}}
+@keyframes ink-march-75{to{stroke-dashoffset:-7.5}}
+@keyframes ink-march-92{to{stroke-dashoffset:-9.2}}
+@keyframes ink-march-80{to{stroke-dashoffset:-8}}
+@keyframes ink-march-110{to{stroke-dashoffset:-11}}
+@keyframes ink-redraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes ink-ripple{0%{transform:translateY(0)}
+  55%{transform:translateY(2.5px)}100%{transform:translateY(0)}}
+@keyframes ink-blink{0%,45%{opacity:1}50%,95%{opacity:.12}100%{opacity:1}}
+@keyframes ink-flutter{from{transform:rotate(-5deg)}to{transform:rotate(6deg)}}
+@keyframes ink-rise{from{opacity:0;transform:translateY(12px)}}
+@keyframes ink-gloss{from{opacity:0;transform:translate(-50%,.5rem) scale(.9)}
+  to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes ink-ghost{to{transform:rotate(26deg)}}
 /* the wire the head closes on — a drawn line with pads, not a ruled one.
    Inline SVG, so it inherits currentColor like every other drawing here. */
 .ch-trace{display:block;width:min(21rem,100%);height:auto;
@@ -716,7 +914,7 @@ hr{border:none;text-align:center;margin:1.8rem 0}
 .callout-note{border-left-color:var(--ink-3)}
 .callout-note .callout-tag{color:var(--ink-2)}
 blockquote{margin:1.15rem 0;padding:.8rem 1.1rem;border-left:3px solid var(--line-2);
-  border-radius:0 var(--r-2) var(--r-2) 0;background:rgba(243,234,216,.5);color:var(--ink-2)}
+  border-radius:var(--r-2);background:rgba(243,234,216,.5);color:var(--ink-2)}
 blockquote p{margin:0 0 .5em}
 /* A quotation follows its block's alignment, not the body's: justifying a
    Latin epigraph across the full measure stretches it into rivers, and it also
@@ -784,7 +982,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
    reason that attribute is there. */
 .table-scroll::-webkit-scrollbar{height:9px}
 .table-scroll::-webkit-scrollbar-track{background:var(--paper-2);
-  border-radius:0 0 var(--r-2) var(--r-2)}
+  border-radius:var(--r-2)}
 .table-scroll::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
 .table-scroll::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .table-scroll:focus-visible{outline:2px solid var(--bronze)}
@@ -816,7 +1014,7 @@ figure.diagram{margin:1.5rem 0;text-align:center;break-inside:avoid}
 .diagram-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
 .diagram-frame::-webkit-scrollbar{height:8px}
 .diagram-frame::-webkit-scrollbar-track{background:var(--paper-2);
-  border-radius:0 0 var(--r-2) var(--r-2)}
+  border-radius:var(--r-2)}
 .diagram-frame::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
 .diagram-frame::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .diagram-frame .node rect,.diagram-frame .cluster rect{rx:8}
@@ -874,7 +1072,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 /* a row is a bordered card: cut by a page break it reads as two broken boxes */
 .reg-list li{padding:.85rem 1rem .95rem;margin-bottom:.55rem;
   border:1px solid var(--line);border-inline-start:3px solid var(--bronze-2);
-  border-radius:0 var(--r-2) var(--r-2) 0;background:var(--card);
+  border-radius:var(--r-2);background:var(--card);
   break-inside:avoid;transition:border-inline-start-color .15s ease}
 .reg-list li:hover{border-inline-start-color:var(--cinnabar)}
 .reg-head{display:flex;flex-wrap:wrap;gap:.55rem;align-items:baseline}
@@ -1133,9 +1331,12 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
 @media print{
   /* #B4472F is mixed against the screen's warm paper; on a laser printer's
      pure white it burns straight through the earth palette, so paper re-inks
-     the accent one step deeper before anything else is drawn */
+     the accent one step deeper before anything else is drawn. The ink scale
+     follows: the mid grey that carries traces and rules on screen washes out
+     on white, so paper pulls the whole charcoal scale one step deeper too. */
   :root{--paper:#FFFFFF;--card:#FFFFFF;--paper-2:#F6F0E2;--code-bg:#F8F4EA;
-    --code-fg:#26221B;--code-line:#E3D8C1;--cinnabar:#9C4630}
+    --code-fg:#26221B;--code-line:#E3D8C1;--cinnabar:#9C4630;
+    --bronze-2:#6E6353;--bronze-3:#4A4234}
   body{background:#fff;font-size:10.2pt;line-height:1.74;padding:0!important}
   body.lang-en{font-size:10pt;line-height:1.6}
   /* the A4 text block is ~665px, narrower than either measure: on paper the
