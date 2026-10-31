@@ -3,6 +3,7 @@ label, and on the portal; a stale number is exactly what a reader checks."""
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 import unittest
@@ -63,6 +64,33 @@ class StationFurniture(unittest.TestCase):
 
     def test_the_plate_count_is_the_illustrations_on_disk(self):
         self.assertEqual(reader.PLATES, len(list(reader.ART.glob("*.svg"))))
+
+    def test_the_shipped_pages_all_quote_that_plate_count(self):
+        """The gallery, the portal and both readers advertise the same drawing
+        shelf; a page that still says the old number is a page nobody re-ran."""
+        quoted = {
+            "docs/illustration-gallery.html": f"{reader.PLATES} 幅手绘插图",
+            "docs/portal.html": f"{reader.PLATES} 幅手绘插图",
+            "docs/beginner-reader.html": f"{reader.PLATES} 幅手绘插图",
+            "docs/beginner-reader.en.html": f"{reader.PLATES} hand-inked figures",
+        }
+        for path, text in quoted.items():
+            page = (ROOT / path).read_text(encoding="utf-8")
+            self.assertIn(text, page, f"{path}: does not quote {text}")
+
+
+class EditionBaseline(unittest.TestCase):
+    def test_the_reader_names_the_edition_it_was_cut_from(self):
+        want = json.loads(
+            (ROOT / "yuyu-book" / "manifest.json").read_text(encoding="utf-8")
+        )["version"]
+        for _lang, (path, _og, _label) in EDITIONS.items():
+            page = (ROOT / path).read_text(encoding="utf-8")
+            self.assertNotIn("@@", page, f"{path}: an unfilled token shipped")
+            m = re.search(r"(?:对应大书|baseline) v(\d+\.\d+\.\d+)", page)
+            self.assertIsNotNone(m, f"{path}: no book edition quoted in the footer")
+            self.assertEqual(m.group(1), want,
+                             f"{path}: says v{m.group(1)}, the book is v{want}")
 
 
 if __name__ == "__main__":

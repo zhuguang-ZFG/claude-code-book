@@ -18,6 +18,11 @@ ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "yuyu-book" / "illustrations"
 # Hand-inked plates on disk; the gallery and the readers quote this count.
 PLATES = len(list(ART.glob("*.svg")))
+# The reader is a derivative of the book, so it quotes the book's own edition —
+# bumping the version must not need a hand edit here.
+BOOK_VERSION = json.loads(
+    (ROOT / "yuyu-book" / "manifest.json").read_text(encoding="utf-8")
+)["version"]
 
 YT_CHANNEL = "https://www.youtube.com/@anthropic-ai"
 YT_SEARCH = "https://www.youtube.com/results?search_query="
@@ -503,7 +508,8 @@ def build(lang: str) -> tuple[str, int]:
 
     def fill(text: str) -> str:
         return (text.replace("@@STATIONS@@", str(t["total"]))
-                .replace("@@PLATES@@", str(PLATES)))
+                .replace("@@PLATES@@", str(PLATES))
+                .replace("@@BASELINE@@", BOOK_VERSION))
 
     page = fill(t["page_head"]) + "\n".join(stations) + fill(t["page_tail"])
     out = ROOT / "docs" / t["out"]
@@ -609,7 +615,7 @@ PAGE_TAIL_ZH = """</main>
 画风体系来自 <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 （MIT with Attribution）。大书：<a href="yuyu-agent-harness-zh.html">御舆：解码 Agent Harness</a>。
 <br>📺 页内视频为官方频道与社区资源，属<b>非规范来源</b>（仅核验存在性，
-核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。本分册对应大书 v0.3.4 构建基线。
+核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。本分册对应大书 v@@BASELINE@@ 构建基线。
 </footer>
 <div class="resume" id="resume" style="display:none">
   <span>上次读到第 <b id="resume-station"></b> 站</span>
@@ -726,7 +732,7 @@ from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 (MIT with Attribution). Full book: <a href="yuyu-agent-harness-en.html">Yù Yú: Decoding Agent Harness</a>.
 <br>📺 Videos are official-channel and community resources — <b>non-normative</b>
 (existence verified 2026-10-31); every technical fact defers to the book and its
-normative sources. This reader tracks book baseline v0.3.4.
+normative sources. This reader tracks book baseline v@@BASELINE@@.
 </footer>
 <div class="resume" id="resume" style="display:none">
   <span>You stopped at station <b id="resume-station"></b> 站</span>
