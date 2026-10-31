@@ -16,6 +16,10 @@ PAGE = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23B4472F'/%3E%3C/svg%3E">
 <title>御舆 · 站点导航 — 解码 Agent Harness</title>
+<meta property="og:title" content="御舆 · 站点导航 — 解码 Agent Harness">
+<meta property="og:description" content="一本书、一册入门、一廊插画、一份手册——大书、双语入门分册、插画画廊与再生提示词手册，全部离线自包含。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="cover.png">
 <style>
 body{margin:0;font:16px/1.9 "Noto Serif SC","Source Han Serif SC","思源宋体","Songti SC","SimSun",Georgia,serif;background:#F5F0E6;color:#26221B}
 header{padding:44px 30px 8px;max-width:860px;margin:0 auto;text-align:center}

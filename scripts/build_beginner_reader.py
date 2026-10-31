@@ -235,24 +235,24 @@ VIDEOS_EN = {
               "https://www.bilibili.com/video/BV1uS9UBQEuH"),
              ("YouTube · Mastering Claude Code in 30 minutes (official, verified)",
               "https://www.youtube.com/watch?v=6eBSHbLKuN0")],
-    "ch02": [("Bilibili · search “Claude Code conversation”", B_SEARCH + "Claude%20Code%20%E5%AF%B9%E8%AF%9D")],
-    "ch03": [("Bilibili · search “Claude Code tools”", B_SEARCH + "Claude%20Code%20%E5%B7%A5%E5%85%B7")],
-    "ch04": [("Bilibili · search “Claude Code permissions”", B_SEARCH + "Claude%20Code%20%E6%9D%83%E9%99%90")],
-    "ch05": [("Bilibili · search “Claude Code settings”", B_SEARCH + "Claude%20Code%20%E9%85%8D%E7%BD%AE")],
-    "ch06": [("Bilibili · search “Claude Code memory”", B_SEARCH + "Claude%20Code%20%E8%AE%B0%E5%BF%86")],
-    "ch07": [("Bilibili · search “Claude Code context”", B_SEARCH + "Claude%20Code%20%E4%B8%8A%E4%B8%8B%E6%96%87"),
+    "ch02": [("YouTube · search “Claude Code conversation loop”", YT_SEARCH + "Claude+Code+conversation+loop")],
+    "ch03": [("YouTube · search “Claude Code tools”", YT_SEARCH + "Claude+Code+tools")],
+    "ch04": [("YouTube · search “Claude Code permissions”", YT_SEARCH + "Claude+Code+permissions")],
+    "ch05": [("YouTube · search “Claude Code settings”", YT_SEARCH + "Claude+Code+settings")],
+    "ch06": [("YouTube · search “Claude Code memory”", YT_SEARCH + "Claude+Code+memory")],
+    "ch07": [("YouTube · search “Claude Code context”", YT_SEARCH + "Claude+Code+context"),
              ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
-    "ch08": [("Bilibili · search “Claude Code Hooks”", B_SEARCH + "Claude%20Code%20Hooks")],
-    "ch09": [("Bilibili · search “Claude Code sub-agents”", B_SEARCH + "Claude%20Code%20%E5%AD%90%E6%99%BA%E8%83%BD%E4%BD%93"),
+    "ch08": [("YouTube · search “Claude Code hooks”", YT_SEARCH + "Claude+Code+hooks")],
+    "ch09": [("YouTube · search “Claude Code sub-agents”", YT_SEARCH + "Claude+Code+subagents"),
              ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
     "ch10": [("YouTube · Anthropic official channel (multi-agent)", YT_CHANNEL)],
-    "ch11": [("Bilibili · search “Claude Skills”", B_SEARCH + "Claude%20Skills")],
+    "ch11": [("YouTube · search “Claude Skills”", YT_SEARCH + "Claude+Skills")],
     "ch12": [("Bilibili · MCP tutorial (community, verified)", "https://www.bilibili.com/video/BV1qkHrzHEh4"),
-             ("Bilibili · search “MCP tutorial”", B_SEARCH + "MCP%20%E6%95%99%E7%A8%8B"),
+             ("YouTube · search “MCP tutorial”", YT_SEARCH + "Model+Context+Protocol+tutorial"),
              ("YouTube · Anthropic official channel (MCP)", YT_CHANNEL),
              ("Official course · Claude Code 101 (verified)", "https://academy.claude.com/courses/claude-code-101")],
-    "ch13": [("Bilibili · search “Claude Code streaming”", B_SEARCH + "Claude%20Code%20%E6%B5%81%E5%BC%8F")],
-    "ch14": [("Bilibili · search “Claude Code plan mode”", B_SEARCH + "Claude%20Code%20Plan")],
+    "ch13": [("YouTube · search “Claude Code streaming”", YT_SEARCH + "Claude+Code+streaming")],
+    "ch14": [("YouTube · search “Claude Code plan mode”", YT_SEARCH + "Claude+Code+plan+mode")],
     "ch15": [("YouTube · Anthropic official channel (agent deep dive)", YT_CHANNEL)],
     "keeper": [("YouTube · Code w/ Claude full conference (official)",
                 "https://www.youtube.com/playlist?list=PLf2m23nhTg1P5BsOHUOXyQz5RhfUSSVUi")],
@@ -443,6 +443,10 @@ PAGE_HEAD_ZH = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23B4472F'/%3E%3C/svg%3E">
 <title>御舆 · 入门分册 — 看图读懂 Agent Harness</title>
+<meta property="og:title" content="御舆 · 入门分册 — 看图读懂 Agent Harness">
+<meta property="og:description" content="人人可读的 18 站看图入门：每站一幅手绘插图、一句白话、一个比方、一句记忆、一道自测、一段视频。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="cover.png">
 <style>
 body{margin:0;font:16px/1.9 "Noto Serif SC","Source Han Serif SC","思源宋体","Songti SC","SimSun",Georgia,serif;background:#F5F0E6;color:#26221B}
 header{padding:34px 30px 10px;max-width:820px;margin:0 auto}
@@ -755,6 +759,10 @@ PAGE_HEAD_EN = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23B4472F'/%3E%3C/svg%3E">
 <title>Yù Yú · Beginner Reader — Agent Harness in Pictures</title>
+<meta property="og:title" content="Yù Yú · Beginner Reader — Agent Harness in Pictures">
+<meta property="og:description" content="An 18-station picture walk through Agent Harness — plain language, shallow to deep, one sketch at a time.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="cover.png">
 <style>
 body{margin:0;font:16px/1.8 "Iowan Old Style",Palatino,Georgia,"Noto Serif SC",serif;background:#F5F0E6;color:#26221B}
 header{padding:34px 30px 10px;max-width:820px;margin:0 auto}
