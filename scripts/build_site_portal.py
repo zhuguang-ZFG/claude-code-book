@@ -5,6 +5,8 @@ handbook. Ink style, bilingual labels, hand-cut cards."""
 import sys
 from pathlib import Path
 
+from build_beginner_reader import LANGS, PLATES
+
 DEFAULT_OUT = Path("docs/portal.html")
 COVER = "cover.png"
 
@@ -71,27 +73,27 @@ footer a{color:inherit}
     <a class="card" href="book.html">
       <h2><span class="ico">📖</span>大书 · 御舆：解码 Agent Harness<span lang="en"></span></h2>
       <p>全书 15 章 + 4 附录：对话循环、工具、权限、记忆、上下文、钩子、子智能体、
-      编排、技能、MCP、流式、Plan、亲手造一个 Harness。滚动阅读时，26 幅手绘插图
+      编排、技能、MCP、流式、Plan、亲手造一个 Harness。滚动阅读时，@@PLATES@@ 幅手绘插图
       与 314 张图版会随你前进。</p>
       <span class="go">开始阅读 →</span>
       <span class="alt">English edition: <a href="yuyu-agent-harness-en.html">Yù Yú (English)</a></span>
     </a>
     <a class="card" href="beginner-reader.html">
       <h2><span class="ico">🌱</span>入门分册 · 看图读懂<span lang="en"></span></h2>
-      <p>人人可读的 18 站看图入门：每站一幅手绘插图、一句白话、一个比方、
+      <p>人人可读的 @@STATIONS_ZH@@ 站看图入门：每站一幅手绘插图、一句白话、一个比方、
       一句记忆、一道自测、一段视频。由浅入深——底色一层比一层深。</p>
       <span class="go">15 分钟入门 →</span>
     </a>
     <a class="card" href="beginner-reader.en.html" hreflang="en">
       <h2><span class="ico">🌱</span>Beginner reader · illustrated<span lang="en"></span></h2>
-      <p>The same 18-station picture walk in English — plain language,
+      <p>The same @@STATIONS_EN@@-station picture walk in English — plain language,
       shallow to deep, every station with a sketch, a takeaway, a self-check
       and curated videos.</p>
       <span class="go">15-minute on-ramp →</span>
     </a>
     <a class="card" href="illustration-gallery.html">
       <h2><span class="ico">🎨</span>插画画廊 · 看图说话<span lang="en"></span></h2>
-      <p>26 幅手绘插图的中英双语题注画廊：点击任意一幅，看墨线逐笔重演、
+      <p>@@PLATES@@ 幅手绘插图的中英双语题注画廊：点击任意一幅，看墨线逐笔重演、
       悬停读白话、点击迸发墨点。</p>
       <span class="go">逛画廊 →</span>
     </a>
@@ -106,6 +108,13 @@ footer a{color:inherit}
 </body>
 </html>
 """
+
+# Counts come from the reader builder and the plates on disk, so the front door
+# cannot quote a stale number.
+PAGE = (PAGE.replace("@@STATIONS_ZH@@", str(LANGS["zh"]["total"]))
+           .replace("@@STATIONS_EN@@", str(LANGS["en"]["total"]))
+           .replace("@@PLATES@@", str(PLATES)))
+
 
 def main() -> None:
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_OUT

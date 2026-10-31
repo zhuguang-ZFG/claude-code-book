@@ -16,6 +16,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "yuyu-book" / "illustrations"
+# Hand-inked plates on disk; the gallery and the readers quote this count.
+PLATES = len(list(ART.glob("*.svg")))
 
 YT_CHANNEL = "https://www.youtube.com/@anthropic-ai"
 YT_SEARCH = "https://www.youtube.com/results?search_query="
@@ -30,7 +32,10 @@ PARTS = [
     ("第三部分 · 高级模式篇", "深入", "#EADFC7", ["ch09", "ch10", "ch11", "ch12"]),
     ("第四部分 · 工程实践篇", "实战", "#E0D4B8", ["ch13", "ch14", "ch15"]),
 ]
-ORDER = ["front"] + [u for _, _, _, us in PARTS for u in us] + ["apxa", "apxb", "apxc", "apxd"]
+# The four appendices are stations in both editions; apxd closes the walk and
+# the keeper's note follows it as an unnumbered hero.
+APPENDIX_STATIONS = ("apxa", "apxb", "apxc", "apxd")
+ORDER = ["front"] + [u for _, _, _, us in PARTS for u in us] + list(APPENDIX_STATIONS)
 WIDTH = {u: 148 for u in ORDER}
 
 CAPTIONS = {
@@ -165,7 +170,8 @@ PARTS_EN = [
     ("Part III · Advanced Patterns", "Deep", "#EADFC7", ["ch09", "ch10", "ch11", "ch12"]),
     ("Part IV · Engineering Practice", "Practice", "#E0D4B8", ["ch13", "ch14", "ch15"]),
 ]
-ORDER_EN = ["front"] + [u for _, _, _, us in PARTS_EN for u in us] + ["apxd"]
+ORDER_EN = (["front"] + [u for _, _, _, us in PARTS_EN for u in us]
+            + list(APPENDIX_STATIONS))
 
 CAPTIONS_EN = {
     "front": "An old map: the whole book is one road",
@@ -460,7 +466,7 @@ def build(lang: str) -> tuple[str, int]:
                                     svgs.get(uid, ""), tier, part, bg,
                                     t["widths"].get(uid, 148), t))
 
-    for uid in ("apxa", "apxb", "apxc"):
+    for uid in APPENDIX_STATIONS[:3]:
         num += 1
         stations.append(station(uid, num, units.get(uid, {"title": uid}),
                                 svgs.get(uid, ""), t["appendix_tier"],
@@ -491,7 +497,15 @@ def build(lang: str) -> tuple[str, int]:
   </div>
 </article>""")
 
-    page = t["page_head"] + "\n".join(stations) + t["page_tail"]
+    if num != t["total"]:
+        raise SystemExit(f"beginner reader: {num} numbered stations, but the "
+                         f"edition declares {t['total']}")
+
+    def fill(text: str) -> str:
+        return (text.replace("@@STATIONS@@", str(t["total"]))
+                .replace("@@PLATES@@", str(PLATES)))
+
+    page = fill(t["page_head"]) + "\n".join(stations) + fill(t["page_tail"])
     out = ROOT / "docs" / t["out"]
     out.write_text(page, encoding="utf-8")
     return out, len(stations)
@@ -505,7 +519,7 @@ PAGE_HEAD_ZH = """<!doctype html>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23B4472F'/%3E%3C/svg%3E">
 <title>御舆 · 入门分册 — 看图读懂 Agent Harness</title>
 <meta property="og:title" content="御舆 · 入门分册 — 看图读懂 Agent Harness">
-<meta property="og:description" content="人人可读的 18 站看图入门：每站一幅手绘插图、一句白话、一个比方、一句记忆、一道自测、一段视频。">
+<meta property="og:description" content="人人可读的 @@STATIONS@@ 站看图入门：每站一幅手绘插图、一句白话、一个比方、一句记忆、一道自测、一段视频。">
 <meta property="og:type" content="website">
 <meta property="og:image" content="cover.png">
 <style>
@@ -591,7 +605,7 @@ footer a{color:inherit}
 
 PAGE_TAIL_ZH = """</main>
 <footer>
-本分册由大书的通俗层与 <a href="illustration-gallery.html">26 幅手绘插图</a> 组成；
+本分册由大书的通俗层与 <a href="illustration-gallery.html">@@PLATES@@ 幅手绘插图</a> 组成；
 画风体系来自 <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 （MIT with Attribution）。大书：<a href="yuyu-agent-harness-zh.html">御舆：解码 Agent Harness</a>。
 <br>📺 页内视频为官方频道与社区资源，属<b>非规范来源</b>（仅核验存在性，
@@ -707,7 +721,7 @@ document.querySelectorAll(".st-art").forEach(art => {
 PAGE_TAIL_EN = """</main>
 <footer>
 This reader is assembled from the full book's plain-language layer and the
-<a href="illustration-gallery.html">26 hand-inked figures</a>; the style system comes
+<a href="illustration-gallery.html">@@PLATES@@ hand-inked figures</a>; the style system comes
 from <a href="https://github.com/yang0/handraw-style">yang0/handraw-style</a>
 (MIT with Attribution). Full book: <a href="yuyu-agent-harness-en.html">Yù Yú: Decoding Agent Harness</a>.
 <br>📺 Videos are official-channel and community resources — <b>non-normative</b>
@@ -829,7 +843,7 @@ PAGE_HEAD_EN = """<!doctype html>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23B4472F' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23B4472F'/%3E%3C/svg%3E">
 <title>Yù Yú · Beginner Reader — Agent Harness in Pictures</title>
 <meta property="og:title" content="Yù Yú · Beginner Reader — Agent Harness in Pictures">
-<meta property="og:description" content="An 18-station picture walk through Agent Harness — plain language, shallow to deep, one sketch at a time.">
+<meta property="og:description" content="A picture walk through Agent Harness in @@STATIONS@@ stations — plain language, shallow to deep, one sketch at a time.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="cover.png">
 <style>
@@ -913,7 +927,8 @@ LANGS = {
         "dist": "yuyu-agent-harness-zh.html",
         "book": "yuyu-agent-harness-zh.html",
         "out": "beginner-reader.html",
-        "order": ORDER, "parts": PARTS, "total": 19,
+        "order": ORDER, "parts": PARTS,
+        "total": sum(len(us) for _, _, _, us in PARTS) + len(APPENDIX_STATIONS),
         "widths": WIDTH,
         "lang": "zh",
         "captions": CAPTIONS, "transitions": TRANSITIONS, "videos": VIDEOS,
@@ -950,7 +965,8 @@ LANGS = {
         "dist": "yuyu-agent-harness-en.html",
         "book": "yuyu-agent-harness-en.html",
         "out": "beginner-reader.en.html",
-        "order": ORDER_EN, "parts": PARTS_EN, "total": 19,
+        "order": ORDER_EN, "parts": PARTS_EN,
+        "total": sum(len(us) for _, _, _, us in PARTS_EN) + len(APPENDIX_STATIONS),
         "widths": {u: 148 for u in ORDER_EN},
         "lang": "en",
         "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
