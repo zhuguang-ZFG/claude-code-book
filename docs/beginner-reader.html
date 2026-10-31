@@ -35,7 +35,13 @@ h2{font-size:21px;margin:0 0 8px}
 .st-go{font-size:13.5px;color:#26221B;text-decoration:none;border-bottom:1.5px solid #B4472F;
        padding-bottom:1px;transition:color .16s ease}
 .st-go:hover{color:#B4472F}
-.st-art{cursor:pointer}
+.st-art{cursor:pointer;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.st-art:hover{transform:scale(1.03)}
+.resume{position:fixed;left:18px;bottom:16px;z-index:98;display:flex;gap:10px;align-items:center;background:#FFFDF8;border:1.5px solid #B4472F;color:#26221B;font-size:12.5px;padding:9px 13px;border-radius:6px 3px 7px 4px/4px 7px 3px 6px;box-shadow:2px 3px 0 rgba(38,34,27,.18)}
+.resume b{color:#B4472F}
+.resume button{padding:5px 11px;font-size:12px}
+.resume .ghost{border-color:#8A7D68;color:#675F4F;box-shadow:none}
+.st-art:hover{transform:scale(1.03)}
 .st-art:focus-visible{outline:2px solid #B4472F;outline-offset:4px}
 .st,.st-body,.st-cap,.st-plain,.st-ana{animation:ink-rise .8s cubic-bezier(.22,.9,.3,1) both;
   animation-timeline:view();animation-range:cover 0% cover 46%}
@@ -259,6 +265,11 @@ footer a{color:inherit}
 <br>📺 页内视频为官方频道与社区资源，属<b>非规范来源</b>（仅核验存在性，
 核验日期 2026-10-31）；一切技术事实以大书正文及其规范来源为准。
 </footer>
+<div class="resume" id="resume" style="display:none">
+  <span>上次读到第 <b id="resume-station"></b> 站</span>
+  <button id="resume-go">继续读 →</button>
+  <button id="resume-no" class="ghost">从头开始</button>
+</div>
 <script>
 /* click or Enter re-inks the drawing — the reader takes part in it */
 document.querySelectorAll(".st-art").forEach(art => {
@@ -294,6 +305,70 @@ document.querySelectorAll(".st-art").forEach(art => {
     replay(r.left + r.width / 2, r.top + r.height / 2);
   });
 });
+</script>
+<script>
+(function () {
+  const KEY = "yy-reader-zh";
+  let saved = 0;
+  try { saved = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  let lastSave = 0;
+  window.addEventListener("scroll", () => {
+    const now = Date.now();
+    if (now - lastSave < 800) return;
+    lastSave = now;
+    try { localStorage.setItem(KEY, String(window.scrollY)); } catch (e) {}
+  }, {passive: true});
+  if (saved > 600) {
+    const banner = document.getElementById("resume");
+    banner.style.display = "flex";
+    const st = document.querySelectorAll(".st");
+    let idx = 0;
+    st.forEach((el, i) => {
+      if (el.getBoundingClientRect().top + window.scrollY <= saved) idx = i;
+    });
+    document.getElementById("resume-station").textContent = idx + 1;
+    document.getElementById("resume-go").onclick = () => {
+      window.scrollTo({top: saved, behavior: "smooth"});
+      banner.style.display = "none";
+    };
+    document.getElementById("resume-no").onclick = () => {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      banner.style.display = "none";
+    };
+  }
+})();
+</script>
+<script>
+(function () {
+  const KEY = "yy-reader-en";
+  let saved = 0;
+  try { saved = +localStorage.getItem(KEY) || 0; } catch (e) {}
+  let lastSave = 0;
+  window.addEventListener("scroll", () => {
+    const now = Date.now();
+    if (now - lastSave < 800) return;
+    lastSave = now;
+    try { localStorage.setItem(KEY, String(window.scrollY)); } catch (e) {}
+  }, {passive: true});
+  if (saved > 600) {
+    const banner = document.getElementById("resume");
+    banner.style.display = "flex";
+    const st = document.querySelectorAll(".st");
+    let idx = 0;
+    st.forEach((el, i) => {
+      if (el.getBoundingClientRect().top + window.scrollY <= saved) idx = i;
+    });
+    document.getElementById("resume-station").textContent = idx + 1;
+    document.getElementById("resume-go").onclick = () => {
+      window.scrollTo({top: saved, behavior: "smooth"});
+      banner.style.display = "none";
+    };
+    document.getElementById("resume-no").onclick = () => {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      banner.style.display = "none";
+    };
+  }
+})();
 </script>
 </body>
 </html>
