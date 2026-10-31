@@ -53,6 +53,8 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 `yuyu-book/tests` 不需要浏览器、不渲染图、不写书稿；它把 `--check` 抓不到的东西钉死：附录 D 表格到索引的映射、`MermaidBlock.line` 必须仍是文件里的行号（图题靠它对位）、`第 N 章` 在 `<code>/<pre>/<svg>` 子树里不许被加链、配色 token 的 WCAG 4.5:1 对比度。Windows 控制台若因中文断言报编码错误，加 `PYTHONIOENCODING=utf-8`。
 
+还有一道只在 Book CI 里跑的门：`python scripts/check_artifact_claims.py`。README「离线整书」引了 PDF 页数与单文件 HTML 体积，页数跟着构建机那套中文字体走（CI 装 Noto CJK，换一台装了微软雅黑的 Windows 两份都排得更长，README 里照实写着那台机器的数字），所以本地对着自己的 `dist/` 跑必红，只有指向同一次 CI 刚排出来的产物才绿。它核对四件事：两语页数、两语 HTML 体积；对不上、产物缺失、或者那两句话被改写成别的说法，都退出非零。单文件 HTML 与字体无关，体积这一半本地也能核。
+
 ## 3. 新增或修改一章
 
 1. **写 Markdown**，中英文两份都要动。
@@ -195,6 +197,7 @@ PDF 阶段另有五道：命名目标缺失（`no destination found for ...`）�
 - [ ] 新来源已过第 4 节的门禁，`snapshot`/`accessed`/`scope` 写实
 - [ ] 动到通俗层时，每条新写的白话都带指得回书稿的 `plain_evidence` / `evidence`，中英两侧齐备；新单元有 `illustrations/<id>.svg`，并在 `notes.json` 里留一条按语（术语锁会替你核对那句里有没有本单元真正用过的词形）
 - [ ] 若动到版本号，`revisions.json` 与 `manifest.json` 的 `version`/`date` 一致
+- [ ] 章节增删导致 PDF 页数或单文件体积变化时，README「离线整书」那一行的数字跟着改（Book CI 的 `scripts/check_artifact_claims.py` 会替你核对）
 - [ ] 涉及显示问题，注明阅读平台、文件与复现步骤
 
 CI 侧有两个工作流：`.github/workflows/check-book.yml`（内容门）与 `.github/workflows/book.yml`（内容门 + 构建审计 + 双语 PDF 产物）。PR 上两者都必须绿。
