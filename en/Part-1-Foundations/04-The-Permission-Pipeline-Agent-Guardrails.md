@@ -81,7 +81,7 @@ These four stages are: validateInput (input validation), hasPermissionsToUseTool
 
 The first checkpoint of the permission pipeline is not about permissions per se, but about input data validity. In the permission checking function, the tool's input is first parsed through a Zod Schema using strict structural validation. If the input does not conform to the Schema definition (e.g., the Bash tool is missing the required `command` field), the parsing will throw an exception and the tool call is rejected outright. This design separates "invalid data" from "insufficient permissions" -- the former is a programming error, the latter is a policy decision.
 
-When parsing fails, `toolPermissionResult` retains its default `passthrough` state, which is subsequently converted to `ask` behavior. This means that even when data validation fails, the system gracefully degrades to requesting user confirmation rather than crashing outright.
+When parsing fails, `toolPermissionResult` retains its default `passthrough` state, which is subsequently converted to `ask` behavior. So when data validation fails the system degrades to asking the user for confirmation instead of crashing outright.
 
 This design choice embodies an important engineering principle: **in security systems, error handling should be "safe" rather than "correct."** Crashing outright does expose the problem, but during Agent runtime it could interrupt the entire session. Gracefully degrading to user confirmation is a safer error handling strategy -- it gives the user the opportunity to decide whether to continue, rather than having the system decide on the user's behalf.
 

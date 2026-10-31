@@ -60,7 +60,7 @@ flowchart TD
 每个工具使用 Zod 定义其输入参数的 schema。Zod schema 承担了双重职责：
 
 1. **运行时验证**：在工具执行之前，LLM 生成的参数经过 Zod 解析，确保类型和约束的正确性。这是"不要信任外部输入"原则的体现——LLM 的输出是不可控的，工具必须自我保护。
-2. **API 通信**：Zod schema 通过转换层生成 JSON Schema 发送给 API，让模型知道每个参数的含义和约束。这意味着 schema 定义就是工具的"使用说明书"——模型看到的参数描述来自 Zod schema 中的 `describe()` 调用。
+2. **API 通信**：Zod schema 通过转换层生成 JSON Schema 发送给 API，让模型知道每个参数的含义和约束。参数描述就写在 Zod schema 的 `describe()` 调用里。
 
 > **交叉引用：** Zod schema 的验证发生在第 4 章权限管线的第一阶段（validateInput），这是"安全边界内嵌"设计原则的具体体现。
 

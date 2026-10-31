@@ -419,7 +419,7 @@ const readFileTool = buildTool({
 })
 ```
 
-`buildTool` 的关键是 **fail-closed 默认值**：`isConcurrencySafe` 默认为 `false`，`isReadOnly` 默认为 `false`。这意味着新工具在显式声明安全性之前，系统会假设最危险的情况。这是 Claude Code 源码中注释所强调的 -- "assume not safe" 和 "assume writes"。
+`buildTool` 的关键是 **fail-closed 默认值**：`isConcurrencySafe` 默认为 `false`，`isReadOnly` 默认为 `false`。新工具在显式声明安全性之前，系统按最危险的情况处理；Claude Code 源码注释强调的两句话是 -- "assume not safe" 和 "assume writes"。
 
 **Fail-closed vs. Fail-open 的权衡：**
 

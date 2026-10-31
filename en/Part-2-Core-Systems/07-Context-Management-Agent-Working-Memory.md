@@ -400,7 +400,7 @@ Compression at the end of each phase ensures ample context space for the next ph
 
 > **Cross-Reference:** The memory system from Chapter 6 is an important supplement to context management. Compression loses conversation details, but if key information has already been saved as memory files, the Agent can still recover critical context by reading memories after compression.
 
-This means you should develop the habit of having the Agent save memories when important decisions are made -- so that even if the conversation is compressed, critical information is not lost.
+Having the Agent save a memory after an important decision is what keeps that decision readable once the conversation is compressed.
 
 ### Context Strategies for Multi-File Projects
 

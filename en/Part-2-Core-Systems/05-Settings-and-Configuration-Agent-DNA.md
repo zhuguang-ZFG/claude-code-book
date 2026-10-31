@@ -77,7 +77,7 @@ The key characteristics of these rules are:
 - **Object type**: Deep merge. Nested properties are overridden layer by layer.
 - **Scalar type**: The latter directly overrides the former.
 
-This means that if `userSettings` sets `model: "claude-sonnet-4"` and `policySettings` sets `model: "claude-opus-4"`, the final effective value is `"claude-opus-4"`. But if both set `permissions.allow: ["Bash(*)"]`, the final result is a merged, deduplicated array.
+If `userSettings` sets `model: "claude-sonnet-4"` and `policySettings` sets `model: "claude-opus-4"`, the latter wins; if both set `permissions.allow: ["Bash(*)"]`, the result is one merged, deduplicated array.
 
 **Why do arrays use concatenation instead of replacement?** This is a deliberate design decision. In the permission system, each rule is a "defense line" -- if a higher-priority source's array replaced a lower-priority source's array, the higher-priority source would have to completely enumerate all needed permission rules, and any omission would become a security vulnerability. The concatenation strategy allows each layer to only care about the rules it wants to "add," and the system automatically merges all layers' security policies.
 

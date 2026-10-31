@@ -69,7 +69,7 @@ In streaming mode, tool 1 starts executing at second 1, and by second 5, all thr
 
 ### 13.1.3 Immediate Detection of Tool Call Blocks
 
-In streaming mode, when the API returns a `tool_use` type content block, the system doesn't need to wait for the entire response to complete before starting processing. This means the model generates tool call parameters while the system parses and prepares for execution, greatly shortening the delay between "model decides to call tool" and "tool starts executing".
+In streaming mode, when the API returns a `tool_use` type content block, the system doesn't need to wait for the entire response to complete before starting processing. The model is still generating tool call parameters while the system already parses them and prepares to execute, which shortens the delay between "model decides to call tool" and "tool starts executing".
 
 This immediate detection relies on `content_block_start` and `content_block_delta` events from streaming events. When the system receives `content_block_start` with type `tool_use`, it immediately knows a tool call is coming and can pre-lookup tool definitions and prepare permission check context. Subsequent `content_block_delta` events incrementally build the tool's JSON input parameters through an incremental JSON parser enabling parsing-while-receiving.
 

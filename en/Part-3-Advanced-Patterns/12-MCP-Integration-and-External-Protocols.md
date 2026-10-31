@@ -616,7 +616,7 @@ The deduplication function uses signature comparison to identify "identical" ser
 
 **Deeper Meaning of Signatures**
 
-stdio servers use the complete command array as the signature, meaning even if the server name or environment variables differ, as long as the same command is ultimately launched, they will be identified as duplicates. This is a correct security decision — deduplication should be based on "actual effect" rather than "surface configuration." If two configurations ultimately run the same program, they are duplicates.
+stdio servers use the complete command array as the signature, so a different server name or set of environment variables changes nothing: as long as the same command is ultimately launched, the entries are identified as duplicates. Deduplication keys on "actual effect" rather than "surface configuration" -- if two configurations end up running the same program, they are duplicates.
 
 Remote servers use the original URL as the signature. If the URL is a CCR (Claude Code Relay) proxy path, the system first unwraps it to obtain the real URL before calculating the signature. This prevents the same remote server from evading deduplication through different proxy paths.
 

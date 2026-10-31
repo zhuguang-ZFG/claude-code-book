@@ -419,7 +419,7 @@ const readFileTool = buildTool({
 })
 ```
 
-The key to `buildTool` is **fail-closed defaults**: `isConcurrencySafe` defaults to `false`, and `isReadOnly` defaults to `false`. This means the system assumes the most dangerous scenario for new tools until they explicitly declare their safety. This is emphasized in Claude Code's source code comments -- "assume not safe" and "assume writes."
+The key to `buildTool` is **fail-closed defaults**: `isConcurrencySafe` defaults to `false`, and `isReadOnly` defaults to `false`. A new tool is assumed to be the most dangerous scenario until it explicitly declares its safety, which is what Claude Code's source code comments emphasize -- "assume not safe" and "assume writes."
 
 **Fail-closed vs. Fail-open trade-offs:**
 

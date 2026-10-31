@@ -436,7 +436,7 @@ In LLM APIs, prompt cache is an important cost optimization mechanism -- if two 
 
 Claude Code's forked Agent pattern implements cache sharing through the `CacheSafeParams` type. The parameter extraction function extracts shared parameters from the context, including the system prompt, user context, system context, tool usage context, and message history.
 
-This means the background extraction Agent's API request prefix is identical to the main conversation's -- the API provider can hit the cached prefix, avoiding recomputation. In a typical session, this can save substantial token consumption.
+The background extraction Agent's API request prefix is identical to the main conversation's, so the provider hits the cached prefix instead of recomputing it -- a substantial saving in tokens over a typical session.
 
 **Cost Impact of Cache Sharing -- A Simplified Calculation**
 

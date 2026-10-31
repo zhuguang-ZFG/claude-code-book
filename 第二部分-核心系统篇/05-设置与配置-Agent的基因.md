@@ -77,7 +77,7 @@ flowchart LR
 - **对象类型**：深度合并。嵌套属性逐层覆盖。
 - **标量类型**：后者直接覆盖前者。
 
-这意味着，如果 `userSettings` 设置了 `model: "claude-sonnet-4"`，而 `policySettings` 设置了 `model: "claude-opus-4"`，最终生效的是 `"claude-opus-4"`。但如果两者都设置了 `permissions.allow: ["Bash(*)"]`，最终结果是合并后的去重数组。
+比如 `userSettings` 设置 `model: "claude-sonnet-4"`、`policySettings` 设置 `model: "claude-opus-4"`，生效的是 `"claude-opus-4"`；两者都设置 `permissions.allow: ["Bash(*)"]`，得到的则是合并后的去重数组。
 
 **为什么数组采用拼接而非替换？** 这是一个经过深思熟虑的设计决策。在权限系统中，每一条规则都是一道"防线"——如果高优先级源的数组替换了低优先级源的数组，就意味着高优先级源必须完整枚举所有需要的权限规则，任何遗漏都会变成安全漏洞。拼接策略让每层只需要关心自己要"增加"的规则，系统会自动合并所有层的安全策略。
 
