@@ -1,6 +1,6 @@
 # 第14章：Plan 模式与结构化工作流
 
-> **开门一句话：**动身前先在纸上走一遍路：Plan 模式把"想"和"做"分两段，改图纸总比拆墙便宜。
+> **开门一句话：**一步岔路折返一整天，这样的远门怎么出？先把路线图钉在纸上，再让车队动身。
 
 > "Plans are nothing; planning is everything." -- Dwight D. Eisenhower
 

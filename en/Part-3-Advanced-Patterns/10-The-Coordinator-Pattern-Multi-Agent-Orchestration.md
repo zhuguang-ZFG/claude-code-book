@@ -1,6 +1,6 @@
 # Chapter 10: The Coordinator Pattern -- Multi-Agent Enterprise Orchestration
 
-> **In one line:** Too many carts call for a dispatcher who never cracks the whip: it hauls no load itself, only assigns who takes which road.
+> **In one line:** More carts, more chaos -- who keeps the convoy from tangling? Meet a dispatcher that hauls nothing itself and still runs the road.
 
 > **Learning Objectives:**
 > - See how the Coordinator pattern splits work between coordinator and workers, and why it splits it there

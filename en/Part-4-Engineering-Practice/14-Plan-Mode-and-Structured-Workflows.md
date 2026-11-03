@@ -1,6 +1,6 @@
 # Chapter 14: Plan Mode & Structured Workflows
 
-> **In one line:** Walk the route on paper before the packs move: Plan Mode splits thinking from doing, and redrawing a blueprint always beats tearing down a wall.
+> **In one line:** One wrong fork costs a whole day of backtrack -- how do you leave camp certain of the route? Pin the map to paper before harnessing the horses.
 
 > "Plans are nothing; planning is everything." -- Dwight D. Eisenhower
 
