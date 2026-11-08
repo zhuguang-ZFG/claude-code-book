@@ -44,6 +44,9 @@ Midjourney、Flux 等），即可在别的媒介重制同一幅图，或为未�
 牌坊右旁必须保留转向远处的直角驿道。SVG 重绘同样遵守这一条，保存动画 class 并不证明没有漏画道路。
 网页生图时先把提示词压成单行，回读输入框确认全文与主体词完整，再显式提交；回传提示词缺少主体时，
 先查输入边界，不换模型重试。任务已成功而取图超时，只恢复下载，不重新发起收费生成。
+驿站环的路径起点不是圆心：外圈以同一圆心的两段半椭圆弧闭合，圆心点与虚线路径据此对齐。
+验收以 SVG 实际 `getBBox()`、闭合点与完整绕行圈数为准；三枚环之间必须留出笔宽之外的净距。
+沿用 `path` 与 `pathLength="100"`，确保既有画廊逐笔回放覆盖外圈，不另增动画分支。
 
 当前供给状态（2026-11-08）：
 
@@ -56,9 +59,9 @@ Midjourney、Flux 等），即可在别的媒介重制同一幅图，或为未�
 | 第二分册 7 张篇题刻 | 按已确认格式继续使用 SVG；本轮完成七幅笔压重绘，不安装生成 PNG |
 | 原 Orbitix 通道 | 工作室预扣额度不足；直接 API 的 TLS 握手超时。均不自动重试收费请求 |
 
-补齐条件：先确认可用且获准的生图路径，再逐张按隐喻审阅。直接 API 恢复后可用
-`python scripts/gen_ink_plates.py --product book --out <审阅目录>` 留存原图与转换记录，
-审阅通过才拷入 `yuyu-book/illustrations/`；缺图时篇题刻回落到 SVG，不会出现空白。
+维护者已决定停止生图 API 调用：本轮后续只做手绘 SVG 迭代，不等待充值或换通道。
+两幅已验收 PNG 保留；封面与其余篇题以 SVG 作为当前成品，不将缺少新 PNG 视为待补空槽。
+生成脚本保留为离线转换与历史再生入口，未经新的明确授权不调用生图服务。
 
 English: the agreed format is mixed — generated tonal plates only for the cover and the four part
 openers, animated SVG everywhere else, because SVG alone inherits `currentColor`, animates per
@@ -68,8 +71,10 @@ transparent paper, capped at 400 kB for the cover and 200 kB per part, with alph
 candidate was rejected because it omitted the dotted path and three station rings. The tested
 Lupi `1K / auto` conversation route returned text saying image tools were unavailable, not an
 image; the earlier accepted compass came from its basic image-generation route. The cover,
-remaining part plates and the companion volume retain SVG. Check the full single-line prompt
-before submitting, and recover a completed task's download instead of generating it again.
+remaining part plates and the companion volume retain SVG. Further image-generation API calls
+are stopped by maintainer decision; subsequent iterations are hand-drawn SVG only. Existing
+accepted PNGs remain. Station rings use two closed half-ellipse arcs around their actual center;
+verify bounding-box alignment, full winding, spacing and the existing path animation together.
 
 ## 逐图提示词
 
