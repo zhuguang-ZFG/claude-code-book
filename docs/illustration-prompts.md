@@ -40,26 +40,36 @@ Midjourney、Flux 等），即可在别的媒介重制同一幅图，或为未�
 - 计费与凭据：转换脚本离线运行；生成必须显式给出 `--out` 审阅目录并归档原图，付费请求结果不明时
   不自动重试，避免重复扣费。
 
+逐图验收要核对主体关系，不以「有图、风格相似」代替语义完整：山径必须串起三枚递减驿站环，
+牌坊右旁必须保留转向远处的直角驿道。SVG 重绘同样遵守这一条，保存动画 class 并不证明没有漏画道路。
+网页生图时先把提示词压成单行，回读输入框确认全文与主体词完整，再显式提交；回传提示词缺少主体时，
+先查输入边界，不换模型重试。任务已成功而取图超时，只恢复下载，不重新发起收费生成。
+
 当前供给状态（2026-11-08）：
 
 | 槽位 | 状态 |
 |---|---|
+| `part-p1.png` 篇题刻 | Lupi 既有画图样张已审阅入库：原图 1536×1024 RGBA；成品 900×630、153,865 字节、64 级 alpha；十六向罗盘、双环、盘心墨点完整，四周留白。该样张来自基础画图模型，不是下行所述的 `auto` 对话实测 |
 | `part-p2.png` 篇题刻 | 已生成并入库：请求 1536×1024，实测 1536×1024 RGBA；成品 900×630、190,686 字节、48 级 alpha；视觉核对为革带箱匣与罗盘，主体不出画 |
-| 封面 `cover.png`、`part-p1/p3/p4.png` | 受阻：工作室每张预扣 ＄1.00，余额 ＄0.256336，提交即被拒；未扣费、未出图 |
-| 第二分册 7 张篇题刻 | 同上，同一账户额度 |
-| 直接 API 通道 | 不可用：`new.orbitix.site` 的 TLS 握手超时（`GET /v1/models` 同样超时） |
+| 封面 `cover.png`、`part-p3/p4.png` | 尚未入库；山径候选虽已出图，但缺少虚线路径与三枚驿站环，拒绝采用。相应槽位保留 SVG，不以错图补数 |
+| Lupi `1K / auto` 路径 | 已用单行完整提示词实测：`对话 / auto` 返回临时聊天无法调用图片工具，没有图片；不据此改走其他模型 |
+| 第二分册 7 张篇题刻 | 按已确认格式继续使用 SVG；本轮完成七幅笔压重绘，不安装生成 PNG |
+| 原 Orbitix 通道 | 工作室预扣额度不足；直接 API 的 TLS 握手超时。均不自动重试收费请求 |
 
-补齐条件：充值或恢复 API 通道后，用 `python scripts/gen_ink_plates.py --product both --out <审阅目录>`
-逐张生成，审阅后拷入 `yuyu-book/illustrations/`。补齐全套之前不放宽任何槽位格式；缺图时篇题刻回落到
-原有 SVG，不会出现空白。
+补齐条件：先确认可用且获准的生图路径，再逐张按隐喻审阅。直接 API 恢复后可用
+`python scripts/gen_ink_plates.py --product book --out <审阅目录>` 留存原图与转换记录，
+审阅通过才拷入 `yuyu-book/illustrations/`；缺图时篇题刻回落到 SVG，不会出现空白。
 
 English: the agreed format is mixed — generated tonal plates only for the cover and the four part
 openers, animated SVG everywhere else, because SVG alone inherits `currentColor`, animates per
 subshape and re-inks itself for dark screens and paper. Plates are RGBA black-ink PNGs on
 transparent paper, capped at 400 kB for the cover and 200 kB per part, with alpha graded down from
-64 levels before anything is cropped. Only `part-p2` exists today; the rest are blocked by the
-studio's prepay requirement (balance ＄0.256336 against ＄1.00 per image) and a TLS timeout on the
-direct API host. A missing plate falls back to its SVG, so no slot can render blank.
+64 levels before anything is cropped. `part-p1` and `part-p2` now ship as PNGs. The mountain-path
+candidate was rejected because it omitted the dotted path and three station rings. The tested
+Lupi `1K / auto` conversation route returned text saying image tools were unavailable, not an
+image; the earlier accepted compass came from its basic image-generation route. The cover,
+remaining part plates and the companion volume retain SVG. Check the full single-line prompt
+before submitting, and recover a completed task's download instead of generating it again.
 
 ## 逐图提示词
 
