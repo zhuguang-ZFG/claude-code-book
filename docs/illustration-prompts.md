@@ -3,6 +3,8 @@
 本书 26 份插图（章徽、篇题刻、老驿卒、扉页车图）以开源项目
 [yang0/handraw-style](https://github.com/yang0/handraw-style) 的画风体系绘制：
 另有 17 张章内插图不走「提示词 → 手写 SVG」这条管线，边界与名单见文末一节。
+封面与四个篇题刻自 2026-11-08 起允许改用生成的透明墨版 PNG，规则与当前供给状态见
+下文「混合格式」一节；章徽、驿卒与信息性章内图仍以 `currentColor` 手写 SVG 为准。
 基准配方为 `FD-001 · Yuko Shimizu | Dynamic East-Asian Ink Editorial` 画风，
 `C-32 炭黑（Charcoal Black）` 统领、`C-15 朱砂红（Cinnabar Red）` 点缀
 （朱砂仅用于章印与书级点缀，不在画面内）。本手册按该项目的输出规范给出
@@ -21,6 +23,43 @@ Midjourney、Flux 等），即可在别的媒介重制同一幅图，或为未�
   停顿与轻微不齐整感、书写性与留白意识）
 - 主题色：C-32 炭黑统领 + C-15 朱砂点缀（章印/首字）
 - 画幅习惯：章徽 64×64、篇题刻 200×140、扉页 1000×470、章末驿卒 64×64
+
+## 混合格式：大图生成墨版，小图手绘 SVG（2026-11-08 定稿）
+
+格式决定：**大图生成，小图手绘**。封面与四个篇题刻允许使用生成墨版 PNG；章徽、章末驿卒、
+17 张信息性章内图，以及第二分册的全部插图继续用动画 SVG——只有 SVG 能继承 `currentColor`、
+按子形状落墨，并在深色屏幕与纸上重新上色。
+
+- 装配优先级：`cover.png`、`part-*.png` 存在时优先；其余槽位只认 SVG，小图槽位的同名 PNG 不会被采用
+  （回归 `yuyu-book/tests/test_mixed_art.py`）。
+- 体积与像素上限：封面 400,000 字节，篇题刻 200,000 字节，单边不超过 4096 像素；必须是只含黑墨、
+  透明纸面的 RGBA PNG。
+- 灰阶处理：`to_tonal_plate()` 保留 alpha 级差，默认 64 级；超预算时按 64→48→32→24→16→12 降级
+  （`to_tonal_plate_within()`），宁可少一点排线也不裁切主体；降到 12 级仍超限则拒绝出图并保留原图。
+- 打印与深色屏幕：深色屏幕 `filter:invert(1)` 反色，作用域限于 `@media screen`；打印不反色，纸上是黑墨。
+- 计费与凭据：转换脚本离线运行；生成必须显式给出 `--out` 审阅目录并归档原图，付费请求结果不明时
+  不自动重试，避免重复扣费。
+
+当前供给状态（2026-11-08）：
+
+| 槽位 | 状态 |
+|---|---|
+| `part-p2.png` 篇题刻 | 已生成并入库：请求 1536×1024，实测 1536×1024 RGBA；成品 900×630、190,686 字节、48 级 alpha；视觉核对为革带箱匣与罗盘，主体不出画 |
+| 封面 `cover.png`、`part-p1/p3/p4.png` | 受阻：工作室每张预扣 ＄1.00，余额 ＄0.256336，提交即被拒；未扣费、未出图 |
+| 第二分册 7 张篇题刻 | 同上，同一账户额度 |
+| 直接 API 通道 | 不可用：`new.orbitix.site` 的 TLS 握手超时（`GET /v1/models` 同样超时） |
+
+补齐条件：充值或恢复 API 通道后，用 `python scripts/gen_ink_plates.py --product both --out <审阅目录>`
+逐张生成，审阅后拷入 `yuyu-book/illustrations/`。补齐全套之前不放宽任何槽位格式；缺图时篇题刻回落到
+原有 SVG，不会出现空白。
+
+English: the agreed format is mixed — generated tonal plates only for the cover and the four part
+openers, animated SVG everywhere else, because SVG alone inherits `currentColor`, animates per
+subshape and re-inks itself for dark screens and paper. Plates are RGBA black-ink PNGs on
+transparent paper, capped at 400 kB for the cover and 200 kB per part, with alpha graded down from
+64 levels before anything is cropped. Only `part-p2` exists today; the rest are blocked by the
+studio's prepay requirement (balance ＄0.256336 against ＄1.00 per image) and a TLS timeout on the
+direct API host. A missing plate falls back to its SVG, so no slot can render blank.
 
 ## 逐图提示词
 
