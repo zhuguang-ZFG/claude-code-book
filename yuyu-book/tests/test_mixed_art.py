@@ -74,10 +74,13 @@ class MixedArtwork(unittest.TestCase):
         (self.root / "part-p1.png").write_bytes(png())
         (self.root / "cover.png").write_bytes(png())
         (self.root / "part-omp-p1.png").write_bytes(png())
-        self.assertIn(f'alt="{art.PLATE_ALT["p1"]}"', art.headpiece("p1"))
-        self.assertIn(f'alt="{art.PLATE_ALT["cover"]}"', art.cover_plate())
-        self.assertNotIn('alt=""', art.headpiece("omp-p1"))
-        self.assertIn(f'alt="{art.PLATE_ALT_FALLBACK}"', art.headpiece("omp-p1"))
+        zh, en = art.PLATE_ALT["zh"], art.PLATE_ALT["en"]
+        self.assertIn(f'alt="{zh["p1"]}"', art.headpiece("p1"))
+        self.assertIn(f'alt="{zh["cover"]}"', art.cover_plate())
+        self.assertIn(f'alt="{en["p1"]}"', art.headpiece("p1", "en"))
+        self.assertIn(f'alt="{en["cover"]}"', art.cover_plate("en"))
+        self.assertNotIn('alt=""', art.headpiece("omp-p1", "en"))
+        self.assertIn(f'alt="{art.PLATE_ALT_FALLBACK["en"]}"', art.headpiece("omp-p1", "en"))
 
 
 if __name__ == "__main__":

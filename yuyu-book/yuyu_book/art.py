@@ -41,13 +41,14 @@ COVER_RASTER_BYTES = 400_000
 # twice; the page contract still requires every <img> to carry one, and a
 # reader who lifts the image out of the page should know what it shows.
 PLATE_ALT = {
-    "cover": "卷首墨版：古车与四匹马",
-    "p1": "篇题墨版：大罗盘",
-    "p2": "篇题墨版：革带箱匣与罗盘",
-    "p3": "篇题墨版：山径",
-    "p4": "篇题墨版：牌坊",
+    "zh": {"cover": "卷首墨版：古车与四匹马", "p1": "篇题墨版：大罗盘",
+           "p2": "篇题墨版：革带箱匣与罗盘", "p3": "篇题墨版：山径",
+           "p4": "篇题墨版：牌坊"},
+    "en": {"cover": "Cover plate: the old chariot and its four horses",
+           "p1": "Part plate: the great compass", "p2": "Part plate: the strapped chest and its compass",
+           "p3": "Part plate: the mountain path", "p4": "Part plate: the gateway"},
 }
-PLATE_ALT_FALLBACK = "墨版插图"
+PLATE_ALT_FALLBACK = {"zh": "墨版插图", "en": "Ink plate"}
 
 # the one rule that decides whether a drawing is a filmstrip: `seq` among the
 # classes of its root element. render.py asks it, and the filmstrip frame-order
@@ -121,7 +122,7 @@ def _png_size(raw: bytes) -> tuple[int, int]:
         raise BuildError("a raster plate must be a complete decodable PNG") from exc
 
 
-def _ink_image(name: str, budget: int, label: str = PLATE_ALT_FALLBACK) -> str | None:
+def _ink_image(name: str, budget: int, label: str = "") -> str | None:
     """The generated plate as an inline data URI, or None when there is none.
 
     A raster plate carries its own pixels, so it cannot follow `currentColor`;
@@ -139,7 +140,8 @@ def _ink_image(name: str, budget: int, label: str = PLATE_ALT_FALLBACK) -> str |
     width, height = _png_size(raw)
     return (f'<img class="ink-plate" src="data:image/png;base64,'
             f'{base64.b64encode(raw).decode("ascii")}" width="{width}" '
-            f'height="{height}" alt="{label}" decoding="async">')
+            f'height="{height}" alt="{label or PLATE_ALT_FALLBACK["zh"]}" '
+            'decoding="async">')
 
 
 def emblem(unit_id: str) -> str:
@@ -159,10 +161,11 @@ def keeper() -> str:
     return f'<span class="kp-art" aria-hidden="true">{text}</span>'
 
 
-def headpiece(part_id: str) -> str:
+def headpiece(part_id: str, lang: str = "zh") -> str:
     """The drawing a part divider opens with, or '' when there is none."""
+    names = PLATE_ALT.get(lang, PLATE_ALT["zh"])
     image = _ink_image(f"part-{part_id}", PLATE_RASTER_BYTES,
-                       PLATE_ALT.get(part_id, PLATE_ALT_FALLBACK))
+                       names.get(part_id, PLATE_ALT_FALLBACK.get(lang, "")))
     if image:
         return f'<div class="pd-art" aria-hidden="true">{image}</div>'
     text = _read(f"part-{part_id}")
@@ -171,9 +174,10 @@ def headpiece(part_id: str) -> str:
     return f'<div class="pd-art" aria-hidden="true">{text}</div>'
 
 
-def cover_plate() -> str:
+def cover_plate(lang: str = "zh") -> str:
     """The large cover plate, separate from the animated small artwork."""
-    image = _ink_image("cover", COVER_RASTER_BYTES, PLATE_ALT["cover"])
+    names = PLATE_ALT.get(lang, PLATE_ALT["zh"])
+    image = _ink_image("cover", COVER_RASTER_BYTES, names["cover"])
     if image:
         return f'<div class="cover-art" aria-hidden="true">{image}</div>'
     text = _read("cover", PLATE_BYTES)
