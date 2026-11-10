@@ -120,6 +120,147 @@ window.__timelines["captions-zh"] = tl;
 </script></body></html>"""
 
 
+def short_captions_html(cues: list[dict], total_s: float,
+                        fps: int = 30) -> str:
+    """The karaoke pill caption page burned into the shipped short renders.
+
+    Ported verbatim from the shipped short production script (vertical
+    1080x1920 layout, one phrase pill at a time).
+    """
+    lines = []
+    for i, cue in enumerate(cues):
+        lines.append(f'<div class="cap" id="cap{i}" style="opacity:0">'
+                     f'{esc(cue.get("text") or "")}</div>')
+    tl_lines = []
+    for i, cue in enumerate(cues):
+        start = float(cue["start"])
+        end = float(cue["end"])
+        tl_lines.append(f'tl.set("#cap{i}", {{opacity:0}}, 0);')
+        tl_lines.append(
+            f'tl.fromTo("#cap{i}", {{opacity:0, y:18, scale:0.92}}, '
+            f'{{opacity:1, y:0, scale:1, duration:0.12}}, {start:.3f});'
+        )
+        tl_lines.append(
+            f'tl.to("#cap{i}", {{opacity:0, y:-10, duration:0.12}}, '
+            f'{max(end - 0.05, start + 0.05):.3f});'
+        )
+    return f'''<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{{font-family:'Noto Sans SC';src:local('Noto Sans SC'),local('Microsoft YaHei');font-weight:100 900}}
+*{{margin:0;padding:0;box-sizing:border-box}}
+html,body{{width:1080px;height:1920px;overflow:hidden;background:transparent}}
+.wrap{{position:absolute;left:40px;right:40px;bottom:160px;text-align:center;z-index:55;pointer-events:none}}
+.cap{{position:absolute;left:0;right:0;bottom:0;font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;
+  font-size:40px;font-weight:800;color:#fff;padding:14px 22px;
+  text-shadow:0 2px 10px #000,0 0 16px #000a;
+  background:linear-gradient(90deg,#1a90ffcc,#7a3dffcc);border-radius:999px;
+  display:inline-block;margin:0 auto;width:fit-content;max-width:100%;
+  left:50%;transform:translateX(-50%)}}
+</style></head><body>
+<div id="root" class="clip" data-composition-id="captions-zh" data-start="0" data-duration="{total_s:.3f}" data-width="1080" data-height="1920" data-fps="{fps}">
+  <div class="wrap">
+    {chr(10).join(lines)}
+  </div>
+</div>
+<script>
+window.__timelines = window.__timelines || {{}};
+const tl = gsap.timeline({{ paused: true }});
+{chr(10).join(tl_lines)}
+window.__timelines["captions-zh"] = tl;
+</script></body></html>
+'''
+
+
+def _short_lines(cues: list[dict]) -> tuple[list[str], list[str]]:
+    """Body lines and GSAP lines shared by the pill-caption variants."""
+    lines = []
+    tl_lines = []
+    for i, cue in enumerate(cues):
+        lines.append(f'<div class="cap" id="cap{i}">{esc(cue.get("text") or "")}'
+                     f'</div>')
+        start = float(cue["start"])
+        end = float(cue["end"])
+        tl_lines.append(f'tl.set("#cap{i}", {{opacity:0, scale:0.92}}, 0);')
+        tl_lines.append(
+            f'tl.to("#cap{i}", {{opacity:1, scale:1, duration:0.08}}, '
+            f'{start:.3f});')
+        tl_lines.append(
+            f'tl.to("#cap{i}", {{opacity:0, scale:0.96, duration:0.08}}, '
+            f'{max(end - 0.04, start + 0.08):.3f});')
+    return lines, tl_lines
+
+
+def short_captions_v2_html(cues: list[dict], total_s: float,
+                           fps: int = 30) -> str:
+    """The ch02-ch04 short pill caption page (centered, 38px)."""
+    lines, tl_lines = _short_lines(cues)
+    return f'''<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{{font-family:'Noto Sans SC';src:local('Noto Sans SC'),local('Microsoft YaHei');font-weight:100 900}}
+*{{margin:0;padding:0;box-sizing:border-box}}
+html,body{{width:1080px;height:1920px;overflow:hidden;background:transparent}}
+.wrap{{position:absolute;left:36px;right:36px;bottom:150px;text-align:center;z-index:55;pointer-events:none;height:120px}}
+.cap{{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;
+  font-size:38px;font-weight:800;color:#fff;padding:14px 26px;opacity:0;
+  text-shadow:0 2px 10px #000,0 0 16px #000a;white-space:nowrap;max-width:100%;
+  background:linear-gradient(90deg,#1a90ffee,#7a3dffee);border-radius:999px}}
+</style></head><body>
+<div id="root" class="clip" data-composition-id="captions-zh" data-start="0" data-duration="{total_s:.3f}" data-width="1080" data-height="1920" data-fps="{fps}">
+  <div class="wrap">{chr(10).join(lines)}</div>
+</div>
+<script>
+window.__timelines = window.__timelines || {{}};
+const tl = gsap.timeline({{ paused: true }});
+{chr(10).join(tl_lines)}
+window.__timelines["captions-zh"] = tl;
+</script></body></html>
+'''
+
+
+def short_captions_ch05_html(cues: list[dict], total_s: float,
+                             fps: int = 30) -> str:
+    """The ch05 short pill caption page (fit-content auto margins)."""
+    lines, tl_lines = _short_lines(cues)
+    return f'''<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{{font-family:'Noto Sans SC';src:local('Noto Sans SC'),local('Microsoft YaHei');font-weight:100 900}}
+@font-face{{font-family:'Microsoft YaHei';src:local('Microsoft YaHei'),local('Noto Sans SC');font-weight:100 900}}
+*{{margin:0;padding:0;box-sizing:border-box}}
+html,body{{width:1080px;height:1920px;overflow:hidden;background:transparent}}
+.wrap{{position:absolute;left:40px;right:40px;bottom:150px;text-align:center;z-index:55;pointer-events:none;height:120px}}
+.cap{{position:absolute;left:0;right:0;bottom:0;margin:auto;width:fit-content;max-width:100%;
+  font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;
+  font-size:38px;font-weight:800;color:#fff;padding:14px 26px;opacity:0;
+  text-shadow:0 2px 10px #000,0 0 16px #000a;white-space:nowrap;
+  background:linear-gradient(90deg,#1a90ffee,#7a3dffee);border-radius:999px}}
+</style></head><body>
+<div id="root" class="clip" data-composition-id="captions-zh" data-start="0" data-duration="{total_s:.3f}" data-width="1080" data-height="1920" data-fps="{fps}">
+  <div class="wrap">{chr(10).join(lines)}</div>
+</div>
+<script>
+window.__timelines = window.__timelines || {{}};
+const tl = gsap.timeline({{ paused: true }});
+{chr(10).join(tl_lines)}
+window.__timelines["captions-zh"] = tl;
+</script></body></html>
+'''
+
+
+SHORT_CAPTION_WRITERS = {
+    "ch01": short_captions_html,
+    "ch02": short_captions_v2_html,
+    "ch03": short_captions_v2_html,
+    "ch04": short_captions_v2_html,
+    "ch05": short_captions_ch05_html,
+}
+
+
 def watermark_html(total_s: float) -> str:
     """The static brand watermark burned into the shipped long renders."""
     return f"""<!doctype html>
@@ -147,27 +288,36 @@ window.__timelines["watermark"] = tl;
 </script></body></html>"""
 
 
-def write_render_inputs(base: Path, episode: dict,
-                        cues: list[dict]) -> dict[str, str]:
-    """Regenerate the long-format render inputs under the render tree.
+def write_render_inputs(base: Path, episode: dict, cues: list[dict],
+                        fmt: str = "long") -> dict[str, str]:
+    """Regenerate the render inputs under the render tree.
 
     ``base`` is the render project directory (the legacy index parent).
-    Writes ``compositions/captions-zh.html`` and ``compositions/watermark.html``
-    from the recorded cue track, and returns their SHA-256 digests.
+    For ``long`` writes ``compositions/captions-zh.html`` and
+    ``compositions/watermark.html``; for ``short`` writes
+    ``short/compositions/captions-zh.html``. Returns SHA-256 digests.
     """
     import hashlib
 
-    total_s = float(episode["formats"]["long"]["duration_s"])
-    compositions = base / "compositions"
-    compositions.mkdir(parents=True, exist_ok=True)
+    total_s = float(episode["formats"][fmt]["duration_s"])
     written = {}
-    for name, body in (("captions-zh.html",
-                        karaoke_captions_html(cues, total_s)),
-                       ("watermark.html", watermark_html(total_s))):
-        path = compositions / name
+
+    def _write(path: Path, body: str) -> None:
         # The shipped artifacts were written through Windows text mode, so
         # pin CRLF to stay byte-identical to them on every platform.
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(body, encoding="utf-8", newline="\r\n")
         written[path.relative_to(base).as_posix()] = hashlib.sha256(
             path.read_bytes()).hexdigest()
+
+    if fmt == "long":
+        _write(base / "compositions" / "captions-zh.html",
+               karaoke_captions_html(cues, total_s))
+        _write(base / "compositions" / "watermark.html",
+               watermark_html(total_s))
+    else:
+        writer = SHORT_CAPTION_WRITERS.get(
+            episode.get("id", ""), short_captions_v2_html)
+        _write(base / "short" / "compositions" / "captions-zh.html",
+               writer(cues, total_s))
     return written

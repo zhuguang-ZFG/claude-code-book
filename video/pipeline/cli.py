@@ -132,12 +132,13 @@ def _write_build(report: dict, root: Path = BUILD) -> Path:
     model.write_json(path, timeline.build(episode, report["scenes"],
                                            report["cues"]))
     hashes[path.name] = _sha(path)
-    if "long" in report["cues"]:
-        render_base = model.format_base(
-            model.CHAPTERS / chapter_id, episode.get("legacy") or {}, "long")
-        if render_base is not None:
-            hashes.update(caption_pages.write_render_inputs(
-                render_base, episode, report["cues"]["long"]))
+    render_base = model.format_base(
+        model.CHAPTERS / chapter_id, episode.get("legacy") or {}, "long")
+    if render_base is not None:
+        for fmt in ("long", "short"):
+            if fmt in report["cues"]:
+                hashes.update(caption_pages.write_render_inputs(
+                    render_base, episode, report["cues"][fmt], fmt))
     if report["compat"]["formats"]:
         path = out / "compat-report.json"
         model.write_json(path, report["compat"])

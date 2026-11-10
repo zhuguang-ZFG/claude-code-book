@@ -314,5 +314,70 @@ class KaraokeCaptions(unittest.TestCase):
                          self.SHIPPED_CH01_SHA256)
 
 
+class ShortCaptionWriters(unittest.TestCase):
+    """Each chapter's shipped short caption page regenerates byte-exactly."""
+
+    SHIPPED_SHORT_SHA256 = {
+        "ch01": "8d6cf570c42f66ebf1f9739789063dfc7d0c6180fd3912617625a"
+                "132d58bb882",
+        "ch02": "5e0d6bfb51b768117e81303924a304a88fb2188fd84d62b059061"
+                "a6f34e0519a",
+        "ch03": "5c5f54401cd2c6bb3e195949c94d4e3f8940d0ee2c3bd2ebc46a"
+                "f0501d68a293",
+        "ch04": "2e0851d96e1b590d280474d3228bf8ac8c91ea836e4132a857f5"
+                "e15acbab52ff",
+        "ch05": "613061e2fffae731e055877253c93c0a2f31e0d11949dcee9712"
+                "f077f87ad39f",
+    }
+
+    def test_ch01_variant_fades_without_scale(self):
+        body = captions.short_captions_html(
+            [{"start": 1.0, "end": 2.0, "text": "你好"}], 20.0)
+        self.assertIn("data-width=\"1080\"", body)
+        self.assertIn("tl.set(\"#cap0\", {opacity:0}, 0);", body)
+        self.assertIn(
+            "tl.fromTo(\"#cap0\", {opacity:0, y:18, scale:0.92}, "
+            "{opacity:1, y:0, scale:1, duration:0.12}, 1.000);", body)
+        self.assertIn(
+            "tl.to(\"#cap0\", {opacity:0, y:-10, duration:0.12}, 1.950);",
+            body)
+
+    def test_v2_variant_scales_and_holds(self):
+        body = captions.short_captions_v2_html(
+            [{"start": 1.0, "end": 2.0, "text": "你好"}], 20.0)
+        self.assertIn("scale:0.96", body)
+        self.assertIn(
+            "tl.to(\"#cap0\", {opacity:1, scale:1, duration:0.08}, 1.000);",
+            body)
+        self.assertIn(
+            "tl.to(\"#cap0\", {opacity:0, scale:0.96, duration:0.08}, "
+            "1.960);", body)
+
+    def test_ch05_variant_fit_content_margins(self):
+        body = captions.short_captions_ch05_html(
+            [{"start": 1.0, "end": 2.0, "text": "你好"}], 20.0)
+        self.assertIn("margin:auto;width:fit-content", body)
+        self.assertIn("font-family:'Microsoft YaHei';src:local("
+                      "'Microsoft YaHei'),local('Noto Sans SC');"
+                      "font-weight:100 900}", body)
+
+    def test_shipped_short_captions_match_witness_hashes(self):
+        import hashlib
+        for ch, want in self.SHIPPED_SHORT_SHA256.items():
+            chapter_dir = model.CHAPTERS / ch
+            caps_path = (chapter_dir / "../../" / ch / "hf-remake/short"
+                         / "assets/short-caps.json")
+            if not caps_path.resolve().is_file():
+                self.skipTest(f"recorded {ch} short assets not on machine")
+            episode = model.read_yaml(chapter_dir / "episode.yaml")
+            cues = voice.recorded_cues(episode, chapter_dir, "short")
+            self.assertIsNotNone(cues, ch)
+            writer = captions.SHORT_CAPTION_WRITERS[ch]
+            body = writer(cues, episode["formats"]["short"]["duration_s"])
+            shipped = body.replace("\n", "\r\n").encode("utf-8")
+            self.assertEqual(
+                hashlib.sha256(shipped).hexdigest(), want, ch)
+
+
 if __name__ == "__main__":
     unittest.main()
