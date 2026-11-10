@@ -4,6 +4,7 @@ checks do not claim media quality when narration is absent.
 """
 from __future__ import annotations
 
+import json
 import re
 import subprocess
 from pathlib import Path
@@ -82,9 +83,74 @@ def audio_report(path: Path) -> dict:
     }
 
 
+def _caption_deviations(chapter_dir: Path, errors: list[str]) -> dict:
+    """Reviewed baseline deviations: exact gate-violating cues accepted per
+    chapter/format in ``caption-deviations.json``.
+
+    Version 2 rows pin each accepted cue by start time and normalized text
+    with a ``kinds`` list (``chars`` for over-budget text, ``dwell`` for
+    under-minimum dwell); version 1 rows are treated as ``chars`` only.
+    Only identified shipped-artifact deviations leave the gate; any other
+    violating cue still fails. A malformed file fails closed.
+    """
+    path = chapter_dir / "caption-deviations.json"
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        errors.append(f"{path.name}: cannot be read: {exc}")
+        return {}
+    if (not isinstance(data, dict)
+            or data.get("schema_version") not in (1, 2)
+            or not isinstance(data.get("formats"), dict)):
+        errors.append(f"{path.name}: expected schema_version 1 or 2 with a "
+                      "formats mapping")
+        return {}
+    accepted: dict = {}
+    for fmt, rows in data["formats"].items():
+        if not isinstance(rows, list):
+            errors.append(f"{path.name}: {fmt}: expected a list")
+            continue
+        keys = {}
+        for row in rows:
+            if (not isinstance(row, dict)
+                    or not isinstance(row.get("start"), (int, float))
+                    or not isinstance(row.get("text"), str)):
+                errors.append(f"{path.name}: {fmt}: each deviation needs "
+                              "numeric start and text")
+                continue
+            if data.get("schema_version") == 1:
+                kinds = ("chars",)
+            else:
+                raw = row.get("kinds")
+                if (not isinstance(raw, list) or not raw
+                        or any(kind not in ("chars", "dwell")
+                               for kind in raw)):
+                    errors.append(f"{path.name}: {fmt}: each deviation "
+                                  "needs kinds: [chars, ...] or [dwell]")
+                    continue
+                kinds = tuple(raw)
+            keys[(round(row["start"], 3),
+                  normalized(row["text"]))] = kinds
+        accepted[fmt] = keys
+    return accepted
+
+
 def check(episode: dict, scenes: dict, manifests: dict, cues: dict,
-          chapter_dir: Path, *, check_audio: bool = False) -> list[str]:
+          chapter_dir: Path, *, check_audio: bool = False,
+          warnings: list | None = None) -> list[str]:
+    """Quality gates for the cue tracks.
+
+    Over-budget cues normally fail the build. A cue listed in the chapter's
+    reviewed ``caption-deviations.json`` is instead reported as a warning so
+    the compatibility review sees the shipped-artifact deviation without
+    re-authoring it (which would break frame equivalence with the shipped
+    video).
+    """
     errors: list[str] = []
+    notes = warnings if warnings is not None else []
+    deviations = _caption_deviations(chapter_dir, errors)
     style = episode["captions"]
     quality = episode["quality"]
     ratio = contrast(style["foreground"], style["background"])
@@ -104,14 +170,29 @@ def check(episode: dict, scenes: dict, manifests: dict, cues: dict,
                 f"{episode['id']}: {fmt} caption box is taller than the safe area")
         track = cues.get(fmt) or []
         for cue in track:
+            key = (round(cue["start"], 3), normalized(cue["text"]))
+            kinds = deviations.get(fmt, {}).get(key, ())
             if cue["end"] - cue["start"] + 0.001 < style["min_dwell_s"]:
-                errors.append(
-                    f"{episode['id']}: {fmt} cue at {cue['start']}s dwells "
-                    f"less than {style['min_dwell_s']}s")
+                if "dwell" in kinds:
+                    notes.append(
+                        f"{episode['id']}: {fmt} cue at {cue['start']}s "
+                        "dwells less than "
+                        f"{style['min_dwell_s']}s (reviewed deviation in "
+                        "caption-deviations.json)")
+                else:
+                    errors.append(
+                        f"{episode['id']}: {fmt} cue at {cue['start']}s "
+                        f"dwells less than {style['min_dwell_s']}s")
             if len(cue["text"]) > style["max_chars"] * style["max_lines"]:
-                errors.append(
-                    f"{episode['id']}: {fmt} cue at {cue['start']}s exceeds "
-                    "the character budget")
+                if "chars" in kinds:
+                    notes.append(
+                        f"{episode['id']}: {fmt} cue at {cue['start']}s "
+                        "exceeds the character budget (reviewed deviation in "
+                        "caption-deviations.json)")
+                else:
+                    errors.append(
+                        f"{episode['id']}: {fmt} cue at {cue['start']}s "
+                        "exceeds the character budget")
         wanted = normalized("".join(
             segment["text"]
             for segment in (manifests.get(fmt) or {}).get("segments", [])))

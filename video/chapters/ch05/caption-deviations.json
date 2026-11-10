@@ -1,0 +1,277 @@
+{
+  "schema_version": 2,
+  "chapter": "ch05",
+  "review": "Shipped recorded karaoke cues that violate the authored block-caption gates (character budget, minimum dwell). The shipped videos display these timings verbatim; each row is pinned by recorded start time and text so only these cues downgrade to warnings.",
+  "formats": {
+    "long": [
+      {
+        "start": 51.341,
+        "text": "它",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 60.537,
+        "text": "policySettings",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 82.363,
+        "text": "共享",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 96.259,
+        "text": "policySettings",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 137.881,
+        "text": "遍合并",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 180.607,
+        "text": "一起改",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 196.68,
+        "text": "专用",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 275.325,
+        "text": "就是一个钥匙圈",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 337.935,
+        "text": "allow",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 378.4,
+        "text": "剪贴在一起",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 425.313,
+        "text": "的审计hook",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 446.939,
+        "text": "着",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 464.24,
+        "text": "本地层",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 487.44,
+        "text": "项目那一层",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 503.7,
+        "text": "上面写的做",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 524.557,
+        "text": "上",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 617.444,
+        "text": "是一致的排除它查skipDangerousModePermissionPrompt",
+        "kinds": [
+          "chars"
+        ]
+      },
+      {
+        "start": 639.822,
+        "text": "projectSettings",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 647.364,
+        "text": "代码执行",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 660.602,
+        "text": "跳过",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 667.93,
+        "text": "配置也绕不过审计第二道strictPluginOnlyCustomization",
+        "kinds": [
+          "chars"
+        ]
+      },
+      {
+        "start": 756.46,
+        "text": "持续运行",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 775.571,
+        "text": "_STALE",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 797.19,
+        "text": "值",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 814.727,
+        "text": "撞名",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 835.622,
+        "text": "订阅变化",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 903.161,
+        "text": "回调",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 919.308,
+        "text": "的事情不可能",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 923.008,
+        "text": "用的是React18官方的useSyncExternalStore",
+        "kinds": [
+          "chars"
+        ]
+      },
+      {
+        "start": 1016.766,
+        "text": "个人",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ],
+    "short": [
+      {
+        "start": 5.068,
+        "text": "json，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 15.49,
+        "text": "用户、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 16.121,
+        "text": "项目、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 16.752,
+        "text": "本地、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 17.383,
+        "text": "CLI、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 17.699,
+        "text": "企业，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 28.506,
+        "text": "不会。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 31.373,
+        "text": "像钥匙圈，",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ]
+  }
+}

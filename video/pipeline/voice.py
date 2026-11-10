@@ -17,6 +17,7 @@ MARKER_RE = re.compile(r"^\[(ANIM|CODE):([a-z0-9\-]+)\]\s*$")
 BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 CODE_RE = re.compile(r"`([^`]+)`")
 SENTENCE_END = "。！？；.!?;"
+VTT_AUDIO_TOLERANCE_S = 0.35
 
 
 def chunk_plain(text: str) -> list[str]:
@@ -182,6 +183,166 @@ def estimate(text: str) -> float:
     return round(len(text) / 4.5 + 0.25, 3)
 
 
+def _parse_vtt(text: str) -> list[tuple[float, float, str]]:
+    """Parse WEBVTT cue blocks the way the legacy caption merge did."""
+    cues: list[tuple[float, float, str]] = []
+    for block in re.split(r"\n\s*\n", text.strip()):
+        lines = [line for line in block.splitlines()
+                 if line.strip() and not line.startswith("WEBVTT")]
+        lines = [line for line in lines
+                 if not re.fullmatch(r"\d+", line.strip())]
+        if len(lines) < 2:
+            continue
+        match = re.match(
+            r"(\d{2}):(\d{2}):(\d{2})[,.](\d{3})\s*-->\s*"
+            r"(\d{2}):(\d{2}):(\d{2})[,.](\d{3})", lines[0])
+        if not match:
+            continue
+        parts = [int(value) for value in match.groups()]
+        cues.append((
+            parts[0] * 3600 + parts[1] * 60 + parts[2] + parts[3] / 1000,
+            parts[4] * 3600 + parts[5] * 60 + parts[6] + parts[7] / 1000,
+            " ".join(lines[1:]).strip()))
+    return cues
+
+
+def _parse_srt(text: str) -> list[tuple[float, float, str]]:
+    """Parse SRT cue blocks from per-chunk synthesis subtitles."""
+    cues: list[tuple[float, float, str]] = []
+    for block in re.split(r"\n\s*\n", text.strip()):
+        lines = [line for line in block.strip().splitlines() if line.strip()]
+        if len(lines) < 2:
+            continue
+        timing = 1 if re.fullmatch(r"\d+", lines[0].strip()) else 0
+        match = re.match(
+            r"(\d{2}):(\d{2}):(\d{2})[,.](\d{3})\s*-->\s*"
+            r"(\d{2}):(\d{2}):(\d{2})[,.](\d{3})", lines[timing])
+        if not match:
+            continue
+        parts = [int(value) for value in match.groups()]
+        cues.append((
+            parts[0] * 3600 + parts[1] * 60 + parts[2] + parts[3] / 1000,
+            parts[4] * 3600 + parts[5] * 60 + parts[6] + parts[7] / 1000,
+            " ".join(lines[timing + 1:]).strip()))
+    return cues
+
+
+RECORDED_TIMELINE = "recorded-timeline"
+RECORDED_TRANSCRIPT = "recorded-transcript"
+RECORDED_CHUNKS = "recorded-chunks"
+RECORDED_SHORT_CAPS = "recorded-short-caps"
+
+
+def _recorded_cues(episode: dict, chapter_dir: Path, fmt: str
+                   ) -> tuple[list[dict], str] | None:
+    """Rebuild the cue track from recorded subtitle assets, when complete.
+
+    Two legacy recording layouts are honored, checked in order:
+
+    - ``vo/timeline.json`` + ``vo/mp3/<id>.vtt``: per-chunk recordings whose
+      subtitle timings shift by the recorded chunk start -- the merge the
+      shipped long/short videos were actually captioned with.
+    - ``vo/c<NNN>.srt`` + ``vo/c<NNN>.mp3``: per-chunk recordings merged by
+      probed audio durations.
+
+    Returns None when any expected asset is missing, so callers fall back to
+    estimation instead of inventing timings.
+    """
+    legacy_dir = episode.get("legacy", {}).get("dir")
+    if fmt == "short" and legacy_dir:
+        caps_path = ((chapter_dir / legacy_dir).resolve() / "short" / "assets"
+                     / "short-caps.json")
+        if caps_path.is_file():
+            rows = read_json(caps_path)
+            if (isinstance(rows, list) and rows
+                    and all(isinstance(row, dict)
+                            and isinstance(row.get("text"), str)
+                            and isinstance(row.get("start"), (int, float))
+                            and isinstance(row.get("end"), (int, float))
+                            for row in rows)):
+                return ([{"start": round(float(row["start"]), 3),
+                          "end": round(float(row["end"]), 3),
+                          "text": row["text"]} for row in rows],
+                        RECORDED_SHORT_CAPS)
+    vo_dir = _vo_dir(episode, chapter_dir, fmt)
+    if vo_dir is None:
+        return None
+    timeline_path = vo_dir / "timeline.json"
+    vtt_dir = vo_dir / "mp3"
+    if timeline_path.is_file() and vtt_dir.is_dir():
+        rows = read_json(timeline_path)
+        if not isinstance(rows, list) or not rows:
+            return None
+        built: list[dict] = []
+        for row in rows:
+            if (not isinstance(row, dict)
+                    or not isinstance(row.get("start"), (int, float))
+                    or not isinstance(row.get("id"), str)):
+                return None
+            mp3 = vtt_dir / f"{row['id']}.mp3"
+            vtt = vtt_dir / f"{row['id']}.vtt"
+            if not vtt.is_file() or not mp3.is_file():
+                return None
+            duration = _duration(mp3)
+            if duration is None:
+                return None
+            cues = _parse_vtt(vtt.read_text(encoding="utf-8"))
+            if cues and cues[-1][1] > duration + VTT_AUDIO_TOLERANCE_S:
+                return None
+            for start, end, text in cues:
+                built.append({"start": round(row["start"] + start, 3),
+                              "end": round(row["start"] + end, 3),
+                              "text": text})
+        return (built, RECORDED_TIMELINE) if built else None
+    legacy_dir = episode.get("legacy", {}).get("dir")
+    if fmt == "long" and legacy_dir:
+        transcript_path = ((chapter_dir / legacy_dir).resolve()
+                           / "transcript.json")
+        if transcript_path.is_file():
+            rows = read_json(transcript_path)
+            if (isinstance(rows, list) and rows
+                    and all(isinstance(row, dict)
+                            and isinstance(row.get("text"), str)
+                            and isinstance(row.get("start"), (int, float))
+                            and isinstance(row.get("end"), (int, float))
+                            for row in rows)):
+                return ([{"start": round(float(row["start"]), 3),
+                          "end": round(float(row["end"]), 3),
+                          "text": row["text"]} for row in rows],
+                        RECORDED_TRANSCRIPT)
+    texts = chunks(episode, chapter_dir, fmt)
+    built = []
+    offset = 0.0
+    for index in range(len(texts)):
+        srt = vo_dir / f"c{index:03d}.srt"
+        mp3 = vo_dir / f"c{index:03d}.mp3"
+        if not srt.is_file() or not mp3.is_file():
+            return None
+        duration = _duration(mp3)
+        if duration is None:
+            return None
+        for start, end, text in _parse_srt(
+                srt.read_text(encoding="utf-8")):
+            built.append({"start": round(offset + start, 3),
+                          "end": round(offset + end, 3),
+                          "text": text})
+        offset += duration
+    return (built, RECORDED_CHUNKS) if built else None
+
+
+def recorded_cues(episode: dict, chapter_dir: Path, fmt: str = "long"
+                  ) -> list[dict] | None:
+    """The recorded cue track, or None when assets are incomplete."""
+    recorded = _recorded_cues(episode, chapter_dir, fmt)
+    return recorded[0] if recorded else None
+
+
+def cue_source(episode: dict, chapter_dir: Path, fmt: str = "long") -> str:
+    """Where the cue track comes from: RECORDED_* layouts or "estimated"."""
+    recorded = _recorded_cues(episode, chapter_dir, fmt)
+    return recorded[1] if recorded else "estimated"
+
+
 def manifest(episode: dict, chapter_dir: Path, fmt: str = "long",
              audio_path: Path | None = None) -> dict:
     texts = chunks(episode, chapter_dir, fmt)
@@ -248,6 +409,9 @@ def _split(text: str, limit: int) -> list[str]:
 def cues(episode: dict, chapter_dir: Path, fmt: str = "long",
          total_s: float | None = None,
          audio_path: Path | None = None) -> list[dict]:
+    recorded = recorded_cues(episode, chapter_dir, fmt)
+    if recorded is not None:
+        return recorded
     captions = episode.get("captions") or DEFAULT_CAPTIONS
     limit = int(captions.get("max_chars", 16))
     minimum = float(captions.get("min_dwell_s", 1.2))

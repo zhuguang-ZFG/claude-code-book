@@ -5,6 +5,7 @@ tests either stop before ffmpeg or replace `audio_report`, so a machine without
 ffmpeg can still run the suite. Keyframe tests patch the extractor for the same
 reason; the missing-video path is exercised for real.
 """
+import json
 import sys
 import tempfile
 import unittest
@@ -410,6 +411,89 @@ class KeyframeComparison(unittest.TestCase):
                 result = timeline.keyframe_report(old, new)
         self.assertEqual(result["status"], "unverified")
         self.assertIn("ffprobe", result["reason"])
+
+
+class CaptionDeviationRecord(unittest.TestCase):
+    """Only reviewed, pinned deviations may exceed the authored budget."""
+
+    def _chapter(self, directory, rows):
+        chapter = Path(directory) / "ch01"
+        chapter.mkdir()
+        (chapter / "caption-deviations.json").write_text(
+            json.dumps({"schema_version": 1, "chapter": "ch01",
+                        "formats": {"short": rows}}), encoding="utf-8")
+        return chapter
+
+    def test_listed_deviation_is_a_warning_not_an_error(self):
+        text = "字" * 33
+        with tempfile.TemporaryDirectory() as directory:
+            chapter = self._chapter(directory, [{"start": 0.0, "text": text}])
+            manifests = {"short": {"segments": [{"text": text}]}}
+            cues = {"short": [{"start": 0.0, "end": 2.0, "text": text}]}
+            warnings: list = []
+            errors = quality.check(
+                episode(), {}, manifests, cues, chapter, warnings=warnings)
+            self.assertEqual(errors, [])
+            self.assertEqual(len(warnings), 1, warnings)
+            self.assertIn("reviewed deviation", warnings[0])
+
+    def test_unlisted_over_budget_cue_still_fails(self):
+        text = "字" * 33
+        with tempfile.TemporaryDirectory() as directory:
+            chapter = self._chapter(directory,
+                                    [{"start": 9.9, "text": text}])
+            manifests = {"short": {"segments": [{"text": text}]}}
+            cues = {"short": [{"start": 0.0, "end": 2.0, "text": text}]}
+            errors = quality.check(episode(), {}, manifests, cues, chapter)
+            self.assertEqual(len(errors), 1, errors)
+            self.assertIn("character budget", errors[0])
+
+    def test_malformed_deviation_record_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            chapter = Path(directory) / "ch01"
+            chapter.mkdir()
+            (chapter / "caption-deviations.json").write_text(
+                '{"schema_version": 2}', encoding="utf-8")
+            errors = quality.check(episode(), {}, {}, {}, chapter)
+            self.assertTrue(any("caption-deviations.json" in error
+                                for error in errors), errors)
+
+    def test_listed_dwell_deviation_is_a_warning_not_an_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            chapter = Path(directory) / "ch01"
+            chapter.mkdir()
+            (chapter / "caption-deviations.json").write_text(
+                json.dumps({"schema_version": 2, "chapter": "ch01",
+                            "formats": {"short": [
+                                {"start": 0.0, "text": "你好世界",
+                                 "kinds": ["dwell"]}]}}),
+                encoding="utf-8")
+            manifests = {"short": {"segments": [{"text": "你好世界"}]}}
+            cues = {"short": [{"start": 0.0, "end": 0.8,
+                               "text": "你好世界"}]}
+            warnings: list = []
+            errors = quality.check(
+                episode(), {}, manifests, cues, chapter, warnings=warnings)
+            self.assertEqual(errors, [])
+            self.assertEqual(len(warnings), 1, warnings)
+            self.assertIn("dwells less", warnings[0])
+
+    def test_dwell_kind_does_not_cover_character_budget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            chapter = Path(directory) / "ch01"
+            chapter.mkdir()
+            text = "字" * 33
+            (chapter / "caption-deviations.json").write_text(
+                json.dumps({"schema_version": 2, "chapter": "ch01",
+                            "formats": {"short": [
+                                {"start": 0.0, "text": text,
+                                 "kinds": ["dwell"]}]}}),
+                encoding="utf-8")
+            manifests = {"short": {"segments": [{"text": text}]}}
+            cues = {"short": [{"start": 0.0, "end": 2.0, "text": text}]}
+            errors = quality.check(episode(), {}, manifests, cues, chapter)
+            self.assertEqual(len(errors), 1, errors)
+            self.assertIn("character budget", errors[0])
 
 
 if __name__ == "__main__":
