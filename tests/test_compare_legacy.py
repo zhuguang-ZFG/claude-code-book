@@ -82,6 +82,13 @@ class AllowlistMatching(unittest.TestCase):
         self.assertTrue(cl.rule_matches(rule, diff))
         self.assertFalse(cl.rule_matches({**rule, "kind": "value"}, diff))
 
+    def test_exact_value_rules_match_on_legacy_and_fresh(self):
+        diff = cl.Diff("/book/version", "value", "0.3.5", "0.3.6")
+        rule = self.rule(path="/book/version", legacy="0.3.5", fresh="0.3.6")
+        rule.pop("delta")
+        self.assertTrue(cl.rule_matches(rule, diff))
+        self.assertFalse(cl.rule_matches({**rule, "fresh": "0.3.7"}, diff))
+
     def test_classify_separates_declared_from_unexpected(self):
         diffs = [cl.Diff("/editions/zh/units[1]/tables", "value", 1, 2),
                  cl.Diff("/editions/zh/units[1]/figures", "value", 4, 3)]
@@ -231,6 +238,24 @@ class ShippedRules(unittest.TestCase):
         matched, unmatched = cl.classify([release, unknown], rules)
         self.assertEqual([diff for diff, _ in matched], [release])
         self.assertEqual([diff for diff, _ in unmatched], [unknown])
+
+
+class AllowlistFile(unittest.TestCase):
+    def test_every_rule_is_traceable(self):
+        data = json.loads(ALLOW.read_text(encoding="utf-8"))
+        self.assertEqual(data["schema_version"], 1)
+        self.assertTrue(data["deltas"])
+        for rule in data["deltas"]:
+            self.assertTrue(rule["path"].startswith("/"), rule)
+            # rule_matches() accepts either a numeric delta or an exact
+            # legacy/fresh pair (version strings have no numeric delta);
+            # the traceability contract mirrors that, never less.
+            if "delta" not in rule:
+                self.assertIn("legacy", rule, rule)
+                self.assertIn("fresh", rule, rule)
+            self.assertTrue(rule["reason"], rule)
+            self.assertRegex(rule["commit"], r"^[0-9a-f]{7,40}$", rule)
+            self.assertIn(rule.get("kind", "value"), {"value", "len"}, rule)
 
 
 if __name__ == "__main__":
