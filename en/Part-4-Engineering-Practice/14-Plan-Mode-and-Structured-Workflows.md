@@ -572,7 +572,7 @@ flowchart LR
     class AGENT agentNode
 ```
 
-> **Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze the failure causes, generate a fix plan, then automatically execute the fix. This "trigger -> plan -> execute" pattern is the core paradigm of Agent-driven automation.
+> **Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze the failure causes, generate a fix plan, then automatically execute the fix. Trigger, plan, execute -- the core paradigm of Agent-driven automation.
 
 ### 14.4.4 Session-scoped Lifecycle of Scheduled Tasks
 

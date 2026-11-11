@@ -858,7 +858,7 @@ flowchart TD
 
 **Workspace trust check**: All hooks in interactive mode require you to trust the workspace first. The check function determines whether the current session is non-interactive (SDK mode implicitly grants trust) and whether the user has accepted the trust dialog.
 
-In interactive mode, every hook needs you to trust the workspace first. This is a defense-in-depth measure -- hook configuration lives in `.claude/settings.json`; executing these commands in an untrusted workspace is unsafe. Imagine: you cloned an open-source project, the project's `.claude/settings.json` might contain malicious hooks (like PreToolUse hook sending your sensitive data to external servers). Workspace trust check is the key defense against this "supply chain attack".
+In interactive mode, every hook needs you to trust the workspace first. This is a defense-in-depth measure -- hook configuration lives in `.claude/settings.json`; executing these commands in an untrusted workspace is unsafe. Imagine: you cloned an open-source project, the project's `.claude/settings.json` might contain malicious hooks (like PreToolUse hook sending your sensitive data to external servers). Workspace trust check is the key defense against supply chain attacks.
 
 The `executeHooks` function chains these checks together, forming complete security gating: first check global disable switch, then check simple mode flag, finally check workspace trust status; only after all pass does normal hook execution proceed.
 

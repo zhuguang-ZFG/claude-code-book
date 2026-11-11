@@ -111,7 +111,7 @@ The coverage of these six rendering methods is noteworthy: it spans the entire "
 
 An analogy captures this design philosophy: in airport security, the default assumption is that all luggage needs inspection (fail-closed), and only specially certified passengers (such as diplomats) can use the fast track. If it were the other way around -- defaulting to pass-through and only intercepting when problems turn up (fail-open) -- then any missed check could cause a security incident.
 
-The type system, through type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; leave one out and it falls back to the default signature. This "optional override, safe default" pattern is highly effective in engineering practice -- simple tools need only a few lines of code, while complex tools support full customization.
+The type system, through type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; leave one out and it falls back to the default signature. In engineering practice, simple tools need only a few lines of code, while complex tools support full customization.
 
 ---
 
@@ -290,7 +290,7 @@ AgentTool is the core tool for Claude Code's multi-agent collaboration. It allow
 AgentTool has several special properties within the tool system:
 <!-- block: ch03.b-97a85be0 -->
 - It may carry the `alwaysLoad` mark, ensuring it remains visible in the first round even with ToolSearch on. This is because sub-agents are a critical capability for handling complex tasks and should not be hidden by the deferred discovery mechanism.
-- `createSubagentContext` creates sub-agents with independent `ToolUseContext` instances, which inherit some state from the parent context (such as permission rules) but have independent message lists. This "inherit but don't share" pattern ensures that sub-agents don't accidentally modify the parent agent's state.
+- `createSubagentContext` creates sub-agents with independent `ToolUseContext` instances, which inherit some state from the parent context (such as permission rules) but have independent message lists. Sub-agents don't accidentally modify the parent agent's state.
 - `TaskOutputTool` exposes sub-agent results to the primary agent.
 
 > **Cross-Reference:** Part 3, Extensions, analyzes the complete architectural design of sub-agents in depth, including context isolation strategies, permission bubbling mechanisms, and result passing protocols.

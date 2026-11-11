@@ -1996,7 +1996,7 @@
       "unit": "ch02",
       "section": "ch02-消息类型体系",
       "kind": "list",
-      "text": "- **UserMessage**：用户的输入消息，也承载工具执行结果（tool_result）。在 API 的视角里，工具结果总是以 user 角色发送。这个设计可能看起来违反直觉——为什么工具结果是\"user\"角色？原因是 API 协议只认三种角色（system/user/assistant），工具结果得让模型\"看到\"，所以必须以 user 角色发送。这是一个工程约束驱动设计决策的典型案例。\n- **AssistantMessage**：模型返回的消息，可能包含文本块和 tool_use 块。当模型检测到需要调用工具时，响应中会包含 `type: 'tool_use'` 的内容块。AssistantMessage 的关键特性是它可能同时包含文本和工具调用——模型可能先输出一段解释（\"我需要查看你的文件\"），然后附加一个工具调用。这种\"边说边做\"的模式让 Agent 的行为更加透明。\n- **SystemMessage**：系统级通知，如权限变更、模型回退提示等。不参与 API 通信，仅在 UI 展示。SystemMessage 是\"第四面墙\"——它不参与模型对话，但告诉用户系统内部正在发生什么。\n- **AttachmentMessage**：附件消息，承载文件变更通知、内存文件（CLAUDE.md）内容、任务通知等附加信息。\n- **ProgressMessage**：工具执行的进度消息，用于实时反馈工具运行状态（如 Bash 命令的输出流、文件读取进度等）。",
+      "text": "- **UserMessage**：用户的输入消息，也承载工具执行结果（tool_result）。在 API 的视角里，工具结果总是以 user 角色发送。这个设计可能看起来违反直觉——为什么工具结果是\"user\"角色？原因是 API 协议只认三种角色（system/user/assistant），工具结果得让模型\"看到\"，所以必须以 user 角色发送。这是一个工程约束驱动设计决策的典型案例。\n- **AssistantMessage**：模型返回的消息，可能包含文本块和 tool_use 块。当模型检测到需要调用工具时，响应中会包含 `type: 'tool_use'` 的内容块。AssistantMessage 的关键特性是它可能同时包含文本和工具调用——模型可能先输出一段解释（\"我需要查看你的文件\"），然后附加一个工具调用，Agent 的行为因此更加透明。\n- **SystemMessage**：系统级通知，如权限变更、模型回退提示等。不参与 API 通信，仅在 UI 展示。SystemMessage 是\"第四面墙\"——它不参与模型对话，但告诉用户系统内部正在发生什么。\n- **AttachmentMessage**：附件消息，承载文件变更通知、内存文件（CLAUDE.md）内容、任务通知等附加信息。\n- **ProgressMessage**：工具执行的进度消息，用于实时反馈工具运行状态（如 Bash 命令的输出流、文件读取进度等）。",
       "block": "ch02.b-52497bfc"
     },
     {
@@ -2431,7 +2431,7 @@
       "unit": "ch02",
       "section": "ch02-为什么对话循环采用函数式设计",
       "kind": "list",
-      "text": "4. **可组合性**：`yield*` 委托语法允许将子生成器的输出直接转发。主循环的结果经委托语法传到外层生成器，工具执行也串在同一条链上。这种\"生成器链\"把不同层次的代码无缝拼在一起——对话循环产出事件，工具执行也产出事件，上层 UI 只需要一个统一的 `for await...of` 循环就能消费所有层次的事件。"
+      "text": "4. **可组合性**：`yield*` 委托语法允许将子生成器的输出直接转发。主循环的结果经委托语法传到外层生成器，工具执行也串在同一条链上。生成器链把不同层次的代码无缝拼在一起——对话循环产出事件，工具执行也产出事件，上层 UI 只需要一个统一的 `for await...of` 循环就能消费所有层次的事件。"
     },
     {
       "lang": "zh",
@@ -3101,7 +3101,7 @@
       "unit": "ch03",
       "section": "ch03-buildtool-工厂函数",
       "kind": "paragraph",
-      "text": "类型系统通过类型计算，让开发者只需提供必要字段，而工厂函数的返回类型保证完整的工具接口。如果开发者在定义中提供了某个方法，类型系统会使用开发者提供的签名；如果省略了，则使用默认签名。这种\"可选覆盖、安全默认\"的模式在工程实践中非常有效——简单工具只需几行代码，复杂工具可以完全自定义。"
+      "text": "类型系统通过类型计算，让开发者只需提供必要字段，而工厂函数的返回类型保证完整的工具接口。如果开发者在定义中提供了某个方法，类型系统会使用开发者提供的签名；如果省略了，则使用默认签名。工程实践中，简单工具只需几行代码，复杂工具可以完全自定义。"
     },
     {
       "lang": "zh",
@@ -3492,7 +3492,7 @@
       "unit": "ch03",
       "section": "ch03-agenttool子智能体入口",
       "kind": "list",
-      "text": "- 它可能带有 `alwaysLoad` 标记，确保在 ToolSearch 启用时仍然在第一轮可见。这是因为子智能体是处理复杂任务的关键能力，不该让延迟发现机制把它藏起来。\n- 子智能体通过 `createSubagentContext` 创建独立的 `ToolUseContext`，继承父上下文的部分状态（如权限规则）但拥有独立的消息列表。这种\"继承但不共享\"的模式确保了子智能体不会意外修改父智能体的状态。\n- 子智能体的结果通过 `TaskOutputTool` 暴露给主智能体。",
+      "text": "- 它可能带有 `alwaysLoad` 标记，确保在 ToolSearch 启用时仍然在第一轮可见。这是因为子智能体是处理复杂任务的关键能力，不该让延迟发现机制把它藏起来。\n- 子智能体通过 `createSubagentContext` 创建独立的 `ToolUseContext`，继承父上下文的部分状态（如权限规则）但拥有独立的消息列表。子智能体不会意外修改父智能体的状态。\n- 子智能体的结果通过 `TaskOutputTool` 暴露给主智能体。",
       "block": "ch03.b-f7f89dc9"
     },
     {
@@ -4047,7 +4047,7 @@
       "unit": "ch04",
       "section": "ch04",
       "kind": "paragraph",
-      "text": "用一个物理世界的类比来理解权限管线：一座现代化办公大楼的门禁系统不是只在入口设一个保安（单一检查点），而是在不同区域设置了不同级别的安全检查——大堂只需刷卡，会议室需要预约确认，服务器机房需要指纹验证加双人授权。每一层安全检查都是独立的，即使某一层失守，下一层仍然挡得住未授权的访问。Claude Code 的权限管线正是这种\"纵深防御\"思想在软件系统中的体现。",
+      "text": "用一个物理世界的类比来理解权限管线：一座现代化办公大楼的门禁系统不是只在入口设一个保安（单一检查点），而是在不同区域设置了不同级别的安全检查——大堂只需刷卡，会议室需要预约确认，服务器机房需要指纹验证加双人授权。每一层安全检查都是独立的，即使某一层失守，下一层仍然挡得住未授权的访问。Claude Code 的权限管线正是纵深防御思想在软件系统中的体现。",
       "block": "ch04.b-88da0e24"
     },
     {
@@ -4761,7 +4761,7 @@
       "unit": "ch04",
       "section": "ch04-441-命令分类与通配符匹配",
       "kind": "paragraph",
-      "text": "一个细节：当模式以 ` *`（空格加通配符）结尾且这是唯一的通配符时，尾部的空格和参数变为可选的。所以规则 `git *` 既匹配 `git add .` 也匹配裸 `git` 命令——与 `git:*` 前缀语义保持一致。这种\"等价语法\"的设计减少了用户的认知负担——你不需要记住两种不同的语法规则，`git:*` 和 `git *` 做同样的事。"
+      "text": "一个细节：当模式以 ` *`（空格加通配符）结尾且这是唯一的通配符时，尾部的空格和参数变为可选的。所以规则 `git *` 既匹配 `git add .` 也匹配裸 `git` 命令——与 `git:*` 前缀语义保持一致。用户不必记住两种不同的语法规则——`git:*` 和 `git *` 做同样的事。"
     },
     {
       "lang": "zh",
@@ -4810,7 +4810,7 @@
       "unit": "ch04",
       "section": "ch04-443-分类器自动审批机制",
       "kind": "paragraph",
-      "text": "这里有一个精心设计的超时机制——使用 Promise 竞争让分类器检查与 2 秒定时器竞争。如果分类器在 2 秒内返回高置信度的匹配结果，则自动批准这个操作；否则用户就会看到交互式提示。这种\"尽力而为\"的策略确保了分类器不会成为用户体验的瓶颈。"
+      "text": "这里有一个精心设计的超时机制——使用 Promise 竞争让分类器检查与 2 秒定时器竞争。如果分类器在 2 秒内返回高置信度的匹配结果，则自动批准这个操作；否则用户就会看到交互式提示。分类器不会成为用户体验的瓶颈。"
     },
     {
       "lang": "zh",
@@ -4894,7 +4894,7 @@
       "unit": "ch04",
       "section": "ch04-452-applypermissionupdates-与-persistpermissionupdates",
       "kind": "paragraph",
-      "text": "这种\"内存优先、持久化异步\"的设计模式在高性能系统中很常见：先确保内存状态正确（影响当前行为），然后异步写入持久存储（影响未来行为）。如果持久化失败，当前会话的行为不受影响，但重启后规则会丢失。"
+      "text": "高性能系统中，先确保内存状态正确（影响当前行为），然后异步写入持久存储（影响未来行为）。如果持久化失败，当前会话的行为不受影响，但重启后规则会丢失。"
     },
     {
       "lang": "zh",
@@ -5209,7 +5209,7 @@
       "unit": "ch04",
       "section": "ch04-关键要点总结",
       "kind": "list",
-      "text": "7. **双层更新机制**：`applyPermissionUpdates` 即时修改内存上下文，`persistPermissionUpdates` 异步写入文件系统，两者分离确保了响应速度和数据持久化。这种\"内存优先、持久化异步\"的模式是高性能系统的通用设计模式。"
+      "text": "7. **双层更新机制**：`applyPermissionUpdates` 即时修改内存上下文，`persistPermissionUpdates` 异步写入文件系统，两者分离确保了响应速度和数据持久化。内存优先、持久化异步在高性能系统中很常见。"
     },
     {
       "lang": "zh",
@@ -5753,7 +5753,7 @@
       "unit": "ch05",
       "section": "ch05-522-shouldallowmanagedhooksonly",
       "kind": "paragraph",
-      "text": "这种\"仅托管\"模式确保了组织内的 hooks 执行是可预测的、可审计的——开发者无法通过修改本地配置来绕过审计。"
+      "text": "组织内的 hooks 执行因此可预测、可审计——开发者无法通过修改本地配置来绕过审计。"
     },
     {
       "lang": "zh",
@@ -10332,7 +10332,7 @@
       "unit": "ch08",
       "section": "ch08-紧急禁用开关",
       "kind": "paragraph",
-      "text": "交互模式下，每个钩子都要求你先信任这个工作区。这是一个纵深防御（defense-in-depth）措施——钩子配置存储在 `.claude/settings.json` 中，在不受信任的工作区中执行这些命令是不安全的。想象一下：你克隆了一个开源项目，项目的 `.claude/settings.json` 中可能包含恶意钩子（如 `PreToolUse` 钩子将你的敏感数据发送到外部服务器）。工作区信任检查就是防止这种\"供应链攻击\"的关键防线。"
+      "text": "交互模式下，每个钩子都要求你先信任这个工作区。这是一个纵深防御（defense-in-depth）措施——钩子配置存储在 `.claude/settings.json` 中，在不受信任的工作区中执行这些命令是不安全的。想象一下：你克隆了一个开源项目，项目的 `.claude/settings.json` 中可能包含恶意钩子（如 `PreToolUse` 钩子将你的敏感数据发送到外部服务器）。工作区信任检查就是防止供应链攻击的关键防线。"
     },
     {
       "lang": "zh",
@@ -11126,7 +11126,7 @@
       "unit": "ch09",
       "section": "ch09-explore-agent只读代码探索专家",
       "kind": "paragraph",
-      "text": "**第一，严格的只读约束。** 系统提示中声明了严格的禁止操作列表（不能创建文件、修改文件、运行任何改变系统状态的命令），又用 disallowedTools 把 Edit、Write 这些工具物理禁掉，不让它们出现在可调用清单里。这种\"双重锁\"设计——提示里写的是软约束，工具清单上动的是硬约束——确保了即使模型\"幻觉\"中想要修改文件，也会因工具不可用而无从下手。"
+      "text": "**第一，严格的只读约束。** 系统提示中声明了严格的禁止操作列表（不能创建文件、修改文件、运行任何改变系统状态的命令），又用 disallowedTools 把 Edit、Write 这些工具物理禁掉，不让它们出现在可调用清单里。双重锁——提示里写的是软约束，工具清单上动的是硬约束——确保了即使模型\"幻觉\"中想要修改文件，也会因工具不可用而无从下手。"
     },
     {
       "lang": "zh",
@@ -12142,7 +12142,7 @@
       "unit": "ch10",
       "section": "ch10-coordinatormode-核心模块",
       "kind": "quote",
-      "text": "**设计洞察：为什么使用双重门控而非单一开关？**  Feature gate 是编译时优化——不需要 Coordinator 功能的部署（如轻量级 SDK 嵌入场景）可以完全排除相关代码，减小二进制体积和攻击面。环境变量是运行时控制——即使在包含功能的构建中，也需要显式启用。这种\"编译时排除 + 运行时显式启用\"的模式在企业软件中很常见，既满足了灵活性需求，又符合最小权限原则。"
+      "text": "**设计洞察：为什么使用双重门控而非单一开关？**  Feature gate 是编译时优化——不需要 Coordinator 功能的部署（如轻量级 SDK 嵌入场景）可以完全排除相关代码，减小二进制体积和攻击面。环境变量是运行时控制——即使在包含功能的构建中，也需要显式启用。企业软件中很常见，既满足了灵活性需求，又符合最小权限原则。"
     },
     {
       "lang": "zh",
@@ -12480,7 +12480,7 @@
       "unit": "ch10",
       "section": "ch10-sendmessagetool-消息传递",
       "kind": "paragraph",
-      "text": "消息发送工具的智能路由机制尤其值得关注：当协调者向一个正在运行的工作者发送消息时，系统会将消息排队等待下一轮工具调用；当向一个已停止的工作者发送消息时，系统会自动恢复这个工作者，并把消息作为新的提示。这种\"停止-恢复\"模式，协调者管起工作者的生命周期来更省力。"
+      "text": "消息发送工具的智能路由机制尤其值得关注：当协调者向一个正在运行的工作者发送消息时，系统会将消息排队等待下一轮工具调用；当向一个已停止的工作者发送消息时，系统会自动恢复这个工作者，并把消息作为新的提示。停止-恢复，协调者管起工作者的生命周期来更省力。"
     },
     {
       "lang": "zh",
@@ -13749,7 +13749,7 @@
       "unit": "ch11",
       "section": "ch11-1132-动态技能发现",
       "kind": "quote",
-      "text": "**实际使用场景：Monorepo 中的项目特定技能**  在 Monorepo 结构中，每个子项目可能有自己的技能需求。动态技能发现机制针对的正是这个问题：  ``` my-monorepo/ ├── packages/ │   ├── frontend/ │   │   └── .claude/skills/ │   │       └── component-gen/ │   │           └── SKILL.md    ← 前端组件生成技能 │   ├── backend/ │   │   └── .claude/skills/ │   │       └── api-gen/ │   │           └── SKILL.md    ← API 端点生成技能 │   └── shared/ │       └── .claude/skills/ │           └── type-gen/ │               └── SKILL.md    ← 共享类型生成技能 ```  当模型操作 `packages/frontend/` 下的文件时，会自动发现前端的组件生成技能；操作 `packages/backend/` 下的文件时，会自动发现 API 生成技能。这种\"按位置激活\"的模式极大地减少了技能选择的心智负担。"
+      "text": "**实际使用场景：Monorepo 中的项目特定技能**  在 Monorepo 结构中，每个子项目可能有自己的技能需求。动态技能发现机制针对的正是这个问题：  ``` my-monorepo/ ├── packages/ │   ├── frontend/ │   │   └── .claude/skills/ │   │       └── component-gen/ │   │           └── SKILL.md    ← 前端组件生成技能 │   ├── backend/ │   │   └── .claude/skills/ │   │       └── api-gen/ │   │           └── SKILL.md    ← API 端点生成技能 │   └── shared/ │       └── .claude/skills/ │           └── type-gen/ │               └── SKILL.md    ← 共享类型生成技能 ```  当模型操作 `packages/frontend/` 下的文件时，会自动发现前端的组件生成技能；操作 `packages/backend/` 下的文件时，会自动发现 API 生成技能。技能选择的心智负担因此大幅降低。"
     },
     {
       "lang": "zh",
@@ -16732,7 +16732,7 @@
       "unit": "ch13",
       "section": "ch13-1321-设计哲学流到即执行",
       "kind": "paragraph",
-      "text": "这种\"流到即执行\"的理念可以用一个生活中的比喻来理解：想象一个厨房，厨师（模型）在口头下达一系列指令 -- \"切洋葱\"、\"烧水\"、\"调酱汁\"。传统做法是等厨师说完所有指令后才开始动手；而\"流到即执行\"是厨师说一句，帮厨就开始做一件。切洋葱和烧水可以同时做（并发安全），但\"把洋葱倒进锅里\"必须等\"切完洋葱\"后才能做（串行依赖）。"
+      "text": "流到即执行的理念，可以用一个生活中的比喻来理解：想象一个厨房，厨师（模型）在口头下达一系列指令 -- \"切洋葱\"、\"烧水\"、\"调酱汁\"。传统做法是等厨师说完所有指令后才开始动手；而\"流到即执行\"是厨师说一句，帮厨就开始做一件。切洋葱和烧水可以同时做（并发安全），但\"把洋葱倒进锅里\"必须等\"切完洋葱\"后才能做（串行依赖）。"
     },
     {
       "lang": "zh",
@@ -16886,7 +16886,7 @@
       "unit": "ch13",
       "section": "ch13-1324-兄弟工具错误级联",
       "kind": "paragraph",
-      "text": "这种\"选择性级联\"策略是实用主义的体现：它不追求理论上的完美一致性，而是根据实际使用模式做合理假设。"
+      "text": "选择性级联是实用主义的体现：它不追求理论上的完美一致性，而是根据实际使用模式做合理假设。"
     },
     {
       "lang": "zh",
@@ -16986,7 +16986,7 @@
       "unit": "ch13",
       "section": "ch13-1331-并行预取与模块评估赛跑",
       "kind": "paragraph",
-      "text": "95 毫秒的节省听起来不多，但在 CLI 工具的世界里，用户对\"敲命令到看到输出\"的延迟极为敏感。这种\"与 import 链赛跑\"的策略本质上是把 CPU 等待 I/O 时的空闲时间用起来。"
+      "text": "95 毫秒的节省听起来不多，但在 CLI 工具的世界里，用户对\"敲命令到看到输出\"的延迟极为敏感。与 import 链赛跑，本质上是把 CPU 等待 I/O 时的空闲时间用起来。"
     },
     {
       "lang": "zh",
@@ -18711,7 +18711,7 @@
       "unit": "ch14",
       "section": "ch14-1443-remotetriggertool远程触发",
       "kind": "quote",
-      "text": "**最佳实践：** 远程触发结合 Plan 模式可以搭出一套完整的自动化工作流。例如，CI 失败时触发一个 Agent，Agent 自动进入 Plan 模式分析失败原因，生成修复计划，然后自动执行修复。这种\"触发 -> 规划 -> 执行\"的模式是 Agent 驱动自动化的核心范式。"
+      "text": "**最佳实践：** 远程触发结合 Plan 模式可以搭出一套完整的自动化工作流。例如，CI 失败时触发一个 Agent，Agent 自动进入 Plan 模式分析失败原因，生成修复计划，然后自动执行修复。触发、规划、执行，是 Agent 驱动自动化的核心范式。"
     },
     {
       "lang": "zh",
@@ -25197,7 +25197,7 @@
       "unit": "ch02",
       "section": "ch02-message-type-system",
       "kind": "list",
-      "text": "- **UserMessage**: The user's input message, which also carries tool execution results (tool_result). From the API's perspective, tool results always travel with the user role. This design may seem counterintuitive -- why are tool results in the \"user\" role? The reason is that the API protocol knows only three roles (system/user/assistant), and the model needs to \"see\" tool results, so they must go out in the user role. This is a classic case of an engineering constraint driving a design decision.\n- **AssistantMessage**: The message returned by the model, which may contain text blocks and tool_use blocks. When the model detects that a tool needs to be called, the response will include a content block with `type: 'tool_use'`. A key characteristic of AssistantMessage is that it may simultaneously contain text and tool calls -- the model might first output an explanation (\"Let me check your package.json file\"), then append a tool call. This \"talking while doing\" pattern makes the Agent's behavior more transparent.\n- **SystemMessage**: System-level notifications, such as permission changes, model fallback prompts, and so on. Does not participate in API communication; only displayed in the UI. SystemMessage is the \"fourth wall\" -- it doesn't participate in the model conversation but tells the user what's happening inside the system.\n- **AttachmentMessage**: Attachment messages carrying file change notifications, memory file (CLAUDE.md) contents, task notifications, and other supplementary information.\n- **ProgressMessage**: Progress messages for tool execution, used for real-time feedback on tool running status (such as Bash command output streams, file read progress, etc.).",
+      "text": "- **UserMessage**: The user's input message, which also carries tool execution results (tool_result). From the API's perspective, tool results always travel with the user role. This design may seem counterintuitive -- why are tool results in the \"user\" role? The reason is that the API protocol knows only three roles (system/user/assistant), and the model needs to \"see\" tool results, so they must go out in the user role. This is a classic case of an engineering constraint driving a design decision.\n- **AssistantMessage**: The message returned by the model, which may contain text blocks and tool_use blocks. When the model detects that a tool needs to be called, the response will include a content block with `type: 'tool_use'`. A key characteristic of AssistantMessage is that it may simultaneously contain text and tool calls -- the model might first output an explanation (\"Let me check your package.json file\"), then append a tool call, making the Agent's behavior more transparent.\n- **SystemMessage**: System-level notifications, such as permission changes, model fallback prompts, and so on. Does not participate in API communication; only displayed in the UI. SystemMessage is the \"fourth wall\" -- it doesn't participate in the model conversation but tells the user what's happening inside the system.\n- **AttachmentMessage**: Attachment messages carrying file change notifications, memory file (CLAUDE.md) contents, task notifications, and other supplementary information.\n- **ProgressMessage**: Progress messages for tool execution, used for real-time feedback on tool running status (such as Bash command output streams, file read progress, etc.).",
       "block": "ch02.b-b197797c"
     },
     {
@@ -26299,7 +26299,7 @@
       "unit": "ch03",
       "section": "ch03-the-buildtool-factory-function",
       "kind": "paragraph",
-      "text": "The type system, through type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; leave one out and it falls back to the default signature. This \"optional override, safe default\" pattern is highly effective in engineering practice -- simple tools need only a few lines of code, while complex tools support full customization."
+      "text": "The type system, through type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; leave one out and it falls back to the default signature. In engineering practice, simple tools need only a few lines of code, while complex tools support full customization."
     },
     {
       "lang": "en",
@@ -26687,7 +26687,7 @@
       "unit": "ch03",
       "section": "ch03-agenttool-the-sub-agent-entry-point",
       "kind": "list",
-      "text": "- It may carry the `alwaysLoad` mark, ensuring it remains visible in the first round even with ToolSearch on. This is because sub-agents are a critical capability for handling complex tasks and should not be hidden by the deferred discovery mechanism.\n- `createSubagentContext` creates sub-agents with independent `ToolUseContext` instances, which inherit some state from the parent context (such as permission rules) but have independent message lists. This \"inherit but don't share\" pattern ensures that sub-agents don't accidentally modify the parent agent's state.\n- `TaskOutputTool` exposes sub-agent results to the primary agent.",
+      "text": "- It may carry the `alwaysLoad` mark, ensuring it remains visible in the first round even with ToolSearch on. This is because sub-agents are a critical capability for handling complex tasks and should not be hidden by the deferred discovery mechanism.\n- `createSubagentContext` creates sub-agents with independent `ToolUseContext` instances, which inherit some state from the parent context (such as permission rules) but have independent message lists. Sub-agents don't accidentally modify the parent agent's state.\n- `TaskOutputTool` exposes sub-agent results to the primary agent.",
       "block": "ch03.b-97a85be0"
     },
     {
@@ -27951,7 +27951,7 @@
       "unit": "ch04",
       "section": "ch04-441-command-classification-and-wildcard-matching",
       "kind": "paragraph",
-      "text": "One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. The rule `git *` therefore matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. This \"equivalent syntax\" design reduces users' cognitive burden -- you don't need to remember two different syntax rules; `git:*` and `git *` do the same thing."
+      "text": "One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. The rule `git *` therefore matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. You don't need to remember two different syntax rules; `git:*` and `git *` do the same thing."
     },
     {
       "lang": "en",
@@ -28000,7 +28000,7 @@
       "unit": "ch04",
       "section": "ch04-443-classifier-automatic-approval-mechanism",
       "kind": "paragraph",
-      "text": "There is a carefully designed timeout mechanism here -- using a Promise race to pit the classifier check against a 2-second timer. If the classifier returns a high-confidence matching result within 2 seconds, the system approves the operation automatically; otherwise, the user sees the interactive prompt. This \"best effort\" strategy ensures the classifier does not become a user experience bottleneck."
+      "text": "There is a carefully designed timeout mechanism here -- using a Promise race to pit the classifier check against a 2-second timer. If the classifier returns a high-confidence matching result within 2 seconds, the system approves the operation automatically; otherwise, the user sees the interactive prompt. The classifier does not become a user experience bottleneck."
     },
     {
       "lang": "en",
@@ -28084,7 +28084,7 @@
       "unit": "ch04",
       "section": "ch04-452-applypermissionupdates-and-persistpermissionupdates",
       "kind": "paragraph",
-      "text": "This \"memory first, persistence asynchronous\" design pattern is common in high-performance systems: first ensure the in-memory state is correct (affecting current behavior), then asynchronously write to persistent storage (affecting future behavior). If persistence fails, the current session's behavior stays intact, but the rules will be lost after a restart."
+      "text": "In high-performance systems, first ensure the in-memory state is correct (affecting current behavior), then asynchronously write to persistent storage (affecting future behavior). If persistence fails, the current session's behavior stays intact, but the rules will be lost after a restart."
     },
     {
       "lang": "en",
@@ -28399,7 +28399,7 @@
       "unit": "ch04",
       "section": "ch04-key-takeaways",
       "kind": "list",
-      "text": "7. **Dual-Layer Update Mechanism:** `applyPermissionUpdates` immediately modifies the in-memory context, while `persistPermissionUpdates` asynchronously writes to the file system. The separation of the two ensures both responsiveness and data persistence. This \"memory first, persistence asynchronous\" pattern is a universal design pattern in high-performance systems."
+      "text": "7. **Dual-Layer Update Mechanism:** `applyPermissionUpdates` immediately modifies the in-memory context, while `persistPermissionUpdates` asynchronously writes to the file system. The separation of the two ensures both responsiveness and data persistence. Memory first, persistence asynchronous, is common in high-performance systems."
     },
     {
       "lang": "en",
@@ -28943,7 +28943,7 @@
       "unit": "ch05",
       "section": "ch05-522-shouldallowmanagedhooksonly",
       "kind": "paragraph",
-      "text": "This \"managed-only\" mode ensures that hooks execution within the organization is predictable and auditable -- developers cannot bypass auditing by modifying local configurations."
+      "text": "Hooks execution within the organization is therefore predictable and auditable -- developers cannot bypass auditing by modifying local configurations."
     },
     {
       "lang": "en",
@@ -33510,7 +33510,7 @@
       "unit": "ch08",
       "section": "ch08-emergency-disable-switches",
       "kind": "paragraph",
-      "text": "In interactive mode, every hook needs you to trust the workspace first. This is a defense-in-depth measure -- hook configuration lives in `.claude/settings.json`; executing these commands in an untrusted workspace is unsafe. Imagine: you cloned an open-source project, the project's `.claude/settings.json` might contain malicious hooks (like PreToolUse hook sending your sensitive data to external servers). Workspace trust check is the key defense against this \"supply chain attack\"."
+      "text": "In interactive mode, every hook needs you to trust the workspace first. This is a defense-in-depth measure -- hook configuration lives in `.claude/settings.json`; executing these commands in an untrusted workspace is unsafe. Imagine: you cloned an open-source project, the project's `.claude/settings.json` might contain malicious hooks (like PreToolUse hook sending your sensitive data to external servers). Workspace trust check is the key defense against supply chain attacks."
     },
     {
       "lang": "en",
@@ -34303,7 +34303,7 @@
       "unit": "ch09",
       "section": "ch09-explore-agent-read-only-code-exploration-expert",
       "kind": "paragraph",
-      "text": "**First, strict read-only constraints.** The system prompt declares a strict list of disallowed operations (cannot create files, modify files, or run any commands that change system state), and disallowedTools physically blocks Edit, Write, and similar tools, keeping them off the callable list. This \"dual-lock\" design — soft constraints written into the prompt plus hard constraints enforced on the tool list — ensures that even if the model \"hallucinates\" and wants to modify a file, it cannot act because the tool is unavailable."
+      "text": "**First, strict read-only constraints.** The system prompt declares a strict list of disallowed operations (cannot create files, modify files, or run any commands that change system state), and disallowedTools physically blocks Edit, Write, and similar tools, keeping them off the callable list. The dual lock -- soft constraints written into the prompt plus hard constraints enforced on the tool list -- ensures that even if the model \"hallucinates\" and wants to modify a file, it cannot act because the tool is unavailable."
     },
     {
       "lang": "en",
@@ -35317,7 +35317,7 @@
       "unit": "ch10",
       "section": "ch10-the-coordinatormode-core-module",
       "kind": "quote",
-      "text": "**Design Insight: Why use dual gating instead of a single switch?**  The feature gate is a compile-time optimization -- deployments that don't need Coordinator functionality (such as lightweight SDK embedding scenarios) can completely exclude the related code, reducing binary size and attack surface. The environment variable is a runtime control -- even in builds that include the feature, the user must explicitly enable it. This \"compile-time exclusion + runtime explicit enable\" pattern is common in enterprise software, satisfying both flexibility requirements and the principle of least privilege."
+      "text": "**Design Insight: Why use dual gating instead of a single switch?**  The feature gate is a compile-time optimization -- deployments that don't need Coordinator functionality (such as lightweight SDK embedding scenarios) can completely exclude the related code, reducing binary size and attack surface. The environment variable is a runtime control -- even in builds that include the feature, the user must explicitly enable it. Enterprise software uses this commonly, satisfying both flexibility requirements and the principle of least privilege."
     },
     {
       "lang": "en",
@@ -35654,7 +35654,7 @@
       "unit": "ch10",
       "section": "ch10-sendmessagetool-message-passing",
       "kind": "paragraph",
-      "text": "The message sending tool's intelligent routing mechanism is particularly noteworthy: when the coordinator sends a message to a running worker, the system queues the message for the next round of tool invocation; when sending to a stopped worker, the system automatically resumes that worker and delivers the message as a new prompt. This \"stop-resume\" pattern lets the coordinator manage workers' lifecycles without breaking stride."
+      "text": "The message sending tool's intelligent routing mechanism is particularly noteworthy: when the coordinator sends a message to a running worker, the system queues the message for the next round of tool invocation; when sending to a stopped worker, the system automatically resumes that worker and delivers the message as a new prompt. Stop-resume lets the coordinator manage workers' lifecycles without breaking stride."
     },
     {
       "lang": "en",
@@ -36922,7 +36922,7 @@
       "unit": "ch11",
       "section": "ch11-1132-dynamic-skill-discovery",
       "kind": "quote",
-      "text": "**Practical Use Case: Project-specific Skills in a Monorepo**  In a Monorepo structure, each sub-project may have its own skill requirements. The dynamic skill discovery mechanism targets exactly this problem:  ``` my-monorepo/ ├── packages/ │   ├── frontend/ │   │   └── .claude/skills/ │   │       └── component-gen/ │   │           └── SKILL.md    <- Frontend component generation skill │   ├── backend/ │   │   └── .claude/skills/ │   │       └── api-gen/ │   │           └── SKILL.md    <- API endpoint generation skill │   └── shared/ │       └── .claude/skills/ │           └── type-gen/ │               └── SKILL.md    <- Shared type generation skill ```  When the model operates on files under `packages/frontend/`, it automatically discovers the frontend component generation skill; when operating on files under `packages/backend/`, it discovers the API generation skill. This \"activate by location\" pattern greatly reduces the cognitive burden of skill selection."
+      "text": "**Practical Use Case: Project-specific Skills in a Monorepo**  In a Monorepo structure, each sub-project may have its own skill requirements. The dynamic skill discovery mechanism targets exactly this problem:  ``` my-monorepo/ ├── packages/ │   ├── frontend/ │   │   └── .claude/skills/ │   │       └── component-gen/ │   │           └── SKILL.md    <- Frontend component generation skill │   ├── backend/ │   │   └── .claude/skills/ │   │       └── api-gen/ │   │           └── SKILL.md    <- API endpoint generation skill │   └── shared/ │       └── .claude/skills/ │           └── type-gen/ │               └── SKILL.md    <- Shared type generation skill ```  When the model operates on files under `packages/frontend/`, it automatically discovers the frontend component generation skill; when operating on files under `packages/backend/`, it discovers the API generation skill. Skill selection's cognitive burden drops sharply."
     },
     {
       "lang": "en",
@@ -40055,7 +40055,7 @@
       "unit": "ch13",
       "section": "ch13-1324-sibling-tool-error-cascading",
       "kind": "paragraph",
-      "text": "This \"selective cascading\" strategy is a pragmatic approach: it doesn't pursue theoretical perfect consistency but makes reasonable assumptions based on actual usage patterns."
+      "text": "Selective cascading is the pragmatic choice: it doesn't pursue theoretical perfect consistency but makes reasonable assumptions based on actual usage patterns."
     },
     {
       "lang": "en",
@@ -40155,7 +40155,7 @@
       "unit": "ch13",
       "section": "ch13-1331-parallel-prefetching-racing-against-module-evaluation",
       "kind": "paragraph",
-      "text": "95 milliseconds may not sound like much, but in the CLI tool world, users are extremely sensitive to the latency from \"typing command to seeing output\". This \"racing against import chain\" strategy essentially uses idle CPU time while waiting for I/O."
+      "text": "95 milliseconds may not sound like much, but in the CLI tool world, users are extremely sensitive to the latency from \"typing command to seeing output\". Racing against the import chain uses idle CPU time while waiting for I/O."
     },
     {
       "lang": "en",
@@ -41880,7 +41880,7 @@
       "unit": "ch14",
       "section": "ch14-1443-remotetriggertool-remote-triggering",
       "kind": "quote",
-      "text": "**Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze the failure causes, generate a fix plan, then automatically execute the fix. This \"trigger -> plan -> execute\" pattern is the core paradigm of Agent-driven automation."
+      "text": "**Best practice:** Combining remote triggers with Plan Mode can assemble a complete automation workflow. For example, when CI fails, trigger an Agent that automatically enters Plan Mode to analyze the failure causes, generate a fix plan, then automatically execute the fix. Trigger, plan, execute -- the core paradigm of Agent-driven automation."
     },
     {
       "lang": "en",
@@ -42597,7 +42597,7 @@
       "unit": "ch15",
       "section": "ch15-five-design-principles-in-practice",
       "kind": "paragraph",
-      "text": "**Principle 1: Loops over recursion.** Claude Code's core query function is an `AsyncGenerator` that manages state transitions through a `while(true)` loop and `continue` statements. Each iteration destructures the message list, compression tracking, recovery count, and other state from the `state` object, then writes a new `State` object at each `continue` site. This \"destructure-reassign\" pattern is easier to debug than recursive calls and avoids call stack overflow."
+      "text": "**Principle 1: Loops over recursion.** Claude Code's core query function is an `AsyncGenerator` that manages state transitions through a `while(true)` loop and `continue` statements. Each iteration destructures the message list, compression tracking, recovery count, and other state from the `state` object, then writes a new `State` object at each `continue` site. Destructuring and reassigning is easier to debug than recursive calls and avoids call stack overflow."
     },
     {
       "lang": "en",

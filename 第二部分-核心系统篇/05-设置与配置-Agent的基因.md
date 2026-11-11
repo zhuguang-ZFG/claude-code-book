@@ -289,7 +289,7 @@ userSettings 和 localSettings 不具备第一个属性（它们在用户自己�
 - 在 policySettings 的 hooks 中配置审计日志 hook
 - 这样无论开发者本地的 projectSettings 中有什么 hooks，只有管理员审计 hook 会运行
 
-这种"仅托管"模式确保了组织内的 hooks 执行是可预测的、可审计的——开发者无法通过修改本地配置来绕过审计。
+组织内的 hooks 执行因此可预测、可审计——开发者无法通过修改本地配置来绕过审计。
 
 ### 5.2.3 pluginOnlyPolicy
 

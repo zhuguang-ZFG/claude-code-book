@@ -53,7 +53,7 @@ flowchart TD
 
 > **Design Insight: Why use dual gating instead of a single switch?**
 >
-> The feature gate is a compile-time optimization -- deployments that don't need Coordinator functionality (such as lightweight SDK embedding scenarios) can completely exclude the related code, reducing binary size and attack surface. The environment variable is a runtime control -- even in builds that include the feature, the user must explicitly enable it. This "compile-time exclusion + runtime explicit enable" pattern is common in enterprise software, satisfying both flexibility requirements and the principle of least privilege.
+> The feature gate is a compile-time optimization -- deployments that don't need Coordinator functionality (such as lightweight SDK embedding scenarios) can completely exclude the related code, reducing binary size and attack surface. The environment variable is a runtime control -- even in builds that include the feature, the user must explicitly enable it. Enterprise software uses this commonly, satisfying both flexibility requirements and the principle of least privilege.
 
 ### Activation Conditions and Mutual Exclusion
 
@@ -271,7 +271,7 @@ graph TD
     style WC fill:#f39c12,stroke:#d68910,color:#fff
 ```
 
-The message sending tool's intelligent routing mechanism is particularly noteworthy: when the coordinator sends a message to a running worker, the system queues the message for the next round of tool invocation; when sending to a stopped worker, the system automatically resumes that worker and delivers the message as a new prompt. This "stop-resume" pattern lets the coordinator manage workers' lifecycles without breaking stride.
+The message sending tool's intelligent routing mechanism is particularly noteworthy: when the coordinator sends a message to a running worker, the system queues the message for the next round of tool invocation; when sending to a stopped worker, the system automatically resumes that worker and delivers the message as a new prompt. Stop-resume lets the coordinator manage workers' lifecycles without breaking stride.
 
 Successful delivery and task completion are different events. After sending an update to a running worker, the coordinator cannot assume the worker has already adopted it; the message still awaits processing. If A needs B's result to continue while B waits for A to deliver a file, neither task will finish just by waiting longer. The coordinator has to break the cycle: settle the common interface, have one side deliver an independent result first, or assign the dependent edits in sequence.
 

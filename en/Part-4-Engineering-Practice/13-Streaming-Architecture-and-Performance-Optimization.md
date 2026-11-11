@@ -288,7 +288,7 @@ Only Bash tool errors trigger cascading because Bash commands often have implici
 
 **Design considerations for cascading cancellation.** Why not let all tool errors trigger cascading? Consider this scenario: the model simultaneously calls Read to read three unrelated files. If the first file doesn't exist causing Read to error, we shouldn't cancel the other two reads -- their results are equally valuable to the model. Bash's specialness lies in that multiple Bash commands called by the model in one turn usually have implicit dependencies (like compile-then-test); one command failing often means subsequent commands' inputs are invalid.
 
-This "selective cascading" strategy is a pragmatic approach: it doesn't pursue theoretical perfect consistency but makes reasonable assumptions based on actual usage patterns.
+Selective cascading is the pragmatic choice: it doesn't pursue theoretical perfect consistency but makes reasonable assumptions based on actual usage patterns.
 
 > **Cross-reference:** The `buildTool` factory function in Chapter 3 "The Tool System -- Agent's Hands" defines tool concurrency safety properties in detail, with default value `isConcurrencySafe: () => false`, following the fail-closed principle.
 
@@ -337,7 +337,7 @@ gantt
 > After optimization total: max(65, 30, 32, 33) = **65ms**
 > Benefit: 160ms -> 65ms, saving **95ms (59%)**
 
-95 milliseconds may not sound like much, but in the CLI tool world, users are extremely sensitive to the latency from "typing command to seeing output". This "racing against import chain" strategy essentially uses idle CPU time while waiting for I/O.
+95 milliseconds may not sound like much, but in the CLI tool world, users are extremely sensitive to the latency from "typing command to seeing output". Racing against the import chain uses idle CPU time while waiting for I/O.
 
 > **Best practice:** Conditions for parallel prefetching are: (1) prefetch operations are I/O-intensive not CPU-intensive; (2) results won't be used immediately but needed at some later point; (3) prefetch failure shouldn't block the main flow. If your prefetch operation violates any condition, parallelization adds complexity without benefit.
 

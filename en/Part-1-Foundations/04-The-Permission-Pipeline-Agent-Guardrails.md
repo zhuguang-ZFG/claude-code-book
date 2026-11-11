@@ -394,7 +394,7 @@ flowchart LR
 
 The wildcard matching engine does pattern matching in full: it handles escape sequences, converts the `*` wildcard to regular expressions, and treats `\*` and `\\` as literals.
 
-One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. The rule `git *` therefore matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. This "equivalent syntax" design reduces users' cognitive burden -- you don't need to remember two different syntax rules; `git:*` and `git *` do the same thing.
+One detail: when a pattern ends with ` *` (space plus wildcard) and this is the only wildcard, the trailing space and arguments become optional. The rule `git *` therefore matches both `git add .` and the bare `git` command -- maintaining semantic consistency with the `git:*` prefix. You don't need to remember two different syntax rules; `git:*` and `git *` do the same thing.
 
 ### 4.4.2 Prefix Extraction Rules
 
@@ -408,7 +408,7 @@ When parsing rules, the system first checks for `:*` syntax (prefix matching), t
 
 The Bash tool has its own classifier automatic approval mechanism that runs in parallel with the auto mode's YOLO classifier. When a permission request is in the `ask` state, the system attempts to "speculatively" run the classifier check.
 
-There is a carefully designed timeout mechanism here -- using a Promise race to pit the classifier check against a 2-second timer. If the classifier returns a high-confidence matching result within 2 seconds, the system approves the operation automatically; otherwise, the user sees the interactive prompt. This "best effort" strategy ensures the classifier does not become a user experience bottleneck.
+There is a carefully designed timeout mechanism here -- using a Promise race to pit the classifier check against a 2-second timer. If the classifier returns a high-confidence matching result within 2 seconds, the system approves the operation automatically; otherwise, the user sees the interactive prompt. The classifier does not become a user experience bottleneck.
 
 The 2-second timeout choice is a deliberate trade-off: too short (e.g., 500ms) might prevent the classifier from responding in time due to network latency, while too long (e.g., 10 seconds) would make users feel the wait is excessive. 2 seconds is a "sweet spot" -- for simple commands, the classifier usually responds within 1 second; for complex commands, the 2-second timeout ensures users don't wait too long.
 
@@ -432,7 +432,7 @@ Meanwhile, `persistPermissionUpdates` writes updates to the file system, ensurin
 
 The separation design of these two functions is very important: memory application is synchronous and immediate, while file persistence may involve I/O operations. In the user approval handling method of the permission context, the two are called in sequence.
 
-This "memory first, persistence asynchronous" design pattern is common in high-performance systems: first ensure the in-memory state is correct (affecting current behavior), then asynchronously write to persistent storage (affecting future behavior). If persistence fails, the current session's behavior stays intact, but the rules will be lost after a restart.
+In high-performance systems, first ensure the in-memory state is correct (affecting current behavior), then asynchronously write to persistent storage (affecting future behavior). If persistence fails, the current session's behavior stays intact, but the rules will be lost after a restart.
 
 ```mermaid
 flowchart LR
@@ -610,7 +610,7 @@ for call in ("Bash(git status)", "Bash(rm -rf /)", "Bash(npm test)"):
 
 6. **Bash Tool Fine-Grained Control:** Supports three rule formats -- exact matching, prefix matching (`:*` syntax), and wildcard matching -- along with speculative classifier automatic approval. BashTool's permission system is the most complex part of the entire pipeline because the composability and expressiveness of shell commands far exceed those of other tool types.
 
-7. **Dual-Layer Update Mechanism:** `applyPermissionUpdates` immediately modifies the in-memory context, while `persistPermissionUpdates` asynchronously writes to the file system. The separation of the two ensures both responsiveness and data persistence. This "memory first, persistence asynchronous" pattern is a universal design pattern in high-performance systems.
+7. **Dual-Layer Update Mechanism:** `applyPermissionUpdates` immediately modifies the in-memory context, while `persistPermissionUpdates` asynchronously writes to the file system. The separation of the two ensures both responsiveness and data persistence. Memory first, persistence asynchronous, is common in high-performance systems.
 
 8. **Key to Enterprise Security:** In team environments, through the combined configuration of project-level `settings.json` (shared) and local `settings.local.json` (personal), together with the deny-priority rule system, you can build security policies covering everything from individual development to team collaboration.
 

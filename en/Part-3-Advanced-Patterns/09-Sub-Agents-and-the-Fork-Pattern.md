@@ -153,7 +153,7 @@ The Explore Agent is a high-speed, read-only search agent. Its definition declar
 
 Two key decisions reflect its core design philosophy:
 
-**First, strict read-only constraints.** The system prompt declares a strict list of disallowed operations (cannot create files, modify files, or run any commands that change system state), and disallowedTools physically blocks Edit, Write, and similar tools, keeping them off the callable list. This "dual-lock" design — soft constraints written into the prompt plus hard constraints enforced on the tool list — ensures that even if the model "hallucinates" and wants to modify a file, it cannot act because the tool is unavailable.
+**First, strict read-only constraints.** The system prompt declares a strict list of disallowed operations (cannot create files, modify files, or run any commands that change system state), and disallowedTools physically blocks Edit, Write, and similar tools, keeping them off the callable list. The dual lock -- soft constraints written into the prompt plus hard constraints enforced on the tool list -- ensures that even if the model "hallucinates" and wants to modify a file, it cannot act because the tool is unavailable.
 
 **Second, omitClaudeMd optimization.** Explore is a read-only search agent that doesn't need commit/PR/lint rules. CLAUDE.md typically contains the project's coding conventions, commit message format, PR templates, and other content — all completely useless for an agent that only searches. Omitting CLAUDE.md not only reduces token consumption but, more importantly, reduces noise in the system prompt, so the model focuses on the search task itself. This optimization saves an estimated 5-15 Gtokens per week.
 

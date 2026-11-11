@@ -404,7 +404,7 @@ Key security design: the loader automatically skips skills in `.gitignore`-ignor
 > │               └── SKILL.md    <- Shared type generation skill
 > ```
 >
-> When the model operates on files under `packages/frontend/`, it automatically discovers the frontend component generation skill; when operating on files under `packages/backend/`, it discovers the API generation skill. This "activate by location" pattern greatly reduces the cognitive burden of skill selection.
+> When the model operates on files under `packages/frontend/`, it automatically discovers the frontend component generation skill; when operating on files under `packages/backend/`, it discovers the API generation skill. Skill selection's cognitive burden drops sharply.
 
 ### 11.3.3 Conditional Skills
 

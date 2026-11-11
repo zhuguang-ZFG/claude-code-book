@@ -26,7 +26,7 @@ None of these are the model's fault. The harness itself hasn't taken shape. This
 
 Five design principles for Agent Harnesses run throughout this book. Before writing code, let's review how they map to concrete engineering decisions. Understanding the "why" behind these principles matters more than memorizing the "what" -- because when you encounter scenarios in your own project that Claude Code doesn't cover, principles can guide you toward consistent design decisions.
 
-**Principle 1: Loops over recursion.** Claude Code's core query function is an `AsyncGenerator` that manages state transitions through a `while(true)` loop and `continue` statements. Each iteration destructures the message list, compression tracking, recovery count, and other state from the `state` object, then writes a new `State` object at each `continue` site. This "destructure-reassign" pattern is easier to debug than recursive calls and avoids call stack overflow.
+**Principle 1: Loops over recursion.** Claude Code's core query function is an `AsyncGenerator` that manages state transitions through a `while(true)` loop and `continue` statements. Each iteration destructures the message list, compression tracking, recovery count, and other state from the `state` object, then writes a new `State` object at each `continue` site. Destructuring and reassigning is easier to debug than recursive calls and avoids call stack overflow.
 
 Why are loops better suited than recursion for Agent scenarios? Three reasons:
 

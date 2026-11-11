@@ -289,7 +289,7 @@ Suppose a financial institution requires an internal audit system to log all cod
 - Configure an audit logging hook in policySettings' hooks
 - This way, regardless of what hooks are in developers' local projectSettings, only the administrator's audit hook will run
 
-This "managed-only" mode ensures that hooks execution within the organization is predictable and auditable -- developers cannot bypass auditing by modifying local configurations.
+Hooks execution within the organization is therefore predictable and auditable -- developers cannot bypass auditing by modifying local configurations.
 
 ### 5.2.3 pluginOnlyPolicy
 
