@@ -1,14 +1,16 @@
 """Consumer boundaries for the shared chapter video factory."""
+import json
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "video"))
-from pipeline import model, quality, timeline
+from pipeline import captions, model, quality, timeline, voice
 
 
 class TrackedVideoInventory(unittest.TestCase):
@@ -137,6 +139,244 @@ class ConfigurationBoundary(unittest.TestCase):
         self.assertIn("VIDEO FAILED:", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
         self.assertIn("audio full.mp3 is missing", result.stderr)
+
+
+class RecordedCueTrack(unittest.TestCase):
+    """Cues rebuilt from recorded subtitle assets reproduce the shipped track."""
+
+    def _chapter(self, root: Path, script: str = "第一句。\n第二句。"):
+        chapter = root / "chapters" / "ch01"
+        chapter.mkdir(parents=True)
+        (chapter / "script-long.txt").write_text(script, encoding="utf-8")
+        (root / "ch01" / "hf-remake").mkdir(parents=True)
+        episode = {
+            "id": "ch01",
+            "legacy": {"dir": "../../ch01/hf-remake", "long_index": "index.html"},
+            "scripts": {"long": {"path": "script-long.txt", "mode": "paragraph"}},
+            "formats": {"long": {"status": "built", "width": 1920, "height": 1080,
+                                 "fps": 30, "duration_s": 10.0}},
+        }
+        return episode, chapter
+
+    def _probe(self, durations: dict[str, float]):
+        return mock.patch.object(
+            voice, "_duration",
+            side_effect=lambda path: durations.get(path.name, 3.0))
+
+    def test_timeline_vtt_merge_shifts_by_recorded_start(self):
+        with tempfile.TemporaryDirectory() as directory:
+            episode, chapter = self._chapter(Path(directory))
+            vo = Path(directory) / "ch01" / "assets" / "vo"
+            (vo / "mp3").mkdir(parents=True)
+            (vo / "mp3" / "01.mp3").write_bytes(b"mp3")
+            (vo / "mp3" / "01.vtt").write_text(
+                "WEBVTT\n\n00:00:00,500 --> 00:00:01,500\n第一句。\n\n"
+                "00:00:01,500 --> 00:00:02,800\n第二句。\n",
+                encoding="utf-8")
+            (vo / "timeline.json").write_text(
+                json.dumps([{"id": "01", "start": 2.5, "duration": 3.0}]),
+                encoding="utf-8")
+            with self._probe({"01.mp3": 3.0}):
+                cues = voice.recorded_cues(episode, chapter, "long")
+                self.assertEqual(voice.cue_source(episode, chapter, "long"),
+                                 voice.RECORDED_TIMELINE)
+                self.assertEqual(voice.cues(episode, chapter, "long"), cues)
+            self.assertEqual(cues, [
+                {"start": 3.0, "end": 4.0, "text": "第一句。"},
+                {"start": 4.0, "end": 5.3, "text": "第二句。"},
+            ])
+
+    def test_missing_recording_asset_falls_back_to_estimates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            episode, chapter = self._chapter(Path(directory))
+            vo = Path(directory) / "ch01" / "assets" / "vo"
+            (vo / "mp3").mkdir(parents=True)
+            (vo / "mp3" / "01.vtt").write_text(
+                "WEBVTT\n\n00:00:00,500 --> 00:00:01,500\n第一句。\n",
+                encoding="utf-8")
+            (vo / "timeline.json").write_text(
+                json.dumps([{"id": "01", "start": 0.0, "duration": 3.0}]),
+                encoding="utf-8")
+            with self._probe({}):
+                self.assertIsNone(voice.recorded_cues(episode, chapter, "long"))
+                self.assertEqual(voice.cue_source(episode, chapter, "long"),
+                                 "estimated")
+
+    def test_vtt_cue_past_audio_end_is_not_recorded(self):
+        with tempfile.TemporaryDirectory() as directory:
+            episode, chapter = self._chapter(Path(directory))
+            vo = Path(directory) / "ch01" / "assets" / "vo"
+            (vo / "mp3").mkdir(parents=True)
+            (vo / "mp3" / "01.mp3").write_bytes(b"mp3")
+            (vo / "mp3" / "01.vtt").write_text(
+                "WEBVTT\n\n00:00:00,500 --> 00:00:03,900\n第一句。\n",
+                encoding="utf-8")
+            (vo / "timeline.json").write_text(
+                json.dumps([{"id": "01", "start": 0.0, "duration": 4.0}]),
+                encoding="utf-8")
+            with self._probe({"01.mp3": 3.0}):
+                self.assertIsNone(voice.recorded_cues(episode, chapter, "long"))
+
+    def test_transcript_json_absolute_timings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            episode, chapter = self._chapter(Path(directory))
+            base = Path(directory) / "ch01" / "hf-remake"
+            (base / "short").mkdir(parents=True)
+            (base / "transcript.json").write_text(
+                json.dumps([{"text": "第一句。", "start": 0.08,
+                             "end": 1.5, "id": "w0"}]),
+                encoding="utf-8")
+            cues = voice.recorded_cues(episode, chapter, "long")
+            self.assertEqual(voice.cue_source(episode, chapter, "long"),
+                             voice.RECORDED_TRANSCRIPT)
+            self.assertEqual(cues,
+                             [{"start": 0.08, "end": 1.5, "text": "第一句。"}])
+
+    def test_short_caps_absolute_timings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            episode, chapter = self._chapter(Path(directory))
+            caps = (Path(directory) / "ch01" / "hf-remake" / "short"
+                    / "assets")
+            caps.mkdir(parents=True)
+            (caps / "short-caps.json").write_text(
+                json.dumps([{"start": 0.5, "end": 2.0, "text": "第一句。"}]),
+                encoding="utf-8")
+            episode["formats"]["short"] = {
+                "status": "built", "width": 1080, "height": 1920,
+                "fps": 30, "duration_s": 20.0}
+            cues = voice.recorded_cues(episode, chapter, "short")
+            self.assertEqual(voice.cue_source(episode, chapter, "short"),
+                             voice.RECORDED_SHORT_CAPS)
+            self.assertEqual(cues,
+                             [{"start": 0.5, "end": 2.0, "text": "第一句。"}])
+
+    def test_chunk_srt_merge_offsets_by_probed_durations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            episode, chapter = self._chapter(Path(directory))
+            vo = Path(directory) / "ch01" / "assets" / "vo"
+            vo.mkdir(parents=True)
+            for index in range(2):
+                (vo / f"c{index:03d}.mp3").write_bytes(b"mp3")
+                (vo / f"c{index:03d}.srt").write_text(
+                    "1\n00:00:00,200 --> 00:00:01,000\n"
+                    f"第{'一二'[index]}句。\n", encoding="utf-8")
+            with self._probe({"c000.mp3": 2.0, "c001.mp3": 1.5}):
+                cues = voice.recorded_cues(episode, chapter, "long")
+                self.assertEqual(voice.cue_source(episode, chapter, "long"),
+                                 voice.RECORDED_CHUNKS)
+            self.assertEqual(cues, [
+                {"start": 0.2, "end": 1.0, "text": "第一句。"},
+                {"start": 2.2, "end": 3.0, "text": "第二句。"},
+            ])
+
+
+class KaraokeCaptions(unittest.TestCase):
+    """The ported renderer regenerates the shipped caption page exactly."""
+
+    SHIPPED_CH01_SHA256 = ("d8d0cc15cdb4ac4b40ecbfbe72dd22417e681f99"
+                           "f533059531317e5491ae1630")
+
+    def test_generator_renders_cue_tokens_and_timeline(self):
+        body = captions.karaoke_captions_html(
+            [{"start": 0.0, "end": 2.0, "text": "你好 AB。"}], 60.0)
+        self.assertIn('data-duration="60.000"', body)
+        self.assertIn('id="c0" class="cap-clip clip" data-start="0.100" '
+                      'data-duration="1.900" data-track-index="10"', body)
+        # CJK chars split alone; latin runs and trailing punctuation
+        # (U+3002 is outside the CJK ranges) stay merged: "AB。".
+        for kid in range(4):
+            self.assertIn(f'id="c0-k{kid}"', body)
+        self.assertNotIn('id="c0-k4"', body)
+        self.assertIn('tl.to("#c0-in", {opacity:1, duration:0.10}, 0.100);',
+                      body)
+        self.assertIn('tl.to("#c0-in", {opacity:0, duration:0.12}, 1.880);',
+                      body)
+
+    def test_watermark_is_static_brand_page(self):
+        body = captions.watermark_html(60.0)
+        self.assertIn('data-composition-id="watermark"', body)
+        self.assertIn("小电讲电路", body)
+        self.assertIn('tl.set("#wm", {opacity:0.70}, 0);', body)
+
+    def test_ch01_generated_captions_match_shipped_witness(self):
+        import hashlib
+        chapter_dir = model.CHAPTERS / "ch01"
+        timeline_path = chapter_dir / "../../ch01/assets/vo/timeline.json"
+        if not timeline_path.resolve().is_file():
+            self.skipTest("recorded ch01 assets are not on this machine")
+        episode = model.read_yaml(chapter_dir / "episode.yaml")
+        cues = voice.recorded_cues(episode, chapter_dir, "long")
+        self.assertIsNotNone(cues)
+        body = captions.karaoke_captions_html(
+            cues, episode["formats"]["long"]["duration_s"])
+        shipped = body.replace("\n", "\r\n").encode("utf-8")
+        self.assertEqual(hashlib.sha256(shipped).hexdigest(),
+                         self.SHIPPED_CH01_SHA256)
+
+
+class ShortCaptionWriters(unittest.TestCase):
+    """Each chapter's shipped short caption page regenerates byte-exactly."""
+
+    SHIPPED_SHORT_SHA256 = {
+        "ch01": "8d6cf570c42f66ebf1f9739789063dfc7d0c6180fd3912617625a"
+                "132d58bb882",
+        "ch02": "5e0d6bfb51b768117e81303924a304a88fb2188fd84d62b059061"
+                "a6f34e0519a",
+        "ch03": "5c5f54401cd2c6bb3e195949c94d4e3f8940d0ee2c3bd2ebc46a"
+                "f0501d68a293",
+        "ch04": "2e0851d96e1b590d280474d3228bf8ac8c91ea836e4132a857f5"
+                "e15acbab52ff",
+        "ch05": "613061e2fffae731e055877253c93c0a2f31e0d11949dcee9712"
+                "f077f87ad39f",
+    }
+
+    def test_ch01_variant_fades_without_scale(self):
+        body = captions.short_captions_html(
+            [{"start": 1.0, "end": 2.0, "text": "你好"}], 20.0)
+        self.assertIn("data-width=\"1080\"", body)
+        self.assertIn("tl.set(\"#cap0\", {opacity:0}, 0);", body)
+        self.assertIn(
+            "tl.fromTo(\"#cap0\", {opacity:0, y:18, scale:0.92}, "
+            "{opacity:1, y:0, scale:1, duration:0.12}, 1.000);", body)
+        self.assertIn(
+            "tl.to(\"#cap0\", {opacity:0, y:-10, duration:0.12}, 1.950);",
+            body)
+
+    def test_v2_variant_scales_and_holds(self):
+        body = captions.short_captions_v2_html(
+            [{"start": 1.0, "end": 2.0, "text": "你好"}], 20.0)
+        self.assertIn("scale:0.96", body)
+        self.assertIn(
+            "tl.to(\"#cap0\", {opacity:1, scale:1, duration:0.08}, 1.000);",
+            body)
+        self.assertIn(
+            "tl.to(\"#cap0\", {opacity:0, scale:0.96, duration:0.08}, "
+            "1.960);", body)
+
+    def test_ch05_variant_fit_content_margins(self):
+        body = captions.short_captions_ch05_html(
+            [{"start": 1.0, "end": 2.0, "text": "你好"}], 20.0)
+        self.assertIn("margin:auto;width:fit-content", body)
+        self.assertIn("font-family:'Microsoft YaHei';src:local("
+                      "'Microsoft YaHei'),local('Noto Sans SC');"
+                      "font-weight:100 900}", body)
+
+    def test_shipped_short_captions_match_witness_hashes(self):
+        import hashlib
+        for ch, want in self.SHIPPED_SHORT_SHA256.items():
+            chapter_dir = model.CHAPTERS / ch
+            caps_path = (chapter_dir / "../../" / ch / "hf-remake/short"
+                         / "assets/short-caps.json")
+            if not caps_path.resolve().is_file():
+                self.skipTest(f"recorded {ch} short assets not on machine")
+            episode = model.read_yaml(chapter_dir / "episode.yaml")
+            cues = voice.recorded_cues(episode, chapter_dir, "short")
+            self.assertIsNotNone(cues, ch)
+            writer = captions.SHORT_CAPTION_WRITERS[ch]
+            body = writer(cues, episode["formats"]["short"]["duration_s"])
+            shipped = body.replace("\n", "\r\n").encode("utf-8")
+            self.assertEqual(
+                hashlib.sha256(shipped).hexdigest(), want, ch)
 
 
 if __name__ == "__main__":

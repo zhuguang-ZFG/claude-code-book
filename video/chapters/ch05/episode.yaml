@@ -6,7 +6,7 @@ content_pack: content-pack.json
 scripts:
   long:
     path: script-long.txt
-    mode: plain
+    mode: paragraph
   short:
     path: script-short.md
     mode: narration

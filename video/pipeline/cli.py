@@ -17,9 +17,13 @@ from pathlib import Path
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from pipeline import composition, content, media_compare, migrate, model, proof, quality, timeline, voice
+    from pipeline import (captions as caption_pages, composition, content,
+                          media_compare, migrate, model, proof, quality,
+                          timeline, voice)
 else:
-    from . import composition, content, media_compare, migrate, model, proof, quality, timeline, voice
+    from . import (captions as caption_pages, composition, content,
+                   media_compare, migrate, model, proof, quality, timeline,
+                   voice)
 
 BUILD = model.VIDEO / ".build"
 
@@ -61,7 +65,7 @@ def _report(chapter_id: str, audio: bool = False, *,
                                audio_path=audio_path)
 
     errors += quality.check(episode, scenes, manifests, cues, chapter_dir,
-                            check_audio=audio)
+                            check_audio=audio, warnings=warnings)
 
     report = timeline.compat(episode, chapter_dir, scenes)
     stored = chapter_dir / "compat-report.json"
@@ -128,6 +132,13 @@ def _write_build(report: dict, root: Path = BUILD) -> Path:
     model.write_json(path, timeline.build(episode, report["scenes"],
                                            report["cues"]))
     hashes[path.name] = _sha(path)
+    render_base = model.format_base(
+        model.CHAPTERS / chapter_id, episode.get("legacy") or {}, "long")
+    if render_base is not None:
+        for fmt in ("long", "short"):
+            if fmt in report["cues"]:
+                hashes.update(caption_pages.write_render_inputs(
+                    render_base, episode, report["cues"][fmt], fmt))
     if report["compat"]["formats"]:
         path = out / "compat-report.json"
         model.write_json(path, report["compat"])

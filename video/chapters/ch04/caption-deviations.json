@@ -1,0 +1,760 @@
+{
+  "schema_version": 2,
+  "chapter": "ch04",
+  "review": "Shipped recorded karaoke cues that violate the authored block-caption gates (character budget, minimum dwell). The shipped videos display these timings verbatim; each row is pinned by recorded start time and text so only these cues downgrade to warnings.",
+  "formats": {
+    "long": [
+      {
+        "start": 0.08,
+        "text": "大家好，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 9.256,
+        "text": "专工具、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 10.054,
+        "text": "编排、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 10.652,
+        "text": "流式执行。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 13.046,
+        "text": "护栏说了算。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 28.238,
+        "text": "猜一猜：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 30.645,
+        "text": "是四道闸。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 35.021,
+        "text": "纵深防御，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 43.961,
+        "text": "数，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 49.192,
+        "text": "阶段一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 54.074,
+        "text": "a 验证。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 60.291,
+        "text": "解析失败。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 61.212,
+        "text": "注意：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 67.291,
+        "text": "安全系统里，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 71.897,
+        "text": "阶段二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 77.055,
+        "text": "ow。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 77.768,
+        "text": "铁律：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 83.144,
+        "text": "立刻拒；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 90.454,
+        "text": "就近原则：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 101.406,
+        "text": "阶段三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 106.22,
+        "text": "下文评估。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 108.971,
+        "text": "看路径、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 109.659,
+        "text": "配前缀规则。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 111.894,
+        "text": "allow、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 112.925,
+        "text": "deny、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 113.785,
+        "text": "ask、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 118.615,
+        "text": "是「我没意见，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 119.735,
+        "text": "交给后面」；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 126.771,
+        "text": "gh，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 129.01,
+        "text": "意图不同，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 129.81,
+        "text": "结果不同。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 130.609,
+        "text": "阶段四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 134.98,
+        "text": "Hook、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 135.897,
+        "text": "分类器、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 140.853,
+        "text": "先到先得，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 145.808,
+        "text": "用户居中，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 146.725,
+        "text": "分类器最低。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 159.63,
+        "text": "核心快照：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 160.565,
+        "text": "模式、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 161.125,
+        "text": "规则、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 168.789,
+        "text": "不改旧的。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 174.209,
+        "text": "的中间态。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 176.647,
+        "text": "hook、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 177.486,
+        "text": "user、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 182.186,
+        "text": "CI 里先判；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 190.914,
+        "text": "信任最低，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 198.857,
+        "text": "claim。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 201.733,
+        "text": "是轻量互斥：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 209.563,
+        "text": "旧要么新，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 210.361,
+        "text": "没有一半一半。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 214.5,
+        "text": "plan、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 215.253,
+        "text": "auto、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 217.812,
+        "text": "sions，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 221.877,
+        "text": "逐次确认。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 225.8,
+        "text": "最安全，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 226.567,
+        "text": "也最繁琐；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 229.253,
+        "text": "会打断思路。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 230.404,
+        "text": "plan：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 231.363,
+        "text": "只读为主。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 232.322,
+        "text": "Edit、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 235.775,
+        "text": "Read、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 236.734,
+        "text": "Grep、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 243.416,
+        "text": "auto：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 249.932,
+        "text": "短路优化：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 266.0,
+        "text": "生产部署、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 266.81,
+        "text": "密钥、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 267.296,
+        "text": "不可逆操作，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 271.507,
+        "text": "sions：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 276.042,
+        "text": "CI、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 277.986,
+        "text": "即便全信任，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 278.958,
+        "text": "deny、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 286.894,
+        "text": "仍守底线。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 287.864,
+        "text": "bubble：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 299.802,
+        "text": "再生一双手，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 302.288,
+        "text": "猜一猜：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 304.14,
+        "text": "该开哪一档？",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 319.888,
+        "text": "三种匹配：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 322.825,
+        "text": "test)；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 333.176,
+        "text": "优先前缀：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 334.29,
+        "text": "语义清晰，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 335.405,
+        "text": "少踩坑。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 361.555,
+        "text": "配置源，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 362.208,
+        "text": "三十种组合。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 364.823,
+        "text": "立刻生效；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 367.602,
+        "text": "重启仍在。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 369.89,
+        "text": "user、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 390.656,
+        "text": "一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 393.663,
+        "text": "二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 399.01,
+        "text": "三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 399.344,
+        "text": "企业模板：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 404.189,
+        "text": "加审计。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 404.857,
+        "text": "四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 405.191,
+        "text": "情景推演：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 409.702,
+        "text": "deny 赢。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 411.032,
+        "text": "收五句。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 411.801,
+        "text": "一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 413.533,
+        "text": "不是一扇门。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 414.687,
+        "text": "二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 419.111,
+        "text": "三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 424.112,
+        "text": "四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 428.696,
+        "text": "五，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 444.142,
+        "text": "系列名：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 447.351,
+        "text": "ness。",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ],
+    "short": [
+      {
+        "start": 7.542,
+        "text": "rm -rf、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 16.825,
+        "text": "是四道闸。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 17.917,
+        "text": "校验输入、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 19.014,
+        "text": "规则匹配、",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ]
+  }
+}

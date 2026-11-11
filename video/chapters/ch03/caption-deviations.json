@@ -1,0 +1,809 @@
+{
+  "schema_version": 2,
+  "chapter": "ch03",
+  "review": "Shipped recorded karaoke cues that violate the authored block-caption gates (character budget, minimum dwell). The shipped videos display these timings verbatim; each row is pinned by recorded start time and text so only these cues downgrade to warnings.",
+  "formats": {
+    "long": [
+      {
+        "start": 0.08,
+        "text": "大家好，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 12.44,
+        "text": "。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 12.616,
+        "text": "心跳有了，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 38.019,
+        "text": "但不叫工程。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 39.296,
+        "text": "猜一猜：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 48.414,
+        "text": "后清单；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 49.115,
+        "text": "先 DNA，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 50.167,
+        "text": "后肌肉。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 54.902,
+        "text": "Tool，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 64.412,
+        "text": "输出自由；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 70.426,
+        "text": "三者拆开，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 71.54,
+        "text": "不是炫技，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 75.995,
+        "text": "五要素，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 78.668,
+        "text": "要素一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 81.056,
+        "text": "主名唯一；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 92.51,
+        "text": "否则配置、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 93.405,
+        "text": "脚本、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 95.731,
+        "text": "要素二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 98.576,
+        "text": "双重职责：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 113.998,
+        "text": "要素三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 114.779,
+        "text": "权限模型，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 115.755,
+        "text": "三层叠。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 118.829,
+        "text": "管数据合不合法；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 124.696,
+        "text": "管该不该用；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 125.496,
+        "text": "最后运行时属性，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 132.088,
+        "text": "权限策略、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 133.114,
+        "text": "调度策略，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 134.141,
+        "text": "各管各的，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 136.81,
+        "text": "要素四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 137.631,
+        "text": "执行逻辑。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 149.129,
+        "text": "要素五，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 154.262,
+        "text": "开始、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 154.878,
+        "text": "进度、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 155.494,
+        "text": "成功、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 156.11,
+        "text": "被拒、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 156.725,
+        "text": "出错、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 157.341,
+        "text": "并行分组。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 173.319,
+        "text": "就当不安全；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 174.457,
+        "text": "没声明只读，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 190.371,
+        "text": "安全默认。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 197.96,
+        "text": "书稿按类摊开：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 201.678,
+        "text": "Edit、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 202.486,
+        "text": "Write；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 204.749,
+        "text": "Grep；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 207.012,
+        "text": "Search；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 210.244,
+        "text": "任务与规划；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 211.214,
+        "text": "交互提问；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 212.022,
+        "text": "技能与配置；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 213.152,
+        "text": "MCP；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 241.673,
+        "text": "既瘦身，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 242.458,
+        "text": "也少泄架构。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 243.634,
+        "text": "工具一多，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 254.026,
+        "text": "真要用时，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 269.191,
+        "text": "d 的不延迟；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 279.041,
+        "text": " Bash、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 280.141,
+        "text": "Read、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 281.057,
+        "text": "Edit；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 296.022,
+        "text": "缓存就废。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 304.029,
+        "text": "力的那只手，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 311.308,
+        "text": "依赖，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 338.667,
+        "text": "删是不可逆，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 358.963,
+        "text": "整文件覆盖，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 359.895,
+        "text": "权限最严。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 360.671,
+        "text": "最佳实践：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 379.005,
+        "text": "默认只读，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 380.001,
+        "text": "权限更松；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 401.92,
+        "text": "权限等边界，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 405.066,
+        "text": "却不串味。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 407.338,
+        "text": "本章先认门：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 413.548,
+        "text": "三角拉扯：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 414.65,
+        "text": "并行要快、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 415.752,
+        "text": "安全别抢、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 432.44,
+        "text": "例子：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 432.943,
+        "text": "Read a、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 434.118,
+        "text": "Read b、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 436.636,
+        "text": "Read c。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 437.81,
+        "text": "前两个并行；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 447.872,
+        "text": "互动一下：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 448.712,
+        "text": "Glob、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 449.553,
+        "text": "Grep、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 452.746,
+        "text": "Read a、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 453.923,
+        "text": "Edit a、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 457.117,
+        "text": "会划几批？",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 459.302,
+        "text": "前两个并行；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 460.31,
+        "text": "Bash 串；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 464.336,
+        "text": "Edit 串；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 476.463,
+        "text": "：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 480.069,
+        "text": "e 块就开工。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 523.109,
+        "text": "无关工具。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 524.192,
+        "text": "这双手，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 528.396,
+        "text": "边流边入队，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 529.447,
+        "text": "边跳边干活。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 531.899,
+        "text": "一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 539.781,
+        "text": "的两种代价。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 540.992,
+        "text": "二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 541.349,
+        "text": "手动画分区。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 542.419,
+        "text": "三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 550.803,
+        "text": "四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 555.44,
+        "text": "token。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 556.511,
+        "text": "收五句。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 557.384,
+        "text": "一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 559.952,
+        "text": "二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 564.918,
+        "text": "三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 567.486,
+        "text": "四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 571.937,
+        "text": "手零等待上手。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 573.296,
+        "text": "五，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 587.57,
+        "text": "系列名：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 590.979,
+        "text": "ness。",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ],
+    "short": [
+      {
+        "start": 23.083,
+        "text": "读文件、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 23.94,
+        "text": "搜代码、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 24.796,
+        "text": "改片段、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 28.792,
+        "text": "更狠的是 StreamingToolExecutor：模型边吐字，",
+        "kinds": [
+          "chars"
+        ]
+      },
+      {
+        "start": 35.889,
+        "text": "模型是马，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 39.597,
+        "text": "扣得对，",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ]
+  }
+}

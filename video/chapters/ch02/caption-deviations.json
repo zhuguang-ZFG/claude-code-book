@@ -1,0 +1,809 @@
+{
+  "schema_version": 2,
+  "chapter": "ch02",
+  "review": "Shipped recorded karaoke cues that violate the authored block-caption gates (character budget, minimum dwell). The shipped videos display these timings verbatim; each row is pinned by recorded start time and text so only these cues downgrade to warnings.",
+  "formats": {
+    "long": [
+      {
+        "start": 0.08,
+        "text": "大家好，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 10.729,
+        "text": "PI 套壳，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 11.83,
+        "text": "是能跑、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 12.565,
+        "text": "能停、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 26.711,
+        "text": "回调地图？",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 40.353,
+        "text": "就像一次脉搏：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 49.826,
+        "text": "的对话主循环，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 54.889,
+        "text": "的异步生成器。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 59.924,
+        "text": "可恢复、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 63.656,
+        "text": "第一层，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 64.367,
+        "text": "流式产出：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 70.054,
+        "text": "第二层，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 70.765,
+        "text": "取消语义：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 75.919,
+        "text": "，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 81.944,
+        "text": "第三层，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 82.825,
+        "text": "背压：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 89.651,
+        "text": "这三层，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 93.835,
+        "text": "边想边画、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 94.936,
+        "text": "随时能停、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 118.336,
+        "text": "or 刚刚好：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 119.484,
+        "text": "原生语法、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 120.304,
+        "text": "类型友好、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 121.124,
+        "text": "取消路径清晰。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 127.022,
+        "text": "类型事件；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 134.205,
+        "text": "消息历史、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 135.203,
+        "text": "系统提示、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 136.201,
+        "text": "权限检查、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 140.192,
+        "text": "都从这里进，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 157.995,
+        "text": "文本增量、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 164.685,
+        "text": "结构化消息，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 165.685,
+        "text": "助手、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 166.185,
+        "text": "用户、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 166.685,
+        "text": "系统，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 170.852,
+        "text": "sage：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 187.318,
+        "text": "既是用户输入，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 195.756,
+        "text": "这是协议约束，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 196.914,
+        "text": "不是命名任性。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 203.863,
+        "text": "边说边动手。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 216.035,
+        "text": "记住：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 216.551,
+        "text": "事件是脉搏，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 222.881,
+        "text": "到模型答完、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 224.021,
+        "text": "可能调工具、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 230.484,
+        "text": "模型是医生，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 239.418,
+        "text": "。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 241.544,
+        "text": "阶段一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 242.333,
+        "text": "状态初始化：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 251.605,
+        "text": "阶段二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 253.776,
+        "text": "七步管线。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 254.762,
+        "text": "阶段三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 269.911,
+        "text": "阶段四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 270.76,
+        "text": "权限检查、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 271.822,
+        "text": "并发分区、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 272.883,
+        "text": "执行工具。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 273.945,
+        "text": "阶段五，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 274.794,
+        "text": "附件注入、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 288.752,
+        "text": "一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 292.597,
+        "text": "二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 292.982,
+        "text": "Snip，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 295.481,
+        "text": "三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 304.902,
+        "text": "。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 305.095,
+        "text": "四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 307.786,
+        "text": "apse，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 311.984,
+        "text": "五，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 316.382,
+        "text": "六，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 323.379,
+        "text": "七，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 342.055,
+        "text": "车轴会断。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 375.692,
+        "text": "覆盖循环上限、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 376.849,
+        "text": "硬顶、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 377.345,
+        "text": "恢复失败、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 378.172,
+        "text": "API 异常、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 381.968,
+        "text": "细分终止，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 386.032,
+        "text": "主循环能测，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 397.411,
+        "text": "uuid。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 402.165,
+        "text": "On 模块。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 409.16,
+        "text": "act，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 430.563,
+        "text": "ally；",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 435.564,
+        "text": "。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 459.8,
+        "text": "造新对象，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 466.423,
+        "text": "带原因与附件。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 480.369,
+        "text": "工具跑完，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 481.399,
+        "text": "历史扩展，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 482.429,
+        "text": "最常见。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 488.196,
+        "text": "te：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 495.835,
+        "text": "ry：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 506.557,
+        "text": "紧急刹车。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 515.966,
+        "text": "ocking：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 519.09,
+        "text": "后把信息注回，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 525.834,
+        "text": "n：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 526.163,
+        "text": "预算提醒，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 526.985,
+        "text": "不是粗暴掐断。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 532.083,
+        "text": "，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 535.278,
+        "text": "第一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 552.464,
+        "text": "第二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 554.868,
+        "text": "」的假模型，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 559.676,
+        "text": "么切换。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 560.317,
+        "text": "第三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 566.246,
+        "text": " mock。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 567.368,
+        "text": "第四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 574.64,
+        "text": "灯。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 579.913,
+        "text": "收五句。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 580.64,
+        "text": "一，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 585.367,
+        "text": "环的骨架，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 588.8,
+        "text": "二，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 593.838,
+        "text": "三，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 594.258,
+        "text": "状态可变，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 595.308,
+        "text": "转换可追。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 596.357,
+        "text": "四，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 601.605,
+        "text": "五，",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 611.262,
+        "text": "编排、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 611.891,
+        "text": "并发分区、",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 618.17,
+        "text": "系列名：",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 621.579,
+        "text": "ness。",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ],
+    "short": [
+      {
+        "start": 23.726,
+        "text": "随时能停。",
+        "kinds": [
+          "dwell"
+        ]
+      },
+      {
+        "start": 27.736,
+        "text": "停得住，",
+        "kinds": [
+          "dwell"
+        ]
+      }
+    ]
+  }
+}
