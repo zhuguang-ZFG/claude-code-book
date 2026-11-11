@@ -17,14 +17,21 @@
 
 ## 字幕比较
 
-旧字幕在基线标签中位于 `video/ch01/assets/build/merged.srt`，工作树清理前 SHA-256 为
-`2323f9ccaca6dc63dd118465c4716b7d8e8096de6a103ded287d0a51629e98d0`。
+旧字幕只存在于本机工作树，不在基线标签里：`git ls-tree -r legacy/pre-platform-2026-11-03`
+没有任何 `.srt`/`.vtt`，`git show legacy/pre-platform-2026-11-03:video/ch01/assets/build/merged.srt`
+返回路径不存在。本机有两份 147 条旧长片字幕，归一化文本相同（5021 字）：
+`video/ch01/assets/build/merged.srt`（SHA-256 `2323f9ccaca6dc63dd118465c4716b7d8e8096de6a103ded287d0a51629e98d0`，
+末条止于 1147.516 s）与 `video/ch01/out/ch01-long.srt`（与 `hf-remake/ch01-long.srt` 同一文件，
+SHA-256 `939f05388113f4d5c106c335142745baf7fc6cc9a73f65439ce74026420352f4`，末条止于
+1148.284 s）。2026-11-11 的关键帧比较采用与旧片同批产出的 `out/ch01-long.srt` 作见证。
+两份字幕都未入库，本记录保存的是审阅时的 SHA-256。
 
-复现命令：
+复现命令（`LEGACY_SRT` 指向本机任一份 147 条旧长片字幕；两份文本相同）：
 
 ```bash
-git show legacy/pre-platform-2026-11-03:video/ch01/assets/build/merged.srt > /tmp/ch01-legacy.srt
+export LEGACY_SRT=video/ch01/out/ch01-long.srt
 python - <<'PY'
+import os
 import sys
 from pathlib import Path
 sys.path.insert(0, "video")
@@ -37,7 +44,7 @@ current = voice.cues(
     total_s=episode["formats"]["long"]["duration_s"],
     audio_path=chapter / "full.mp3",
 )
-legacy = timeline.parse_captions(Path("/tmp/ch01-legacy.srt"))
+legacy = timeline.parse_captions(Path(os.environ["LEGACY_SRT"]))
 left = voice.normalized("".join(cue["text"] for cue in legacy))
 right = voice.normalized("".join(cue["text"] for cue in current))
 print(len(legacy), len(current), len(left), len(right), left == right)
