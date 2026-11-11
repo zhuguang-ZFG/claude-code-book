@@ -39,6 +39,8 @@ video/**/_*
 video/**/*.log
 video/**/*.srt
 video/**/*.vtt
+# the per-chunk voice timeline the pipeline regenerates from the script
+video/**/assets/vo/timeline.json
 video/**/proof/
 video/**/spotcheck/
 video/**/short-spot/
