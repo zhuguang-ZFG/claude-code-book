@@ -258,7 +258,7 @@ This startup strategy reveals a universal engineering principle: **the startup p
 
 The engine serves both the interactive REPL and the headless SDK from one core: the query logic lives in a class of its own, so every runtime shares the same state management and lifecycle control code.
 
-This "one core, multiple entry points" design pattern is very valuable in engineering practice. Imagine if the interactive REPL and SDK modes used two different sets of query logic -- every time you fixed a bug or added a feature, you'd need to make synchronized changes in two places. QueryEngine puts terminal use and API calls on the same verified core path.
+Interactive REPL and SDK modes share QueryEngine's core query path, which avoids keeping two copies of the logic in sync. Imagine if the two paths each maintained their own query logic — every bug fix or new feature would have to land in both places — while QueryEngine puts terminal use and API calls on the same verified core path.
 
 #### Async Generator Dialog Main Loop
 

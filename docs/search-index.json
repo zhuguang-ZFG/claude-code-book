@@ -1107,7 +1107,7 @@
       "unit": "ch01",
       "section": "ch01-llm-查询引擎核心",
       "kind": "paragraph",
-      "text": "这种\"一个核心、多种入口\"的设计模式在工程实践中非常有价值。想象一下，如果交互式 REPL 和 SDK 模式使用两套不同的查询逻辑，那么每次修复一个 bug 或添加一个功能，你都需要在两个地方同步修改。而 QueryEngine 把终端交互和 API 调用放在同一条经过验证的核心路径上。"
+      "text": "交互式 REPL 和 SDK 模式共用 QueryEngine 的核心查询路径，工程上避免了两处同步修改。想象一下，如果这两条路径各自维护一套查询逻辑，每次修复 bug 或添加功能都要在两个地方同步修改——而 QueryEngine 把终端交互和 API 调用放在同一条经过验证的核心路径上。"
     },
     {
       "lang": "zh",
@@ -14506,7 +14506,7 @@
       "unit": "ch12",
       "section": "ch12-1211-为什么需要-mcp问题与解决方案",
       "kind": "list",
-      "text": "3. **安全边界内嵌（Security by Design）**：MCP 将安全策略集成到协议的每一个层次——从连接建立时的能力协商，到工具调用时的权限检查，再到企业级的审批控制。这种\"默认不信任\"的设计确保即使接入了不可信的第三方工具，也不会危及整个系统的安全。"
+      "text": "3. **安全边界内嵌（Security by Design）**：MCP 将安全策略集成到协议的每一个层次——从连接建立时的能力协商，到工具调用时的权限检查，再到企业级的审批控制；即使接入不可信的第三方工具，也不会危及整个系统的安全。"
     },
     {
       "lang": "zh",
@@ -14599,7 +14599,7 @@
       "unit": "ch12",
       "section": "ch12-1212-连接配置与底层传输",
       "kind": "paragraph",
-      "text": "**sse-ide 和 ws-ide 协议**是 IDE 集成的专用类型，在标准 SSE/WebSocket 协议基础上增加了 IDE 标识信息（如 `ideName` 字段，标识是 VS Code 还是 JetBrains）。这种\"协议变体\"的设计模式避免了在通用协议中塞入平台特定的逻辑，保持了核心协议的简洁性。"
+      "text": "**sse-ide 和 ws-ide 协议**是 IDE 集成的专用类型，在标准 SSE/WebSocket 协议基础上增加了 IDE 标识信息（如 `ideName` 字段，标识是 VS Code 还是 JetBrains）。把平台特定逻辑从通用协议里拆出来，核心协议因此保持简洁。"
     },
     {
       "lang": "zh",
@@ -15051,7 +15051,7 @@
       "unit": "ch12",
       "section": "ch12-1223-mcp-工具的权限模型",
       "kind": "paragraph",
-      "text": "MCP 工具的权限检查采用了\"默认拒绝，显式允许\"的安全原则。默认情况下，每次 MCP 工具调用都会返回 `passthrough` 行为，意味着每次调用都需要用户确认。这种\"默认弹确认\"的设计虽然增加了交互成本，但在安全上是正确的——你无法预知一个第三方 MCP 工具会做什么，应该让用户知情并同意。"
+      "text": "MCP 工具的权限检查采用了\"默认拒绝，显式允许\"的安全原则。默认情况下，每次 MCP 工具调用都会返回 `passthrough` 行为，意味着每次调用都需要用户确认。默认弹确认虽然增加了交互成本，但在安全上是正确的——你无法预知一个第三方 MCP 工具会做什么，应该让用户知情并同意。"
     },
     {
       "lang": "zh",
@@ -15128,7 +15128,7 @@
       "unit": "ch12",
       "section": "ch12-1223-mcp-工具的权限模型",
       "kind": "quote",
-      "text": "**反模式警告：** 不要在全局配置中使用 `\"mcp__*\": \"allow\"` 来允许所有 MCP 工具。这种\"一键全开\"的做法虽然方便，但会绕过安全检查——任何新连接的 MCP 服务器提供的工具都会自动获准执行，包括你可能不了解的工具。应该按服务器或按工具粒度授权。"
+      "text": "**反模式警告：** 不要在全局配置中使用 `\"mcp__*\": \"allow\"` 来允许所有 MCP 工具。\"一键全开\"虽然方便，但会绕过安全检查——任何新连接的 MCP 服务器提供的工具都会自动获准执行，包括你可能不了解的工具。应该按服务器或按工具粒度授权。"
     },
     {
       "lang": "zh",
@@ -15951,7 +15951,7 @@
       "unit": "ch12",
       "section": "ch12-1245-vs-code-和-jetbrains-扩展集成",
       "kind": "paragraph",
-      "text": "IDE 扩展通过 `sse-ide` 和 `ws-ide` 类型的 MCP 服务器与 Claude CLI 通信。这些是内部专用类型，在标准 SSE/WebSocket 协议基础上增加了 IDE 标识信息（如 IDE 名称、是否在 Windows 上运行）。这种\"协议变体\"的设计让 Bridge 系统能对不同客户端给出不同的服务。"
+      "text": "IDE 扩展通过 `sse-ide` 和 `ws-ide` 类型的 MCP 服务器与 Claude CLI 通信。这些是内部专用类型，在标准 SSE/WebSocket 协议基础上增加了 IDE 标识信息（如 IDE 名称、是否在 Windows 上运行）。Bridge 系统因此能对不同客户端给出不同的服务。"
     },
     {
       "lang": "zh",
@@ -16056,7 +16056,7 @@
       "unit": "ch12",
       "section": "ch12-1246-bridge-权限门控",
       "kind": "paragraph",
-      "text": "Bridge（远程控制）功能不是对所有用户开放的——它需要 claude.ai 订阅，并通过多层门控。这种\"层层设卡\"的设计确保了远程控制功能只在受控的环境中使用。"
+      "text": "Bridge（远程控制）功能不是对所有用户开放的——它需要 claude.ai 订阅，并通过多层门控。远程控制功能因此只在受控的环境中使用。"
     },
     {
       "lang": "zh",
@@ -24313,7 +24313,7 @@
       "unit": "ch01",
       "section": "ch01-llm-query-engine-core",
       "kind": "paragraph",
-      "text": "This \"one core, multiple entry points\" design pattern is very valuable in engineering practice. Imagine if the interactive REPL and SDK modes used two different sets of query logic -- every time you fixed a bug or added a feature, you'd need to make synchronized changes in two places. QueryEngine puts terminal use and API calls on the same verified core path."
+      "text": "Interactive REPL and SDK modes share QueryEngine's core query path, which avoids keeping two copies of the logic in sync. Imagine if the two paths each maintained their own query logic — every bug fix or new feature would have to land in both places — while QueryEngine puts terminal use and API calls on the same verified core path."
     },
     {
       "lang": "en",
@@ -37678,7 +37678,7 @@
       "unit": "ch12",
       "section": "ch12-1211-why-mcp-problems-and-solutions",
       "kind": "list",
-      "text": "3. **Security by Design**: MCP integrates security strategies into every layer of the protocol — from capability negotiation during connection establishment, to permission checks during tool invocation, to enterprise-level approval controls. This \"default distrust\" design ensures that even when you connect untrusted third-party tools, they cannot compromise the overall system's security."
+      "text": "3. **Security by Design**: MCP integrates security strategies into every layer of the protocol — from capability negotiation during connection establishment, to permission checks during tool invocation, to enterprise-level approval controls; even untrusted third-party tools cannot compromise the overall system's security."
     },
     {
       "lang": "en",
@@ -37770,7 +37770,7 @@
       "unit": "ch12",
       "section": "ch12-1212-connection-configurations-and-transports",
       "kind": "paragraph",
-      "text": "**The sse-ide and ws-ide protocols** are specialized types for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. This \"protocol variant\" design pattern avoids embedding platform-specific logic into the generic protocol, keeping the core protocol clean."
+      "text": "**The sse-ide and ws-ide protocols** are specialized types for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean."
     },
     {
       "lang": "en",
@@ -38222,7 +38222,7 @@
       "unit": "ch12",
       "section": "ch12-1223-mcp-tool-permission-model",
       "kind": "paragraph",
-      "text": "MCP tool permission checks follow the \"deny by default, allow explicitly\" security principle. By default, every MCP tool invocation returns `passthrough` behavior, meaning each call requires user confirmation. This \"confirm by default\" design increases interaction cost but is correct from a security standpoint — you cannot predict what a third-party MCP tool will do and should keep users informed and consenting."
+      "text": "MCP tool permission checks follow the \"deny by default, allow explicitly\" security principle. By default, every MCP tool invocation returns `passthrough` behavior, meaning each call requires user confirmation. Confirming by default increases interaction cost but is correct from a security standpoint — you cannot predict what a third-party MCP tool will do and should keep users informed and consenting."
     },
     {
       "lang": "en",
@@ -38299,7 +38299,7 @@
       "unit": "ch12",
       "section": "ch12-1223-mcp-tool-permission-model",
       "kind": "quote",
-      "text": "**Anti-pattern Warning:** Do not use `\"mcp__*\": \"allow\"` in global configuration to allow all MCP tools. This \"one-click open-all\" approach, while convenient, bypasses security checks — any tools provided by newly connected MCP servers automatically receive execution permission, including tools you may not be familiar with. Authorize at the server or tool granularity level."
+      "text": "**Anti-pattern Warning:** Do not use `\"mcp__*\": \"allow\"` in global configuration to allow all MCP tools. \"One-click open-all\" is convenient, but it bypasses security checks — any tools provided by newly connected MCP servers automatically receive execution permission, including tools you may not be familiar with. Authorize at the server or tool granularity level."
     },
     {
       "lang": "en",
@@ -39120,7 +39120,7 @@
       "unit": "ch12",
       "section": "ch12-1245-vs-code-and-jetbrains-extension-integration",
       "kind": "paragraph",
-      "text": "IDE extensions communicate with the Claude CLI through `sse-ide` and `ws-ide` type MCP servers. These are internal-only types that add IDE identification information (such as IDE name, whether running on Windows) on top of the standard SSE/WebSocket protocols. This \"protocol variant\" design lets the Bridge system serve each client type differently."
+      "text": "IDE extensions communicate with the Claude CLI through `sse-ide` and `ws-ide` type MCP servers. These are internal-only types that add IDE identification information (such as IDE name, whether running on Windows) on top of the standard SSE/WebSocket protocols. The Bridge system can therefore serve each client type differently."
     },
     {
       "lang": "en",
@@ -39225,7 +39225,7 @@
       "unit": "ch12",
       "section": "ch12-1246-bridge-permission-gating",
       "kind": "paragraph",
-      "text": "Bridge (remote control) functionality is not open to all users — it requires a claude.ai subscription and passes through multiple gating layers. This \"checkpoint upon checkpoint\" design ensures remote control functionality is only used in controlled environments."
+      "text": "Bridge (remote control) functionality is not open to all users — it requires a claude.ai subscription and passes through multiple gating layers. Remote control functionality is therefore only used in controlled environments."
     },
     {
       "lang": "en",

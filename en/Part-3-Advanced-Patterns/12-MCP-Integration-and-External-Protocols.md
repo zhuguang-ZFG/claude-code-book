@@ -99,7 +99,7 @@ flowchart TD
 <!-- block: ch12.b-0a2aed98 -->
 2. **Transport Agnostic**: The MCP protocol itself is not bound to any specific network transport method. The same MCP server can provide services through stdio, HTTP, WebSocket, and other methods. An MCP server can therefore run in a local process (high performance, low latency) or sit on a remote server (centralized management, multi-user sharing) with no change to the business logic.
 
-3. **Security by Design**: MCP integrates security strategies into every layer of the protocol — from capability negotiation during connection establishment, to permission checks during tool invocation, to enterprise-level approval controls. This "default distrust" design ensures that even when you connect untrusted third-party tools, they cannot compromise the overall system's security.
+3. **Security by Design**: MCP integrates security strategies into every layer of the protocol — from capability negotiation during connection establishment, to permission checks during tool invocation, to enterprise-level approval controls; even untrusted third-party tools cannot compromise the overall system's security.
 
 > **Analogy:** Think of MCP as the USB protocol stack. The physical layer (USB-C cable) corresponds to MCP's transport layer (stdio/SSE/WS); the protocol layer (USB descriptors and endpoints) corresponds to MCP's capability declarations and tool discovery; the application layer (USB device drivers) corresponds to specific MCP tool implementations. Just as you don't need to know how a mouse works internally to use it, Claude Code doesn't need to know how an MCP server works internally to invoke its tools.
 
@@ -157,7 +157,7 @@ flowchart TD
 
 **The SSE protocol** fits remotely deployed MCP servers. Server-Sent Events is an HTTP-based unidirectional push technology: the client sends requests via HTTP POST, and the server streams responses and notifications via SSE. The advantage is deployment flexibility — the MCP server can run anywhere in the cloud, and Claude Code only needs to know the URL to connect. However, this introduces additional network latency and authentication complexity.
 
-**The sse-ide and ws-ide protocols** are specialized types for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. This "protocol variant" design pattern avoids embedding platform-specific logic into the generic protocol, keeping the core protocol clean.
+**The sse-ide and ws-ide protocols** are specialized types for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean.
 
 **The HTTP Streamable protocol** is a newer protocol in the MCP specification that streams responses more flexibly than SSE. It returns response content incrementally over a single HTTP connection, making it suitable for tools that need to return large amounts of data or run for extended periods.
 
@@ -409,7 +409,7 @@ The parsing function splits on the first occurrence of double underscores — in
 
 ### 12.2.3 MCP Tool Permission Model
 
-MCP tool permission checks follow the "deny by default, allow explicitly" security principle. By default, every MCP tool invocation returns `passthrough` behavior, meaning each call requires user confirmation. This "confirm by default" design increases interaction cost but is correct from a security standpoint — you cannot predict what a third-party MCP tool will do and should keep users informed and consenting.
+MCP tool permission checks follow the "deny by default, allow explicitly" security principle. By default, every MCP tool invocation returns `passthrough` behavior, meaning each call requires user confirmation. Confirming by default increases interaction cost but is correct from a security standpoint — you cannot predict what a third-party MCP tool will do and should keep users informed and consenting.
 
 However, frequent confirmation dialogs severely impact the user experience. To address this, the system provides an auto-allow path where users can add rules in `.claude/settings.local.json` to pre-authorize specific MCP tools:
 
@@ -475,7 +475,7 @@ This four-layer permission model follows the "Defense in Depth" principle: even 
 
 > **Cross-reference to Chapter 4:** This permission hierarchy integrates tightly with the Permission Pipeline described in Chapter 4. MCP tools go through the same four-stage pipeline as built-in tools: the `mcp__server__tool` naming gives them a dedicated namespace in rule matching (the second stage), so rules can allow or deny at server or tool granularity; in context evaluation (the third stage) MCP tools carry no tool-specific permission logic and return `passthrough` by default, handing the request to the interactive prompt (the fourth stage) for the user to confirm — which is exactly how they differ from built-in tools, which may evaluate their own context and auto-allow.
 
-> **Anti-pattern Warning:** Do not use `"mcp__*": "allow"` in global configuration to allow all MCP tools. This "one-click open-all" approach, while convenient, bypasses security checks — any tools provided by newly connected MCP servers automatically receive execution permission, including tools you may not be familiar with. Authorize at the server or tool granularity level.
+> **Anti-pattern Warning:** Do not use `"mcp__*": "allow"` in global configuration to allow all MCP tools. "One-click open-all" is convenient, but it bypasses security checks — any tools provided by newly connected MCP servers automatically receive execution permission, including tools you may not be familiar with. Authorize at the server or tool granularity level.
 
 Most trust-boundary accidents are not attacks; they are shortcuts. Five come up again and again:
 
@@ -1023,7 +1023,7 @@ flowchart LR
 
 ### 12.4.5 VS Code and JetBrains Extension Integration
 
-IDE extensions communicate with the Claude CLI through `sse-ide` and `ws-ide` type MCP servers. These are internal-only types that add IDE identification information (such as IDE name, whether running on Windows) on top of the standard SSE/WebSocket protocols. This "protocol variant" design lets the Bridge system serve each client type differently.
+IDE extensions communicate with the Claude CLI through `sse-ide` and `ws-ide` type MCP servers. These are internal-only types that add IDE identification information (such as IDE name, whether running on Windows) on top of the standard SSE/WebSocket protocols. The Bridge system can therefore serve each client type differently.
 
 **Integration Flow Details**
 
@@ -1078,7 +1078,7 @@ The value of IDE integration goes far beyond "using Claude Code in the terminal.
 
 ### 12.4.6 Bridge Permission Gating
 
-Bridge (remote control) functionality is not open to all users — it requires a claude.ai subscription and passes through multiple gating layers. This "checkpoint upon checkpoint" design ensures remote control functionality is only used in controlled environments.
+Bridge (remote control) functionality is not open to all users — it requires a claude.ai subscription and passes through multiple gating layers. Remote control functionality is therefore only used in controlled environments.
 
 **Why Multiple Gating Layers?**
 
