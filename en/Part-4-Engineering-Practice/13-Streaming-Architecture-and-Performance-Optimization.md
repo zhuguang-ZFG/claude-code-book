@@ -1,6 +1,6 @@
 # Chapter 13: Streaming Architecture & Performance Optimization
 
-> **In one line:** Send each letter the moment you finish it — streaming puts the first token on the road early, and a gatekeeper who knows your face keeps the bill light.
+> **In one line:** Why is the first word so slow to arrive, and why does the bill swell as the run grows? Two ledgers, settled in one chapter.
 
 > "Premature optimization is the root of all evil -- but latency is the root of all user complaints."
 > -- adapted from Donald Knuth

@@ -1,6 +1,6 @@
 # Chapter 12: MCP Integration and External Protocols
 
-> **In one line:** Beyond our road, speak the market tongue: an MCP server is the foreign yard's scales, and resources are the goods weighed on them.
+> **In one line:** Caravans cross the border into strange markets -- which tongue keeps a deal honest? Learn the shared trade words, then check the foreign scales.
 
 > "Protocols are the language systems use to communicate; good protocols turn integration into composition rather than coding."
 > -- Adapted from *Designing Distributed Systems*

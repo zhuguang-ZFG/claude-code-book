@@ -1,6 +1,6 @@
 # Chapter 11: The Skill System and Plugin Architecture
 
-> **In one line:** A skill is training the mare already has, ready when called; a plugin is tack you rent — run a thumb along its edge before you mount.
+> **In one line:** Where does the mare's own skill end and rented gear begin? Before you buckle anything on, learn to spot where borrowed leather runs thin.
 
 > "Good architecture makes adding features easy; great architecture makes removing features just as easy."
 > -- Adapted from *Clean Architecture*
