@@ -41,7 +41,7 @@ This mode only goes so far: the LLM can only "speak," not "act." It cannot read 
 
 In 2024, a fundamental cognitive shift began to spread: **the true value of LLMs lies not in generating text, but in serving as a reasoning engine to orchestrate tool calls.** When the LLM is no longer merely "the one answering questions" but becomes "the decision hub that determines what tools to call, what parameters to pass, and how to process the returned results," its capability boundaries swung wide open.
 
-Walk through “read `package.json` and tell me how to run the tests” and the division becomes clear. The model first produces a read request naming a tool and a file path; no file has been read yet. The harness validates the arguments, checks permission, invokes the local reader, and includes the file contents as a tool result in the next model request. Only then can the model explain the test script. If permission is denied, the result contains no file contents, and a guess must not become a claim that the file was read. The model proposes the next step; the runtime performs the permitted operation and returns what actually happened.
+Walk through “read `package.json` and tell me how to run the tests” and the division becomes clear. The model first produces a read request naming a tool and a file path; the read has not happened yet. The harness validates the arguments, checks permission, invokes the local reader, and includes the file contents as a tool result in the next model request. Only then can the model explain the test script. If the harness denies permission, the result contains no file contents, and a guess must not become a claim to have read the file. The model proposes the next step; the runtime performs the permitted operation and returns what actually happened.
 
 ### The Breakthrough Significance of Tool Use
 
@@ -178,7 +178,7 @@ Claude Code's `src` directory contains 1,884 TypeScript files totaling 512,664 l
 
 For a terminal tool, this size is quite significant. For comparison, VS Code's core codebase is approximately 500,000 lines of TypeScript, and Claude Code as a command-line tool has reached a similar scale. This indicates that the engineering complexity of Agent Harness is no less than that of a complete editor framework.
 
-But this does not mean the code is bloated. On the contrary, Claude Code's code organization exhibits a high degree of modularity: each tool is an independent module, each subsystem has clear boundaries, and the division of responsibilities follows the single responsibility principle. This level of modularity is a key guarantee of Agent Harness maintainability.
+But this does not make the code bloated. On the contrary, Claude Code's code organization exhibits a high degree of modularity: each tool is an independent module, each subsystem has clear boundaries, and the division of responsibilities follows the single responsibility principle. This level of modularity is a key guarantee of Agent Harness maintainability.
 
 Let's use an architectural overview diagram to visually illustrate Claude Code's module organization:
 
@@ -229,7 +229,7 @@ Claude Code picks its stack by one test -- the right tool for the right problem:
 
 The React + Ink choice deserves a closer look. Ink is a framework that renders terminal UI using the React component model: Claude Code's interface is not pieced together with `console.log` but declaratively described as a React component tree. This choice brings several benefits: UI state management can reuse React's mature solutions (such as `useState`, `useEffect`), you can independently test and reuse components, and you can assemble complex UIs (such as tool execution progress bars, multi-column layouts) from components.
 
-There is a design philosophy behind this choice: **terminal UI should not be second-class compared to web UI.** Developers are accustomed to componentized thinking and declarative rendering in web development; bringing these mature patterns into terminal UI development can significantly reduce development and maintenance costs. When you see Claude Code's tool execution progress bars, permission confirmation dialogs, and multi-column result displays, they are all React components underneath -- fundamentally no different from the components you write in web applications.
+There is a design philosophy behind this choice: **terminal UI should not be second-class compared to web UI.** Web development has trained developers to think in components and declarative rendering; bringing these mature patterns into terminal UI development can significantly reduce development and maintenance costs. When you see Claude Code's tool execution progress bars, permission confirmation dialogs, and multi-column result displays, they are all React components underneath -- fundamentally no different from the components you write in web applications.
 
 The choice of Zod v4 is equally noteworthy. In Agent systems, tool call parameters generated by the LLM are unpredictable -- the model may pass incorrectly typed parameters, omit required fields, or pass out-of-range values. Zod provides a type safety barrier at runtime, ensuring every tool call passes strict parameter validation. More importantly, Zod can simultaneously generate JSON Schemas; the client sends them to the API so the model knows the meaning and constraints of each parameter -- the type definition itself documents every parameter.
 
@@ -288,7 +288,7 @@ The tool type module defines the type contract that all tools in Claude Code mus
 This type definition contains rich architectural decisions:
 
 <!-- block: ch01.b-17daf46e -->
-- The tool's execution method receives a permission check callback, meaning permission checking is embedded within the tool execution flow rather than intercepted externally.
+- The tool's execution method receives a permission check callback, meaning the permission check lives inside the tool execution flow instead of outside it.
 - Progress callbacks support incremental progress reporting during tool execution, which is the foundation for streaming UI.
 - Concurrency safety declarations mark whether a tool can run in parallel, affecting scheduling strategy.
 - Interrupt behavior defines what happens when the user interrupts (cancel or block), a key detail for user experience.
@@ -336,7 +336,7 @@ flowchart TD
 
 ### Principle One: Async-Streaming-First
 
-Claude Code's entire dialog loop is built on `AsyncGenerator`. The choice has concrete architectural reasons.
+Claude Code's entire dialog loop stands on `AsyncGenerator`. The choice has concrete architectural reasons.
 
 Traditional LLM calls typically use a request-response pattern: send a prompt, wait for the complete response, process the result. But the Agent's interaction pattern is fundamentally different -- an Agent may execute multiple rounds of tool calls in a single user request, and each round may produce intermediate states (thinking process, tool call plans, execution progress) that the user needs to see in real time.
 

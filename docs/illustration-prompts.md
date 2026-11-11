@@ -2,7 +2,7 @@
 
 本书 26 份插图（章徽、篇题刻、老驿卒、扉页车图）以开源项目
 [yang0/handraw-style](https://github.com/yang0/handraw-style) 的画风体系绘制：
-另有 17 张章内插图不走「提示词 → 手写 SVG」这条管线，边界与名单见文末一节。
+另有 20 张章内插图不走「提示词 → 手写 SVG」这条管线，边界与名单见文末一节。
 封面与四个篇题刻自 2026-11-08 起允许改用生成的透明墨版 PNG，规则与当前供给状态见
 下文「混合格式」一节；章徽、驿卒与信息性章内图仍以 `currentColor` 手写 SVG 为准。
 基准配方为 `FD-001 · Yuko Shimizu | Dynamic East-Asian Ink Editorial` 画风，
@@ -27,7 +27,7 @@ Midjourney、Flux 等），即可在别的媒介重制同一幅图，或为未�
 ## 混合格式：大图生成墨版，小图手绘 SVG（2026-11-08 定稿）
 
 格式决定：**大图生成，小图手绘**。封面与四个篇题刻允许使用生成墨版 PNG；章徽、章末驿卒、
-17 张信息性章内图，以及第二分册的全部插图继续用动画 SVG——只有 SVG 能继承 `currentColor`、
+20 张信息性章内图，以及第二分册的全部插图继续用动画 SVG——只有 SVG 能继承 `currentColor`、
 按子形状落墨，并在深色屏幕与纸上重新上色。
 
 - 装配优先级：`cover.png`、`part-*.png` 存在时优先；其余槽位只认 SVG，小图槽位的同名 PNG 不会被采用
@@ -806,21 +806,22 @@ Core style traits: flowing ink linework with an East-Asian brush spirit; visible
 
 </details>
 
-## 手册不覆盖的另一类：17 张章内插图
+## 手册不覆盖的另一类：20 张章内插图
 
 本手册的 26 条提示词只覆盖**章徽、篇题刻、老驿卒、扉页车图**这一类——它们是靠生图提示词
-起稿、再转成手写 SVG 的。盘上另有 **17 张章内插图**（正文里跟着小节走的那种）不属于这条管线，
-它们没有中英双语提示词，也不必强行编一份，故在此登记边界，别让「43 张图 vs 26 条提示词」
+起稿、再转成手写 SVG 的。盘上另有 **20 张章内插图**（正文里跟着小节走的那种）不属于这条管线，
+它们没有中英双语提示词，也不必强行编一份，故在此登记边界，别让「46 张图 vs 26 条提示词」
 这个差额看起来像漏项：
 
 `ch01-five-pillars`、`ch02-turn-loop`、`ch02-cancel-chain`、`ch03-tool-bench`、`ch03-tool-pipeline`、
 `ch04-gate-steps`、`ch05-trust-ladder`、`ch06-memory-funnel`、`ch07-four-levels`、
-`ch08-hook-line`、`ch09-fork-pipeline`、`ch10-coordinator-fork`、`ch11-skill-stairs`、
-`ch12-mcp-state-dial`、`ch13-concurrency-gate`、`ch14-plan-gate`、`ch15-harness-wheel`
+`ch08-hook-line`、`ch08-hook-decision`、`ch09-fork-pipeline`、`ch09-tool-funnel`、
+`ch10-coordinator-fork`、`ch11-skill-stairs`、
+`ch12-mcp-state-dial`、`ch13-concurrency-gate`、`ch13-cost-ledger`、`ch14-plan-gate`、`ch15-harness-wheel`
 
-（26 + 17 = 43，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
+（26 + 20 = 46，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
 
-- 这 17 张的取舍与逐轮修订记录在 `.superpowers/sdd/2026-11-02-illustration-rollout/`
+- 这 20 张的取舍与逐轮修订记录在 `.superpowers/sdd/2026-11-02-illustration-rollout/`
   里（`progress.md` 与 `fix-round-1-section.md`），不在本手册；要改画先读那两份。
 - 两类图共用同一套硬契约，即上一节第 4 条：`yuyu-book/yuyu_book/art.py` 要求单 svg + viewBox、
   至少一处 `currentColor`、禁 id/href/url/script/style，质感只能来自几何笔触。

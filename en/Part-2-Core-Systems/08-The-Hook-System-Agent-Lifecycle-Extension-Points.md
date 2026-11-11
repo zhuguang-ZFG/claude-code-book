@@ -676,6 +676,12 @@ flowchart TD
 
 > **Anti-pattern warning:** Don't rely on exit codes and JSON decision to express contradictory intents. For example, exit code 0 but decision block, or exit code 2 but decision approve. Although system has clear processing priority, contradictory signals will confuse maintainers and increase debugging difficulty.
 
+The exit code and the JSON decision run as two parallel lanes that merge into one handling: approve, block, or hand a message back to the model.
+
+```ill
+ch08-hook-decision
+```
+
 ---
 
 <!-- block: ch08.b-a4493a50 -->

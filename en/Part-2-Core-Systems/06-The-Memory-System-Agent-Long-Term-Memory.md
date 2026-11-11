@@ -14,7 +14,7 @@ You had the Agent remember a pile of things: file structure, API routes, depende
 <!-- block: ch06.b-19c8efc9 -->
 Memory is not a warehouse; it is a notebook of leads. What the code already tells you has no business taking up a memory slot. What the code cannot tell you -- human preference, the reason behind a decision, an external entry point -- is what belongs on the page. Claude Code's memdir draws exactly this line across four types: user, feedback, project, reference.
 
-Apply that rule when reading a memory. If it says where a service is deployed, check the current deployment entry point. If it says an interface was kept for an older client, use that as decision context and check whether the client still exists. Current files, observed runtime results, and the user's present request take precedence. Correct or remove a stale entry rather than letting it overrule current evidence.
+Apply that rule when reading a memory. If it says where a service runs, check the current deployment entry point. If it says someone kept an interface around for an older client, use that as decision context and check whether the client still exists. Current files, observed runtime results, and the user's present request take precedence. Correct or remove a stale entry rather than letting it overrule current evidence.
 
 > **What you can do after this chapter:**
 > - Take any piece of information and judge which memory type it belongs to, or whether the system should keep it out of storage entirely

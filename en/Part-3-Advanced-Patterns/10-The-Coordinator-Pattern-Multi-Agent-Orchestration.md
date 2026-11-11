@@ -187,7 +187,7 @@ In Full mode, workers can also use MCP tools and Skill tools. The system prompt 
 
 The system assembles workers' tool pools independently from the parent level, ensuring that workers always get the complete tool set, unaffected by parent-level tool restrictions. Workers default to the `acceptEdits` permission mode (automatically accept file edits), unless the agent definition specifies another mode.
 
-Independent assembly solves a different problem: the coordinator's lack of Edit should not also deprive an implementation worker of Edit. It does not exempt workers from policy. `acceptEdits` describes how edits are confirmed here; it does not establish authorization for Bash, external MCP operations, or writes to arbitrary directories. Assignments still need file boundaries and actions that require separate authorization. Missing permission is a boundary to report, not a reason to switch tools and work around it.
+Independent assembly solves a different problem: the coordinator's lack of Edit should not also deprive an implementation worker of Edit. It does not exempt workers from policy. `acceptEdits` describes how this mode confirms edits; it does not establish authorization for Bash, external MCP operations, or writes to arbitrary directories. Assignments still need file boundaries and actions that require separate authorization. Missing permission is a boundary to report, not a reason to switch tools and work around it.
 
 > **Best Practice: Pre-confirm Task Scope Under Coordinator Mode**
 >
@@ -298,7 +298,7 @@ The Scratchpad's design principles are:
 
 In the Coordinator's system prompt, the scratchpad's description reads "durable cross-worker knowledge," hinting at its core purpose: serving as shared memory between workers.
 
-Durable here is relative to a round of messaging. A file can be read repeatedly during the collaboration; that does not make the directory a permanent project knowledge base. A shared directory has no automatic merge mechanism either. Let researchers own separate reports and let the coordinator reference them. Two writers editing the same implementation spec can still overwrite each other. These temporary records also remain subject to team cleanup.
+Durable here is relative to a round of messaging. The team can read a file repeatedly during the collaboration; that does not make the directory a permanent project knowledge base. A shared directory has no automatic merge mechanism either. Let researchers own separate reports and let the coordinator reference them. Two writers editing the same implementation spec can still overwrite each other. These temporary records also remain subject to team cleanup.
 
 #### Typical Scratchpad Usage Patterns
 

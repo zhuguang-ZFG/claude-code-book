@@ -27,9 +27,11 @@ ORDER = ["front", "ch01", "ch01-five-pillars", "ch02", "ch02-turn-loop",
          "ch03", "ch03-tool-bench", "ch03-tool-pipeline",
          "ch04", "ch04-gate-steps", "ch05", "ch05-trust-ladder",
          "ch06", "ch06-memory-funnel", "ch07", "ch07-four-levels",
-         "ch08", "ch08-hook-line", "ch09", "ch09-fork-pipeline",
+         "ch08", "ch08-hook-line", "ch08-hook-decision",
+         "ch09", "ch09-fork-pipeline", "ch09-tool-funnel",
          "ch10", "ch10-coordinator-fork", "ch11", "ch11-skill-stairs",
          "ch12", "ch12-mcp-state-dial", "ch13", "ch13-concurrency-gate",
+         "ch13-cost-ledger",
          "ch14", "ch14-plan-gate", "ch15", "ch15-harness-wheel",
          "apxa", "apxb", "apxc", "apxd", "keeper",
          "part-p1", "part-p2", "part-p3", "part-p4", "cover"]
@@ -42,6 +44,8 @@ WIDE = {"ch03-tool-bench": 300, "ch03-tool-pipeline": 330,
         "ch06-memory-funnel": 330, "ch09-fork-pipeline": 330,
         "ch10-coordinator-fork": 330, "ch11-skill-stairs": 330,
         "ch12-mcp-state-dial": 330, "ch13-concurrency-gate": 330,
+        "ch08-hook-decision": 330, "ch09-tool-funnel": 330,
+        "ch13-cost-ledger": 330,
         "ch14-plan-gate": 330, "ch15-harness-wheel": 330}
 WIDE["ch02-cancel-chain"] = 360
 WIDTH = {n: (420 if n == "cover" else WIDE.get(n) or (300 if n in BIG else 120))
@@ -66,6 +70,7 @@ PLAIN = {
     "ch07-four-levels": "四格胶片：剪一刀、压一压、折三层、整段重写",
     "ch08": "挂钩：在人生节点上，给它装上小动作",
     "ch08-hook-line": "四格胶片：铃响、挂住、跑脚本、一路放行一路截住",
+    "ch08-hook-decision": "两条通道汇一道门：退出码和 JSON 决策合成一个处置——放行、阻止，或把消息交回模型",
     "ch09": "分叉路：派几个小助手分头去办",
     "ch10": "指挥家：一个主编排，四方小队听调",
     "ch11": "技能卡：把说明书装进兜里，随取随用",
@@ -80,6 +85,8 @@ PLAIN = {
     "ch11-skill-stairs": "五级台阶：官越大说了算，官缺了往下补",
     "ch12-mcp-state-dial": "一座钟面：五个状态绕环走，卡住就退避重试",
     "ch13-concurrency-gate": "一扇闸门：只读的齐头并进，动手的排队独占",
+    "ch09-tool-funnel": "一层筛子：禁令先排除、白名单再收窄，MCP 工具始终在池",
+    "ch13-cost-ledger": "两支笔记总账：updateUsage 记每一笔，accumulateUsage 汇合计",
     "ch14-plan-gate": "一间带门的作坊：先在左屋画图，再进右屋动工",
     "ch15-harness-wheel": "一只车轮：对话循环是毂，五根辐条撑起整车",
     "apxa": "藏宝图：源码去哪儿翻，一图定位",
@@ -140,6 +147,13 @@ PLAIN_EN = {
                            "back off and retry when stuck",
     "ch13-concurrency-gate": "One gate: read-only tools run in step; "
                              "anything that writes queues alone",
+    "ch08-hook-decision": "Two lanes into one gate: the exit code and the "
+                          "JSON decision merge into one handling -- approve, "
+                          "block, or hand a message back",
+    "ch09-tool-funnel": "A sieve: global denies drop first, a whitelist "
+                        "narrows further, MCP tools always stay in",
+    "ch13-cost-ledger": "Two pens on one ledger: updateUsage records each "
+                        "event, accumulateUsage totals the session",
     "ch14-plan-gate": "A workshop with a door: sketch in the read-only "
                       "room, build in the other",
     "ch15-harness-wheel": "A wheel: the dialog loop is the hub; five "

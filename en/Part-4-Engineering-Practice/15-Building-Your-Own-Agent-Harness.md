@@ -1144,7 +1144,7 @@ Future MCP evolution directions include:
 - **Sandboxed execution:** MCP servers execute tools in isolated environments, providing stronger security guarantees
 - **Streaming result delivery:** The MCP protocol streams tool execution results back, supporting long-running tools
 
-**MCP's impact on Agent Harness design:** MCP standardization means future Agent Harness tool systems will no longer be closed. Tools can come from any MCP-compatible server, and Agents won't need to know all available tools in advance. This poses new challenges for permission systems -- how do you set permission rules for a tool discovered only at runtime? Possible solutions include: automatic permission inference based on tool capability descriptions, trust tiering at the MCP server level, and more granular sandbox isolation.
+**MCP's impact on Agent Harness design:** MCP standardization means future Agent Harness tool systems will no longer stay closed. Tools can come from any MCP-compatible server, and Agents won't need to know all available tools in advance. This poses new challenges for permission systems -- how do you set permission rules for a tool discovered only at runtime? Possible solutions include: automatic permission inference based on tool capability descriptions, trust tiering at the MCP server level, and more granular sandbox isolation.
 
 > **Cross-reference:** Chapter 12, "MCP Integration and External Protocols," fully analyzes the detailed architecture of MCP integration.
 
@@ -1194,7 +1194,7 @@ Currently, an Agent typically excels at one type of task. Future Agent Harnesses
 
 **4. From Implicit Memory to Explicit Knowledge Graphs**
 
-The current memory system is implicit, text-fragment-based memory. Future memory may be structured knowledge graphs -- an Agent doesn't just remember "the user likes Jest," but can also remember "Project A uses Jest, Project B uses Vitest, because..." Structured memory like that makes retrieval and reasoning sharper.
+The current memory system is implicit, text-fragment-based memory. Future memory may take the shape of structured knowledge graphs -- an Agent doesn't just remember "the user likes Jest," but can also remember "Project A uses Jest, Project B uses Vitest, because..." Structured memory like that makes retrieval and reasoning sharper.
 
 ---
 

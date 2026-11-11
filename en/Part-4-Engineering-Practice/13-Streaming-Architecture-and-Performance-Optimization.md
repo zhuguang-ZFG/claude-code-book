@@ -392,7 +392,7 @@ If you're building your own CLI Agent tool, the following checklist can help you
 
 ### 13.4.1 Cost Calculation Engine
 
-Claude Code's cost tracking is built on two core functions: `updateUsage` and `accumulateUsage`.
+Claude Code's cost tracking rests on two core functions: `updateUsage` and `accumulateUsage`.
 
 ```mermaid
 flowchart LR
@@ -427,7 +427,7 @@ flowchart LR
 
 **updateUsage** handles usage data from single streaming events. Since Anthropic API's `message_delta` events only return incremental fields, `updateUsage` uses `> 0` guards for each field to distinguish "not returned" from "truly zero". You cannot skip this guard: if the API returns `input_tokens: 0` (because that request used caching), the system won't incorrectly overwrite the previously recorded true value to zero.
 
-This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean "this quantity is indeed zero" or "this event doesn't contain information about this quantity"? Without distinction, "100% cache hit rate" leads to the absurd result of "displaying zero input tokens".
+This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean "this quantity really is zero" or "this event doesn't contain information about this quantity"? Without distinction, "100% cache hit rate" leads to the absurd result of "displaying zero input tokens".
 
 The essence of the `> 0` guard is a **monotonic increase guarantee**: usage fields only increase, never decrease or get overwritten with smaller values. Query usage at any moment and the number you get is the largest seen so far.
 
@@ -497,6 +497,12 @@ Turn    Input    Output    Cache Read    Cache Create    Cumulative Cost($)
 ```
 
 Turn 5 alone costs $0.27, and $0.24 of that comes from its 63K cache creation tokens; the model's own 2,000-token output accounts for $0.03. Reads climb back to 89% on turn 6, which means the surging input has become a reusable prefix; what actually pulls input back down to 30K is the compaction at turn 7. This case shows: **tool output token costs are often more worth watching than the model's own output.**
+
+The cost ledger keeps two pens: updateUsage records each event, and accumulateUsage totals them into the session's running account -- detail first, totals after, so the numbers stay reconciled.
+
+```ill
+ch13-cost-ledger
+```
 
 ---
 

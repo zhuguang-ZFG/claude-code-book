@@ -676,6 +676,12 @@ flowchart TD
 
 > **反模式警告：** 不要依赖退出码和 JSON decision 来表达矛盾的意图。例如退出码 0 但 decision 为 block，或退出码 2 但 decision 为 approve。虽然系统有明确的处理优先级，但矛盾的信号会让维护者困惑，增加调试难度。
 
+退出码和 JSON 决策是两条并行的通道，最终汇成同一个处置：放行、阻止，或者把消息交回模型。
+
+```ill
+ch08-hook-decision
+```
+
 ---
 
 <!-- block: ch08.b-15d633ef -->

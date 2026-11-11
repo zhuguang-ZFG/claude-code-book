@@ -301,7 +301,7 @@ flowchart LR
 
 ## Series-wide shared terms
 
-The same series carries a companion volume, *Omp: From Beginner to Expert* (`omp/` in this repository, still under construction), which covers another agent harness in the same terminal. The two volumes share **15** term ids: **12** are rendered identically in both books, and the remaining **3** deliberately differ, so that each volume stays internally consistent on its own pages.
+The same series carries a companion volume, *Omp: From Beginner to Expert* (`omp/` in this repository, still under construction), which covers another agent harness in the same terminal. The two volumes share **15** term ids: both books render **12** identically, and the remaining **3** deliberately differ, so that each volume stays internally consistent on its own pages.
 
 | English term | Chinese renderings (this book / Omp volume) | Field at stake | This book | Omp volume |
 |---|---|---|---|---|
@@ -309,7 +309,7 @@ The same series carries a companion volume, *Omp: From Beginner to Expert* (`omp
 | Main Loop | 主循环 / 工作循环 | Chinese name and English name | Main Loop | agent loop |
 | Subagent | 子智能体 | English form only | sub-agent | subagent |
 
-The reasoning behind those three choices, and the **21** terms that belong to the Omp volume alone, are recorded in `docs/yuyu-overhaul/SHARED-TERMS.md` inside the repository; the chapter-by-chapter mapping lives in `docs/COMPARE-OMP.md` and `omp/overhaul/CROSSREF-MAP.md`. The 15 / 12 / 3 / 21 counts follow the two registries and move whenever they do — the command that reproduces them is in section 6 of `SHARED-TERMS.md`, so readers need not memorize them.
+The repository records the reasoning behind those three choices, and the **21** terms that belong to the Omp volume alone, in `docs/yuyu-overhaul/SHARED-TERMS.md`; the chapter-by-chapter mapping lives in `docs/COMPARE-OMP.md` and `omp/overhaul/CROSSREF-MAP.md`. The 15 / 12 / 3 / 21 counts follow the two registries and move whenever they do — the command that reproduces them is in section 6 of `SHARED-TERMS.md`, so readers need not memorize them.
 
 ---
 

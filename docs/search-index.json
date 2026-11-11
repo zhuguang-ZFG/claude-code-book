@@ -690,7 +690,7 @@
       "unit": "ch01",
       "section": "ch01-llm-作为推理引擎-vs-llm-作为对话伙伴",
       "kind": "paragraph",
-      "text": "把“读一下 `package.json`，告诉我怎么跑测试”走一遍，分工就清楚了。模型先生成一个读取请求，写明工具名和文件路径；这时文件还没被读过。Harness 校验参数、检查权限，再调用本机的读取工具，把文件内容作为工具结果带进下一次模型请求。模型看见结果后才解释测试脚本。如果读取被拒绝，回来的就不是文件内容，模型也不能把自己的猜测说成“已经读到”。模型负责提出下一步，运行时负责让获准的那一步真正发生，并把实际结果交回来。"
+      "text": "把“读一下 `package.json`，告诉我怎么跑测试”走一遍，分工就清楚了。模型先生成一个读取请求，写明工具名和文件路径；这时读取还没发生。Harness 校验参数、检查权限，再调用本机的读取工具，把文件内容作为工具结果带进下一次模型请求。模型看见结果后才解释测试脚本。如果读取请求没获准，回来的就不是文件内容，模型也不能把自己的猜测说成“已经读到”。模型负责提出下一步，运行时负责让获准的那一步真正发生，并把实际结果交回来。"
     },
     {
       "lang": "zh",
@@ -7128,7 +7128,7 @@
       "unit": "ch06",
       "section": "ch06-622-memorymd-索引文件",
       "kind": "paragraph",
-      "text": "索引被截短，不等于对应的记忆文件被删除。假设一条索引放在第 201 行，文件仍在磁盘上，但这次自动加载看不到它，模型也就少了一条“该去读哪份记忆”的线索。反过来，索引里有链接也不代表正文已进上下文：先看到摘要，判断相关，再读取文件。排查“明明记过却没用上”时，应分别检查文件是否存在、索引是否被加载、正文是否真的读过。"
+      "text": "索引短了一截，不等于对应的记忆文件删掉了。假设一条索引放在第 201 行，文件仍在磁盘上，但这次自动加载看不到它，模型也就少了一条“该去读哪份记忆”的线索。反过来，索引里有链接也不代表正文已进上下文：先看到摘要，判断相关，再读取文件。排查“明明记过却没用上”时，应分别检查文件是否存在、索引是否已加载、正文是否真的读过。"
     },
     {
       "lang": "zh",
@@ -10107,6 +10107,20 @@
       "unit": "ch08",
       "section": "ch08-退出码与-json-响应的协作关系",
       "kind": "paragraph",
+      "text": "退出码和 JSON 决策是两条并行的通道，最终汇成同一个处置：放行、阻止，或者把消息交回模型。"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch08",
+      "section": "ch08-退出码与-json-响应的协作关系",
+      "kind": "fence",
+      "text": "ch08-hook-decision"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch08",
+      "section": "ch08-退出码与-json-响应的协作关系",
+      "kind": "paragraph",
       "text": "---"
     },
     {
@@ -11317,7 +11331,7 @@
       "unit": "ch09",
       "section": "ch09-fork-模式的直觉理解",
       "kind": "paragraph",
-      "text": "这个类比只借用了“从同一时刻分开”这一点，并不表示这里调用了操作系统的 `fork()`，也不表示父子共享可写内存。父对话后来补充“不要修改登录接口”，不会自动进入已经运行的子对话；但如果子任务仍能访问同一工作目录，它之后读到的文件可能已经被别人改过。对话前缀的快照与文件系统的快照是两回事。"
+      "text": "这个类比只借用了“从同一时刻分开”这一点，并不表示这里调用了操作系统的 `fork()`，也不表示父子共享可写内存。父对话后来补充“不要修改登录接口”，不会自动进入已经运行的子对话；但如果子任务仍能访问同一工作目录，它之后读到的文件可能已经让别的对话改过。对话前缀的快照与文件系统的快照是两回事。"
     },
     {
       "lang": "zh",
@@ -11712,7 +11726,7 @@
       "unit": "ch09",
       "section": "ch09-filtertoolsforagent",
       "kind": "paragraph",
-      "text": "工具过滤函数处理的是“哪些工具出现在这个子智能体的工具池里”：MCP 工具保留；全局禁止工具排除；异步智能体再受白名单限制，进程内队友有部分豁免。这里的“可用”不等于“已授权执行”。例如，数据库 MCP 工具可以留在工具池里，但真正发起写入时，仍要经过第12章的 MCP 权限检查，不能因为它没有被过滤掉就跳过审批。"
+      "text": "工具过滤函数处理的是“哪些工具出现在这个子智能体的工具池里”：MCP 工具保留；全局禁止工具排除；异步智能体再受白名单限制，进程内队友有部分豁免。这里的“可用”不等于“已授权执行”。例如，数据库 MCP 工具可以留在工具池里，但真正发起写入时，仍要经过第12章的 MCP 权限检查，不能因为过滤器放行了它就跳过审批。"
     },
     {
       "lang": "zh",
@@ -11720,6 +11734,20 @@
       "section": "ch09-filtertoolsforagent",
       "kind": "quote",
       "text": "**设计考量：为什么 MCP 工具始终可用？**  MCP 工具是由用户显式配置的外部服务，它们经过了用户授权（通过权限配置）。与内置工具不同，MCP 工具的行为由外部服务器定义，Claude Code 无法预知其功能范围。因此，系统选择不限制子智能体使用 MCP 工具，而是将安全控制交给 MCP 的权限系统（参见第12章）。"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch09",
+      "section": "ch09-filtertoolsforagent",
+      "kind": "paragraph",
+      "text": "工具池不是全量镜像：全局禁令先排除，异步智能体再过白名单，MCP 工具始终在池——安全交给第12章的权限检查。"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch09",
+      "section": "ch09-filtertoolsforagent",
+      "kind": "fence",
+      "text": "ch09-tool-funnel"
     },
     {
       "lang": "zh",
@@ -12042,7 +12070,7 @@
       "unit": "ch10",
       "section": "ch10",
       "kind": "quote",
-      "text": "**开门一句话：**车一多就得有个不挥鞭的总调度：它不拉货，只分派谁走哪条道。"
+      "text": "**开门一句话：**车马多了，管得过来吗？这一章请出一位自己不拉货的调度，看队伍怎么不打结。"
     },
     {
       "lang": "zh",
@@ -13212,7 +13240,7 @@
       "unit": "ch11",
       "section": "ch11",
       "kind": "quote",
-      "text": "**开门一句话：**技能像马本就有的规矩，随叫随到；插件是租来的鞍具，上马前先摸刃口。"
+      "text": "**开门一句话：**马的本事和借来的行头，边界画在哪？装上行头之前，先学会看它哪里最薄。"
     },
     {
       "lang": "zh",
@@ -14362,7 +14390,7 @@
       "unit": "ch12",
       "section": "ch12",
       "kind": "quote",
-      "text": "**开门一句话：**出了本驿地界就要讲通商之语：MCP 服务器是外市的秤，资源是秤上的货。"
+      "text": "**开门一句话：**马帮要出远门，异乡集市讲什么话才不吃亏？本章学一门通用商语，再验一验外市的秤。"
     },
     {
       "lang": "zh",
@@ -16484,7 +16512,7 @@
       "unit": "ch13",
       "section": "ch13",
       "kind": "quote",
-      "text": "**开门一句话：**信写一封发一封，不等整队上车——流式让第一个字先上路，认脸的缓存让账单变轻。"
+      "text": "**开门一句话：**第一个字凭什么迟迟不上路？账单又为何越跑越重？这章把两笔账一起算清。"
     },
     {
       "lang": "zh",
@@ -17288,6 +17316,20 @@
       "unit": "ch13",
       "section": "ch13-1343-token-成本追踪的最佳实践",
       "kind": "paragraph",
+      "text": "成本账本两支笔：updateUsage 记每一笔事件，accumulateUsage 汇总成会话总账——先分后总，账目才对得上。"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch13",
+      "section": "ch13-1343-token-成本追踪的最佳实践",
+      "kind": "fence",
+      "text": "ch13-cost-ledger"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch13",
+      "section": "ch13-1343-token-成本追踪的最佳实践",
+      "kind": "paragraph",
       "text": "---"
     },
     {
@@ -17802,7 +17844,7 @@
       "unit": "ch14",
       "section": "ch14",
       "kind": "quote",
-      "text": "**开门一句话：**动身前先在纸上走一遍路：Plan 模式把\"想\"和\"做\"分两段，改图纸总比拆墙便宜。"
+      "text": "**开门一句话：**一步岔路折返一整天，这样的远门怎么出？先把路线图钉在纸上，再让车队动身。"
     },
     {
       "lang": "zh",
@@ -23898,7 +23940,7 @@
       "unit": "ch01",
       "section": "ch01-llm-as-a-reasoning-engine-vs-llm-as-a-conversational-partner",
       "kind": "paragraph",
-      "text": "Walk through “read `package.json` and tell me how to run the tests” and the division becomes clear. The model first produces a read request naming a tool and a file path; no file has been read yet. The harness validates the arguments, checks permission, invokes the local reader, and includes the file contents as a tool result in the next model request. Only then can the model explain the test script. If permission is denied, the result contains no file contents, and a guess must not become a claim that the file was read. The model proposes the next step; the runtime performs the permitted operation and returns what actually happened."
+      "text": "Walk through “read `package.json` and tell me how to run the tests” and the division becomes clear. The model first produces a read request naming a tool and a file path; the read has not happened yet. The harness validates the arguments, checks permission, invokes the local reader, and includes the file contents as a tool result in the next model request. Only then can the model explain the test script. If the harness denies permission, the result contains no file contents, and a guess must not become a claim to have read the file. The model proposes the next step; the runtime performs the permitted operation and returns what actually happened."
     },
     {
       "lang": "en",
@@ -24164,7 +24206,7 @@
       "unit": "ch01",
       "section": "ch01-project-scale-1884-typescript-files-512664-lines-of-code",
       "kind": "paragraph",
-      "text": "But this does not mean the code is bloated. On the contrary, Claude Code's code organization exhibits a high degree of modularity: each tool is an independent module, each subsystem has clear boundaries, and the division of responsibilities follows the single responsibility principle. This level of modularity is a key guarantee of Agent Harness maintainability."
+      "text": "But this does not make the code bloated. On the contrary, Claude Code's code organization exhibits a high degree of modularity: each tool is an independent module, each subsystem has clear boundaries, and the division of responsibilities follows the single responsibility principle. This level of modularity is a key guarantee of Agent Harness maintainability."
     },
     {
       "lang": "en",
@@ -24221,7 +24263,7 @@
       "unit": "ch01",
       "section": "ch01-technology-stack",
       "kind": "paragraph",
-      "text": "There is a design philosophy behind this choice: **terminal UI should not be second-class compared to web UI.** Developers are accustomed to componentized thinking and declarative rendering in web development; bringing these mature patterns into terminal UI development can significantly reduce development and maintenance costs. When you see Claude Code's tool execution progress bars, permission confirmation dialogs, and multi-column result displays, they are all React components underneath -- fundamentally no different from the components you write in web applications."
+      "text": "There is a design philosophy behind this choice: **terminal UI should not be second-class compared to web UI.** Web development has trained developers to think in components and declarative rendering; bringing these mature patterns into terminal UI development can significantly reduce development and maintenance costs. When you see Claude Code's tool execution progress bars, permission confirmation dialogs, and multi-column result displays, they are all React components underneath -- fundamentally no different from the components you write in web applications."
     },
     {
       "lang": "en",
@@ -24386,7 +24428,7 @@
       "unit": "ch01",
       "section": "ch01-tool-type-system-foundation",
       "kind": "list",
-      "text": "- The tool's execution method receives a permission check callback, meaning permission checking is embedded within the tool execution flow rather than intercepted externally.\n- Progress callbacks support incremental progress reporting during tool execution, which is the foundation for streaming UI.\n- Concurrency safety declarations mark whether a tool can run in parallel, affecting scheduling strategy.\n- Interrupt behavior defines what happens when the user interrupts (cancel or block), a key detail for user experience.\n- Destructive flags identify whether a tool causes irreversible changes, an important input for the permission system.",
+      "text": "- The tool's execution method receives a permission check callback, meaning the permission check lives inside the tool execution flow instead of outside it.\n- Progress callbacks support incremental progress reporting during tool execution, which is the foundation for streaming UI.\n- Concurrency safety declarations mark whether a tool can run in parallel, affecting scheduling strategy.\n- Interrupt behavior defines what happens when the user interrupts (cancel or block), a key detail for user experience.\n- Destructive flags identify whether a tool causes irreversible changes, an important input for the permission system.",
       "block": "ch01.b-17daf46e"
     },
     {
@@ -24473,7 +24515,7 @@
       "unit": "ch01",
       "section": "ch01-principle-one-async-streaming-first",
       "kind": "paragraph",
-      "text": "Claude Code's entire dialog loop is built on `AsyncGenerator`. The choice has concrete architectural reasons."
+      "text": "Claude Code's entire dialog loop stands on `AsyncGenerator`. The choice has concrete architectural reasons."
     },
     {
       "lang": "en",
@@ -29020,7 +29062,7 @@
       "unit": "ch05",
       "section": "ch05-524-systematic-exclusion-of-projectsettings",
       "kind": "paragraph",
-      "text": "The same exclusion pattern appears in `hasAutoModeOptIn()`, `getUseAutoModeDuringPlan()`, and `getAutoModeConfig()`. The comments consistently point to the same reason: **projectSettings is intentionally excluded -- a malicious project could otherwise auto-bypass the dialog (RCE risk)**."
+      "text": "The same exclusion pattern appears in `hasAutoModeOptIn()`, `getUseAutoModeDuringPlan()`, and `getAutoModeConfig()`. The comments consistently point to the same reason: **projectSettings stays out on purpose -- a malicious project could otherwise auto-bypass the dialog (RCE risk)**."
     },
     {
       "lang": "en",
@@ -29730,7 +29772,7 @@
       "unit": "ch06",
       "section": "ch06",
       "kind": "paragraph",
-      "text": "Apply that rule when reading a memory. If it says where a service is deployed, check the current deployment entry point. If it says an interface was kept for an older client, use that as decision context and check whether the client still exists. Current files, observed runtime results, and the user's present request take precedence. Correct or remove a stale entry rather than letting it overrule current evidence."
+      "text": "Apply that rule when reading a memory. If it says where a service runs, check the current deployment entry point. If it says someone kept an interface around for an older client, use that as decision context and check whether the client still exists. Current files, observed runtime results, and the user's present request take precedence. Correct or remove a stale entry rather than letting it overrule current evidence."
     },
     {
       "lang": "en",
@@ -33285,6 +33327,20 @@
       "unit": "ch08",
       "section": "ch08-collaboration-between-exit-codes-and-json-response",
       "kind": "paragraph",
+      "text": "The exit code and the JSON decision run as two parallel lanes that merge into one handling: approve, block, or hand a message back to the model."
+    },
+    {
+      "lang": "en",
+      "unit": "ch08",
+      "section": "ch08-collaboration-between-exit-codes-and-json-response",
+      "kind": "fence",
+      "text": "ch08-hook-decision"
+    },
+    {
+      "lang": "en",
+      "unit": "ch08",
+      "section": "ch08-collaboration-between-exit-codes-and-json-response",
+      "kind": "paragraph",
       "text": "---"
     },
     {
@@ -34141,7 +34197,7 @@
       "unit": "ch09",
       "section": "ch09-directory-structure-and-module-responsibilities",
       "kind": "paragraph",
-      "text": "Trace one call to separate the responsibilities: the input asks for an investigation of authentication middleware; the entry point selects an execution path; the runner assembles the chosen definition's prompt, tools, and resources; the sub-task returns its findings. Background execution changes whether the main conversation waits for the result. Fork changes how the request context is built. Neither replaces permission checks when a tool is called."
+      "text": "Trace one call to separate the responsibilities: the input asks for an investigation of authentication middleware; the entry point selects an execution path; the runner assembles the chosen definition's prompt, tools, and resources; the sub-task returns its findings. Background execution changes whether the main conversation waits for the result. Fork changes how the runner builds the request context. Neither replaces permission checks at tool-call time."
     },
     {
       "lang": "en",
@@ -34522,7 +34578,7 @@
       "unit": "ch09",
       "section": "ch09-core-design-of-the-forksubagent-module",
       "kind": "paragraph",
-      "text": "In the routing logic of the tool's main entry, when the user omits the sub-agent type and Fork mode is enabled, the system triggers the Fork path."
+      "text": "In the routing logic of the tool's main entry, when the user omits the sub-agent type and Fork mode is on, the system triggers the Fork path."
     },
     {
       "lang": "en",
@@ -34586,7 +34642,7 @@
       "unit": "ch09",
       "section": "ch09-cachesafeparams-five-dimensions",
       "kind": "paragraph",
-      "text": "Do not match these two sets of five by field name. `CacheSafeParams` is the caller's structure for carrying context; the second list describes request content whose consistency matters. The model and thinking configuration must also be checked through `toolUseContext`. Comparing five top-level fields is not enough to declare a hit. Consistency preserves the conditions for reuse; returned cache usage shows how much was actually reused."
+      "text": "Do not match these two sets of five by field name. `CacheSafeParams` is the caller's structure for carrying context; the second list describes request content whose consistency matters. The caller must also check the model and thinking configuration through `toolUseContext`. Comparing five top-level fields is not enough to declare a hit. Consistency preserves the conditions for reuse; returned cache usage shows how much of it the run actually reused."
     },
     {
       "lang": "en",
@@ -34628,7 +34684,7 @@
       "unit": "ch09",
       "section": "ch09-how-buildforkedmessages-builds-messages",
       "kind": "paragraph",
-      "text": "The placeholders solve a message-structure problem. When the parent assistant emits several `tool_use` blocks, the child request needs corresponding result slots before it can continue with its own directive. A fixed string is not evidence that those tools ran successfully. The child must establish its own findings rather than treating a placeholder as proof that a file was read or an edit completed."
+      "text": "The placeholders solve a message-structure problem. When the parent assistant emits several `tool_use` blocks, the child request needs corresponding result slots before it can continue with its own directive. A fixed string is not evidence that those tools ran successfully. The child must establish its own findings rather than treating a placeholder as proof that the child read a file or completed an edit."
     },
     {
       "lang": "en",
@@ -34769,7 +34825,7 @@
       "unit": "ch09",
       "section": "ch09-markdown-frontmatter-format",
       "kind": "paragraph",
-      "text": "The `parseAgentFromMarkdown()` function parses this frontmatter, mapping `name` to `agentType` and using the Markdown body as the system prompt. If the `memory` field is enabled, the system also automatically injects file read/write tools so the memory persists."
+      "text": "The `parseAgentFromMarkdown()` function parses this frontmatter, mapping `name` to `agentType` and using the Markdown body as the system prompt. If the `memory` field opts in, the system also automatically injects file read/write tools so the memory persists."
     },
     {
       "lang": "en",
@@ -34888,7 +34944,7 @@
       "unit": "ch09",
       "section": "ch09-filtertoolsforagent",
       "kind": "paragraph",
-      "text": "The filtering function decides which tools appear in a sub-agent's tool pool: MCP tools remain; globally disallowed tools are excluded; asynchronous agents also face a whitelist, with some exemptions for in-process teammates. Available here does not mean authorized to execute. A database MCP tool may remain in the pool, for example, but a write still has to pass the MCP permission checks in Chapter 12. Surviving the filter does not waive approval."
+      "text": "The filtering function decides which tools appear in a sub-agent's tool pool: MCP tools remain; the filter drops globally disallowed tools; asynchronous agents also face a whitelist, with some exemptions for in-process teammates. Available here does not mean authorized to execute. A database MCP tool may remain in the pool, for example, but a write still has to pass the MCP permission checks in Chapter 12. Surviving the filter does not waive approval."
     },
     {
       "lang": "en",
@@ -34896,6 +34952,20 @@
       "section": "ch09-filtertoolsforagent",
       "kind": "quote",
       "text": "**Design Consideration: Why are MCP tools always available?**  MCP tools are external services explicitly configured by users, and the user has authorized them (through permission configuration). Unlike built-in tools, external servers define the behavior of MCP tools, and Claude Code cannot predict their functional scope. Therefore, the system chooses not to restrict sub-agents from using MCP tools, delegating safety control to MCP's permission system (see Chapter 12)."
+    },
+    {
+      "lang": "en",
+      "unit": "ch09",
+      "section": "ch09-filtertoolsforagent",
+      "kind": "paragraph",
+      "text": "The tool pool is not a mirror of everything: global denies drop out first, asynchronous agents face a whitelist, MCP tools always stay in -- safety belongs to Chapter 12's permission checks."
+    },
+    {
+      "lang": "en",
+      "unit": "ch09",
+      "section": "ch09-filtertoolsforagent",
+      "kind": "fence",
+      "text": "ch09-tool-funnel"
     },
     {
       "lang": "en",
@@ -34951,14 +35021,14 @@
       "unit": "ch09",
       "section": "ch09-context-construction-phase",
       "kind": "list",
-      "text": "1. **System prompt rendering**: Generates the system prompt based on the agent definition, injecting tool descriptions, permission information, etc.\n2. **Tool pool assembly**: Determines the available tool set based on allowedTools/disallowedTools and the global filtering function\n3. **MCP server initialization**: Establishes connections for agent-specific MCP servers\n4. **Skill preloading**: Loads the skills specified in the agent definition\n5. **Memory injection**: If the memory option is enabled, injects persistent memory content"
+      "text": "1. **System prompt rendering**: Generates the system prompt based on the agent definition, injecting tool descriptions, permission information, etc.\n2. **Tool pool assembly**: Determines the available tool set based on allowedTools/disallowedTools and the global filtering function\n3. **MCP server initialization**: Establishes connections for agent-specific MCP servers\n4. **Skill preloading**: Loads the skills specified in the agent definition\n5. **Memory injection**: If the memory option is on, injects persistent memory content"
     },
     {
       "lang": "en",
       "unit": "ch09",
       "section": "ch09-context-construction-phase",
       "kind": "paragraph",
-      "text": "Resource ownership matters here too. This run establishes and cleans up its dedicated MCP connections; a connection borrowed from the parent must not be closed just because the child finishes. Preloading a Skill prepares instructions, not evidence that the requested operations happened. The final findings, tool operations actually performed, and usage incurred need separate records."
+      "text": "Resource ownership matters here too. This run establishes and cleans up its dedicated MCP connections; the child must not close a connection it borrowed from the parent just because the child finishes. Preloading a Skill prepares instructions, not evidence that the requested operations happened. The final findings, tool operations actually performed, and usage incurred need separate records."
     },
     {
       "lang": "en",
@@ -35217,7 +35287,7 @@
       "unit": "ch10",
       "section": "ch10",
       "kind": "quote",
-      "text": "**In one line:** Too many carts call for a dispatcher who never cracks the whip: it hauls no load itself, only assigns who takes which road."
+      "text": "**In one line:** More carts, more chaos -- who keeps the convoy from tangling? Meet a dispatcher that hauls nothing itself and still runs the road."
     },
     {
       "lang": "en",
@@ -35535,7 +35605,7 @@
       "unit": "ch10",
       "section": "ch10-independent-assembly-of-the-tool-pool",
       "kind": "paragraph",
-      "text": "Independent assembly solves a different problem: the coordinator's lack of Edit should not also deprive an implementation worker of Edit. It does not exempt workers from policy. `acceptEdits` describes how edits are confirmed here; it does not establish authorization for Bash, external MCP operations, or writes to arbitrary directories. Assignments still need file boundaries and actions that require separate authorization. Missing permission is a boundary to report, not a reason to switch tools and work around it."
+      "text": "Independent assembly solves a different problem: the coordinator's lack of Edit should not also deprive an implementation worker of Edit. It does not exempt workers from policy. `acceptEdits` describes how this mode confirms edits; it does not establish authorization for Bash, external MCP operations, or writes to arbitrary directories. Assignments still need file boundaries and actions that require separate authorization. Missing permission is a boundary to report, not a reason to switch tools and work around it."
     },
     {
       "lang": "en",
@@ -35731,7 +35801,7 @@
       "unit": "ch10",
       "section": "ch10-scratchpad-collaboration-space-design",
       "kind": "paragraph",
-      "text": "Durable here is relative to a round of messaging. A file can be read repeatedly during the collaboration; that does not make the directory a permanent project knowledge base. A shared directory has no automatic merge mechanism either. Let researchers own separate reports and let the coordinator reference them. Two writers editing the same implementation spec can still overwrite each other. These temporary records also remain subject to team cleanup."
+      "text": "Durable here is relative to a round of messaging. The team can read a file repeatedly during the collaboration; that does not make the directory a permanent project knowledge base. A shared directory has no automatic merge mechanism either. Let researchers own separate reports and let the coordinator reference them. Two writers editing the same implementation spec can still overwrite each other. These temporary records also remain subject to team cleanup."
     },
     {
       "lang": "en",
@@ -36386,7 +36456,7 @@
       "unit": "ch11",
       "section": "ch11",
       "kind": "quote",
-      "text": "**In one line:** A skill is training the mare already has, ready when called; a plugin is tack you rent — run a thumb along its edge before you mount."
+      "text": "**In one line:** Where does the mare's own skill end and rented gear begin? Before you buckle anything on, learn to spot where borrowed leather runs thin."
     },
     {
       "lang": "en",
@@ -37534,7 +37604,7 @@
       "unit": "ch12",
       "section": "ch12",
       "kind": "quote",
-      "text": "**In one line:** Beyond our road, speak the market tongue: an MCP server is the foreign yard's scales, and resources are the goods weighed on them."
+      "text": "**In one line:** Caravans cross the border into strange markets -- which tongue keeps a deal honest? Learn the shared trade words, then check the foreign scales."
     },
     {
       "lang": "en",
@@ -37770,7 +37840,7 @@
       "unit": "ch12",
       "section": "ch12-1212-connection-configurations-and-transports",
       "kind": "paragraph",
-      "text": "**The sse-ide and ws-ide protocols** are specialized types for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean."
+      "text": "**The sse-ide and ws-ide protocols** specialize the standard transports for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean."
     },
     {
       "lang": "en",
@@ -39653,7 +39723,7 @@
       "unit": "ch13",
       "section": "ch13",
       "kind": "quote",
-      "text": "**In one line:** Send each letter the moment you finish it — streaming puts the first token on the road early, and a gatekeeper who knows your face keeps the bill light."
+      "text": "**In one line:** Why is the first word so slow to arrive, and why does the bill swell as the run grows? Two ledgers, settled in one chapter."
     },
     {
       "lang": "en",
@@ -40281,7 +40351,7 @@
       "unit": "ch13",
       "section": "ch13-1341-cost-calculation-engine",
       "kind": "paragraph",
-      "text": "Claude Code's cost tracking is built on two core functions: `updateUsage` and `accumulateUsage`."
+      "text": "Claude Code's cost tracking rests on two core functions: `updateUsage` and `accumulateUsage`."
     },
     {
       "lang": "en",
@@ -40302,7 +40372,7 @@
       "unit": "ch13",
       "section": "ch13-1341-cost-calculation-engine",
       "kind": "paragraph",
-      "text": "This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean \"this quantity is indeed zero\" or \"this event doesn't contain information about this quantity\"? Without distinction, \"100% cache hit rate\" leads to the absurd result of \"displaying zero input tokens\"."
+      "text": "This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean \"this quantity really is zero\" or \"this event doesn't contain information about this quantity\"? Without distinction, \"100% cache hit rate\" leads to the absurd result of \"displaying zero input tokens\"."
     },
     {
       "lang": "en",
@@ -40450,6 +40520,20 @@
       "section": "ch13-1343-best-practices-for-token-cost-tracking",
       "kind": "paragraph",
       "text": "Turn 5 alone costs $0.27, and $0.24 of that comes from its 63K cache creation tokens; the model's own 2,000-token output accounts for $0.03. Reads climb back to 89% on turn 6, which means the surging input has become a reusable prefix; what actually pulls input back down to 30K is the compaction at turn 7. This case shows: **tool output token costs are often more worth watching than the model's own output.**"
+    },
+    {
+      "lang": "en",
+      "unit": "ch13",
+      "section": "ch13-1343-best-practices-for-token-cost-tracking",
+      "kind": "paragraph",
+      "text": "The cost ledger keeps two pens: updateUsage records each event, and accumulateUsage totals them into the session's running account -- detail first, totals after, so the numbers stay reconciled."
+    },
+    {
+      "lang": "en",
+      "unit": "ch13",
+      "section": "ch13-1343-best-practices-for-token-cost-tracking",
+      "kind": "fence",
+      "text": "ch13-cost-ledger"
     },
     {
       "lang": "en",
@@ -40970,7 +41054,7 @@
       "unit": "ch14",
       "section": "ch14",
       "kind": "quote",
-      "text": "**In one line:** Walk the route on paper before the packs move: Plan Mode splits thinking from doing, and redrawing a blueprint always beats tearing down a wall."
+      "text": "**In one line:** One wrong fork costs a whole day of backtrack -- how do you leave camp certain of the route? Pin the map to paper before harnessing the horses."
     },
     {
       "lang": "en",
@@ -43736,7 +43820,7 @@
       "unit": "ch15",
       "section": "ch15-standardized-protocols-mcp-evolution",
       "kind": "paragraph",
-      "text": "**MCP's impact on Agent Harness design:** MCP standardization means future Agent Harness tool systems will no longer be closed. Tools can come from any MCP-compatible server, and Agents won't need to know all available tools in advance. This poses new challenges for permission systems -- how do you set permission rules for a tool discovered only at runtime? Possible solutions include: automatic permission inference based on tool capability descriptions, trust tiering at the MCP server level, and more granular sandbox isolation."
+      "text": "**MCP's impact on Agent Harness design:** MCP standardization means future Agent Harness tool systems will no longer stay closed. Tools can come from any MCP-compatible server, and Agents won't need to know all available tools in advance. This poses new challenges for permission systems -- how do you set permission rules for a tool discovered only at runtime? Possible solutions include: automatic permission inference based on tool capability descriptions, trust tiering at the MCP server level, and more granular sandbox isolation."
     },
     {
       "lang": "en",
@@ -43820,7 +43904,7 @@
       "unit": "ch15",
       "section": "ch15-forward-looking-analysis-of-future-architectures",
       "kind": "paragraph",
-      "text": "The current memory system is implicit, text-fragment-based memory. Future memory may be structured knowledge graphs -- an Agent doesn't just remember \"the user likes Jest,\" but can also remember \"Project A uses Jest, Project B uses Vitest, because...\" Structured memory like that makes retrieval and reasoning sharper."
+      "text": "The current memory system is implicit, text-fragment-based memory. Future memory may take the shape of structured knowledge graphs -- an Agent doesn't just remember \"the user likes Jest,\" but can also remember \"Project A uses Jest, Project B uses Vitest, because...\" Structured memory like that makes retrieval and reasoning sharper."
     },
     {
       "lang": "en",
@@ -46351,7 +46435,7 @@
       "unit": "apxd",
       "section": "apxd-series-wide-shared-terms",
       "kind": "paragraph",
-      "text": "The same series carries a companion volume, *Omp: From Beginner to Expert* (`omp/` in this repository, still under construction), which covers another agent harness in the same terminal. The two volumes share **15** term ids: **12** are rendered identically in both books, and the remaining **3** deliberately differ, so that each volume stays internally consistent on its own pages."
+      "text": "The same series carries a companion volume, *Omp: From Beginner to Expert* (`omp/` in this repository, still under construction), which covers another agent harness in the same terminal. The two volumes share **15** term ids: both books render **12** identically, and the remaining **3** deliberately differ, so that each volume stays internally consistent on its own pages."
     },
     {
       "lang": "en",
@@ -46365,7 +46449,7 @@
       "unit": "apxd",
       "section": "apxd-series-wide-shared-terms",
       "kind": "paragraph",
-      "text": "The reasoning behind those three choices, and the **21** terms that belong to the Omp volume alone, are recorded in `docs/yuyu-overhaul/SHARED-TERMS.md` inside the repository; the chapter-by-chapter mapping lives in `docs/COMPARE-OMP.md` and `omp/overhaul/CROSSREF-MAP.md`. The 15 / 12 / 3 / 21 counts follow the two registries and move whenever they do — the command that reproduces them is in section 6 of `SHARED-TERMS.md`, so readers need not memorize them."
+      "text": "The repository records the reasoning behind those three choices, and the **21** terms that belong to the Omp volume alone, in `docs/yuyu-overhaul/SHARED-TERMS.md`; the chapter-by-chapter mapping lives in `docs/COMPARE-OMP.md` and `omp/overhaul/CROSSREF-MAP.md`. The 15 / 12 / 3 / 21 counts follow the two registries and move whenever they do — the command that reproduces them is in section 6 of `SHARED-TERMS.md`, so readers need not memorize them."
     },
     {
       "lang": "en",

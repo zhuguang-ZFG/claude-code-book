@@ -157,7 +157,7 @@ flowchart TD
 
 **The SSE protocol** fits remotely deployed MCP servers. Server-Sent Events is an HTTP-based unidirectional push technology: the client sends requests via HTTP POST, and the server streams responses and notifications via SSE. The advantage is deployment flexibility — the MCP server can run anywhere in the cloud, and Claude Code only needs to know the URL to connect. However, this introduces additional network latency and authentication complexity.
 
-**The sse-ide and ws-ide protocols** are specialized types for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean.
+**The sse-ide and ws-ide protocols** specialize the standard transports for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean.
 
 **The HTTP Streamable protocol** is a newer protocol in the MCP specification that streams responses more flexibly than SSE. It returns response content incrementally over a single HTTP connection, making it suitable for tools that need to return large amounts of data or run for extended periods.
 

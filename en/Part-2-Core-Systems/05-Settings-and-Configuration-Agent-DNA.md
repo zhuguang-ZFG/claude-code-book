@@ -315,7 +315,7 @@ The key here is "selective locking." Enterprise administrators don't need to blu
 
 Security-sensitive functions consistently exclude `projectSettings`. The following functions demonstrate the same pattern: when checking `skipDangerousModePermissionPrompt`, they only read from userSettings, localSettings, flagSettings, and policySettings, **intentionally excluding projectSettings**.
 
-The same exclusion pattern appears in `hasAutoModeOptIn()`, `getUseAutoModeDuringPlan()`, and `getAutoModeConfig()`. The comments consistently point to the same reason: **projectSettings is intentionally excluded -- a malicious project could otherwise auto-bypass the dialog (RCE risk)**.
+The same exclusion pattern appears in `hasAutoModeOptIn()`, `getUseAutoModeDuringPlan()`, and `getAutoModeConfig()`. The comments consistently point to the same reason: **projectSettings stays out on purpose -- a malicious project could otherwise auto-bypass the dialog (RCE risk)**.
 
 This defense rests on an assumption: the user's own settings (`userSettings`/`localSettings`) earn trust because they live on the user's filesystem and only the user edits them, whereas `projectSettings` can arrive from a cloned third-party repository, which is a supply chain attack risk.
 

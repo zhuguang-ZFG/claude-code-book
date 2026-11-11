@@ -35,7 +35,7 @@ The AgentTool code resides in the agent tools directory and consists of the foll
 
 The core design principle of this architecture is **separation of concerns**: the tool main entry is responsible for "deciding what to do," the runner is responsible for "how to do it," and the Fork module handles a specific "how to do it more efficiently" strategy.
 
-Trace one call to separate the responsibilities: the input asks for an investigation of authentication middleware; the entry point selects an execution path; the runner assembles the chosen definition's prompt, tools, and resources; the sub-task returns its findings. Background execution changes whether the main conversation waits for the result. Fork changes how the request context is built. Neither replaces permission checks when a tool is called.
+Trace one call to separate the responsibilities: the input asks for an investigation of authentication middleware; the entry point selects an execution path; the runner assembles the chosen definition's prompt, tools, and resources; the sub-task returns its findings. Background execution changes whether the main conversation waits for the result. Fork changes how the runner builds the request context. Neither replaces permission checks at tool-call time.
 
 <!-- block: ch09.b-0d35473a -->
 > **Architecture Insight: Why not merge routing logic and execution logic?**
@@ -261,7 +261,7 @@ Activating the Fork pattern requires three conditions: the feature gate enabled,
 
 > **Cross-Reference:** Chapter 10 will discuss the mutual exclusivity of Coordinator mode and Fork mode in detail. In short, the Coordinator is a heavier orchestration pattern suited for scenarios requiring fine-grained task management; Fork is a lightweight parallel pattern suited for distributing the same context to multiple independent sub-tasks.
 
-In the routing logic of the tool's main entry, when the user omits the sub-agent type and Fork mode is enabled, the system triggers the Fork path.
+In the routing logic of the tool's main entry, when the user omits the sub-agent type and Fork mode is on, the system triggers the Fork path.
 
 ### Inheriting the Full Context and System Prompt from the Parent Conversation
 
@@ -306,7 +306,7 @@ graph TD
 
 These five dimensions correspond to the components of the Anthropic API cache key: system prompt, tools, model, messages prefix, and thinking config. Only when all five dimensions are exactly consistent can a sub-request hit the parent request's cache.
 
-Do not match these two sets of five by field name. `CacheSafeParams` is the caller's structure for carrying context; the second list describes request content whose consistency matters. The model and thinking configuration must also be checked through `toolUseContext`. Comparing five top-level fields is not enough to declare a hit. Consistency preserves the conditions for reuse; returned cache usage shows how much was actually reused.
+Do not match these two sets of five by field name. `CacheSafeParams` is the caller's structure for carrying context; the second list describes request content whose consistency matters. The caller must also check the model and thinking configuration through `toolUseContext`. Comparing five top-level fields is not enough to declare a hit. Consistency preserves the conditions for reuse; returned cache usage shows how much of it the run actually reused.
 
 The Fork path sets the `useExactTools` flag, so tool definitions stay unchanged — when Fork mode activates, it uses the parent's tool pool directly rather than re-resolving agent tools, and the definitions line up byte for byte.
 
@@ -324,7 +324,7 @@ This cache contract breaks most often under the confidence of "I only changed a 
 
 The Fork message construction function is the core of cache sharing. Its processing logic is as follows: first, preserve the complete parent assistant message (including all tool_use blocks, thinking, and text, but with new UUIDs assigned); then collect all tool_use blocks; generate a uniform fixed-string placeholder tool_result for each tool_use; and finally construct a single user message containing the placeholder results and the sub-task directive.
 
-The placeholders solve a message-structure problem. When the parent assistant emits several `tool_use` blocks, the child request needs corresponding result slots before it can continue with its own directive. A fixed string is not evidence that those tools ran successfully. The child must establish its own findings rather than treating a placeholder as proof that a file was read or an edit completed.
+The placeholders solve a message-structure problem. When the parent assistant emits several `tool_use` blocks, the child request needs corresponding result slots before it can continue with its own directive. A fixed string is not evidence that those tools ran successfully. The child must establish its own findings rather than treating a placeholder as proof that the child read a file or completed an edit.
 
 The key point is that all Fork sub-agents share the placeholder results as the fixed string "Fork started -- processing in background." What follows:
 
@@ -442,7 +442,7 @@ Report format:
 - **Remediation**: Specific code modification proposals
 ```
 
-The `parseAgentFromMarkdown()` function parses this frontmatter, mapping `name` to `agentType` and using the Markdown body as the system prompt. If the `memory` field is enabled, the system also automatically injects file read/write tools so the memory persists.
+The `parseAgentFromMarkdown()` function parses this frontmatter, mapping `name` to `agentType` and using the Markdown body as the system prompt. If the `memory` field opts in, the system also automatically injects file read/write tools so the memory persists.
 
 #### More Custom Agent Examples
 
@@ -590,11 +590,17 @@ Async (background) agents have their toolset further restricted to a whitelist s
 
 ### filterToolsForAgent
 
-The filtering function decides which tools appear in a sub-agent's tool pool: MCP tools remain; globally disallowed tools are excluded; asynchronous agents also face a whitelist, with some exemptions for in-process teammates. Available here does not mean authorized to execute. A database MCP tool may remain in the pool, for example, but a write still has to pass the MCP permission checks in Chapter 12. Surviving the filter does not waive approval.
+The filtering function decides which tools appear in a sub-agent's tool pool: MCP tools remain; the filter drops globally disallowed tools; asynchronous agents also face a whitelist, with some exemptions for in-process teammates. Available here does not mean authorized to execute. A database MCP tool may remain in the pool, for example, but a write still has to pass the MCP permission checks in Chapter 12. Surviving the filter does not waive approval.
 
 > **Design Consideration: Why are MCP tools always available?**
 >
 > MCP tools are external services explicitly configured by users, and the user has authorized them (through permission configuration). Unlike built-in tools, external servers define the behavior of MCP tools, and Claude Code cannot predict their functional scope. Therefore, the system chooses not to restrict sub-agents from using MCP tools, delegating safety control to MCP's permission system (see Chapter 12).
+
+The tool pool is not a mirror of everything: global denies drop out first, asynchronous agents face a whitelist, MCP tools always stay in -- safety belongs to Chapter 12's permission checks.
+
+```ill
+ch09-tool-funnel
+```
 
 ---
 
@@ -640,9 +646,9 @@ Before a sub-agent begins execution, the runner constructs a complete execution 
 2. **Tool pool assembly**: Determines the available tool set based on allowedTools/disallowedTools and the global filtering function
 3. **MCP server initialization**: Establishes connections for agent-specific MCP servers
 4. **Skill preloading**: Loads the skills specified in the agent definition
-5. **Memory injection**: If the memory option is enabled, injects persistent memory content
+5. **Memory injection**: If the memory option is on, injects persistent memory content
 
-Resource ownership matters here too. This run establishes and cleans up its dedicated MCP connections; a connection borrowed from the parent must not be closed just because the child finishes. Preloading a Skill prepares instructions, not evidence that the requested operations happened. The final findings, tool operations actually performed, and usage incurred need separate records.
+Resource ownership matters here too. This run establishes and cleans up its dedicated MCP connections; the child must not close a connection it borrowed from the parent just because the child finishes. Preloading a Skill prepares instructions, not evidence that the requested operations happened. The final findings, tool operations actually performed, and usage incurred need separate records.
 
 ### Resource Cleanup Phase
 

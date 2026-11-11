@@ -8,4 +8,6 @@
 - [x] Step 3：`shift_anchors.py` 平移受影响锚点（先 dry-run）
 - [x] Step 4：五道闸全绿（build --check/--mermaid、unittest×2、check_book、check:diagrams）
 - [x] Step 5：账本 54 条注记（zh+en，含构建器测试实数）+ 全量复跑
-- [ ] Step 6：提交 → 推送 → PR → CI 绿 → 合并 → README CI 槽位
+- [x] Step 6：提交 → 推送 → PR → CI 绿 → 合并 → README CI 槽位
+      （九幅随插图铺开线经 `722a9cb` 平台切换与 #38 重绘合并落 main；
+      CI 槽位随 R3 `bc96d22` 与后续 PDF 对账提交更新。）

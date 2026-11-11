@@ -1,0 +1,26 @@
+<svg class="a-tool-funnel" viewBox="0 0 340 130" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 22q40-4 82 0" stroke-width="2" pathLength="100"/>
+<rect x="26" y="30" width="16" height="11" rx="2" stroke-width="1.6" pathLength="100"/>
+<rect x="50" y="30" width="16" height="11" rx="2" stroke-width="1.6" pathLength="100"/>
+<rect x="74" y="30" width="16" height="11" rx="2" stroke-width="1.6" pathLength="100"/>
+<rect x="26" y="48" width="16" height="11" rx="2" stroke-width="1.6" pathLength="100"/>
+<path d="M50 52q6-2 12 0" stroke-width="1.2" opacity=".4" pathLength="100"/>
+<text x="98" y="40" fill="currentColor" stroke="none" font-size="7" opacity=".7">全部工具</text>
+<path d="M62 66l40 12 40-12" stroke-width="2.4" pathLength="100"/>
+<path d="M62 66l14 34h52l14-34" stroke-width="2.2" pathLength="100"/>
+<path d="M78 100h64" stroke-width="2.4" pathLength="100"/>
+<path d="M102 78q10-2 20 0" stroke-width="1.3" opacity=".5" pathLength="100"/>
+<path d="M96 86l14-7 14 7" stroke-width="1.3" opacity=".3" pathLength="100"/>
+<path d="M156 60q24-2 44 0" stroke-width="1.8" pathLength="100"/><path d="M200 60l8 3-8 4" stroke-width="1.8" pathLength="100"/>
+<path d="M156 84q22 4 44 2" stroke-width="1.5" opacity=".55" pathLength="100"/><path d="M200 86l8-2-7-5" stroke-width="1.5" opacity=".55" pathLength="100"/>
+<path d="M170 52l-8-14" stroke-width="1.4" opacity=".5" pathLength="100"/><path d="M162 38l-6-4 8-2" stroke-width="1.4" opacity=".5" pathLength="100"/>
+<text x="176" y="34" fill="currentColor" stroke="none" font-size="7" opacity=".7">全局禁令，先排除</text>
+<text x="210" y="56" fill="currentColor" stroke="none" font-size="7" opacity=".7">MCP 工具始终在池</text>
+<text x="210" y="90" fill="currentColor" stroke="none" font-size="7" opacity=".7">异步智能体再过白名单</text>
+<path d="M212 66q30-2 58 0" stroke-width="2" pathLength="100"/><path d="M270 66l8 3-8 4" stroke-width="2" pathLength="100"/>
+<rect x="282" y="52" width="42" height="30" rx="3" stroke-width="2.2" pathLength="100"/>
+<path d="M288 62h30M288 68h22" stroke-width="1.2" opacity=".5" pathLength="100"/>
+<path d="M288 74h26" stroke-width="1.2" opacity=".3" pathLength="100"/>
+<text x="284" y="94" fill="currentColor" stroke="none" font-size="7" opacity=".7">工具池</text>
+<path d="M14 118q156-6 312-2" stroke-width="1" opacity=".25" pathLength="100"/>
+</svg>
