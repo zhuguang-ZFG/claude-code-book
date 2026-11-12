@@ -71,7 +71,7 @@ make book-pi-epub   # 再加 EPUB
 
 ## 新增两册与合订本
 
-再增 [Kimi Code](kimi/README.md) 与 [提示词工程](prompt/README.md) 两册，同为前言、18 章和附录 A–D，走与上四册相同的构建入口（`make book-kimi-all` / `make book-prompt-all`，CI 的 `agent-volumes` 矩阵覆盖六册）。两册都不带通俗层，`prompt` 另发离线练习包 `yuyu-prompt-zh-examples.zip`，由 `scripts/package_prompt.py` 从仓内源码重建，包内摘要表可逐文件核对。
+再增 [Kimi Code](kimi/README.md) 与 [提示词工程](prompt/README.md) 两册，同为前言、18 章和附录 A–D，走与上四册相同的构建入口（`make book-kimi-all` / `make book-prompt-all`，CI 的 `agent-volumes` 矩阵覆盖六册）。两册都不带通俗层，`prompt` 另发离线练习包 `yuyu-prompt-zh-examples.zip`，由 `scripts/package_prompt.py` 从仓内源码重建，包内摘要表可逐文件核对。本机 2026-11-12 实测：kimi HTML 0.5 MB、PDF 80 页 28 书签、EPUB 0.33 MB；prompt HTML 0.5 MB、PDF 99 页 27 书签、EPUB 0.15 MB；练习包 71 个成员、158 817 字节。构建口径与证据见 [kimi/VERIFY.md](kimi/VERIFY.md) 与 [prompt/VERIFY.md](prompt/VERIFY.md)。
 
 九册另可合订为《Agent Harness 九卷合订本》：`manifest-collected.json` 逐卷引用各册的清单与来源，`make book-collected` 出中文单文件 HTML。合订本不合并各册的索引与页码，只新增卷宗与卷级目录；九册的图版全部内联，因此不再另出 PDF 与 EPUB。
 
