@@ -136,6 +136,16 @@ ch05 长版在 `video/chapters/ch05/episode.yaml` 是 `status: scripted`，没�
 - 全仓两套件 280 + 585 项通过（2026-11-12 复跑）。
 - `bookctl check --fast`：2026-11-12 实测 8 步全绿（content 428 个 Markdown /
   436 张 Mermaid 图 0 错误，视频配置 15/15，产物幂等 11 项逐字节一致）。
+- 中间产物清理（2026-11-12）：`video/.build/` 504 MB → 708 KB（只留 `compare-*.json`、
+  `transcript-*.json`、`legacy-*.srt`），`.scratch/` 648 MB → 98 MB（只留
+  `docs/migrations/legacy-v2-structure.md` 引用的 `p3-resume-20261107/` 与两份测试日志），
+  构建缓存 `yuyu-book/.cache/` 41 MB 与试排工位 `yuyu-book/.scratch/` 155 MB 删除。
+  `video/ch0*/tools/` 的 4.0 GB 章节级 vendored 工具链（`hyperframes`、`huashu-art-motion`、
+  `lemo-opuscar`、`sweety-handdraw-video` 的副本，`.gitignore:35` 早已排除、0 条被跟踪、
+  无代码或文档引用）一并删除；现行渲染只用根级钉住的 `video/node_modules/hyperframes@0.8.210`。
+  渲染件与分段缓存的重出命令见 `video-compat-review.md`「独立新版渲染」；试排产物用
+  `bookctl build --out-dir` 重出。清理后 `video/` 6.0 GB → 1.8 GB（其中 1.3 GB 是
+  `out/` 里的旧版见证片，属对照基线，保留）。
 - 远端 CI：提交 `5120942` 的 Book CI 运行 43195769116 为 success，15 个作业全部通过
   （Fast、Full、双平台 Bootstrap、Omp、Pi、六册 Agent 分册与新增的合订本任务）；
   Pages 运行 43195769121 同为 success。合订本任务在 ubuntu-latest 上从干净检出构建出

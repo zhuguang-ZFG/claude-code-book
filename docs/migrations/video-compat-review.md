@@ -140,6 +140,18 @@ PY
 | 音频 | AAC 48 kHz 立体声 185.4 kbps | AAC 48 kHz 立体声 |
 | 对比报告 | `video/.build/ch01/compare-long.json` | `video/.build/ch01/compare-short.json` |
 
+本节的渲染件（`current-long.mp4` / `current-short.mp4`，合计约 480 MB）与分段缓存是可重出的
+中间产物，按 `.gitignore` 不入库；2026-11-12 收尾时已从本机清理。表内的字节数、帧数与 PSNR
+都是清理前的实测值，`compare-*.json`、`transcript-*.json` 与 `legacy-*.srt` 保留下来供复核。
+重出在对应 `hf-remake`（或 `hf-remake/short`）目录执行：
+
+```bash
+HF_SEGMENTED_CAPTURE=true node video/node_modules/hyperframes/bin/hyperframes.mjs render . \
+  -o ../../.build/<ch>/current-long.mp4 -f 30 -q standard -w 1 --low-memory-mode
+```
+
+中断后加 `--resume` 复用已验证分段；长版本机耗时 10–40 分钟。
+
 ### ch02–ch05 短版（2026-11-12 复现渲染）
 
 同一命令在四章的 `short/` 工程重跑，产物落到各自 `video/.build/<ch>/`。四片都用
