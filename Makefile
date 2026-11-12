@@ -15,6 +15,7 @@ BOOKCTL    := $(PYTHON) scripts/bookctl.py
 
 .PHONY: help doctor check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
 .PHONY: book-agents book-opencode-all book-deepseek-all book-hermes-all book-codex-all
+.PHONY: book-prompt-all book-kimi-all book-collected package-prompt
 
 help:
 	@echo "make doctor     environment report (python/node/browser/font/deps)"
@@ -69,10 +70,24 @@ book-pi-epub:
 book-pi-all:
 	$(BOOKCTL) build --product pi --lang zh --pdf --epub
 
-book-agents: book-opencode-all book-deepseek-all book-hermes-all book-codex-all
+book-agents: book-opencode-all book-deepseek-all book-hermes-all book-codex-all \
+            book-prompt-all book-kimi-all
 
-book-opencode-all book-deepseek-all book-hermes-all book-codex-all:
+book-opencode-all book-deepseek-all book-hermes-all book-codex-all \
+book-prompt-all book-kimi-all:
 	$(BOOKCTL) build --product $(patsubst book-%-all,%,$@) --lang zh --pdf --epub
+
+# The nine-volume collected edition binds every shipped book; each volume
+# keeps its own manifest, so only the collection manifest is passed. It ships
+# the single HTML: binding nine books inlines every plate, and the print pass
+# over that document is not a build step anyone should wait for.
+book-collected:
+	$(BOOKCTL) build --product collected --lang zh
+
+# Offline exercise archive for the prompt volume; the digest table inside
+# records every shipped source file.
+package-prompt:
+	$(PYTHON) scripts/package_prompt.py --output yuyu-book/dist/yuyu-prompt-zh-examples.zip
 
 # --regen-index rebuilds subject-index.json and then continues into a full
 # assembly; the canonical package CLI has no index-only invocation.

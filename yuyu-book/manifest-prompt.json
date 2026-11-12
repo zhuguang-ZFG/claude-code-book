@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "product": "prompt",
+  "version": "0.1.0",
+  "date": "2026-11-10",
+  "author": "朱光",
+  "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
+  "license": {
+    "name": "CC BY-NC-SA 4.0",
+    "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+  },
+  "title": {
+    "zh": "提示词工程：从提问到 Agent 协作"
+  },
+  "subtitle": {
+    "zh": "用青禾工作坊练习任务说明、上下文、工具与评测 · 技术试读版"
+  },
+  "kicker": {
+    "zh": "大模型与智能体工程 · 任务与协作方法"
+  },
+  "notice": {
+    "zh": "原创青禾教学案例。离线程序与检查工具已经实测；本册在线模型 A/B、跨模型迁移和独立读者试读尚未完成。"
+  },
+  "epigraph": {
+    "zh": "让一次任务的输入、动作和结果都有据可查。"
+  },
+  "langs": [
+    "zh"
+  ],
+  "output_prefix": "yuyu-prompt",
+  "revisions_registry": "",
+  "subject_index_registry": "",
+  "plain_optional": true,
+  "front": {
+    "id": "prompt-front",
+    "zh": "prompt/00-前言.md"
+  },
+  "parts": [
+    {
+      "id": "prompt-p1",
+      "no": {
+        "zh": "第一篇"
+      },
+      "title": {
+        "zh": "把需求变成能检查的任务"
+      },
+      "motto": {
+        "zh": "先说明交付，再核对信息与格式。"
+      },
+      "goal": {
+        "zh": "把任务写成别人可以执行的说明。"
+      },
+      "units": [
+        {
+          "id": "prompt-ch01",
+          "zh": "prompt/ch01.md"
+        },
+        {
+          "id": "prompt-ch02",
+          "zh": "prompt/ch02.md"
+        },
+        {
+          "id": "prompt-ch03",
+          "zh": "prompt/ch03.md"
+        },
+        {
+          "id": "prompt-ch04",
+          "zh": "prompt/ch04.md"
+        }
+      ]
+    },
+    {
+      "id": "prompt-p2",
+      "no": {
+        "zh": "第二篇"
+      },
+      "title": {
+        "zh": "把材料组织成可用上下文"
+      },
+      "motto": {
+        "zh": "保留版本、来源和下一步。"
+      },
+      "goal": {
+        "zh": "选好当前任务所需材料，并支持会话恢复。"
+      },
+      "units": [
+        {
+          "id": "prompt-ch05",
+          "zh": "prompt/ch05.md"
+        },
+        {
+          "id": "prompt-ch06",
+          "zh": "prompt/ch06.md"
+        },
+        {
+          "id": "prompt-ch07",
+          "zh": "prompt/ch07.md"
+        },
+        {
+          "id": "prompt-ch08",
+          "zh": "prompt/ch08.md"
+        }
+      ]
+    },
+    {
+      "id": "prompt-p3",
+      "no": {
+        "zh": "第三篇"
+      },
+      "title": {
+        "zh": "让 Agent 的行动符合任务"
+      },
+      "motto": {
+        "zh": "用真实输入和回执核对动作。"
+      },
+      "goal": {
+        "zh": "完成本地审查与修复，明确协作与权限。"
+      },
+      "units": [
+        {
+          "id": "prompt-ch09",
+          "zh": "prompt/ch09.md"
+        },
+        {
+          "id": "prompt-ch10",
+          "zh": "prompt/ch10.md"
+        },
+        {
+          "id": "prompt-ch11",
+          "zh": "prompt/ch11.md"
+        },
+        {
+          "id": "prompt-ch12",
+          "zh": "prompt/ch12.md"
+        },
+        {
+          "id": "prompt-ch13",
+          "zh": "prompt/ch13.md"
+        },
+        {
+          "id": "prompt-ch14",
+          "zh": "prompt/ch14.md"
+        }
+      ]
+    },
+    {
+      "id": "prompt-p4",
+      "no": {
+        "zh": "第四篇"
+      },
+      "title": {
+        "zh": "判断改动是否值得保留"
+      },
+      "motto": {
+        "zh": "按相同判据记录变化。"
+      },
+      "goal": {
+        "zh": "准备配对比较、迁移复测与独立交付。"
+      },
+      "units": [
+        {
+          "id": "prompt-ch15",
+          "zh": "prompt/ch15.md"
+        },
+        {
+          "id": "prompt-ch16",
+          "zh": "prompt/ch16.md"
+        },
+        {
+          "id": "prompt-ch17",
+          "zh": "prompt/ch17.md"
+        },
+        {
+          "id": "prompt-ch18",
+          "zh": "prompt/ch18.md"
+        }
+      ]
+    }
+  ],
+  "appendices": [
+    {
+      "id": "prompt-apxa",
+      "zh": "prompt/appendix-a.md"
+    },
+    {
+      "id": "prompt-apxb",
+      "zh": "prompt/appendix-b.md"
+    },
+    {
+      "id": "prompt-apxc",
+      "zh": "prompt/appendix-c.md"
+    },
+    {
+      "id": "prompt-apxd",
+      "zh": "prompt/appendix-d.md"
+    }
+  ]
+}

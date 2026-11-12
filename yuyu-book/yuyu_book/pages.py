@@ -103,4 +103,4 @@ from .backmatter import (KIND_GROUP, IDX_SLOT, fill_index_folios,  # noqa: E402
                          subject_index_page)
 from .frontmatter import (FRONT_NO, _ROMAN, cover, how_to_read,  # noqa: E402
                           imprint, part_divider, revisions_page,
-                          route_map_page, toc_html)
+                          route_map_page, toc_html, volume_divider)

@@ -13,7 +13,7 @@
         "在途分支回归 main：R4 钩子补刀（5 章双语去 keeper 剧透）、P5 来源门禁的 CI 取史修复、视频旁白绑定与卡拉OK字幕管线（ch01–05 caption-deviations）、墨线头图与几何修正；allowlist 可溯性测试对齐 rule_matches 契约（数字增量或精确值成对，二选一）。",
         "译腔复扫：整行替换 29 行、净行数零漂移——中文「被×」可改行 5→0（余 12 处术语白名单），英文 be+分词行 26→2（余 Cursor/Qoder 官方页逐字引文），样章与搜索索引同批重生。",
         "手绘加笔：ch08 退出码与 JSON 决策汇流、ch09 工具池过滤、ch13 成本总账三张章内墨线图入册——章内插图 17→20、每版编号图版 177→180，画廊 43→46 幅，README/CREDITS/STRUCTURE 计数与 beginner-reader、知识卡同批刷新。",
-        "构建器测试 570 项全绿，通用测试 248 项亦绿，Mermaid 428 图 0 错，check --fast 八步全绿（全新 clone 模拟 CI 视频门禁 15/15）。"
+        "构建器测试 585 项全绿，通用测试 280 项亦绿，Mermaid 436 图 0 错，check --fast 八步全绿（全新 clone 模拟 CI 视频门禁 15/15）。"
       ],
       "en": [
         "Chapter 2's paired diagram and explanation distinguish generator suspension, cancellation of pending work, and cleanup: backpressure bounds the pull chain, while independent buffers still need limits; async function* does not cancel work automatically. Chapter 6 adds a concrete reading path: treat memory as a lead, check current deployment and compatibility conditions, prefer current evidence and the present request, and correct or remove stale entries.",
@@ -24,7 +24,7 @@
         "In-flight branches return to main: the R4 hook rewrite (five chapters, both editions, keeper spoilers removed), the P5 CI history-fetch fix, the video narration binding and karaoke caption pipeline (caption-deviations for ch01-05), and the ink headpiece and geometry fixes; the allowlist traceability test now mirrors the rule_matches contract (numeric delta or exact legacy/fresh pair).",
         "Translationese re-sweep: 29 whole-line replacements with zero net line drift -- Chinese countable bei-lines 5 to 0 (12 whitelist terms remain), English be+participle lines 26 to 2 (the Cursor and Qoder vendor-page quotes), with the sample chapter and search index regenerated in the same batch.",
         "Three new hand-drawn plates join the prose: the ch08 decision confluence, the ch09 tool funnel and the ch13 cost ledger -- in-chapter drawings 17 to 20, numbered figures 177 to 180 per edition, gallery 43 to 46, with README/CREDITS/STRUCTURE counts and the beginner reader and knowledge cards refreshed in step.",
-        "570 builder tests green and 248 general tests green, 428 Mermaid diagrams with 0 errors, and all eight check --fast steps pass (a fresh-clone CI simulation reads the video gate 15/15 clean)."
+        "585 builder tests green and 280 general tests green, 436 Mermaid diagrams with 0 errors, and all eight check --fast steps pass (a fresh-clone CI simulation reads the video gate 15/15 clean)."
       ]
     },
     {

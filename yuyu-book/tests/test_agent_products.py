@@ -1,4 +1,9 @@
-"""The four Agent volumes must build complete books without sharing metadata.
+"""The Agent volumes must build complete books without sharing metadata.
+
+`PRODUCTS` are the four volumes with the full plain-language layer: guides,
+reading paths, subject index and revisions page. `VOLUMES` are the two newer
+volumes that publish without that layer (`plain_optional`), so they are held to
+the same shape, manuscript and artifact rules but not to the plain registries.
 
 These are source-only checks against the same loaders used by publication.
 Browser/PDF/EPUB rendering is exercised separately by the per-volume CI jobs.
@@ -19,6 +24,7 @@ from yuyu_book.core import REPO_ROOT, expected_ids, load_configs, load_unit, uni
 
 
 PRODUCTS = ("opencode", "deepseek", "hermes", "codex")
+VOLUMES = ("prompt", "kimi")
 
 
 class AgentProducts(unittest.TestCase):
@@ -154,6 +160,84 @@ class AgentProducts(unittest.TestCase):
                     self.assertIn(uid, ids)
                     self.assertTrue(guide.get("sources"), uid)
                     self.assertTrue(set(guide["sources"]).issubset(self.sources[product]), uid)
+
+
+class VolumeProducts(unittest.TestCase):
+    """The volumes that publish without the plain-language layer."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.books, cls.sources = {}, {}
+        for product in VOLUMES:
+            cls.books[product], cls.sources[product] = load_configs(
+                f"manifest-{product}.json", f"sources-{product}.json")
+
+    def test_each_volume_keeps_the_shared_shape_and_skips_plain_whole(self):
+        for product, manifest in self.books.items():
+            with self.subTest(product=product):
+                want = ([f"{product}-front"]
+                        + [f"{product}-ch{i:02d}" for i in range(1, 19)]
+                        + [f"{product}-apx{letter}" for letter in "abcd"])
+                self.assertEqual(expected_ids(manifest), want)
+                self.assertEqual(manifest["product"], product)
+                self.assertEqual(plain.manifest_langs(manifest), ("zh",))
+                # the opt-out has to be complete: half a plain layer would
+                # publish chips and leads without the index that explains them
+                self.assertTrue(manifest.get("plain_optional"), product)
+                for key in ("guides", "subject_index_registry",
+                            "revisions_registry"):
+                    self.assertFalse(manifest.get(key), f"{product}: {key}")
+
+    def test_each_registered_unit_is_a_parsable_manuscript_in_its_own_directory(self):
+        for product, manifest in self.books.items():
+            registered = set()
+            for definition, _kind, _part in unit_stream(manifest):
+                with self.subTest(product=product, unit=definition["id"]):
+                    relative = Path(definition["zh"])
+                    self.assertEqual(relative.parts[0], product)
+                    path = (REPO_ROOT / relative).resolve()
+                    self.assertTrue(path.is_relative_to((REPO_ROOT / product).resolve()))
+                    self.assertNotIn(path, registered, "two units read the same manuscript")
+                    registered.add(path)
+                    unit = load_unit(definition, _kind, "zh", REPO_ROOT)
+                    self.assertEqual(unit.id, definition["id"])
+                    self.assertTrue(unit.md.strip())
+
+    def test_no_chapter_on_disk_is_omitted_from_the_book(self):
+        for product, manifest in self.books.items():
+            with self.subTest(product=product):
+                registered = {(REPO_ROOT / definition["zh"]).resolve()
+                              for definition, _kind, _part in unit_stream(manifest)}
+                manuscripts = {path.resolve() for pattern in
+                               ("00-*.md", "ch[0-9][0-9].md", "appendix-*.md")
+                               for path in (REPO_ROOT / product).glob(pattern)}
+                self.assertEqual(registered, manuscripts)
+
+    def test_artifact_prefix_belongs_to_the_volume(self):
+        for product, manifest in self.books.items():
+            with self.subTest(product=product):
+                self.assertEqual(manifest["output_prefix"], f"yuyu-{product}")
+
+    def test_upstream_pins_match_the_volume_source_lock(self):
+        for product, sources in self.sources.items():
+            github = [source for source in sources.values()
+                      if source.get("kind") == "github"]
+            with self.subTest(product=product):
+                for source in github:
+                    self.assertRegex(source["pinned"].get("commit", ""),
+                                     r"^[0-9a-f]{40}$")
+                lock = REPO_ROOT / product / "facts" / "source-lock.json"
+                if not lock.is_file():
+                    self.assertFalse(github, f"{product} pins an upstream source "
+                                             f"without a volume source lock")
+                    continue
+                baseline = json.loads(lock.read_text(encoding="utf-8"))
+                self.assertTrue(github, f"{product} ships a source lock but no "
+                                        f"registered upstream source")
+                for source in github:
+                    self.assertIn(baseline["repo"], source["url"])
+                    self.assertEqual(source["pinned"]["commit"], baseline["commit"])
+                    self.assertEqual(source["license"], baseline["license"])
 
 
 if __name__ == "__main__":

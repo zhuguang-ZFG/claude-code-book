@@ -75,10 +75,13 @@ def revisions_page(entries: list[dict], lang: str) -> str:
 
 
 def how_to_read(manifest: dict, lang: str, paths: dict | None = None) -> str:
+    # a volume may ship without curated routes (`start_reading` absent): the
+    # page then opens straight on the part list instead of an empty card grid
     cards = "".join(
         f'<div class="route-card"><h3>{esc(r["label"][lang])}</h3>'
         f'<p>{esc(r["body"][lang])}</p></div>'
-        for r in manifest["start_reading"])
+        for r in (manifest.get("start_reading") or []))
+    grid = f'<div class="route-grid">{cards}</div>' if cards else ""
     parts = "".join(
         f'<li><a class="xref" href="#{p["units"][0]["id"]}">'
         f'{esc(p["no"][lang])} · {esc(p["title"][lang])}</a>'
@@ -86,7 +89,7 @@ def how_to_read(manifest: dict, lang: str, paths: dict | None = None) -> str:
         for p in manifest["parts"])
     return (f'<section class="front-page" id="how-to-read">'
             f'<h1 class="page-title">{esc(ui("how", lang))}</h1>'
-            f'<div class="route-grid">{cards}</div>'
+            f'{grid}'
             f'<ul class="route-parts">{parts}</ul>{tier_legend(paths, lang)}</section>')
 
 
@@ -150,6 +153,35 @@ def part_divider(part: dict, lang: str, idx: int,
             f'<p class="pd-motto">{esc(part["motto"][lang])}</p>'
             f'<p class="pd-goal">{esc(part["goal"][lang])}</p>'
             f'{route_map(part["id"], len(rows))}'
+            f'<ol class="pd-list">{items}</ol>'
+            f'</div></section>')
+
+
+def volume_divider(volume: dict, lang: str, idx: int,
+                   rows: list[tuple[str, str, str]]) -> str:
+    """The door of one volume inside a collected edition.
+
+    It borrows the part divider's sheet: a volume and a part are both "you are
+    entering a larger thing", and giving the volume its own layout would make
+    the first part of every volume look like a demotion. `rows` are the parts
+    the volume opens, so the reader can see the whole volume before its first
+    chapter."""
+    from .style import route_map, wheel
+    items = "".join(
+        f'<li><a class="xref" href="#{anchor}" data-no="{esc(no)}">'
+        f'{esc(label)}</a></li>'
+        for anchor, no, label in rows)
+    motto = (volume.get("motto") or {}).get(lang, "")
+    goal = (volume.get("goal") or {}).get(lang, "")
+    return (f'<section class="part-divider volume-divider" id="{volume["id"]}">'
+            f'<span class="pd-ghost" aria-hidden="true">{wheel(360)}</span>'
+            f'<div class="pd-inner">'
+            f'<p class="pd-no">{esc(volume["no"][lang])}</p>'
+            f'<h1 class="pd-title">{esc(volume["title"][lang])}</h1>'
+            f'<div class="cover-rule"><i></i>{wheel(24)}<i></i></div>'
+            + (f'<p class="pd-motto">{esc(motto)}</p>' if motto else "")
+            + (f'<p class="pd-goal">{esc(goal)}</p>' if goal else "")
+            + f'{route_map("vol-" + volume["id"], len(rows))}'
             f'<ol class="pd-list">{items}</ol>'
             f'</div></section>')
 

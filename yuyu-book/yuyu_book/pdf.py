@@ -164,6 +164,21 @@ def folio_drift(dest: dict[str, int], folios: dict[str, int]) -> dict[str, tuple
             if dest[a] + 1 != got}
 
 
+def contents_span(hits: list[int], first_body: int) -> range:
+    """Pages that may carry contents rows: the whole block before the body.
+
+    `hits` are the pages before the body that carry the contents title. A
+    contents that spans two or more pages repeats that title — as a running
+    head, a continued label, or simply the same wording in a later volume's
+    door — so the scan starts at the first hit. Rows themselves are still
+    matched by anchor and full-width geometry, so a wider span can only add
+    candidates that the row filter then rejects.
+    """
+    if not hits:
+        raise BuildError("pdf: contents pages not found")
+    return range(hits[0], first_body)
+
+
 def _fit(text: str, width: float, size: float, width_of) -> str:
     if width_of(text) <= width:
         return text
@@ -295,18 +310,18 @@ def build_pdf(html_path: Path, meta: PrintManifest, browser: str | None = None,
             _running_head(head, page, book, "left")
 
     rows = set(meta.toc_rows)
-    # the contents is the last section before the body, so its first page is
-    # the last match for the heading title; rows then run to that page's end
     hits = [pno for pno in range(dest[front_a])
             if doc[pno].search_for(meta.toc_title)]
-    if not hits:
+    try:
+        contents = contents_span(hits, dest[front_a])
+    except BuildError:
         doc.close()
-        raise BuildError("pdf: contents pages not found")
+        raise
     # every contents row is a full-width flex link, so a narrow rect with the
     # same destination (a compass chip) can never be mistaken for one
     min_row = doc[0].rect.width * 0.5
     best: dict[str, tuple[int, fitz.Rect]] = {}
-    for pno in range(hits[-1], dest[front_a]):
+    for pno in contents:
         for link in doc[pno].get_links():
             anchor = link.get("nameddest")
             if anchor not in rows:

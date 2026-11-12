@@ -14,7 +14,7 @@ import tempfile
 from pathlib import Path
 
 from . import claims, plain, registry
-from .app import build_edition, glossary_to_index
+from .app import build_collected, build_edition, glossary_to_index
 from .core import (BOOK_DIR, REPO_ROOT, BuildError, dump_json, load_configs,
                    read_text, unit_stream)
 
@@ -44,6 +44,27 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     try:
+        if "volumes" in registry.load(args.manifest):
+            # a collected edition: every volume brings its own manifest,
+            # sources and registries, so --sources does not apply here
+            from .collected import load_collection
+            spec = registry.load(args.manifest)
+            volumes = load_collection(spec)
+            langs = ["zh"] if args.lang == "both" else [args.lang]
+            out_dir = Path(args.out_dir)
+            if args.check:
+                out_dir = Path(tempfile.mkdtemp(prefix="yuyu-check-"))
+            for lang in langs:
+                print(f"[{lang}]")
+                build_collected(lang, spec, volumes, mode=args.mermaid,
+                                browser=args.browser,
+                                autolink=not args.no_autolink,
+                                out_dir=out_dir,
+                                do_pdf=args.pdf and not args.check,
+                                edge=args.edge,
+                                plain_layer=not args.no_plain)
+            print("OK" if not args.check else "CHECK OK")
+            return 0
         manifest, sources = load_configs(args.manifest, args.sources)
         if (manifest.get("product") or "book") == "book":
             for warning in claims.validate(

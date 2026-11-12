@@ -69,6 +69,12 @@ make book-pi-epub   # 再加 EPUB
 
 新增 [OpenCode](opencode/README.md)、[DeepSeek Harness](deepseek/README.md)、[Hermes](hermes/README.md)、[Codex CLI](codex/README.md) 四本中文分册，每册包含前言、18 章和附录 A–D，均有独立 HTML/PDF/EPUB 构建入口。插件与工具机制配有固定源码、原创示例和实际组件或宿主实验；英文版尚未启动。版本和实验范围见 [研究入口](docs/agent-series-research.md)。
 
+## 新增两册与合订本
+
+再增 [Kimi Code](kimi/README.md) 与 [提示词工程](prompt/README.md) 两册，同为前言、18 章和附录 A–D，走与上四册相同的构建入口（`make book-kimi-all` / `make book-prompt-all`，CI 的 `agent-volumes` 矩阵覆盖六册）。两册都不带通俗层，`prompt` 另发离线练习包 `yuyu-prompt-zh-examples.zip`，由 `scripts/package_prompt.py` 从仓内源码重建，包内摘要表可逐文件核对。
+
+九册另可合订为《Agent Harness 九卷合订本》：`manifest-collected.json` 逐卷引用各册的清单与来源，`make book-collected` 出中文单文件 HTML。合订本不合并各册的索引与页码，只新增卷宗与卷级目录；九册的图版全部内联，因此不再另出 PDF 与 EPUB。
+
 ## 阅读说明
 
 阅读时需区分源码可确认的行为、架构推演和教学示例。功能标志与工具可用性取决于构建和运行时配置；数量和耗时示例不代表当前发行版承诺。

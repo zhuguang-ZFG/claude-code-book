@@ -102,9 +102,26 @@ def iter_doc(doc: str, skip_tags: set[str]):
     corrupting the stack."""
     stack: list[str] = []
     pos = 0
+    # `_COMMENT_RE.search(doc, pos)` walks the whole remainder on every chunk,
+    # so a document with n tags costs O(n^2): 1 MB with 33 k chunks took 17 s
+    # and 60 MB took 564 s. Remember the next `<!--` instead and only look for
+    # another one after a comment has been consumed. `match` at that offset is
+    # the same answer `search` gave -- the earliest `<!--` that reaches `-->`.
+    cpos = -1
+    exhausted = False
     while True:
         m = _TAG_RE.search(doc, pos)
-        comment = _COMMENT_RE.search(doc, pos)
+        comment = None
+        if not exhausted:
+            if cpos < pos:
+                cpos = doc.find("<!--", pos)
+                exhausted = cpos < 0
+            while not exhausted:
+                comment = _COMMENT_RE.match(doc, cpos)
+                if comment is not None:
+                    break
+                cpos = doc.find("<!--", cpos + 4)
+                exhausted = cpos < 0
         if comment and (m is None or comment.start() < m.start()):
             if comment.start() > pos:
                 yield "text", doc[pos:comment.start()], \
@@ -114,6 +131,7 @@ def iter_doc(doc: str, skip_tags: set[str]):
             yield "tag", comment.group(0), \
                 any(name in skip_tags for name in stack)
             pos = comment.end()
+            cpos = -1
             continue
         seg_end = m.start() if m else len(doc)
         blocked = any(name in skip_tags for name in stack)

@@ -1,12 +1,13 @@
 """HTML post-processing contracts: ids, slugs, stray angles, callouts, code chips."""
 import re
 import sys
+import time
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book import render  # noqa: E402
+from yuyu_book import refs, render  # noqa: E402
 from yuyu_book.core import (BuildError, REPO_ROOT, expected_ids, load_configs,  # noqa: E402
                             load_unit, unit_stream)
 
@@ -337,6 +338,31 @@ class PlatePrintGeometry(unittest.TestCase):
                                     "2-3", "循环", "zh")
         self.assertNotIn("--plate-cap", out)
         self.assertIn("图 2-3", out)
+
+
+class CommentWalk(unittest.TestCase):
+    """`iter_doc` copies its input through and never rescans the rest of it."""
+
+    def test_a_comment_is_one_markup_chunk_and_its_text_stays_blocked(self):
+        doc = '<p>前</p><!-- 块标记 block <p>x</p> --><p>后</p>'
+        chunks = list(refs.iter_doc(doc, {"pre"}))
+        self.assertEqual([(k, x) for k, x, _ in chunks], [
+            ("tag", "<p>"), ("text", "前"), ("tag", "</p>"),
+            ("tag", "<!-- 块标记 block <p>x</p> -->"),
+            ("tag", "<p>"), ("text", "后"), ("tag", "</p>")])
+
+    def test_a_long_document_is_walked_once_per_tag(self):
+        # The comment search used to walk the whole remainder on every chunk,
+        # so a bound volume took minutes and the collected edition never
+        # finished. One comment up front, then no more: 1.4 MB here is ~0.2 s
+        # now, and the pre-fix walk took 75.7 s on the same text at 1.08 MB.
+        unit = '<p>正文 code_name_here</p><pre>kept as is</pre>'
+        doc = "<!-- one note -->" + unit * 24000
+        started = time.perf_counter()
+        chunks = list(refs.iter_doc(doc, {"pre"}))
+        elapsed = time.perf_counter() - started
+        self.assertLess(elapsed, 3.0, f"{len(doc)/1e6:.1f} MB took {elapsed:.1f}s")
+        self.assertEqual("".join(text for _, text, _ in chunks), doc)
 
 
 if __name__ == "__main__":

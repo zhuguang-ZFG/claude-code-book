@@ -38,11 +38,13 @@ LOCK = ROOT / "uv.lock"
 REQUIREMENTS = ROOT / "yuyu-book" / "requirements.txt"
 DIST = ROOT / "yuyu-book" / "dist"
 VENDOR = ROOT / "yuyu-book"
-AGENT_PRODUCTS = ("opencode", "deepseek", "hermes", "codex")
+AGENT_PRODUCTS = ("opencode", "deepseek", "hermes", "codex", "prompt", "kimi")
+COLLECTION_PRODUCTS = ("collected",)
 ZH_PRODUCTS = ("omp", "pi", *AGENT_PRODUCTS)
-BOOK_PRODUCTS = ("book", *ZH_PRODUCTS)
+BOOK_PRODUCTS = ("book", *ZH_PRODUCTS, *COLLECTION_PRODUCTS)
 OUTPUT_PREFIXES = {"book": "yuyu-agent-harness",
-                   **{product: f"yuyu-{product}" for product in ZH_PRODUCTS}}
+                   **{product: f"yuyu-{product}"
+                      for product in (*ZH_PRODUCTS, *COLLECTION_PRODUCTS)}}
 
 NAME = re.compile(r"^(?P<name>[A-Za-z0-9_.-]+)(?:\[[^\]]+\])?=="
                   r"(?P<version>[^;\s]+)")
@@ -333,7 +335,16 @@ def build(args) -> int:
         return 2
     lang = args.lang
     cmd = [python(), "-m", "yuyu_book", "--mermaid", args.mermaid]
-    if args.product in ZH_PRODUCTS:
+    if args.product in COLLECTION_PRODUCTS:
+        # A collected edition names its volumes in its own manifest; each
+        # volume brings its own sources registry, so --sources does not apply.
+        if lang == "en":
+            print(f"{args.product} product is zh-only for now", file=sys.stderr)
+            return 2
+        lang = "zh"
+        cmd += ["--lang", lang,
+                "--manifest", f"manifest-{args.product}.json"]
+    elif args.product in ZH_PRODUCTS:
         # Companion volumes currently publish only their Chinese edition.
         if lang == "en":
             print(f"{args.product} product is zh-only for now", file=sys.stderr)
@@ -378,7 +389,8 @@ def build(args) -> int:
 
 def epub(args) -> int:
     """Convert the editions just built, respecting Chinese-only products."""
-    langs = (["zh"] if args.product in ZH_PRODUCTS else
+    chinese_only = (*ZH_PRODUCTS, *COLLECTION_PRODUCTS)
+    langs = (["zh"] if args.product in chinese_only else
              ["zh", "en"] if args.lang == "both" else [args.lang])
     out_dir = Path(args.out_dir) if args.out_dir else DIST
     for lang in langs:

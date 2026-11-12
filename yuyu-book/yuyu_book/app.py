@@ -6,12 +6,23 @@ edition pipeline so a different front end can call it without a CLI.
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
-from . import art, audit, blocks, mermaid as mm, pages, plain, registry, render
+from . import art, audit, blocks, pages, plain, registry, render
+from . import mermaid as mm
 from .blocks import ID_RE
-from .core import (BOOK_DIR, HAN_RE, INDEX_CN_LETTER, REPO_ROOT, BuildError,
-                   expected_ids, load_unit, read_text, unit_stream)
+from .core import (
+    BOOK_DIR,
+    HAN_RE,
+    INDEX_CN_LETTER,
+    REPO_ROOT,
+    BuildError,
+    expected_ids,
+    load_unit,
+    read_text,
+    unit_stream,
+)
 from .print_manifest import IndexRow, OutlineEntry, PrintManifest
 from .style import CSS, key_mark, page, rut, trace, wheel
 
@@ -102,13 +113,38 @@ def glossary_to_index(manifest: dict) -> list[dict]:
             or e.get("en", {}).get("refs")]
 
 
-def build_edition(lang: str, manifest: dict, sources: dict, *,
+@dataclass
+class Assembly:
+    """One book's assembled body, before the page shell is wrapped around it.
+
+    A standalone edition and a volume inside a collected omnibus run the same
+    assembly; they differ only in which furniture they emit and which prefix
+    the back-matter anchors carry."""
+    units: list
+    payloads: list[dict]
+    body: list[str]
+    toc_entries: list[dict]
+    outline: list[tuple[int, str, str]]
+    rail: list[str]
+    idx_entries: list | None
+    n_diagrams: int
+    expect_svgs: int | None = None
+
+
+def assemble_book(lang: str, manifest: dict, sources: dict, *,
                   mode: str, browser: str | None, autolink: bool,
-                  out_dir: Path, do_pdf: bool, edge: str | None,
                   glosses: dict | None = None,
                   paths: dict | None = None,
                   notes: dict | None = None,
-                  plain_layer: bool = True) -> Path:
+                  plain_layer: bool = True,
+                  matter: bool = True,
+                  key: str = "") -> Assembly:
+    """Render one manifest into body fragments.
+
+    ``matter=False`` drops the cover, imprint, revisions, how-to-read, contents
+    and route map: a volume in an omnibus gets one divider from the outer book
+    instead. ``key`` prefixes the four back-matter anchors (sources, index,
+    principles, keeper notes), which otherwise repeat once per volume."""
     ids = expected_ids(manifest)
     mapping = {i: i for i in ids}
     glosses = glosses or {}
@@ -151,12 +187,14 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
 
     # ---------------- assemble ----------------
     body: list[str] = []
-    body.append(pages.cover(manifest, lang))
-    body.append(pages.imprint(manifest, lang))
-    rev_name = manifest.get("revisions_registry", "revisions.json")
-    rev = registry.load(rev_name)["entries"] if rev_name else []
-    body.append(pages.revisions_page(rev, lang))
-    body.append(pages.how_to_read(manifest, lang, paths))
+    if matter:
+        body.append(pages.cover(manifest, lang))
+        body.append(pages.imprint(manifest, lang))
+        rev_name = manifest.get("revisions_registry", "revisions.json")
+        loaded = registry.load(rev_name) if rev_name else None
+        rev = loaded.get("entries", []) if isinstance(loaded, dict) else []
+        body.append(pages.revisions_page(rev, lang))
+        body.append(pages.how_to_read(manifest, lang, paths))
 
     front_id = manifest["front"]["id"]
     toc_entries: list[dict] = [
@@ -197,33 +235,38 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                     f'{pages.esc(u.title)}</a>')
 
     idx_key = manifest.get("subject_index_registry", "subject-index.json")
-    idx_entries = None
+    idx_entries: list | None = None
     if idx_key:
         index_path = BOOK_DIR / idx_key
         if index_path.exists():
-            idx_entries = registry.load(idx_key)
+            loaded_index = registry.load(idx_key)
+            idx_entries = loaded_index if isinstance(loaded_index, list) else None
 
     why_groups = _principle_groups(glosses, units, lang)
-    back = ([] if not why_groups
-            else [("principles", pages.ui("principles_page", lang))])
+    back: list[tuple[str, str]] = ([] if not why_groups
+                                   else [(key + "principles",
+                                          pages.ui("principles_page", lang))])
     if notes:
-        back += [("keeper-notes", pages.ui("notes_page", lang))]
-    back += [("sources", pages.ui("sources_page", lang)),
-             ("subject-index", pages.ui("index_page", lang))]
+        back += [(key + "keeper-notes", pages.ui("notes_page", lang))]
+    if sources:
+        back += [(key + "sources", pages.ui("sources_page", lang))]
+    back += [(key + "subject-index", pages.ui("index_page", lang))]
     for anchor, label in back:
-        if anchor == "subject-index" and not idx_entries:
+        if anchor == key + "subject-index" and not idx_entries:
             continue
         toc_entries.append({"kind": "part", "anchor": anchor, "no": "",
                             "title": label})
         outline.append((1, label, anchor))
-        rail.append(f'<a href="#{anchor}">{pages.esc(label)}</a>')
+        if matter:
+            rail.append(f'<a href="#{anchor}">{pages.esc(label)}</a>')
 
-    body.append(pages.toc_html(toc_entries, lang))
-    # the foreword has no chapter number of its own; the wheel at the head of
-    # the road wears the same gutter number the contents row shows
-    nos = {p["unit"].id: p["unit"].no_plain for p in payloads}
-    nos[front_id] = nos[front_id] or pages.FRONT_NO
-    body.append(pages.route_map_page(manifest, lang, nos))
+    if matter:
+        body.append(pages.toc_html(toc_entries, lang))
+        # the foreword has no chapter number of its own; the wheel at the head
+        # of the road wears the same gutter number the contents row shows
+        nos = {p["unit"].id: p["unit"].no_plain for p in payloads}
+        nos[front_id] = nos[front_id] or pages.FRONT_NO
+        body.append(pages.route_map_page(manifest, lang, nos))
     body.append(_article(by_id[front_id], manifest, sources, lang,
                          notes=notes, show_lead=plain_layer))
     for part in manifest["parts"]:
@@ -241,34 +284,38 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                              show_lead=plain_layer))
 
     if why_groups:
-        body.append(pages.principles_page(why_groups, lang))
+        body.append(pages.principles_page(why_groups, lang,
+                                          anchor=key + "principles"))
     if notes:
-        body.append(pages.notes_page(notes, units, lang))
-    body.append(pages.source_registry(sources, lang))
+        body.append(pages.notes_page(notes, units, lang,
+                                     anchor=key + "keeper-notes"))
+    if sources:
+        body.append(pages.source_registry(sources, lang, anchor=key + "sources"))
     if idx_entries:
-        body.append(pages.subject_index_page(idx_entries, lang))
+        body.append(pages.subject_index_page(idx_entries, lang,
+                                             anchor=key + "subject-index"))
 
     n_diagrams = sum(p["n_diagrams"] for p in payloads)
-    foot = pages.ui("diagrams", lang)
-    body.append(f'<footer class="colophon">{wheel(34)}'
-                f'{pages.esc(manifest["title"][lang])} · v'
-                f'{pages.esc(manifest["version"])} · {n_diagrams} {foot}</footer>')
+    if matter:
+        foot = pages.ui("diagrams", lang)
+        body.append(f'<footer class="colophon">{wheel(34)}'
+                    f'{pages.esc(manifest["title"][lang])} · v'
+                    f'{pages.esc(manifest["version"])} · {n_diagrams} {foot}'
+                    f'</footer>')
+    return Assembly(units=units, payloads=payloads, body=body,
+                    toc_entries=toc_entries, outline=outline, rail=rail,
+                    idx_entries=idx_entries, n_diagrams=n_diagrams,
+                    expect_svgs=expect_svgs)
 
-    # the break points go in here, over the whole assembled book rather than
-    # unit by unit: the front and back matter never runs the unit pipeline, and
-    # a revision note quoting getFeatureValue_CACHED_MAY_BE_STALE pushed the
-    # document 37px past a 390px screen. This is also the last pass that reads
-    # the text as words — term matching, the outline and the cross-references
-    # have all already seen it uncut.
-    body_html = render.soften_long_names("\n".join(body))
-    product = manifest.get("product", "book")
-    body_class = f"lang-{lang}"
-    if product in {"opencode", "deepseek", "hermes", "codex"}:
-        body_class += f" agent-book agent-{product}"
-    html_text = page(lang, f'{manifest["title"][lang]} — {manifest["author"]}',
-                     CSS, body_class, body_html,
-                     "\n".join(rail) + "</nav>", "")
-    audit.audit(html_text, n_units=len(units), expect_svgs=expect_svgs)
+
+def _audit(html_text: str, *, units, payloads, part_ids: list[str],
+           notes: dict, lang: str, plain_layer: bool,
+           expect_svgs: int | None, lead_units: int | None = None,
+           guides: dict | None = None) -> dict:
+    """Prove every drawn thing and every plain-layer mark reached the page."""
+    audit.audit(html_text, n_units=len(units), expect_svgs=expect_svgs,
+                expect_compass=sum(1 for u in units
+                                   if (guides or {}).get(u.id)))
 
     # the dashed marks and the chapter panels come from the same hit list; if
     # they ever diverge, paper readers would chase underlines that are nowhere
@@ -278,10 +325,9 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     n_chips = html_text.count('<span class="sec-tier')
     n_emblems = html_text.count('<span class="ch-emblem"')
     ids = [p["unit"].id for p in payloads]
-    parts = [f'part-{p["id"]}' for p in manifest["parts"]]
     want_emblems = len(ids) - len(art.missing(ids))
     n_heads = html_text.count('<div class="pd-art"')
-    want_heads = len(parts) - len(art.missing(parts))
+    want_heads = len(part_ids) - len(art.missing(part_ids))
     if n_emblems != want_emblems or n_heads != want_heads:
         raise BuildError(f"{n_emblems}/{want_emblems} emblems and "
                          f"{n_heads}/{want_heads} headpieces reached the book "
@@ -297,29 +343,203 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
                          f"collection rows for {want_keep} authored — the "
                          "postman must sit at every rut and be listed once")
     n_lead = html_text.count('<div class="lead-band"')
-    want_lead = len(units) if plain_layer else 0
+    want_lead = (len(units) if lead_units is None else lead_units) \
+        if plain_layer else 0
     if n_lead != want_lead:
         raise BuildError(f"plain layer: {n_lead} lead bands for {want_lead} "
                          "units — the band belongs to the layer, so --no-plain "
                          "has to drop it with everything else")
+    return {"marks": n_marks, "chips": n_chips, "emblems": n_emblems,
+            "heads": n_heads, "keeper": n_keep, "lead": n_lead}
+
+
+def build_edition(lang: str, manifest: dict, sources: dict, *,
+                  mode: str, browser: str | None, autolink: bool,
+                  out_dir: Path, do_pdf: bool, edge: str | None,
+                  glosses: dict | None = None,
+                  paths: dict | None = None,
+                  notes: dict | None = None,
+                  plain_layer: bool = True) -> Path:
+    asm = assemble_book(lang, manifest, sources, mode=mode, browser=browser,
+                        autolink=autolink, glosses=glosses, paths=paths,
+                        notes=notes, plain_layer=plain_layer, matter=True)
+    # the break points go in here, over the whole assembled book rather than
+    # unit by unit: the front and back matter never runs the unit pipeline, and
+    # a revision note quoting getFeatureValue_CACHED_MAY_BE_STALE pushed the
+    # document 37px past a 390px screen. This is also the last pass that reads
+    # the text as words — term matching, the outline and the cross-references
+    # have all already seen it uncut.
+    body_html = render.soften_long_names("\n".join(asm.body))
+    product = manifest.get("product", "book")
+    body_class = f"lang-{lang}"
+    if product in {"opencode", "deepseek", "hermes", "codex"}:
+        body_class += f" agent-book agent-{product}"
+    html_text = page(lang, f'{manifest["title"][lang]} — {manifest["author"]}',
+                     CSS, body_class, body_html,
+                     "\n".join(asm.rail) + "</nav>", "")
+    counts = _audit(html_text, units=asm.units, payloads=asm.payloads,
+                    part_ids=[f'part-{p["id"]}' for p in manifest["parts"]],
+                    notes=notes or {}, lang=lang, plain_layer=plain_layer,
+                    lead_units=sum(
+                        1 for g in (manifest.get("guides") or {}).values()
+                        if (g.get("plain") or {}).get(lang)),
+                    guides=manifest.get("guides"),
+                    expect_svgs=asm.expect_svgs)
 
     out_dir.mkdir(parents=True, exist_ok=True)
     prefix = manifest.get("output_prefix") or "yuyu-agent-harness"
     out = out_dir / f"{prefix}-{lang}.html"
     out.write_text(html_text, encoding="utf-8")
     stats = (f"{out.name}: {out.stat().st_size / 1e6:.1f} MB, "
-             f"{len(units)} units, {n_diagrams} plates, "
-             f"{sum(len(p['external']) for p in payloads)} cited links, "
-             f"{n_marks} glosses, {n_lead} lead bands, {n_chips} tier chips, "
-             f"{n_emblems} emblems, {n_heads} headpieces, "
-             f"{n_keep} keeper notes")
+             f"{len(asm.units)} units, {asm.n_diagrams} plates, "
+             f"{sum(len(p['external']) for p in asm.payloads)} cited links, "
+             f"{counts['marks']} glosses, {counts['lead']} lead bands, "
+             f"{counts['chips']} tier chips, {counts['emblems']} emblems, "
+             f"{counts['heads']} headpieces, {counts['keeper']} keeper notes")
     print("  " + stats)
     if do_pdf:
         from yuyu_book import pdf
-        pmeta = pdf_meta(manifest, outline, toc_entries, lang, idx_entries)
+        pmeta = pdf_meta(manifest, asm.outline, asm.toc_entries, lang,
+                         asm.idx_entries)
         # paper has no hover and no locator chip that means anything without a
         # sheet number, so the index rows get their folios from a measuring
         # print and the book is printed again with the numbers in place
+        folios = {}
+        if pmeta.index_rows:
+            dest = pdf.measure(out,
+                               sorted({r.anchor for r in pmeta.index_rows}),
+                               edge or browser)
+            folios = {a: dest[a] + 1 for a in dest}
+            out.write_text(pages.fill_index_folios(html_text, folios),
+                           encoding="utf-8")
+        p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios)
+        print(f"  {p.name}: {p.stat().st_size / 1e6:.1f} MB, "
+              f"{pdf.sheet_count(p)} pages, {len(asm.outline)} bookmarks, "
+              f"{len(folios)} index folios")
+    return out
+
+
+def build_collected(lang: str, spec: dict, volumes, *,
+                    mode: str, browser: str | None, autolink: bool,
+                    out_dir: Path, do_pdf: bool, edge: str | None,
+                    plain_layer: bool = True) -> Path:
+    """Bind the volumes into one document, one volume per door.
+
+    Each volume keeps its own front matter, part dividers, apparatus and
+    numbering; the collection adds the volume level and one contents page that
+    opens on volumes rather than chapters."""
+    body: list[str] = []
+    body.append(pages.cover(spec, lang))
+    body.append(pages.imprint(spec, lang))
+    toc_entries: list[dict] = []
+    outline: list[tuple[int, str, str]] = []
+    rail = [f'<nav class="rail" aria-label="contents"><p class="rail-title">'
+            f'<a href="#toc">{pages.ui("toc", lang)}</a></p>']
+    units_all, payloads_all = [], []
+    part_ids: list[str] = []
+    notes_all: dict = {}
+    index_rows: list = []
+    n_diagrams = 0
+    svgs = 0
+    front_anchor = ""
+    for n, vol in enumerate(volumes, 1):
+        asm = assemble_book(lang, vol.manifest, vol.sources, mode=mode,
+                            browser=browser, autolink=autolink,
+                            glosses=vol.glosses, paths=vol.paths,
+                            notes=vol.notes, plain_layer=plain_layer,
+                            matter=False, key=vol.id + "-")
+        if not front_anchor:
+            front_anchor = vol.manifest["front"]["id"]
+        for row in vol.manifest["parts"]:
+            part_ids.append(f'part-{row["id"]}')
+        units_all.extend(asm.units)
+        payloads_all.extend(asm.payloads)
+        notes_all.update(vol.notes)
+        n_diagrams += asm.n_diagrams
+        svgs += asm.expect_svgs or 0
+        if asm.idx_entries:
+            index_rows += [(e[lang]["term"], e[lang]["refs"][0]["anchor"])
+                           for e in asm.idx_entries if e[lang]["refs"]]
+
+        toc_entries.append({"kind": "part", "anchor": vol.id,
+                            "no": vol.no[lang], "title": vol.title[lang]})
+        outline.append((1, vol.label(lang), vol.id))
+        rail.append(f'<p class="rail-part">{pages.esc(vol.label(lang))}</p>')
+        skip = {vol.id + name for name in
+                ("principles", "keeper-notes", "sources", "subject-index")}
+        for entry in asm.toc_entries:
+            if entry.get("anchor") in skip:
+                continue
+            toc_entries.append(entry)
+            if entry["kind"] in ("part", "row"):
+                rail.append(f'<a href="#{entry["anchor"]}">'
+                            f'{pages.esc(entry["title"])}</a>')
+        for level, label, anchor in asm.outline:
+            if anchor in skip:
+                continue
+            outline.append((level + 1, label, anchor))
+
+        rows = [(p["id"], p["no"][lang], p["title"][lang])
+                for p in vol.manifest["parts"]]
+        body.append(pages.volume_divider(
+            {"id": vol.id, "no": vol.no, "title": vol.title,
+             "motto": {"zh": vol.manifest.get("subtitle", {}).get(lang, "")},
+             "goal": {}}, lang, n, rows))
+        product = vol.manifest.get("product", "book")
+        extra = (f" agent-book agent-{product}"
+                 if product in {"opencode", "deepseek", "hermes", "codex"} else "")
+        body.append(f'<section class="volume{extra}" data-volume="{vol.id}">')
+        body.extend(asm.body)
+        body.append("</section>")
+
+    foot = pages.ui("diagrams", lang)
+    body.append(f'<footer class="colophon">{wheel(34)}'
+                f'{pages.esc(spec["title"][lang])} · v'
+                f'{pages.esc(spec["version"])} · {len(volumes)} 卷 · '
+                f'{len(units_all)} units · {n_diagrams} {foot}</footer>')
+    body.insert(2, pages.toc_html(toc_entries, lang))
+
+    body_html = render.soften_long_names("\n".join(body))
+    html_text = page(lang, f'{spec["title"][lang]} — {spec["author"]}',
+                     CSS, f"lang-{lang}", body_html,
+                     "\n".join(rail) + "</nav>", "")
+    guide_units = sum(
+        1 for vol in volumes
+        for guide in (vol.manifest.get("guides") or {}).values()
+        if (guide.get("plain") or {}).get(lang))
+    # a volume may ship no guides at all (`plain_optional`); the compass count
+    # is then the number of units that really carry one, not the unit total
+    guides_all = {uid: guide for vol in volumes
+                  for uid, guide in (vol.manifest.get("guides") or {}).items()}
+    counts = _audit(html_text, units=units_all, payloads=payloads_all,
+                    part_ids=part_ids, notes=notes_all, lang=lang,
+                    plain_layer=plain_layer, lead_units=guide_units,
+                    guides=guides_all,
+                    expect_svgs=svgs if mode == "render" else None)
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    prefix = spec.get("output_prefix") or "yuyu-collected"
+    out = out_dir / f"{prefix}-{lang}.html"
+    out.write_text(html_text, encoding="utf-8")
+    print(f"  {out.name}: {out.stat().st_size / 1e6:.1f} MB, "
+          f"{len(volumes)} volumes, {len(units_all)} units, "
+          f"{n_diagrams} plates, {counts['marks']} glosses, "
+          f"{counts['lead']} lead bands, {counts['keeper']} keeper notes")
+    if do_pdf:
+        from yuyu_book import pdf
+        pmeta = PrintManifest(
+            outline=tuple(OutlineEntry(*entry) for entry in outline),
+            toc_rows=tuple(e["anchor"] for e in toc_entries
+                           if e["kind"] in ("row", "part")),
+            index_rows=tuple(IndexRow(term, anchor)
+                             for term, anchor in index_rows),
+            toc_title=pages.ui("toc", lang),
+            title=spec["title"][lang],
+            subtitle=spec["subtitle"][lang],
+            author=spec["author"],
+            keywords=f'v{spec["version"]} {spec["date"]}',
+            lang=lang,
+            front_anchor=front_anchor)
         folios = {}
         if pmeta.index_rows:
             dest = pdf.measure(out,
@@ -406,7 +626,7 @@ def _article(payload, manifest, sources, lang, kind=None, notes=None,
              show_lead=True):
     u = payload["unit"]
     kind = kind or u.kind
-    guide = manifest["guides"].get(u.id, {})
+    guide = (manifest.get("guides") or {}).get(u.id, {})
     part = getattr(u, "part", None)
     eyebrow = []
     if part:

@@ -145,7 +145,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        product: [opencode, deepseek, hermes, codex]
+        product: [opencode, deepseek, hermes, codex, prompt, kimi]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -161,10 +161,37 @@ jobs:
           for extension in html pdf epub; do
             test -s "yuyu-book/dist/yuyu-${{ matrix.product }}-zh.${extension}"
           done
+      - name: Package the offline exercises
+        if: matrix.product == 'prompt'
+        run: python scripts/package_prompt.py --output yuyu-book/dist/yuyu-prompt-zh-examples.zip
       - uses: actions/upload-artifact@v4
         with:
           name: yuyu-${{ matrix.product }}-dist
-          path: yuyu-book/dist/yuyu-${{ matrix.product }}-zh.*
+          path: yuyu-book/dist/yuyu-${{ matrix.product }}-zh*
+          if-no-files-found: error
+  collected:
+    name: Collected edition
+    # Nine bound volumes inline every plate, so this document is built on main
+    # and on dispatch only; pull requests still cover its loader and assembly
+    # contract through the builder suite.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/book-setup
+        with:
+          browser: 'true'
+      - name: Build the collected HTML
+        run: python scripts/bookctl.py build --product collected --lang zh
+      - name: Check the collected edition exists
+        run: test -s yuyu-book/dist/yuyu-collected-zh.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yuyu-collected-dist
+          path: yuyu-book/dist/yuyu-collected-zh.*
           if-no-files-found: error
   deepseek-components:
     name: DeepSeek Cordis components

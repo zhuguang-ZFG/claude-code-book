@@ -25,14 +25,17 @@ LANGS = ("zh", "en")
 
 @dataclass(frozen=True)
 class OutlineEntry:
-    """One bookmark: level 1 for parts/appendices, 2 for chapters."""
+    """One bookmark: 1 parts/appendices, 2 chapters, 3 chapters in a volume.
+
+    A collected edition nests one level deeper: the volume is the top bookmark
+    and every part the volume owns sits under it."""
     level: int
     label: str
     anchor: str
 
     def __post_init__(self) -> None:
-        if self.level not in (1, 2):
-            raise BuildError(f"print manifest: outline level must be 1 or 2, "
+        if self.level not in (1, 2, 3):
+            raise BuildError(f"print manifest: outline level must be 1, 2 or 3, "
                              f"got {self.level} for {self.anchor or '?'}")
         if not self.label.strip():
             raise BuildError(f"print manifest: empty bookmark label at "

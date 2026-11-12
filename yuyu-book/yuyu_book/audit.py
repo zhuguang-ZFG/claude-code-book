@@ -24,10 +24,12 @@ class _Parser(HTMLParser):
         self.nested: int = 0
 
     def handle_starttag(self, tag, attrs):
-        a = dict(attrs)
-        if "id" in a:
+        # HTMLParser hands back `str | None` for a bare attribute; the empty
+        # string keeps the reads below simple and means the same thing here
+        a = {k: (v or "") for k, v in attrs}
+        if a.get("id"):
             self.ids.append(a["id"])
-        if "href" in a and a["href"].startswith("#"):
+        if a.get("href", "").startswith("#"):
             self.hrefs.append(a["href"][1:])
         if tag == "svg":
             self.svgs += 1
@@ -63,7 +65,13 @@ class _Parser(HTMLParser):
             self.stray.append(tag)
 
 
-def audit(html_text: str, *, n_units: int, expect_svgs: int | None) -> None:
+def audit(html_text: str, *, n_units: int, expect_svgs: int | None,
+          expect_compass: int | None = None) -> None:
+    """Refuse a document that lost a structural promise.
+
+    ``expect_compass`` defaults to one card per unit; a volume that ships
+    without guides (`plain_optional`) declares how many units actually carry
+    one, so the count is exact rather than waived."""
     p = _Parser()
     p.feed(html_text)
 
@@ -98,8 +106,10 @@ def audit(html_text: str, *, n_units: int, expect_svgs: int | None) -> None:
     fence_residue = re.findall(r"^ {0,3}`{3,}", html_text, re.M)
     if fence_residue:
         errors.append(f"{len(fence_residue)} stray markdown fences left in output")
-    if "compass" not in p.classes or p.classes["compass"] < n_units:
-        errors.append(f'compass cards: {p.classes.get("compass", 0)} < {n_units}')
+    want_compass = n_units if expect_compass is None else expect_compass
+    if p.classes.get("compass", 0) < want_compass:
+        errors.append(f'compass cards: {p.classes.get("compass", 0)} < '
+                      f'{want_compass}')
     md_links = [u for u in re.findall(r'href="([^"]{0,120}\.md)(?=["#])', html_text)
                 if "://" not in u]
     if md_links:

@@ -15,13 +15,13 @@ KIND_GROUP = {
 }
 
 
-def source_registry(sources: dict, lang: str) -> str:
+def source_registry(sources: dict, lang: str, anchor: str = "sources") -> str:
     order = ["github", "npm", "docs", "blog", "spec", "community"]
     groups: dict[str, list] = {k: [] for k in order}
     for sid, src in sources.items():
         groups.setdefault(src.get("kind", "docs"), []).append((sid, src))
     parts = [
-        f'<section class="front-page sources" id="sources">'
+        f'<section class="front-page sources" id="{anchor}">'
         f'<h1 class="page-title">{esc(ui("sources_page", lang))}</h1>'
         f'<p class="reg-note">{esc(ui("sources_note", lang))}</p>']
     for kind in order:
@@ -55,13 +55,14 @@ def source_registry(sources: dict, lang: str) -> str:
     return "".join(parts)
 
 
-def subject_index_page(entries: list[dict], lang: str) -> str:
+def subject_index_page(entries: list[dict], lang: str,
+                       anchor: str = "subject-index") -> str:
     letters: dict[str, list] = {}
     for e in entries:
         if not e[lang]["refs"]:
             continue  # a headword this edition has no rows for
         letters.setdefault(e["letter"], []).append(e)
-    parts = [f'<section class="front-page back-index" id="subject-index">'
+    parts = [f'<section class="front-page back-index" id="{anchor}">'
              f'<h1 class="page-title">{esc(ui("index_page", lang))}</h1>'
              f'<div class="idx-cols">']
     for letter in sorted(letters):
@@ -123,14 +124,15 @@ def fill_index_folios(html_text: str, folios: dict[str, int]) -> str:
     return filled
 
 
-def principles_page(groups: list[dict], lang: str) -> str:
+def principles_page(groups: list[dict], lang: str,
+                    anchor: str = "principles") -> str:
     """The mechanism layer, on paper.
 
     A hover card cannot reach the printed book, so the reasons a term exists
     would otherwise live only in the HTML. Each row is one term: the reason,
     then the picture the book uses for it.
     """
-    parts = [f'<section class="front-page back-why" id="principles">'
+    parts = [f'<section class="front-page back-why" id="{anchor}">'
              f'<h1 class="page-title">{esc(ui("principles_page", lang))}</h1>'
              f'<p class="pr-note">{esc(ui("principles_note", lang))}</p>']
     why_tag, ana_tag = ui("why_tag", lang), ui("analogy_tag", lang)
@@ -153,12 +155,13 @@ def principles_page(groups: list[dict], lang: str) -> str:
     return "".join(parts)
 
 
-def notes_page(notes: dict, units, lang: str) -> str:
+def notes_page(notes: dict, units, lang: str,
+               anchor: str = "keeper-notes") -> str:
     """The twenty lines of the old postman, walked once more in order.
 
     One row per unit in reading order; the head links back to the chapter's
     own ruts, because a note taken out of its ending loses its timing."""
-    parts = [f'<section class="front-page back-notes" id="keeper-notes">'
+    parts = [f'<section class="front-page back-notes" id="{anchor}">'
              f'<h1 class="page-title">{esc(ui("notes_page", lang))}</h1>'
              f'<p class="pr-note">{esc(ui("notes_note", lang))}</p>'
              f'<ul class="kn-list">']

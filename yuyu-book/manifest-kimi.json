@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "product": "kimi",
+  "version": "0.1.0",
+  "date": "2026-11-10",
+  "author": "朱光",
+  "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
+  "license": {
+    "name": "CC BY-NC-SA 4.0",
+    "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+  },
+  "title": {
+    "zh": "Kimi Code：从插件到审查助手"
+  },
+  "subtitle": {
+    "zh": "跟做澄明库存：Skill、自定义 Agent、Hook、MCP 与 ACP · 非官方"
+  },
+  "kicker": {
+    "zh": "Kimi Code · Rules into evidence"
+  },
+  "notice": {
+    "zh": "本书为独立技术教程，与 Moonshot AI 无隶属关系。固定 Kimi Code 2.5.2，源码、组件实验与真实 CLI 结果分别注明。"
+  },
+  "epigraph": {
+    "zh": "让每条审查结论，都能回到一份规则和一个输入。"
+  },
+  "langs": [
+    "zh"
+  ],
+  "output_prefix": "yuyu-kimi",
+  "revisions_registry": "",
+  "subject_index_registry": "",
+  "plain_optional": true,
+  "front": {
+    "id": "kimi-front",
+    "zh": "kimi/00-前言.md"
+  },
+  "parts": [
+    {
+      "id": "kimi-p1",
+      "no": {
+        "zh": "第一篇"
+      },
+      "title": {
+        "zh": "启动与项目"
+      },
+      "motto": {
+        "zh": "先复现一处错误，再搭好工作目录。"
+      },
+      "goal": {
+        "zh": "核对程序、配置和业务规则。"
+      },
+      "units": [
+        {
+          "id": "kimi-ch01",
+          "zh": "kimi/ch01.md"
+        },
+        {
+          "id": "kimi-ch02",
+          "zh": "kimi/ch02.md"
+        },
+        {
+          "id": "kimi-ch03",
+          "zh": "kimi/ch03.md"
+        },
+        {
+          "id": "kimi-ch04",
+          "zh": "kimi/ch04.md"
+        }
+      ]
+    },
+    {
+      "id": "kimi-p2",
+      "no": {
+        "zh": "第二篇"
+      },
+      "title": {
+        "zh": "执行与状态"
+      },
+      "motto": {
+        "zh": "沿一次任务理解工具、权限和会话。"
+      },
+      "goal": {
+        "zh": "区分执行意图、实际结果与可恢复状态。"
+      },
+      "units": [
+        {
+          "id": "kimi-ch05",
+          "zh": "kimi/ch05.md"
+        },
+        {
+          "id": "kimi-ch06",
+          "zh": "kimi/ch06.md"
+        },
+        {
+          "id": "kimi-ch07",
+          "zh": "kimi/ch07.md"
+        },
+        {
+          "id": "kimi-ch08",
+          "zh": "kimi/ch08.md"
+        }
+      ]
+    },
+    {
+      "id": "kimi-p3",
+      "no": {
+        "zh": "第三篇"
+      },
+      "title": {
+        "zh": "扩展与装配"
+      },
+      "motto": {
+        "zh": "把审查习惯保存成可维护的资源。"
+      },
+      "goal": {
+        "zh": "完成 Skill、Agent、插件、Hook 和 MCP 的连续案例。"
+      },
+      "units": [
+        {
+          "id": "kimi-ch09",
+          "zh": "kimi/ch09.md"
+        },
+        {
+          "id": "kimi-ch10",
+          "zh": "kimi/ch10.md"
+        },
+        {
+          "id": "kimi-ch11",
+          "zh": "kimi/ch11.md"
+        },
+        {
+          "id": "kimi-ch12",
+          "zh": "kimi/ch12.md"
+        },
+        {
+          "id": "kimi-ch13",
+          "zh": "kimi/ch13.md"
+        }
+      ]
+    },
+    {
+      "id": "kimi-p4",
+      "no": {
+        "zh": "第四篇"
+      },
+      "title": {
+        "zh": "集成与交付"
+      },
+      "motto": {
+        "zh": "让客户端、日志和验证接住运行结果。"
+      },
+      "goal": {
+        "zh": "理解 ACP、委派、JSONL 和失败恢复，并交付审查流程。"
+      },
+      "units": [
+        {
+          "id": "kimi-ch14",
+          "zh": "kimi/ch14.md"
+        },
+        {
+          "id": "kimi-ch15",
+          "zh": "kimi/ch15.md"
+        },
+        {
+          "id": "kimi-ch16",
+          "zh": "kimi/ch16.md"
+        },
+        {
+          "id": "kimi-ch17",
+          "zh": "kimi/ch17.md"
+        },
+        {
+          "id": "kimi-ch18",
+          "zh": "kimi/ch18.md"
+        }
+      ]
+    }
+  ],
+  "appendices": [
+    {
+      "id": "kimi-apxa",
+      "zh": "kimi/appendix-a.md"
+    },
+    {
+      "id": "kimi-apxb",
+      "zh": "kimi/appendix-b.md"
+    },
+    {
+      "id": "kimi-apxc",
+      "zh": "kimi/appendix-c.md"
+    },
+    {
+      "id": "kimi-apxd",
+      "zh": "kimi/appendix-d.md"
+    }
+  ]
+}

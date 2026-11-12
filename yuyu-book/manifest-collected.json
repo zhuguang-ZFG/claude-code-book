@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "product": "collected",
+  "version": "0.1.0",
+  "date": "2026-11-12",
+  "author": "LinTsinghua",
+  "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
+  "license": {
+    "name": "CC BY-NC-SA 4.0",
+    "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+  },
+  "title": {
+    "zh": "Agent Harness 九卷合订本"
+  },
+  "subtitle": {
+    "zh": "御舆 · 六部 Harness 读本 · Kimi · 提示词工程"
+  },
+  "epigraph": {
+    "zh": "一器而工聚焉者，车为多。——《周礼·考工记》"
+  },
+  "kicker": {
+    "zh": "合订本 · 卷一至卷九"
+  },
+  "langs": ["zh"],
+  "output_prefix": "yuyu-collected",
+  "revisions_registry": "",
+  "subject_index_registry": "",
+  "volumes": [
+    {
+      "id": "vol1",
+      "no": {"zh": "卷一"},
+      "title": {"zh": "御舆：解码 Agent Harness"},
+      "manifest": "manifest.json",
+      "sources": "sources.json"
+    },
+    {
+      "id": "vol2",
+      "no": {"zh": "卷二"},
+      "title": {"zh": "Omp 从入门到精通：原理与实战"},
+      "manifest": "manifest-omp.json",
+      "sources": "sources-omp.json"
+    },
+    {
+      "id": "vol3",
+      "no": {"zh": "卷三"},
+      "title": {"zh": "Pi Agent：从原理到实战"},
+      "manifest": "manifest-pi.json",
+      "sources": "sources-pi.json"
+    },
+    {
+      "id": "vol4",
+      "no": {"zh": "卷四"},
+      "title": {"zh": "OpenCode：从原理到实战"},
+      "manifest": "manifest-opencode.json",
+      "sources": "sources-opencode.json"
+    },
+    {
+      "id": "vol5",
+      "no": {"zh": "卷五"},
+      "title": {"zh": "DeepSeek Harness：插件化运行时"},
+      "manifest": "manifest-deepseek.json",
+      "sources": "sources-deepseek.json"
+    },
+    {
+      "id": "vol6",
+      "no": {"zh": "卷六"},
+      "title": {"zh": "Hermes Agent：记忆、技能与持续任务"},
+      "manifest": "manifest-hermes.json",
+      "sources": "sources-hermes.json"
+    },
+    {
+      "id": "vol7",
+      "no": {"zh": "卷七"},
+      "title": {"zh": "Codex CLI：执行边界与工程实践"},
+      "manifest": "manifest-codex.json",
+      "sources": "sources-codex.json"
+    },
+    {
+      "id": "vol8",
+      "no": {"zh": "卷八"},
+      "title": {"zh": "Kimi Code：从插件到审查助手"},
+      "manifest": "manifest-kimi.json",
+      "sources": "sources-kimi.json"
+    },
+    {
+      "id": "vol9",
+      "no": {"zh": "卷九"},
+      "title": {"zh": "提示词工程：从提问到 Agent 协作"},
+      "manifest": "manifest-prompt.json",
+      "sources": "sources-prompt.json"
+    }
+  ]
+}

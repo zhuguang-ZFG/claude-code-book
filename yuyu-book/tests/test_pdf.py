@@ -13,7 +13,8 @@ import fitz
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book.pdf import empty_sheets, folio_drift  # noqa: E402
+from yuyu_book.core import BuildError  # noqa: E402
+from yuyu_book.pdf import contents_span, empty_sheets, folio_drift  # noqa: E402
 
 
 def _doc(*pages):
@@ -89,6 +90,25 @@ class Folios(unittest.TestCase):
         self.assertEqual(folio_drift({"ch07": 90, "ch08": 122},
                                      {"ch07": 91, "ch08": 121}),
                          {"ch08": (123, 121)})
+
+
+class ContentsPages(unittest.TestCase):
+    """Which sheets the post-pass may read contents rows from.
+
+    A contents that runs to a second page repeats its title, so the scan has to
+    start at the first page that carries it. Starting at the last one silently
+    stamps half the rows and leaves the earlier page's numbers blank — the
+    regression these cases pin."""
+
+    def test_a_two_page_contents_is_scanned_from_its_first_page(self):
+        self.assertEqual(contents_span([4, 5], 6), range(4, 6))
+
+    def test_a_single_page_contents_is_scanned_alone(self):
+        self.assertEqual(contents_span([4], 5), range(4, 5))
+
+    def test_a_missing_contents_title_is_refused(self):
+        with self.assertRaisesRegex(BuildError, "contents pages not found"):
+            contents_span([], 6)
 
 
 if __name__ == "__main__":

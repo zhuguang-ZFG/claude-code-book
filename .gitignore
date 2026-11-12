@@ -31,6 +31,7 @@ video/.build/
 video/**/.hf-cache/
 video/**/.hf-tmpdir/
 video/**/.hyperframes/
+video/**/renders/.hf-segments/
 video/*/tools/
 # underscore prefix marks a one-off: probe scripts, ffprobe dumps, help text
 # captures, snippet scratch and reference dumps taken during a run
@@ -41,6 +42,10 @@ video/**/*.srt
 video/**/*.vtt
 # the per-chunk voice timeline the pipeline regenerates from the script
 video/**/assets/vo/timeline.json
+# recorded caption tracks shipped with each chapter's narration; local media,
+# re-imported from the legacy tag rather than committed
+video/**/hf-remake/short/assets/short-caps.json
+video/**/hf-remake/transcript.json
 video/**/proof/
 video/**/spotcheck/
 video/**/short-spot/

@@ -88,7 +88,7 @@ class EditionBuild(unittest.TestCase):
             run.assert_not_called()
 
     def test_agent_volumes_keep_their_own_manifest_and_epub_prefix(self):
-        for product in ("opencode", "deepseek", "hermes", "codex"):
+        for product in bookctl.AGENT_PRODUCTS:
             with self.subTest(product=product), tempfile.TemporaryDirectory() as temporary:
                 folder = Path(temporary)
                 commands = []
@@ -111,10 +111,33 @@ class EditionBuild(unittest.TestCase):
                 self.assertIn(str(folder / f"yuyu-{product}-zh.epub"), commands[1])
 
     def test_agent_volumes_reject_unavailable_english_before_running(self):
-        for product in ("opencode", "deepseek", "hermes", "codex"):
+        for product in (*bookctl.AGENT_PRODUCTS, *bookctl.COLLECTION_PRODUCTS):
             with self.subTest(product=product), mock.patch.object(bookctl, "run") as run:
                 self.assertEqual(bookctl.build(self.arguments("unused", product=product, lang="en")), 2)
                 run.assert_not_called()
+
+    def test_collected_edition_passes_its_manifest_without_a_sources_registry(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            commands = []
+
+            def fake_run(command):
+                commands.append(command)
+                if "scripts/build_epub.py" in command:
+                    output = Path(command[command.index("--output") + 1])
+                    output.write_bytes(b"PK fixture")
+                else:
+                    (folder / "yuyu-collected-zh.html").write_text("<html/>")
+
+            with mock.patch.object(bookctl, "run", side_effect=fake_run), \
+                    mock.patch.object(build_reports, "write_reports"):
+                self.assertEqual(bookctl.build(self.arguments(folder, product="collected")), 0)
+            build_command, epub_command = commands
+            self.assertEqual(build_command[build_command.index("--manifest") + 1],
+                             "manifest-collected.json")
+            self.assertNotIn("--sources", build_command)
+            self.assertEqual(build_command[build_command.index("--lang") + 1], "zh")
+            self.assertIn(str(folder / "yuyu-collected-zh.epub"), epub_command)
 
 
 if __name__ == "__main__":
