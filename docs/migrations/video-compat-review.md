@@ -165,8 +165,9 @@ render ch04 long          # → video/.build/ch04/current-long.mp4
 render ch05 short --resume # 中断后复用已验证分段
 ```
 
-中断后加 `--resume` 复用已验证分段；长版本机耗时 10–40 分钟，短版约 2–3 分钟
-（`ch05` 短版实测 2 分 16.8 秒）。
+中断后加 `--resume` 复用已验证分段；本机冷启长版约 20–30 分钟（ch04 13 592 帧实测
+27 分 20 秒，带 `--resume` 的续跑约 11 分钟），短版约 2–3 分钟（`ch05` 实测 2 分
+16.8 秒）。
 
 2026-11-12 按此函数原样实跑 `ch05 short` 验证过一次（退出码 0）：产物
 `video/.build/ch05/current-short.mp4` 为 1 529 帧 / 50.936 s / 8 610 978 B。对照重建后
@@ -242,6 +243,35 @@ ch04 用 `ch04-long-v2.mp4`。
 
 ch02 的体积差最大：见证 100 082 335 B，新片 78 899 832 B。同一输入、同一帧数下，
 体积差来自编码质量档，因此记「允许差异」，不声明逐字节等价。
+
+2026-11-12 又按同一函数原样跑了一次长版分支（`render ch04 long`，冷启、无 `--resume`，
+退出码 0，耗时 27 分 20 秒，其中采集 26 分 37 秒）：产出 13 592 帧 / 453.0667 s /
+111 956 353 B，比表中该次（111 829 930 B）大 0.11%。对照写到
+`video/.build/ch04/compare-long-rerun.json`，原 `compare-long.json` 保持不动：
+timeline `match`、字幕 294 = 294、时长 453.067 = 453.067、严格哈希仍 0/3，
+整片逐帧 PSNR 52.59 / 47.44 dB 与表中一致，三点 PSNR 45.63 / 58.94 / 44.46 dB、
+平均绝对差 0.85 / 0.04 / 1.01 也与表中区间吻合。
+
+两份报告除新片自身的 sha256 外，只差 45.307 s 采样帧那一处 `new_sha256`；
+50% 与 90% 两帧在两次渲染里逐像素相同。也就是说同一源码两次渲染高度一致但不保证
+逐字节相同，个别细节帧存在舍入级差异——「重出 ≠ 逐字节复现」对长版与短版同时成立，
+因此哈希不同只能当作待查信号，不能单独判定画面漂移。
+
+长版的对照与度量命令（把章节与见证片换掉即可复用）：
+
+```bash
+python video/pipeline/cli.py compare --chapter ch04 --format long \
+  --legacy-captions video/.build/ch04/legacy-long-captions.srt \
+  --current-captions video/.build/ch04/transcript-long.json \
+  --legacy-video video/ch04/out/ch04-long-v2.mp4 \
+  --current-video video/.build/ch04/current-long.mp4 \
+  --report video/.build/ch04/compare-long-rerun.json
+ffmpeg -i video/.build/ch04/current-long.mp4 -i video/ch04/out/ch04-long-v2.mp4 \
+  -lavfi "[0:v][1:v]psnr=stats_file=psnr-long.log" -f null -
+```
+
+`--report` 指向 `*-rerun.json` 是为了不覆盖上一轮的报告；两次报告并存时可以直接
+看出哪些字段变了。
 
 ## 关键帧与允许差异
 
