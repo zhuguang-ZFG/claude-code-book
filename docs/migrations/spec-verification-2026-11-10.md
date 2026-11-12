@@ -136,6 +136,10 @@ ch05 长版在 `video/chapters/ch05/episode.yaml` 是 `status: scripted`，没�
 - 全仓两套件 280 + 585 项通过（2026-11-12 复跑）。
 - `bookctl check --fast`：2026-11-12 实测 8 步全绿（content 428 个 Markdown /
   436 张 Mermaid 图 0 错误，视频配置 15/15，产物幂等 11 项逐字节一致）。
+- 远端 CI：提交 `5120942` 的 Book CI 运行 43195769116 为 success，15 个作业全部通过
+  （Fast、Full、双平台 Bootstrap、Omp、Pi、六册 Agent 分册与新增的合订本任务）；
+  Pages 运行 43195769121 同为 success。合订本任务在 ubuntu-latest 上从干净检出构建出
+  72 MB 单文件 HTML，因此「本机才能构建合订本」的说法不再成立。
 - `iter_doc()` 的注释扫描原本对每个分块重扫文档余部，属 O(n²)：1.08 MB 的 opencode 分册
   要 16.4 s、5.78 MB 的主书 381 s、60.35 MB 的 omp 564 s。改为记住下一个 `<!--` 的
   位置后，同一批文本分别 0.09 s / 0.55 s / 4.13 s，1500 例随机畸形文档与旧实现分块
