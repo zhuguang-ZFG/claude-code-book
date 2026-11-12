@@ -143,14 +143,52 @@ PY
 本节的渲染件（`current-long.mp4` / `current-short.mp4`，合计约 480 MB）与分段缓存是可重出的
 中间产物，按 `.gitignore` 不入库；2026-11-12 收尾时已从本机清理。表内的字节数、帧数与 PSNR
 都是清理前的实测值，`compare-*.json`、`transcript-*.json` 与 `legacy-*.srt` 保留下来供复核。
-重出在对应 `hf-remake`（或 `hf-remake/short`）目录执行：
+重出从仓库根执行，CLI 与输出都用绝对路径，`cd` 只切到对应工程目录（长版
+`video/<ch>/hf-remake`，短版 `video/<ch>/hf-remake/short`）：
 
 ```bash
-HF_SEGMENTED_CAPTURE=true node video/node_modules/hyperframes/bin/hyperframes.mjs render . \
-  -o ../../.build/<ch>/current-long.mp4 -f 30 -q standard -w 1 --low-memory-mode
+ROOT=$(git rev-parse --show-toplevel)
+NODE=$(command -v node || echo "/c/Program Files/nodejs/node.exe")
+CLI="$ROOT/video/node_modules/hyperframes/bin/hyperframes.mjs"
+
+render() {  # chapter format [--resume]
+  local ch=$1 fmt=$2 resume=${3:-}
+  local work="$ROOT/video/$ch/hf-remake"
+  [ "$fmt" = short ] && work="$work/short"
+  mkdir -p "$ROOT/video/.build/$ch"
+  ( cd "$work" && HF_SEGMENTED_CAPTURE=true "$NODE" "$CLI" render . \
+      -o "$ROOT/video/.build/$ch/current-$fmt.mp4" \
+      -f 30 -q standard -w 1 --low-memory-mode $resume )
+}
+
+render ch04 long          # → video/.build/ch04/current-long.mp4
+render ch05 short --resume # 中断后复用已验证分段
 ```
 
-中断后加 `--resume` 复用已验证分段；长版本机耗时 10–40 分钟。
+中断后加 `--resume` 复用已验证分段；长版本机耗时 10–40 分钟，短版约 2–3 分钟
+（`ch05` 短版实测 2 分 16.8 秒）。
+
+2026-11-12 按此函数原样实跑 `ch05 short` 验证过一次（退出码 0）：产物
+`video/.build/ch05/current-short.mp4` 为 1 529 帧 / 50.936 s / 8 610 978 B。对照重建后
+字幕 26 = 26 全等、时长 50.967 = 50.967、三点 PSNR 47.71–48.36 dB（MAD 0.45–0.48）、
+整片逐帧 53.33 / 49.92 dB，与下表同一次记录的区间一致；严格哈希仍为 0/3。
+
+**重出不是逐字节可复现的**：本次字节数（8 610 978 B）与表中那次（8 621 895 B）相差
+0.13%，整片 PSNR 相差 0.10 dB，帧数、时长、字幕与哈希命中模式完全相同。也就是说
+重出只保证度量层面可复现，重跑一次出现新的哈希不同属于预期，不能据此判画面漂移。
+
+对照与度量可照下列命令复核（`.scratch` 辅助脚本已清理，只剩这两条）：
+
+```bash
+python video/pipeline/cli.py compare --chapter ch05 --format short \
+  --legacy-captions video/.build/ch05/legacy-short-captions.srt \
+  --current-captions video/.build/ch05/transcript-short.json \
+  --legacy-video video/ch05/out/ch05-short-v1.mp4 \
+  --current-video video/.build/ch05/current-short.mp4 \
+  --report video/.build/ch05/compare-short.json
+ffmpeg -i video/.build/ch05/current-short.mp4 -i video/ch05/out/ch05-short-v1.mp4 \
+  -lavfi "[0:v][1:v]psnr=stats_file=psnr.log" -f null -
+```
 
 ### ch02–ch05 短版（2026-11-12 复现渲染）
 
