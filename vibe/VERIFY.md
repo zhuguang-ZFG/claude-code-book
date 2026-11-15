@@ -1,5 +1,17 @@
 # 验证记录
 
+## 2026-11-15 · 恢复演练与 CI 门槛
+
+第 10 章在备份之后补“恢复也要演练”：把备份复制到临时副本，对照主库的 `books`/`contacts` 行数，并检查 `public_books` 的列不含 `email` 或 `contact`。第 11 章在发布检查单之后补 GitHub Actions 工作流：跑单元测试、生成样例页面，再用缺失输入断言非 0 退出且不留产物；示例注明 action 标签会移动，生产仓库应固定到完整 SHA。
+
+恢复命令已在临时库上实跑：`live: (1, 1) restored: (1, 1)`，`public_books` 列为 `id,title,author,condition,owner`，样例查询返回书名与摊主。CI 工作流用 PyYAML 解析通过；示例命令指向读者的样例项目，不在本仓库根目录执行。
+
+```text
+yuyu-vibe-zh.html  0.4 MB / 17 units / 9 plates / 13 cited links / 3 headpieces
+yuyu-vibe-zh.pdf   4.4 MB / 77 页 / 21 书签 / 152 个链接 / 0 空白页
+yuyu-vibe-zh.epub  239,706 B / 6 张图 / 139 条导航
+```
+
 ## 2026-11-15 · 插图与文风二轮
 
 给新增章节补七幅正文手绘，并按风险顺序补了一节评审清单：
