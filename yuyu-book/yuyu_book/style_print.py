@@ -60,6 +60,9 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
      volumes end the book here, so only the omnibus needs the page box's own
      margin to be the air. Same trap as `article` padding above. */
   .collected .back-index{padding-bottom:0}
+  .collected .back-index .idx-block{break-inside:auto}
+  /* the source registry ends the same way before the last volume's appendices */
+  .collected .sources{padding-bottom:0}
   /* the folio slot: a screen has no pages, so the row hides its page reference;
      paper reserves the box here and the PDF pass writes the number into it —
      nothing in the HTML can know the page a row lands on */
