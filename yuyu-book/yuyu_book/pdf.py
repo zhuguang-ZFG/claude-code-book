@@ -247,7 +247,17 @@ def _running_head(head: _Head, page, text: str, side: str) -> None:
 
 
 def build_pdf(html_path: Path, meta: PrintManifest, browser: str | None = None,
-              folios: dict[str, int] | None = None) -> Path:
+              folios: dict[str, int] | None = None,
+              heads: tuple[tuple[str, str], ...] | None = None,
+              verso_heads: tuple[tuple[str, str], ...] | None = None) -> Path:
+    """Print and post-process one book.
+
+    `heads` overrides the recto running-head labels (default: the bookmark
+    labels). `verso_heads` optionally supplies the volume labels a collected
+    edition wants on the left pages; a standalone book keeps its title there.
+    Both maps are read through the printed destinations, so a label that does
+    not resolve to a bookmarked section is refused before any ink is drawn.
+    """
     raw = html_path.with_name(html_path.stem + ".raw.pdf")
     out = html_path.with_suffix(".pdf")
     _print_pdf(html_path, raw, browser)
@@ -287,11 +297,28 @@ def build_pdf(html_path: Path, meta: PrintManifest, browser: str | None = None,
             f"would lose every Chinese glyph (searched: {', '.join(CJK_FONTS)})")
     head = _Head(fontfile)
     book = meta.title
-    starts = sorted((dest[a], label) for a, label in meta.heads)
+    head_slots = heads if heads is not None else meta.heads
+    verso_slots = verso_heads or ()
+    unknown = sorted({a for a, _label in head_slots + verso_slots} - set(dest))
+    if unknown:
+        doc.close()
+        raise BuildError(
+            f"pdf: running-head map points outside the bookmarks: {unknown[:8]}")
+    starts = sorted((dest[a], label) for a, label in head_slots)
+    verso_starts = sorted((dest[a], label) for a, label in verso_slots)
 
     def head_for(pno: int) -> str:
         cur = ""
         for page_start, label in starts:
+            if page_start <= pno:
+                cur = label
+            else:
+                break
+        return cur
+
+    def verso_for(pno: int) -> str:
+        cur = book
+        for page_start, label in verso_starts:
             if page_start <= pno:
                 cur = label
             else:
@@ -306,8 +333,8 @@ def build_pdf(html_path: Path, meta: PrintManifest, browser: str | None = None,
             continue
         if pno % 2 == 0:                        # recto: chapter, outer edge
             _running_head(head, page, head_for(pno) or book, "right")
-        else:                                   # verso: book title
-            _running_head(head, page, book, "left")
+        else:                                   # verso: book or volume title
+            _running_head(head, page, verso_for(pno), "left")
 
     rows = set(meta.toc_rows)
     hits = [pno for pno in range(dest[front_a])

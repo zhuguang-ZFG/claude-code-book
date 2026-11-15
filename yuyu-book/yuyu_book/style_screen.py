@@ -50,6 +50,16 @@ nav.rail .rail-title{font-size:.72rem;letter-spacing:.35em;color:var(--bronze);
   text-transform:uppercase;margin:0 0 1rem;display:flex;gap:.5rem;align-items:center}
 nav.rail .rail-part{margin:.95rem 0 .25rem;font-weight:700;color:var(--bronze-3);
   font-size:.78rem;letter-spacing:.08em}
+/* a ten-volume omnibus puts 245 links in the rail; each volume folds into a
+   native details block so the reader scans ten doors, not one long column. */
+nav.rail details.rail-vol{margin:.35rem 0 .15rem}
+nav.rail details.rail-vol>summary.rail-part{cursor:pointer;list-style:none;
+  display:flex;align-items:baseline;gap:.4rem;margin:0;padding:.18rem 0}
+nav.rail details.rail-vol>summary.rail-part::-webkit-details-marker{display:none}
+nav.rail details.rail-vol>summary.rail-part::before{content:"▸";
+  flex:0 0 auto;color:var(--bronze);font-size:.7rem}
+nav.rail details.rail-vol[open]>summary.rail-part::before{content:"▾"}
+nav.rail details.rail-vol>a{padding-left:.95rem}
 nav.rail a{display:block;color:var(--ink-2);text-decoration:none;
   padding:.16rem .5rem;border-left:2px solid transparent;line-height:1.5}
 nav.rail a:hover{color:var(--cinnabar);border-left-color:var(--cinnabar);
@@ -270,6 +280,16 @@ ul>li::before{content:"◆";position:absolute;left:-1.15em;top:0;
 .pd-no{font-family:var(--sans);letter-spacing:.5em;text-indent:.5em;
   color:var(--bronze);font-size:.85rem;margin:0 0 .5rem}
 .pd-title{font-size:clamp(2rem,5.5vw,2.7rem);margin:0;letter-spacing:.08em}
+.pd-count{font-family:var(--sans);font-size:.74rem;letter-spacing:.18em;
+  color:var(--bronze);margin:.55rem 0 0;font-variant-numeric:tabular-nums}
+/* a volume door is the outer binding; it must not read as the first part of
+   the volume it opens. The larger numeral and tighter rule give it one rank
+   above the part sheets that follow. */
+.collected .volume-divider{padding-top:clamp(2.8rem,7vw,4.6rem)}
+.collected .volume-divider .pd-no{font-size:1rem;color:var(--cinnabar);
+  letter-spacing:.62em}
+.collected .volume-divider .pd-title{letter-spacing:.12em}
+.collected .volume-divider .cover-rule{margin-top:1.15rem}
 .pd-motto{font-family:var(--kai);color:var(--cinnabar);margin:.2rem 0 1.3rem;
   letter-spacing:.14em;font-size:1.02rem}
 .pd-goal{max-width:30rem;margin:0 auto;color:var(--ink-2);font-size:.98rem;

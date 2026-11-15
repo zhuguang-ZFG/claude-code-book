@@ -451,6 +451,8 @@ def build_collected(lang: str, spec: dict, volumes, *,
     body.append(pages.imprint(spec, lang))
     toc_entries: list[dict] = []
     outline: list[tuple[int, str, str]] = []
+    head_labels: list[tuple[str, str]] = []
+    verso_labels: list[tuple[str, str]] = []
     rail = [f'<nav class="rail" aria-label="contents"><p class="rail-title">'
             f'<a href="#toc">{pages.ui("toc", lang)}</a></p>']
     units_all, payloads_all = [], []
@@ -484,7 +486,11 @@ def build_collected(lang: str, spec: dict, volumes, *,
         toc_entries.append({"kind": "volume", "anchor": vol.id,
                             "no": vol.no[lang], "title": vol.title[lang]})
         outline.append((1, vol.label(lang), vol.id))
-        rail.append(f'<p class="rail-part">{pages.esc(vol.label(lang))}</p>')
+        head_labels.append((vol.id, vol.label(lang)))
+        verso_labels.append((vol.id, vol.label(lang)))
+        rail.append(f'<details class="rail-vol"{" open" if n == 1 else ""}>')
+        rail.append(f'<summary class="rail-part">'
+                    f'{pages.esc(vol.label(lang))}</summary>')
         skip = {vol.id + name for name in
                 ("principles", "keeper-notes", "sources", "subject-index")}
         for entry in asm.toc_entries:
@@ -498,13 +504,18 @@ def build_collected(lang: str, spec: dict, volumes, *,
             if anchor in skip:
                 continue
             outline.append((level + 1, label, anchor))
+            head_labels.append((anchor, f'{vol.no[lang]} · {label}'))
 
         rows = [(p["id"], p["no"][lang], p["title"][lang])
                 for p in vol.manifest["parts"]]
+        chapter_count = sum(1 for u in asm.units
+                            if getattr(u, "kind", "") == "chapter")
+        counts = pages.ui("volume_count", lang).format(
+            parts=len(rows), chapters=chapter_count)
         body.append(pages.volume_divider(
             {"id": vol.id, "no": vol.no, "title": vol.title,
              "motto": {"zh": vol.manifest.get("subtitle", {}).get(lang, "")},
-             "goal": vol.reading}, lang, n, rows))
+             "goal": vol.reading}, lang, n, rows, counts=counts))
         product = vol.manifest.get("product", "book")
         extra = (f" agent-book agent-{product}"
                  if product in {"opencode", "deepseek", "hermes", "codex"}
@@ -512,6 +523,7 @@ def build_collected(lang: str, spec: dict, volumes, *,
         body.append(f'<section class="volume{extra}" data-volume="{vol.id}">')
         body.extend(_stamp_volume(asm.body, vol.no[lang]))
         body.append("</section>")
+        rail.append("</details>")
 
     foot = pages.ui("diagrams", lang)
     body.append(f'<footer class="colophon">{wheel(34)}'
@@ -522,7 +534,7 @@ def build_collected(lang: str, spec: dict, volumes, *,
 
     body_html = render.soften_long_names("\n".join(body))
     html_text = page(lang, f'{spec["title"][lang]} — {spec["author"]}',
-                     CSS, f"lang-{lang}", body_html,
+                     CSS, f"lang-{lang} collected", body_html,
                      "\n".join(rail) + "</nav>", "")
     guide_units = sum(
         1 for vol in volumes
@@ -569,7 +581,9 @@ def build_collected(lang: str, spec: dict, volumes, *,
             folios = {a: dest[a] + 1 for a in dest}
             out.write_text(pages.fill_index_folios(html_text, folios),
                            encoding="utf-8")
-        p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios)
+        p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios,
+                          heads=tuple(head_labels),
+                          verso_heads=tuple(verso_labels))
         print(f"  {p.name}: {p.stat().st_size / 1e6:.1f} MB, "
               f"{pdf.sheet_count(p)} pages, {len(outline)} bookmarks, "
               f"{len(folios)} index folios")

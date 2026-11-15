@@ -99,6 +99,19 @@ class VolumeReading(unittest.TestCase):
         self.assertIn('<p class="pd-goal">卷一没有这一域，当补章读。</p>', out)
         self.assertLess(out.index("pd-motto"), out.index("pd-goal"))
 
+    def test_the_door_can_state_the_volume_size(self):
+        from yuyu_book import pages
+        out = pages.volume_divider(
+            {"id": "vol9", "no": {"zh": "卷九"}, "title": {"zh": "提示词工程"},
+             "motto": {"zh": "副标题"}, "goal": {"zh": "读完再走。"}},
+            "zh", 9, [("p1", "第一篇", "把需求变成能检查的任务")],
+            counts="4 篇 · 18 章")
+        self.assertIn('<p class="pd-count">4 篇 · 18 章</p>', out)
+        self.assertEqual(pages.ui("volume_count", "en").format(
+            parts=4, chapters=18), "4 parts · 18 chapters")
+        self.assertLess(out.index("pd-title"), out.index("pd-count"))
+        self.assertLess(out.index("pd-count"), out.index("pd-motto"))
+
     def test_a_volume_without_a_note_prints_no_empty_paragraph(self):
         from yuyu_book import pages
         out = pages.volume_divider(

@@ -160,14 +160,15 @@ def part_divider(part: dict, lang: str, idx: int,
 
 
 def volume_divider(volume: dict, lang: str, idx: int,
-                   rows: list[tuple[str, str, str]]) -> str:
+                   rows: list[tuple[str, str, str]], counts: str = "") -> str:
     """The door of one volume inside a collected edition.
 
     It borrows the part divider's sheet: a volume and a part are both "you are
     entering a larger thing", and giving the volume its own layout would make
     the first part of every volume look like a demotion. `rows` are the parts
     the volume opens, so the reader can see the whole volume before its first
-    chapter."""
+    chapter. `counts` is the volume's size (parts · chapters), which lets a
+    reader choose a volume without opening its contents."""
     from .style import route_map, wheel
     items = "".join(
         f'<li><a class="xref" href="#{anchor}" data-no="{esc(no)}">'
@@ -180,7 +181,8 @@ def volume_divider(volume: dict, lang: str, idx: int,
             f'<div class="pd-inner">'
             f'<p class="pd-no">{esc(volume["no"][lang])}</p>'
             f'<h1 class="pd-title">{esc(volume["title"][lang])}</h1>'
-            f'<div class="cover-rule"><i></i>{wheel(24)}<i></i></div>'
+            + (f'<p class="pd-count">{esc(counts)}</p>' if counts else "")
+            + f'<div class="cover-rule"><i></i>{wheel(24)}<i></i></div>'
             + (f'<p class="pd-motto">{esc(motto)}</p>' if motto else "")
             + (f'<p class="pd-goal">{esc(goal)}</p>' if goal else "")
             + f'{route_map("vol-" + volume["id"], len(rows))}'
