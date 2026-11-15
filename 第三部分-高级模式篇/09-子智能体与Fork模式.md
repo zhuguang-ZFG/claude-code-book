@@ -740,7 +740,7 @@ print("shared:", json.dumps(fork[:len(parent)], sort_keys=True) == prefix)
 
 1. **AgentTool 的三层智能体体系**（内置、自定义、插件）从开箱即用一路做到深度定制，优先级机制允许企业级覆盖。自定义智能体通过 Markdown 文件定义，降低了创建门槛。
 
-2. **内置智能体的差别主要落在工具集上**：Explore 与 Plan 都被禁掉写工具，两者靠系统提示分工；General Purpose 拿通配符，靠全局过滤兜底；Verification 的对抗性写在提示里，注册还要过构建标志和运行时开关。
+2. **内置智能体的差别主要落在工具集上**：Explore 与 Plan 都禁用写工具，两者靠系统提示分工；General Purpose 拿通配符，靠全局过滤兜底；Verification 的对抗性写在提示里，注册还要过构建标志和运行时开关。
 
 3. **Fork 模式的核心创新**是字节级继承直接共享 prompt cache：相同的系统提示、工具定义、消息前缀加上统一的占位符结果，最大化缓存命中面积。在大规模并行场景下可节省 60%+ 的 token。
 
