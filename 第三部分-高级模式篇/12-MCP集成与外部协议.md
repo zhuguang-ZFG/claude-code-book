@@ -780,6 +780,10 @@ flowchart LR
     class REPL cli
 ```
 
+```ill
+ch12-bridge
+```
+
 ### 12.4.2 双向通信层
 
 Bridge 的通信架构是双向的，两类数据流同时走。这种双向性是 Bridge 系统区别于简单"日志推送"的关键：它把 CLI 的输出转发给外部，同时接收外部指令并执行。

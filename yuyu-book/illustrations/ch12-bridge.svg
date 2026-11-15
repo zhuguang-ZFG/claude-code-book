@@ -1,0 +1,32 @@
+<svg class="a-bridge" viewBox="0 0 348 132" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M8 61q82-4 166-1t166 1" stroke-width="3" pathLength="100"/>
+<path d="M12 66q80-3 162-1t162 1" opacity=".35" stroke-width="1" pathLength="100"/>
+<path d="M70 24q-2 45 0 89M278 24q2 45 0 89" stroke-width="3.2" pathLength="100"/>
+<path d="M62 28q8-3 16 0M270 28q8-3 16 0" stroke-width="2.4" pathLength="100"/>
+<path d="M70 36q52 8 104 24M278 36q-52 8-104 24" stroke-width="1.8" pathLength="100"/>
+<path d="M70 48q34 6 70 14M278 48q-34 6-70 14" opacity=".65" stroke-width="1.4" pathLength="100"/>
+<path d="M70 36q-1 26 0 50M104 43q-1 18 0 36M139 49q-1 12 0 28M174 54q-1 8 0 20" opacity=".55" stroke-width="1" stroke-dasharray="2 5" pathLength="100"/>
+<path d="M278 36q1 26 0 50M244 43q1 18 0 36M209 49q1 12 0 28M174 54q1 8 0 20" opacity=".55" stroke-width="1" stroke-dasharray="2 5" pathLength="100"/>
+<path d="M18 60q-2 28 0 58l48-1q2-29 0-57z" stroke-width="2.7" pathLength="100"/>
+<path d="M282 60q2 28 0 58l48-1q-2-29 0-57z" stroke-width="2.7" pathLength="100"/>
+<path d="M24 70q16-2 34 0M24 78q10 1 22 0M290 70q16-2 34 0M290 78q10 1 22 0" opacity=".45" stroke-width="1.1" pathLength="100"/>
+<path d="M24 92q16-2 34 0M290 92q16-2 34 0" opacity=".3" stroke-width="1" pathLength="100"/>
+<path d="M247 62q-2 22 0 48" stroke-width="2.8" pathLength="100"/>
+<path d="M240 68q7-2 14 0l1 12q-8 2-16 1z" stroke-width="2" pathLength="100"/>
+<path d="M246 73q2-1 3 0v4q-2 1-3 0z" stroke-width="1.2" pathLength="100"/>
+<path d="M247 71q2 0 2 2" opacity=".6" stroke-width="1" pathLength="100"/>
+<path d="M98 44q12-2 21 1l1 12q-11 3-23 1z" stroke-width="2.1" pathLength="100"/>
+<path d="M103 48l8 5-8 4" opacity=".7" stroke-width="1.2" pathLength="100"/>
+<path d="M130 70q15-2 27 0l1 12q-14 3-29 1z" stroke-width="2.2" pathLength="100"/>
+<path d="M136 74l9 6-9 4" stroke-width="1.2" opacity=".7" pathLength="100"/>
+<path d="M212 42q13-2 23 0l1 12q-12 3-25 1z" stroke-width="2.1" pathLength="100"/>
+<path d="M218 46l9 5-9 5" stroke-width="1.2" opacity=".7" pathLength="100"/>
+<path d="M164 82q14-2 25 0l1 11q-13 3-27 1z" stroke-width="2.2" pathLength="100"/>
+<path d="M170 86l8 5-8 4" stroke-width="1.2" opacity=".7" pathLength="100"/>
+<path d="M84 66q7-1 12 0M196 60q6-1 12 0" opacity=".35" stroke-width="1" stroke-dasharray="2 4" pathLength="100"/>
+<path d="M8 118q82-3 166-1t166 1" opacity=".4" stroke-width="1.1" pathLength="100"/>
+<path d="M30 124q8-1 16 0M56 127q6 1 12 0M152 122q8-1 16 0M308 124q7-1 14 0" opacity=".3" stroke-width="1" pathLength="100"/>
+<path d="M304 26q8-1 16 0M310 20q2 6 0 11" opacity=".55" stroke-width="1.4" pathLength="100"/>
+<circle cx="334" cy="23" r="2" fill="currentColor" stroke="none" opacity=".55"/>
+<circle cx="14" cy="28" r="1.6" fill="currentColor" stroke="none" opacity=".4"/>
+</svg>

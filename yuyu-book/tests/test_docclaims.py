@@ -155,7 +155,7 @@ class ShippedCounts(Data):
              [str(self.body_plates("zh"))]),
             # the same README sentence hides one further count as a word, and a
             # word is invisible to `\d+` — which is how twenty-six went stale
-            ("en/README.md", r"and ([a-z]+) plates inside the prose",
+            ("en/README.md", r"and ([a-z-]+) plates inside the prose",
              [body_word]),
             ("en/README.md", r"the (\d+) core terms' reasons",
              [str(self.why_terms())]),
@@ -260,7 +260,7 @@ EN_NUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
           "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11,
           "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
           "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
-          "twenty": 20}
+          "twenty": 20, "twenty-one": 21, "twenty-two": 22}
 TOOL_ROW = re.compile(r"^\|\s*([A-Za-z][A-Za-z0-9]*Tool)\s*\|")
 CAT_HEADING = re.compile(r"^## \d+\. \S")
 

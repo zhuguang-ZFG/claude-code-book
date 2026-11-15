@@ -725,6 +725,13 @@
       "lang": "zh",
       "unit": "ch01",
       "section": "ch01-工具调用tool-use的突破性意义",
+      "kind": "fence",
+      "text": "ch01-open-room"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch01",
+      "section": "ch01-工具调用tool-use的突破性意义",
       "kind": "paragraph",
       "text": "但工具调用也带来了新的工程挑战。这些挑战不再出在模型身上，而是出在系统工程上："
     },
@@ -15632,6 +15639,13 @@
     {
       "lang": "zh",
       "unit": "ch12",
+      "section": "ch12-1241-架构概览",
+      "kind": "fence",
+      "text": "ch12-bridge"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch12",
       "section": "ch12-1242-双向通信层",
       "kind": "heading",
       "text": "12.4.2 双向通信层"
@@ -23949,6 +23963,13 @@
       "section": "ch01-the-breakthrough-significance-of-tool-use",
       "kind": "paragraph",
       "text": "With tool calling, the LLM becomes an orchestrator of an open system. It can call search engines to obtain real-time information, call code interpreters to calculate, call the file system to read and write code, and call Git for version control. Each tool call is a handshake between the LLM and the real world. The friend locked in the room now has a telephone, a robotic arm, and a connection to the entire internet."
+    },
+    {
+      "lang": "en",
+      "unit": "ch01",
+      "section": "ch01-the-breakthrough-significance-of-tool-use",
+      "kind": "fence",
+      "text": "ch01-open-room"
     },
     {
       "lang": "en",
@@ -38826,6 +38847,13 @@
       "section": "ch12-1241-architecture-overview",
       "kind": "fence",
       "text": "flowchart LR\n    subgraph External[\"External World\"]\n        VS[\"VS Code<br/>Extension\"]\n        JB[\"JetBrains<br/>Plugin\"]\n        CAI[\"claude.ai<br/>Platform\"]\n    end\n\n    subgraph BridgeCore[\"Bridge Core\"]\n        subgraph Router[\"Message Routing & Dedup\"]\n            Perm[\"Permission Response<br/>Handling\"]\n            Ctrl[\"Control Request<br/>Handling\"]\n            User[\"User Message<br/>Handling\"]\n        end\n        subgraph Transport[\"Transport Layer Abstraction\"]\n            V1[\"v1: HybridTransport\"]\n            V2[\"v2: SSE + CCR\"]\n        end\n        subgraph Gate[\"Feature Gating & Permissions\"]\n            Sub[\"Subscription Check\"]\n            Token[\"Token Verification\"]\n            FF[\"Feature Flag\"]\n        end\n    end\n\n    subgraph CLI[\"CLI Internal\"]\n        REPL[\"REPL<br/>Session Management\"]\n    end\n\n    VS --> Router\n    JB --> Router\n    CAI --> Transport\n    Router --> REPL\n    Transport --> Router\n    Gate -.->|\"Check\"| Transport\n\n    classDef ext fill:#e8f4f8,stroke:#2196F3,stroke-width:1.5px,color:#333\n    classDef core fill:#fff3e0,stroke:#FF9800,stroke-width:1.5px,color:#333\n    classDef gate fill:#ffcdd2,stroke:#f44336,stroke-width:1.5px,color:#333\n    classDef cli fill:#c8e6c9,stroke:#4CAF50,stroke-width:1.5px,color:#333\n    class VS,JB,CAI ext\n    class Router,Perm,Ctrl,User,Transport,V1,V2 core\n    class Gate,Sub,Token,FF gate\n    class REPL cli"
+    },
+    {
+      "lang": "en",
+      "unit": "ch12",
+      "section": "ch12-1241-architecture-overview",
+      "kind": "fence",
+      "text": "ch12-bridge"
     },
     {
       "lang": "en",

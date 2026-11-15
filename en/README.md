@@ -136,7 +136,7 @@ Engineers new to the material can enter through the **plain-language layer**: ea
 
 An old postman closes each unit with one line of marginalia. The 20 lines live in `yuyu-book/notes.json`, and *The Keeper's Notes* collects them in reading order with links back to their chapters. A term lock requires each line to use a registered form actually present in that chapter. Chinese lines stay within 36 characters; English lines within 130, with no Han characters. The keeper does not become a second manuscript.
 
-46 hand-drawn line illustrations remain as source SVGs: a cover, 20 unit emblems, four part openers, one postman, and twenty plates inside the prose. Those figures explain relationships or states — pause versus cancel, permission gates, the memory funnel, a fork filmstrip, a state dial and a concurrency gate, among others. Apart from the two part openers now using ink PNGs, the drawings retain `currentColor` SVG and the same meaning in dark mode, reduced motion and print. The whole plain-language layer can be disabled with `--no-plain`.
+48 hand-drawn line illustrations remain as source SVGs: a cover, 20 unit emblems, four part openers, one postman, and twenty-two plates inside the prose. Those figures explain relationships or states — pause versus cancel, permission gates, the memory funnel, a fork filmstrip, a state dial, a message bridge and a concurrency gate, among others. Apart from the two part openers now using ink PNGs, the drawings retain `currentColor` SVG and the same meaning in dark mode, reduced motion and print. The whole plain-language layer can be disabled with `--no-plain`.
 
 ```bash
 npm ci                                              # diagrams need Mermaid 11.17.2

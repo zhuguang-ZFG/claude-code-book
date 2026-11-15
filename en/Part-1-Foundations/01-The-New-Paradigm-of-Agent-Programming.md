@@ -52,6 +52,10 @@ In a world without tool calling, the LLM is a closed system. Its knowledge is cu
 
 With tool calling, the LLM becomes an orchestrator of an open system. It can call search engines to obtain real-time information, call code interpreters to calculate, call the file system to read and write code, and call Git for version control. Each tool call is a handshake between the LLM and the real world. The friend locked in the room now has a telephone, a robotic arm, and a connection to the entire internet.
 
+```ill
+ch01-open-room
+```
+
 But tool calling also introduces new engineering challenges. These challenges no longer live in the model itself — they live in systems engineering:
 
 <!-- block: ch01.b-8194ef56 -->

@@ -778,6 +778,10 @@ flowchart LR
     class REPL cli
 ```
 
+```ill
+ch12-bridge
+```
+
 ### 12.4.2 Bidirectional Communication Layer
 
 Bridge's communication architecture is bidirectional, and two types of data flow run through it. This bidirectionality is what distinguishes the Bridge system from simple "log pushing" — it doesn't just forward CLI output to the outside; it can also receive external commands and execute them.
