@@ -84,9 +84,11 @@ def _plate_metrics(svg: str) -> tuple[float, float, float] | None:
     vb = _VIEWBOX_RE.search(tag.group(0))
     if not vb:
         return None
+    # the smallest label is what decides legibility: a plate whose body text
+    # sits at 15 px but whose node labels are 12 px is not a 15 px plate
     fonts = [float(x) for x in re.findall(r"font-size:\s*([0-9.]+)px", svg)]
     return (float(vb.group(3)), float(vb.group(4)),
-            max(fonts) if fonts else 16.0)
+            min(fonts) if fonts else 16.0)
 
 
 def plate_cap(svg: str) -> str | None:
