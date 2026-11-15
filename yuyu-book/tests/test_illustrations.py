@@ -21,7 +21,7 @@ if not __package__:  # direct run: see tests/__init__.py for the real bootstrap
 from yuyu_book import art, render  # noqa: E402
 from yuyu_book.core import (REPO_ROOT, BuildError, IllusBlock, Unit,  # noqa: E402
                             expected_ids, extract_illustrations, extract_mermaid,
-                            load_configs, load_unit, normalize_h1, unit_stream)
+                            load_configs, load_unit, unit_stream)
 
 ILL_PH = re.compile(r"@@ILL:([0-9a-f]{12})@@")
 LINE_SVG = ('<svg viewBox="0 0 340 156" fill="none" stroke="currentColor">'
@@ -211,6 +211,49 @@ class ShippedPlates(unittest.TestCase):
         # frames, and it says so on its own root rather than in the prose
         self.assertIn("seq", art.drawing("ch03-tool-pipeline").split(">", 1)[0])
         self.assertNotIn("seq", art.drawing("ch03-tool-bench").split(">", 1)[0])
+
+    def test_no_drawing_carries_its_own_chinese_labels(self):
+        """A plate ships unchanged in both editions, so any Chinese drawn
+        inside it lands on the English page. Words belong in the caption."""
+        han = re.compile(r"[\u3400-\u9fff]")
+        for d in (art.ART_DIR, art.OMP_ART_DIR, art.PI_ART_DIR,
+                  art.AGENT_ART_DIR):
+            for path in sorted(d.glob("*.svg")):
+                with self.subTest(drawing=path.name):
+                    text = path.read_text(encoding="utf-8")
+                    self.assertIsNone(han.search(text), path.name)
+
+    def test_every_shipped_label_clears_the_narrow_column(self):
+        """At 390 px the figure column is 285.6 px wide; a 720-unit plate is
+        drawn at 0.397x. Labels under 10 px there stop being readable, and a
+        wide plate is exactly where that regression hides."""
+        narrow_column = 285.6
+
+        def label_sizes(svg: str):
+            viewbox = re.search(r'viewBox="0 0 ([\d.]+)', svg)
+            width = float(viewbox.group(1))
+            stack: list[float | None] = []
+            for tag in re.finditer(r"</g>|<(g|text)\b[^>]*>", svg):
+                raw = tag.group(0)
+                if raw == "</g>":
+                    if stack:
+                        stack.pop()
+                    continue
+                found = re.search(r'font-size="([\d.]+)"', raw)
+                size = float(found.group(1)) if found else (stack[-1] if stack else None)
+                if tag.group(1) == "g":
+                    stack.append(size)
+                elif size:
+                    yield size * narrow_column / width
+
+        for directory in (art.ART_DIR, art.OMP_ART_DIR):
+            for path in sorted(directory.glob("*.svg")):
+                for size in label_sizes(path.read_text(encoding="utf-8")):
+                    with self.subTest(drawing=path.name):
+                        self.assertGreaterEqual(
+                            round(size, 2), 10.0,
+                            f"{path.name}: a label renders at {size:.2f}px "
+                            f"in the 390 px column")
 
     def test_an_unresolved_drawing_placeholder_is_an_error(self):
         from yuyu_book import audit

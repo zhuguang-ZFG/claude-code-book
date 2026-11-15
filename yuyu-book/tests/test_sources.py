@@ -16,7 +16,7 @@ if not __package__:  # direct run: see tests/__init__.py for the real bootstrap
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from yuyu_book import registry
-from yuyu_book.core import (BOOK_DIR, MIRRORED_FIELDS, SOURCE_REQUIRED,
+from yuyu_book.core import (MIRRORED_FIELDS, SOURCE_REQUIRED,
                             SOURCE_ID_RE, expected_ids)
 from yuyu_book.pages import KIND_GROUP
 

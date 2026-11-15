@@ -141,8 +141,8 @@ def main(argv=None):
                     samples[lang].append((f"{uid}:{no}", frags, line))
 
     if args.json:
-        print(json.dumps([{"unit": u, "lang": l,
-                           **{k: m[k] for k in TOTAL_KEYS}} for u, l, m in rows],
+        print(json.dumps([{"unit": u, "lang": lang,
+                           **{k: m[k] for k in TOTAL_KEYS}} for u, lang, m in rows],
                          ensure_ascii=False))
         return 0
 

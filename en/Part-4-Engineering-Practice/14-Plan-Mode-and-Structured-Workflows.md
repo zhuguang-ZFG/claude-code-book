@@ -38,7 +38,7 @@ For external users, the system tends to encourage using Plan Mode, suggesting th
 
 This differentiated strategy reflects different usage scenarios: external users value safety and alignment more, while internal users value efficiency and fluency more.
 
-**What would happen without Plan Mode?** Let's imagine several typical scenarios:
+**What would happen without Plan Mode?** A few typical scenarios:
 
 | Scenario | Without Plan Mode | With Plan Mode |
 |----------|-------------------|----------------|
@@ -238,7 +238,7 @@ After user approves plan, ExitPlanMode restores original mode, Agent enters exec
 
 `ExitPlanModeV2Tool` references `registerPlanVerificationHook`, and the comment beside it reveals an important design decision: verification hooks must register after context clear because context clear removes all hooks.
 
-Verification hooks must register after context clear because context clear removes all hooks. So the verification agent is an independent background Agent running in the phase after "clear context and start implementation", checking whether implementation results match the plan.
+That registration order is also why the verification agent is an independent background Agent running in the phase after "clear context and start implementation", checking whether the implementation matches the plan.
 
 **Design philosophy of verification agent.** Why do we need an independent verification agent instead of letting the execution agent check itself? This involves the cognitive bias of "self-review" -- executioners tend to judge their work using their own understanding rather than strictly comparing against the original plan text. The independent verification agent holds a snapshot of the original plan file and can review the result from a "bystander" perspective.
 
@@ -328,13 +328,13 @@ Why can't fork directly share original plan file? Because after fork, two sessio
 
 ### 14.2.3 Deep Analysis of Plan File Recovery
 
-Let's analyze more deeply the three recovery sources of `recoverPlanFromMessages`, understanding each source's design intent and applicable scenarios.
+One level down: the three recovery sources of `recoverPlanFromMessages` each serve a different intent and scenario.
 
 **Source 1: ExitPlanMode's tool_use input.** When Agent exits Plan Mode, ExitPlanMode tool's input parameters contain plan content. `normalizeToolInput` injects this content into the tool call's input. During recovery, system finds ExitPlanMode's tool_use message from message history, extracts plan content. This is the most reliable recovery source because tool_use messages are part of API protocol, not modified by normal context management operations.
 
 **Source 2: User message's planContent field.** During clear context flow (i.e., clearing context to restart implementation), system sets plan content to a special `planContent` field. This field's purpose is to preserve plan's "seed" after context clear, so newly started execution phase still knows what to do.
 
-**Source 3: Attachment message's plan_file_reference.** auto-compact is an automatic context compression mechanism (detailed in Chapter 7). When compression runs, the system knows the plan file matters and keeps a reference to it in the attachment message. This ensures even after auto-compression, you can still locate and read the plan file through its reference.
+**Source 3: Attachment message's plan_file_reference.** auto-compact is an automatic context compression mechanism (detailed in Chapter 7). When compression runs, the system knows the plan file matters and keeps a reference to it in the attachment message. Even after auto-compression, the plan file can still be located and read through that reference.
 
 The three sources rank by reliability: tool_use input most reliable (API protocol guarantee), planContent second (internal mechanism guarantee), plan_file_reference weakest (relies on auto-compact's correct recognition). Recovery logic attempts in this priority order, first successful source is final result.
 
@@ -344,13 +344,13 @@ The three sources rank by reliability: tool_use input most reliable (API protoco
 
 ### 14.3.1 WorkflowTool and Skill System
 
-The Skill system provides most of Claude Code's workflow capabilities. Skills are essentially ready-made prompt templates, triggerable via slash commands. Skill execution's core preparation function handles three things:
+The Skill system provides most of Claude Code's workflow capabilities. Skills are ready-made prompt templates, triggerable via slash commands. Skill execution's core preparation function handles three things:
 
 1. **Prompt replacement**: Replace `$ARGUMENTS` placeholder with user-provided arguments.
 2. **Permission extension**: Add allowed tools list to fork's execution context via `createGetAppStateWithAllowedTools`.
 3. **Agent selection**: Prefer agent type specified by command, otherwise fall back to `general-purpose` agent.
 
-**Design trade-offs of Skill system.** Why choose prompt templates over code-level plugins? This is the classic "flexibility vs reliability" trade-off. Code-level plugins can provide stronger functionality and better type safety, but their development and maintenance costs are higher, requiring developers to deeply understand system's internal APIs. Prompt templates allow anyone to define workflows in natural language, greatly lowering the extension barrier.
+**Design trade-offs of Skill system.** Why choose prompt templates over code-level plugins? This is the classic "flexibility vs reliability" trade-off. Code-level plugins can provide stronger functionality and better type safety, but their development and maintenance costs are higher, requiring developers to dig into the system's internal APIs. Prompt templates allow anyone to define workflows in natural language, greatly lowering the extension barrier.
 
 ```
 +-------------------+---------------------------+---------------------------+
@@ -389,7 +389,7 @@ flowchart LR
     class MCP mcpNode
 ```
 
-Claude Code's extensibility design follows the "ladder-style extension" principle: start with simplest prompt templates, as requirement complexity increases, progressively use more powerful extension mechanisms. Most users only need the Skill system, advanced users use hook commands, enterprise users integrate external tools via MCP.
+Claude Code's extensibility design follows the "ladder-style extension" principle: start with the simplest prompt templates and climb one step at a time as the requirement grows. Most users only need the Skill system, advanced users use hook commands, enterprise users integrate external tools via MCP.
 
 > **Cross-reference:** Chapter 11 "The Skill System and Plugin Architecture" analyzes the Skill system's complete architecture in detail. Chapter 8 "The Hook System -- Agent's Lifecycle Extension Points" discusses the Hook system. Chapter 12 "MCP Integration & External Protocols" introduces MCP integration.
 

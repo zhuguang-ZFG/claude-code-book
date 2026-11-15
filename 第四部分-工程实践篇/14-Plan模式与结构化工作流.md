@@ -38,7 +38,7 @@ EnterPlanModeTool 是进入规划模式的入口。它的 prompt 系统针对不
 
 这种差异化策略反映了不同的使用场景：外部用户更看重安全性和对齐，而内部用户更看重效率和流畅度。
 
-**如果没有 Plan 模式会怎样？** 我们可以想象几个典型场景：
+**如果没有 Plan 模式会怎样？** 看几个典型场景：
 
 | 场景 | 无 Plan 模式 | 有 Plan 模式 |
 |------|-------------|-------------|
@@ -238,7 +238,7 @@ Agent 通过 ExitPlanMode 呈现以下计划：
 
 `ExitPlanModeV2Tool` 引用了 `registerPlanVerificationHook`，它旁边的注释揭示了一个重要设计决策：验证钩子必须在 context clear 之后注册，因为 context clear 会清除所有 hooks。
 
-验证钩子必须在 context clear 之后注册，因为 context clear 会清除所有 hooks。所以验证智能体是一个独立的后台 Agent，运行在"清除上下文并开始实施"之后的阶段，检验实施结果是否符合计划。
+这条注册顺序也就决定了验证智能体是一个独立的后台 Agent，运行在"清除上下文并开始实施"之后的阶段，检验实施结果是否符合计划。
 
 **验证智能体的设计理念。** 为什么需要一个独立的验证智能体，而不是让执行智能体自己检查？这涉及"自我审查"的认知偏差 -- 执行者倾向于用自己的理解来评判自己的工作，而非严格按照计划原文对照。独立的验证智能体持有原始计划文件的快照，能站在"旁观者"的视角审查实施结果。
 
@@ -333,7 +333,7 @@ flowchart TD
 
 **来源二：User message 的 planContent 字段。** 在 clear context 流程中（即清除上下文重新开始实施时），系统会将计划内容设置到一个特殊的 `planContent` 字段。这个字段的目的是在上下文清除后保留计划的"种子"，新开始的执行阶段仍然知道要做什么。
 
-**来源三：Attachment message 的 plan_file_reference。** auto-compact 是一种自动压缩上下文的机制（详见第 7 章）。压缩时，系统认得计划文件重要，会在 attachment 消息里保留对它的引用。这确保了即使经过自动压缩，仍然可以通过引用定位和读取计划文件。
+**来源三：Attachment message 的 plan_file_reference。** auto-compact 是一种自动压缩上下文的机制（详见第 7 章）。压缩时，系统认得计划文件重要，会在 attachment 消息里保留对它的引用。即使经过自动压缩，仍能通过引用定位并读取计划文件。
 
 三种来源按可靠性排优先级：tool_use input 最可靠（API 协议保证），planContent 次之（内部机制保证），plan_file_reference 最弱（依赖 auto-compact 的正确识别）。恢复逻辑按此优先级依次尝试，第一个成功的来源即为最终结果。
 
@@ -343,7 +343,7 @@ flowchart TD
 
 ### 14.3.1 WorkflowTool 与 Skill 系统
 
-Claude Code 的工作流能力主要由 Skill 系统提供。Skill 本质上是预定义的 prompt 模板，可以通过 slash command 触发。Skill 执行的核心准备函数处理三件事：
+Claude Code 的工作流能力主要由 Skill 系统提供。Skill 是预定义的 prompt 模板，可以通过 slash command 触发。Skill 执行的核心准备函数处理三件事：
 
 1. **Prompt 替换**：将 `$ARGUMENTS` 占位符替换为用户提供的参数。
 2. **权限扩展**：通过 `createGetAppStateWithAllowedTools` 为 fork 的执行上下文添加允许的工具列表。
@@ -387,7 +387,7 @@ flowchart LR
     class MCP mcpNode
 ```
 
-Claude Code 的扩展性设计遵循"阶梯式扩展"原则：从最简单的 prompt 模板开始，随着需求复杂度的增加，逐步使用更强大的扩展机制。大多数用户只需要 Skill 系统，高级用户使用钩子命令，企业级用户通过 MCP 集成外部工具。
+Claude Code 的扩展性设计遵循"阶梯式扩展"原则：从最简单的 prompt 模板起步，随需求复杂度逐级上升。大多数用户只需要 Skill 系统，高级用户使用钩子命令，企业级用户通过 MCP 集成外部工具。
 
 > **交叉引用：** Skill 系统的完整架构在第 11 章"技能系统与插件架构"中有详细分析。Hook 系统在第 8 章"钩子系统 -- Agent 的生命周期扩展点"中讨论。MCP 集成在第 12 章"MCP 集成与外部协议"中介绍。
 
@@ -709,7 +709,7 @@ SleepTool 的设计看似简单（就是等待指定时间），但它在 Agent 
 
 关键的隔离设计包括：
 
-1. **文件状态缓存克隆**（`cloneFileStateCache`）：子 Agent 的文件读取不影响父 Agent 的缓存。这确保了子 Agent 的中间操作不会污染父 Agent 的文件状态视图。例如，如果子 Agent 读取了一个文件，随后该文件发生改动，父 Agent 仍然持有修改前的缓存版本，不会因为子 Agent 的读取而刷新。
+1. **文件状态缓存克隆**（`cloneFileStateCache`）：子 Agent 的文件读取不影响父 Agent 的缓存，子 Agent 的中间操作因此不会污染父 Agent 的文件状态视图。例如，如果子 Agent 读取了一个文件，随后该文件发生改动，父 Agent 仍然持有修改前的缓存版本，不会因为子 Agent 的读取而刷新。
 
 <!-- block: ch14.b-44bdc4c2 -->
 2. **独立的 AbortController**：子 Agent 能单独中止，不影响父 Agent。父 Agent 因此能一次启动多个子 Agent，需要时只取消其中某个，其他子任务照常运行。
@@ -875,7 +875,7 @@ for tool in ("Read", "Write"):
 
 ## 14.6 结构化工作流：常见翻车 / 正确做法
 
-工作流这一层的翻车，多半不是逻辑写错，而是把「想」和「做」混在一段里。下表左列是最常见的写法，右列是本章给出的做法：
+工作流这一层的翻车，根源多半在把「想」和「做」混在一段里；逻辑本身反而很少写错。下表左列是最常见的写法，右列是本章给出的做法：
 
 | 常见翻车 | 正确做法 |
 |---------|---------|

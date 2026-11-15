@@ -29,6 +29,10 @@ class Volume:
     glosses: dict
     paths: dict
     notes: dict
+    # what this volume is for, and where it sits relative to the others; the
+    # volume door prints it under the motto, which alone said nothing about
+    # reading order
+    reading: dict[str, str]
 
     def label(self, lang: str) -> str:
         return f'{self.no[lang]} · {self.title[lang]}'
@@ -43,7 +47,8 @@ def load_collection(spec: dict) -> list[Volume]:
         notes = plain.load_notes(manifest)
         volumes.append(Volume(id=raw["id"], no=raw["no"], title=raw["title"],
                               manifest=manifest, sources=sources,
-                              glosses=glosses, paths=paths, notes=notes))
+                              glosses=glosses, paths=paths, notes=notes,
+                              reading=raw.get("reading") or {}))
     if not volumes:
         raise BuildError("collected: the manifest declares no volumes")
     seen_volumes: set[str] = set()

@@ -4,12 +4,11 @@ caption and the voice track cannot drift apart.
 """
 from __future__ import annotations
 
-import json
 import re
 import subprocess
 from pathlib import Path
 
-from .model import DEFAULT_CAPTIONS, VideoError, read_json
+from .model import DEFAULT_CAPTIONS, read_json
 
 CJK = re.compile(r"[\u4e00-\u9fff]")
 SECTION_RE = re.compile(r"^##\s+")

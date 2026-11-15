@@ -205,6 +205,21 @@ ul>li::before{content:"◆";position:absolute;left:-1.15em;top:0;
 .toc-part-plain{color:var(--cinnabar);margin-top:2.4rem}
 .toc-hr{border:none;border-top:1px solid var(--line);margin:1.2rem 0}
 .toc-group{break-inside:avoid}
+/* a bound volume outranks a part: in the omnibus each volume restarts its
+   own Ⅰ–Ⅶ, so the volume row needs its own rank and its own air */
+.toc-vol{display:flex;align-items:baseline;gap:.85rem;margin:2.5rem 0 .55rem;
+  padding-top:1.05rem;border-top:2px solid var(--line-2);
+  font-family:var(--sans);font-weight:700;font-size:.95rem;letter-spacing:.24em;
+  color:var(--bronze);text-decoration:none}
+.toc-vol .tp-no{font-size:1.5rem;color:var(--cinnabar)}
+.toc-vol .tp-tx{color:var(--ink)}
+.toc-vol::after{content:"";flex:1;height:1px;background:var(--line-2);
+  transform:translateY(-.32em);order:2}
+.toc-vol .page-ref{order:3}
+.toc-vol:hover .tp-tx,.toc-vol:hover .tp-no{color:var(--cinnabar)}
+.vol-tag{font-family:var(--sans);font-weight:700;color:var(--cinnabar);
+  letter-spacing:.12em;flex:0 0 auto}
+.vol-tag::after{content:"·";margin-left:.7rem;color:var(--bronze-2)}
 .toc-row{display:flex;align-items:baseline;text-decoration:none;color:var(--ink);
   padding:.32rem 0 .3rem;font-size:.99rem;border-radius:var(--r-1)}
 .toc-row:hover{color:var(--cinnabar)}

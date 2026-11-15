@@ -102,14 +102,14 @@ Tools have a rich set of rendering methods that cover the complete UI lifecycle:
 
 Every render method returns `React.ReactNode`, so the tool system plugs straight into the React rendering pipeline. A tool's UI can then be as flexible as any React component -- you can write progress bars, color highlighting, collapsible panels, and table layouts as components.
 
-The coverage of these six rendering methods is noteworthy: it spans the entire "life cycle" of a tool call -- from start (renderToolUseMessage), to in-progress (renderToolUseProgressMessage), to success (renderToolResultMessage), rejected (renderToolUseRejectedMessage), error (renderToolUseErrorMessage), and grouped display for parallel execution (renderGroupedToolUse). This complete lifecycle coverage ensures that users always see clear, meaningful UI feedback regardless of the state.
+Six rendering methods cover every state a tool call passes through: start (renderToolUseMessage), in progress (renderToolUseProgressMessage), success (renderToolResultMessage), rejected (renderToolUseRejectedMessage), error (renderToolUseErrorMessage), and grouped display while several tools run in parallel (renderGroupedToolUse).
 
 <!-- block: ch03.b-86cde3f6 -->
 ### The buildTool Factory Function
 
 `buildTool` is the standard factory function for creating tools. It accepts a partial tool definition and automatically fills in safe default values. These defaults follow the "fail-closed" principle: security-related methods (such as concurrency safety determination, read-only determination) default to false, and tools must explicitly declare themselves safe to enjoy optimizations like concurrency.
 
-An analogy captures this design philosophy: in airport security, the default assumption is that all luggage needs inspection (fail-closed), and only specially certified passengers (such as diplomats) can use the fast track. If it were the other way around -- defaulting to pass-through and only intercepting when problems turn up (fail-open) -- then any missed check could cause a security incident.
+Airport security runs on the same principle: the default assumption is that all luggage needs inspection (fail-closed), and only specially certified passengers (such as diplomats) can use the fast track. If it were the other way around -- defaulting to pass-through and only intercepting when problems turn up (fail-open) -- then any missed check could cause a security incident.
 
 The type system, through type computation, allows developers to provide only the necessary fields, while the factory function's return type guarantees a complete tool interface. If a developer provides a particular method in the definition, the type system uses the developer-provided signature; leave one out and it falls back to the default signature. In engineering practice, simple tools need only a few lines of code, while complex tools support full customization.
 
@@ -125,7 +125,7 @@ Think of the built-in tools as one workbench: every tool on the wall does exactl
 ch03-tool-bench
 ```
 
-`getAllBaseTools()` is the registration center for all built-in tools. It returns a flat array containing all available tools in Claude Code. Through this function, we can enumerate the core tool inventory and categorize them by function:
+`getAllBaseTools()` is the registration center for all built-in tools. It returns a flat array holding every tool Claude Code can offer. Grouped by function, the core inventory reads:
 
 <!-- block: ch03.b-ebfdd1a8 -->
 | Category | Tool | Responsibility | Concurrency Safe |
@@ -146,7 +146,7 @@ ch03-tool-bench
 | Notification | BriefTool | Message sending | No |
 | Search Discovery | ToolSearchTool | Deferred tool discovery | Yes |
 
-> **Design Insight:** Note the "Concurrency Safe" column -- more than half of the tools carry a concurrency-unsafe mark. This reflects a profound engineering reality: in Agent systems, most operations have side effects (modifying files, executing commands, changing state), and operations that truly run safely in parallel (pure reads, pure searches) are the minority. The core challenge of the concurrency partitioning algorithm (Section 3.4) is to maximize parallelism within this constraint.
+> **Design Insight:** Note the "Concurrency Safe" column -- more than half of the tools carry a concurrency-unsafe mark. This reflects an engineering reality: in Agent systems, most operations have side effects (modifying files, executing commands, changing state), and operations that truly run safely in parallel (pure reads, pure searches) are the minority. The core challenge of the concurrency partitioning algorithm (Section 3.4) is to maximize parallelism within this constraint.
 
 ### Dead Code Elimination in Tool Registration
 
@@ -165,7 +165,7 @@ In the tool registration function, conditional registration uses the spread oper
 <!-- block: ch03.b-7b59e257 -->
 When the number of tools exceeds a certain threshold, Claude Code enables deferred tool discovery. The core idea is: instead of sending the complete schema of all tools in the initial system prompt, send only the tool name list and let the model load detailed schemas on demand through ToolSearchTool.
 
-To understand this with an analogy: the traditional approach is like placing the entire encyclopedia in front of the model -- even though most of the content won't be used in the current conversation. Deferred discovery is like giving the model a table of contents index -- the model knows which tools are available and opens only the page it needs to see the detailed parameters.
+The traditional approach sets the whole encyclopedia in front of the model, even the parts this conversation will never use. Deferred discovery hands over a table of contents instead: the model knows what exists and opens only the page whose detailed parameters it needs.
 
 ToolSearchTool's implementation follows the standard factory function pattern. The deferral rule reads: mark a tool always-loaded and it never defers; MCP tools always defer; and the tool search tool never defers itself.
 
@@ -192,7 +192,7 @@ flowchart LR
     class api result
 ```
 
-1. **Mode filtering**: Filters tools based on the mode. Simple mode only retains Bash, Read, and Edit; normal mode excludes special tools. This modularized tool filtering ensures that in constrained environments, the Agent can only use the most basic tool set.
+1. **Mode filtering**: Filters tools based on the mode. Simple mode only retains Bash, Read, and Edit; normal mode excludes special tools. In a constrained environment, that leaves the Agent only the most basic tool set.
 2. **Deny rule filtering**: Removes tools matched by blanket deny rules.
 3. **Enabled status check**: Filters out disabled tools.
 4. **Tool pool assembly**: Merges built-in tools with MCP tools, sorts by name and deduplicates. The purpose of sorting is to ensure prompt cache stability -- changes in tool order would cause cache invalidation.
@@ -224,7 +224,7 @@ flowchart LR
 
 - **Error propagation**: When BashTool execution fails, it cancels all parallel Bash tool calls. This is because Bash commands often have implicit dependency chains (e.g., after `mkdir` fails, subsequent commands are meaningless). The rule here is fail fast -- rather than letting subsequent commands continue executing in a corrupted environment and producing more errors, it is better to immediately stop the entire batch.
 
-- **Interruption behavior**: BashTool can customize its behavior when the user interrupts. Some long-running commands (such as test suites) may choose to block rather than cancel. This design reflects a nuanced understanding of user intent: interrupting a running `npm install` should stop the command immediately (the user changed their mind), but interrupting a test suite might just mean the user wants to see current progress (the results are still valuable once tests complete).
+- **Interruption behavior**: BashTool can customize its behavior when the user interrupts. Some long-running commands (such as test suites) may choose to block rather than cancel. This design tells two kinds of interruption apart: interrupting a running `npm install` should stop the command immediately (the user changed their mind), but interrupting a test suite might just mean the user wants to see current progress (the results are still valuable once tests complete).
 
 - **Semantic analysis**: BashTool parses each command's AST and analyzes its semantics, determining whether it is a search/read operation (`isSearchOrReadCommand`), used for UI collapsible display. The tool here is more than a pipe handing the command to the shell: it reads what the command does, then decides how the interface folds it away.
 
@@ -234,7 +234,7 @@ flowchart LR
 
 These three tools constitute Claude Code's complete file operation capability set. Their division of labor reflects the classic CRUD pattern of database operations (Create/Read/Update), except for the absence of Delete -- this is a deliberate safety decision, because "deleting files" is an irreversible operation that normally goes through BashTool's `rm` command, which triggers stricter permission checks.
 
-**FileReadTool** is responsible for reading file contents. It maintains a file state cache for tracking which files it has read, avoiding duplicate memory attachment injection. This caching mechanism is key to performance optimization -- if tools read the same file multiple times (in different tool call rounds), the cache triggers actual file I/O only on the first read, and subsequent reads use cached results directly.
+**FileReadTool** is responsible for reading file contents. It maintains a file state cache for tracking which files it has read, avoiding duplicate memory attachment injection. The cache is what keeps this cheap: however many rounds read the same file, only the first triggers real file I/O, and later reads are served from the cache.
 
 **FileEditTool** is responsible for precise file editing. It uses an `old_string -> new_string` exact replacement pattern rather than line number ranges, ensuring that edit operations remain correct even when the file changes. This choice deserves deeper analysis:
 
@@ -370,14 +370,14 @@ flowchart LR
 
 An environment variable sets the concurrency limit, which defaults to 10.
 
-> **Design Insight:** Why can't Read(c.ts) go in the same batch as Bash(ls)? Because Bash commands may have side effects -- they might create new files, modify file contents, or change directory structures. If the read runs while Bash is executing, Read might get either the old data from before execution or the new data from after execution, leading to unpredictable behavior. Serial execution ensures that Read(c.ts) sees the deterministic state after Bash(ls) has completed.
+> **Design Insight:** Why can't Read(c.ts) go in the same batch as Bash(ls)? Because Bash commands may have side effects -- they might create new files, modify file contents, or change directory structures. If the read runs while Bash is executing, Read might get either the old data from before execution or the new data from after execution, leading to unpredictable behavior. Serial execution means Read(c.ts) sees the settled state after Bash(ls) finishes.
 
 ### StreamingToolExecutor Streaming Execution
 
 <!-- block: ch03.b-a24e494e -->
 `StreamingToolExecutor` is an enhanced version of `runTools` that does not wait for the model's response to fully complete before starting tool execution -- instead, it immediately initiates execution as each tool call block arrives in the stream.
 
-The impact of this design is significant. Suppose the model requests five tool calls in one response, and each tool takes 1 second to execute. In the traditional mode, the model takes 2 seconds to generate the complete response (streaming output time), then batch tool execution takes 5 seconds, for a total of 7 seconds. In streaming execution mode, the first tool starts executing about 0.4 seconds after the model begins outputting (the time to generate the first tool_use block), and subsequent tools start one after another, for a total of about 3 seconds -- a speed improvement of over 50%.
+The gain is arithmetic. Suppose the model requests five tool calls in one response, and each tool takes 1 second to execute. In the traditional mode, the model takes 2 seconds to generate the complete response (streaming output time), then batch tool execution takes 5 seconds, for a total of 7 seconds. In streaming execution mode, the first tool starts executing about 0.4 seconds after the model begins outputting (the time to generate the first tool_use block), and subsequent tools start one after another, for a total of about 3 seconds -- a speed improvement of over 50%.
 
 Each tracked tool has a four-stage state machine:
 
@@ -516,7 +516,7 @@ print(dispatch("Write", {"path": "a.txt"}))
 2. **Dead code elimination ensures build security**: Environment variables and feature flags decide which modules get imported, so internal tools never reach an external build. This is an important engineering practice for Agent systems in multi-tenant environments. Combined with the "progressive capability extension" principle from Chapter 1, dead code elimination is what lets different product forms share the same codebase.
 
 <!-- block: ch03.b-5770a19f -->
-3. **Concurrency partitioning is key to performance**: The `isConcurrencySafe` determination decides whether tools can execute in parallel. Correctly marking read-only tools as concurrency-safe allows the Agent to simultaneously execute multiple search/read operations in a single turn, dramatically reducing response time. But the cost of incorrect marking is data races and unpredictable behavior -- this is a design decision that requires careful consideration.
+3. **Concurrency partitioning is key to performance**: The `isConcurrencySafe` determination decides whether tools can execute in parallel. Correctly marking read-only tools as concurrency-safe allows the Agent to simultaneously execute multiple search/read operations in a single turn, dramatically reducing response time. But the cost of a wrong mark is data races and unpredictable behavior, which deserves careful weighing.
 
 <!-- block: ch03.b-30fb6a7b -->
 4. **StreamingToolExecutor is a zero-wait tool scheduler**: It starts executing tools while the model is still generating tool_use blocks, and a four-stage state machine plus ordering guarantees let it run tools in parallel without losing order. It is where the "async streaming first" design principle lands in the tool system.

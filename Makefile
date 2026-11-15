@@ -13,12 +13,13 @@ PYTHON     ?= python
 BOOK_LANG  ?= both
 BOOKCTL    := $(PYTHON) scripts/bookctl.py
 
-.PHONY: help doctor check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
+.PHONY: help doctor lint check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
 .PHONY: book-agents book-opencode-all book-deepseek-all book-hermes-all book-codex-all
 .PHONY: book-prompt-all book-kimi-all book-collected package-prompt
 
 help:
 	@echo "make doctor     environment report (python/node/browser/font/deps)"
+	@echo "make lint       ruff static check (dev-only dependency)"
 	@echo "make check      fast checks: source build, tests, content, mermaid"
 	@echo "make check-full fast + rendered HTML + both PDF editions"
 	@echo "make book       both HTML editions (BOOK_LANG=zh|en|both, into yuyu-book/dist/)"
@@ -37,6 +38,12 @@ help:
 
 doctor:
 	$(BOOKCTL) doctor
+
+# Static analysis only: needs ruff on PATH (`pip install ruff`), which the book
+# build itself does not. The rules live in pyproject.toml; E402/E501 are off
+# because scripts bootstrap sys.path and the prose is Chinese.
+lint:
+	$(PYTHON) -m ruff check yuyu-book scripts video tests
 
 check: check-fast
 

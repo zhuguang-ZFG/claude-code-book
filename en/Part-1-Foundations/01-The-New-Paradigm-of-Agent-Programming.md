@@ -12,17 +12,17 @@ By the end of this chapter, you can:
 - Draw the five core modules on a blank page, arrows included, and place Bun, React + Ink and Zod on the right layer
 - Run `/doctor` once, match each self-check item back to one of those modules, and name the ones that stop the agent from working at all
 
-**Difficulty:** A Start-level chapter: 1.1 reads with no background; 1.2 and 1.3 are Core and reward a slow pass; the hands-on exercise sits at the Advanced tier -- skip it on a first read and come back for it.
+**Difficulty:** A Start-level chapter: 1.1 reads with no background; 1.2 and 1.3 are Core and reward a slow pass; the hands-on exercise sits at the Advanced tier, better skipped on a first read and picked up later.
 
 ---
 
 ## 1.1 From Chatbot to Agent: A Paradigm Shift in Software Engineering
 
-Keep one crash in mind first. You write a fifty-line agent and the demo runs fine. Three days later you ask it to read the logs of three services at once, and it feeds the output of one command into the next; you press Ctrl+C, the child process survives and keeps writing to files; the model returns a parameter name you never defined and the program throws. None of that is a dumb model -- it is nobody's job in those fifty lines. This chapter is about who takes the job.
+Keep one crash in mind first. You write a fifty-line agent and the demo runs fine. Three days later you ask it to read the logs of three services at once, and it feeds the output of one command into the next; you press Ctrl+C, the child process survives and keeps writing to files; the model returns a parameter name you never defined and the program throws. None of that is a dumb model. It is nobody's job in those fifty lines. This chapter is about who takes the job.
 
 ### LLM as a Reasoning Engine vs. LLM as a Conversational Partner
 
-In 2023, most developers interacted with LLMs like this: open a web page, enter a prompt, and receive a text response. The LLM's role was "conversational partner" -- it understood your question, generated a seemingly reasonable answer, and then waited for your next question. The entire interaction was synchronous, single-turn, and purely text-based.
+In 2023, most developers interacted with LLMs like this: open a web page, enter a prompt, and receive a text response. The LLM's role was "conversational partner": it understood your question, generated a seemingly reasonable answer, and then waited for your next question. The entire interaction was synchronous, single-turn, and purely text-based.
 
 We can describe this mode with a simple model:
 
@@ -37,18 +37,18 @@ sequenceDiagram
     Human Receive->>Human Send: Manually transport results
 ```
 
-This mode only goes so far: the LLM can only "speak," not "act." It cannot read your file system, execute test commands, create Git branches, or autonomously adjust its strategy when encountering errors. Every interaction with the outside world requires a human intermediary to manually complete -- copying code to the editor, switching to the terminal to run commands, and then copying the output back to the dialog box. This "human glue" pattern is slow and error-prone.
+This mode only goes so far: the LLM can only "speak," not "act." It cannot read your file system, execute test commands, create Git branches, or autonomously adjust its strategy when encountering errors. Every interaction with the outside world requires a human intermediary to manually complete it: copying code to the editor, switching to the terminal to run commands, and then copying the output back to the dialog box. This "human glue" pattern is slow and error-prone.
 
 In 2024, a fundamental cognitive shift began to spread: **the true value of LLMs lies not in generating text, but in serving as a reasoning engine to orchestrate tool calls.** When the LLM is no longer merely "the one answering questions" but becomes "the decision hub that determines what tools to call, what parameters to pass, and how to process the returned results," its capability boundaries swung wide open.
 
-Walk through “read `package.json` and tell me how to run the tests” and the division becomes clear. The model first produces a read request naming a tool and a file path; the read has not happened yet. The harness validates the arguments, checks permission, invokes the local reader, and includes the file contents as a tool result in the next model request. Only then can the model explain the test script. If the harness denies permission, the result contains no file contents, and a guess must not become a claim to have read the file. The model proposes the next step; the runtime performs the permitted operation and returns what actually happened.
+Walk through “read `package.json` and tell me how to run the tests” and the division becomes clear. The model first produces a read request naming a tool and a file path; the read has not happened yet. The runtime validates the arguments, checks permission, invokes the local reader, and passes the file contents back as a tool result in the next model request. Only then can the model explain the test script. If the request is denied, no file contents come back, and the model cannot turn its guess into a claim to have read the file. The model proposes the next step; the runtime performs the permitted operation and returns what actually happened.
 
 ### The Breakthrough Significance of Tool Use
 
 The breakthrough significance of tool calling lies in how it redefines the boundary between LLMs and the outside world:
 
 <!-- block: ch01.b-6cc731b7 -->
-In a world without tool calling, the LLM is a closed system. Its knowledge is cut off at the last day of its training data, its reasoning never leaves the context window, and its output can only be human-readable text. It is as if you have an extremely knowledgeable friend locked in a room with no windows and no telephone -- they know how to diagnose diseases but cannot use a stethoscope; they know how to repair cars but cannot pick up a wrench.
+In a world without tool calling, the LLM is a closed system. Its knowledge is cut off at the last day of its training data, its reasoning never leaves the context window, and its output can only be human-readable text. It is as if you have an extremely knowledgeable friend locked in a room with no windows and no telephone. They know how to diagnose diseases but cannot use a stethoscope; they know how to repair cars but cannot pick up a wrench.
 
 With tool calling, the LLM becomes an orchestrator of an open system. It can call search engines to obtain real-time information, call code interpreters to calculate, call the file system to read and write code, and call Git for version control. Each tool call is a handshake between the LLM and the real world. The friend locked in the room now has a telephone, a robotic arm, and a connection to the entire internet.
 
@@ -108,7 +108,7 @@ The problem with this approach is that it assumes an idealized world: API calls 
 
 2. **Permission Control**: The LLM might request `rm -rf /`, which you obviously cannot allow. At which layer should the permission system intervene? If you intercept uniformly at the outer layer, you cannot handle tool-specific permission logic (such as risk assessment for Bash commands); if you check inside each tool, you get duplicated code and inconsistent permission policies. How do you balance security and efficiency?
 
-3. **Context Management**: As the conversation progresses, the context window fills up. When should the harness trigger context compression? How can the compression strategy ensure that critical information is not lost? How does the compressed context coordinate with the caching system? A poor compression strategy may cause the Agent to "forget" critical information, leading to incorrect decisions.
+3. **Context Management**: As the conversation progresses, the context window fills up. When should compression kick in? How can the compression strategy ensure that critical information is not lost? How does the compressed context coordinate with the caching system? A poor compression strategy may cause the Agent to "forget" critical information, leading to incorrect decisions.
 
 4. **Error Recovery**: Tool execution may fail, API calls may time out, and the LLM's output may not conform to the expected format. Each error scenario needs a corresponding recovery strategy. Without a unified error recovery framework, you must handle each error individually, and the code will quickly bloat to an unmaintainable level.
 
@@ -120,7 +120,7 @@ The problem with this approach is that it assumes an idealized world: API calls 
 <!-- block: ch01.b-4121f128 -->
 Each of these issues constitutes an independent engineering challenge. The core value of Agent Harness is providing a unified framework to systematically solve all of these problems.
 
-To use a more vivid analogy to summarize the difference between the two: a simple wrapper is like adding a remote control to a car -- you can make it go forward and backward, but there's no power steering, no braking system, no airbags. Agent Harness is designing an entire safe, reliable, and extensible autonomous vehicle -- not just an engine, but also a suspension system, a braking system, safety restraint systems, and a diagnostic system.
+To use a more vivid analogy to summarize the difference between the two: a simple wrapper is like adding a remote control to a car, so you can make it go forward and backward, but there is no power steering, no braking system, no airbags. Agent Harness is designing an entire safe, reliable, and extensible autonomous vehicle -- not just an engine, but also a suspension system, a braking system, safety restraint systems, and a diagnostic system.
 
 <!-- block: ch01.b-c31f0551 -->
 Summarized in one sentence: **Agent Harness is a runtime framework built around an LLM that elevates the LLM from a text generator to an autonomous agent that can deal with the outside world safely, reliably, and efficiently.**
@@ -140,11 +140,11 @@ Here is how those fifty lines usually fail, in the four shapes we see most often
 
 ## 1.2 Claude Code Panoramic Architecture Overview
 
-Before diving into design philosophy, let's first examine Claude Code's codebase from a macro perspective. The numbers themselves contain a wealth of information.
+Design philosophy comes later. First pull the camera back and look at how large Claude Code's codebase actually is. The numbers speak for themselves.
 
 ### AI Programming Tools Evolution Timeline
 
-Before analyzing Claude Code's architecture, let's widen our perspective and look at the evolution of AI programming tools. Understanding this timeline helps us see where Claude Code sits in the technological lineage:
+Before analyzing Claude Code's architecture, widen the view and look at how AI programming tools got here. This timeline shows where Claude Code sits in the lineage:
 
 ```mermaid
 flowchart TD
@@ -178,9 +178,9 @@ Claude Code's `src` directory contains 1,884 TypeScript files totaling 512,664 l
 
 For a terminal tool, this size is quite significant. For comparison, VS Code's core codebase is approximately 500,000 lines of TypeScript, and Claude Code as a command-line tool has reached a similar scale. This indicates that the engineering complexity of Agent Harness is no less than that of a complete editor framework.
 
-But this does not make the code bloated. On the contrary, Claude Code's code organization exhibits a high degree of modularity: each tool is an independent module, each subsystem has clear boundaries, and the division of responsibilities follows the single responsibility principle. This level of modularity is a key guarantee of Agent Harness maintainability.
+But this does not make the code bloated. On the contrary, Claude Code's code organization exhibits a high degree of modularity: each tool is an independent module, each subsystem has clear boundaries, and the division of responsibilities follows the single responsibility principle. This level of modularity is the main reason the runtime stays maintainable.
 
-Let's use an architectural overview diagram to visually illustrate Claude Code's module organization:
+One overview diagram shows Claude Code's module layout faster than a paragraph can:
 
 ```mermaid
 flowchart TD
@@ -244,7 +244,7 @@ We can summarize Claude Code's core architecture with five key modules. Understa
 This is the entry point for the entire application, bearing three core responsibilities:
 
 <!-- block: ch01.b-2578e9e5 -->
-1. **Startup Optimization**: Before importing all modules, performance probes record startup performance milestones; the harness launches MDM (Mobile Device Management) configuration reads and macOS Keychain prefetching in parallel, overlapping originally serial I/O operations.
+1. **Startup Optimization**: Before importing all modules, performance probes record startup milestones; startup also kicks off MDM (Mobile Device Management) configuration reads and macOS Keychain prefetching in parallel, overlapping what would otherwise be serial I/O.
 2. **CLI Parsing**: Uses Commander.js to define the command-line interface, handling model selection, allowed tool lists, permission modes, and other parameters.
 3. **React/Ink Initialization**: Creates a React rendering context, mounts the root component, and starts the interactive REPL (Read-Eval-Print Loop).
 
@@ -305,7 +305,7 @@ The core function in the tool registration module returns the complete list of a
 2. **Lazy Loading**: Some tools use dynamic imports instead of static imports to avoid circular dependencies and reduce startup time.
 3. **Tool Filtering**: The tool filtering function, before sending the tool list to the LLM, filters out forbidden tools based on the permission context, ensuring the model cannot even "see" tools it should not use.
 
-Conditional registration and lazy loading amount to loading on demand. In Agent systems, the number of tools can reach dozens or even hundreds (especially after MCP protocol extension). If all tools loaded at startup, it would not only slow down startup but also potentially cause initialization errors due to circular dependencies. Claude Code therefore loads into memory only the tools it actually needs.
+Conditional registration and lazy loading amount to loading on demand. In Agent systems the tool count can reach dozens or even hundreds (especially after MCP protocol extension); loading every tool at startup both slows startup and can trigger initialization errors from circular dependencies. Claude Code therefore loads into memory only the tools it actually needs.
 
 > **Cross-Reference:** the same layering assembled a different way -- see Chapter 3 of the omp volume, "The Overall Architecture of omp".
 

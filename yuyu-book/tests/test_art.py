@@ -15,8 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from yuyu_book import art, registry  # noqa: E402
-from yuyu_book.core import (BOOK_DIR, BuildError,  # noqa: E402
-                            unit_stream)
+from yuyu_book.core import BuildError, unit_stream  # noqa: E402
 
 MANIFEST = registry.load("manifest.json")
 UNIT_IDS = [u["id"] for u, _kind, _part in unit_stream(MANIFEST)]
@@ -73,6 +72,44 @@ class ShippedDrawings(unittest.TestCase):
             found = set(re.findall(r"\bid=\"([^\"]+)\"", path.read_text("utf-8")))
             self.assertFalse(found, f"{path.name} declares {sorted(found)}")
             ids |= found
+
+    @unittest.skipUnless(art.ART_DIR.exists(), "no illustrations yet")
+    def test_every_body_drawing_is_named_or_hidden(self):
+        """A body drawing is announced once: by its caption, or by itself.
+
+        The figure already carries a `<figcaption>`; an SVG root with neither a
+        name nor `aria-hidden` becomes an extra "graphic" stop that reads as
+        unlabelled noise on the way to the caption it repeats.
+        """
+        for path in sorted(art.ART_DIR.glob("*.svg")):
+            root = re.match(r"<svg\b[^>]*>", art.drawing(path.stem))
+            self.assertIsNotNone(root, path.name)
+            tag = root.group(0)
+            named = bool(re.search(r'\b(?:aria-label|aria-labelledby)="[^"\s]', tag)
+                         or "<title" in art.drawing(path.stem))
+            hidden = re.search(r'aria-hidden="true"', tag)
+            self.assertTrue(named or hidden, f"{path.name} is unnamed and unhidden: {tag}")
+            self.assertFalse(named and hidden, f"{path.name} is both named and hidden")
+
+    def test_a_drawing_that_names_itself_keeps_its_name(self):
+        out = art.mark_decorative(
+            '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A cancels">'
+            '</svg>')
+        self.assertIn('role="img"', out)
+        self.assertIn('aria-label="A cancels"', out)
+        self.assertNotIn("aria-hidden", out)
+        titled = art.mark_decorative("<svg viewBox=\"0 0 8 8\"><title>A cancels</title></svg>")
+        self.assertNotIn("aria-hidden", titled)
+
+    def test_role_alone_does_not_name_a_drawing(self):
+        out = art.mark_decorative('<svg role="img" viewBox="0 0 8 8"></svg>')
+        self.assertIn('aria-hidden="true"', out)
+        self.assertEqual(out.count("aria-hidden"), 1)
+
+    def test_an_explicit_show_becomes_a_hide(self):
+        out = art.mark_decorative('<svg aria-hidden="false" viewBox="0 0 8 8"></svg>')
+        self.assertIn('aria-hidden="true"', out)
+        self.assertEqual(out.count("aria-hidden"), 1)
 
     def test_agent_volumes_have_distinct_offline_covers(self):
         drawings = []

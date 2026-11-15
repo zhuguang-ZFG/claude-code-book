@@ -195,7 +195,7 @@ figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
 }
 /* the frame numbers of a sequential plate: small, in the margin, so the
    drawing stays the thing you look at */
-.illu-seq .frame-no{font-family:var(--sans);font-size:9px;
+.illu-seq .frame-no{font-family:var(--sans);font-size:13px;
   fill:currentColor;opacity:.5;stroke:none}
 figcaption{margin:.7rem auto 0;max-width:var(--measure);font-family:var(--sans);
   font-size:.83rem;color:var(--ink-2);line-height:1.7;

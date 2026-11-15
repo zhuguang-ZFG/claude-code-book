@@ -25,7 +25,7 @@ This is like how a construction site operates: the project manager (Coordinator)
 ### The coordinatorMode Core Module
 
 <!-- block: ch10.b-6d4ec9b2 -->
-The core code of the Coordinator pattern resides in the coordinator module. Although this module is only about 370 lines long, it defines the entire interaction model for multi-agent collaboration. The conciseness of the code is not accidental -- the coordinator's responsibility is "orchestration" rather than "execution," and it needs to stay lean to avoid becoming a performance bottleneck or single point of failure in the system.
+The core code of the Coordinator pattern resides in the coordinator module. Although this module is only about 370 lines long, it defines the entire interaction model for multi-agent collaboration. The coordinator's responsibility is "orchestration" rather than "execution," so the code stays short, keeping it from becoming a performance bottleneck or single point of failure in the system.
 
 The module's entry point is the `isCoordinatorMode()` function, which reveals the Coordinator pattern's dual gating mechanism:
 
@@ -271,7 +271,7 @@ graph TD
     style WC fill:#f39c12,stroke:#d68910,color:#fff
 ```
 
-The message sending tool's intelligent routing mechanism is particularly noteworthy: when the coordinator sends a message to a running worker, the system queues the message for the next round of tool invocation; when sending to a stopped worker, the system automatically resumes that worker and delivers the message as a new prompt. Stop-resume lets the coordinator manage workers' lifecycles without breaking stride.
+The message sending tool's intelligent routing mechanism branches two ways: when the coordinator sends a message to a running worker, the system queues the message for the next round of tool invocation; when sending to a stopped worker, the system automatically resumes that worker and delivers the message as a new prompt. Stop-resume lets the coordinator manage workers' lifecycles without breaking stride.
 
 Successful delivery and task completion are different events. After sending an update to a running worker, the coordinator cannot assume the worker has already adopted it; the message still awaits processing. If A needs B's result to continue while B waits for A to deliver a file, neither task will finish just by waiting longer. The coordinator has to break the cycle: settle the common interface, have one side deliver an independent result first, or assign the dependent edits in sequence.
 
@@ -467,7 +467,7 @@ When workers complete, they deliver results to the coordinator in `<task-notific
 </task-notification>
 ```
 
-This format goes inside user-role messages. The coordinator identifies `<task-notification>` tags to distinguish genuine user messages from workers' result reports. This design choice means the coordinator needs explicit instructions to differentiate message types, which is why the system prompt repeatedly emphasizes "Worker results are internal signals, not conversation partners."
+This format goes inside user-role messages. The coordinator identifies `<task-notification>` tags to distinguish genuine user messages from workers' result reports, so the system prompt repeatedly emphasizes "Worker results are internal signals, not conversation partners."
 
 > **Why XML format instead of JSON?**
 >
@@ -478,7 +478,7 @@ This format goes inside user-role messages. The coordinator identifies `<task-no
 ## 10.5 Complete Case Study: From Requirements to Delivery
 
 <!-- block: ch10.b-a893bbfb -->
-Let's understand the Coordinator pattern's end-to-end workflow through a complete case study.
+A complete case study shows the Coordinator pattern's end-to-end run: requirements in, delivery out.
 
 ### Scenario: Adding a User Notification System to a Web Application
 
@@ -756,7 +756,7 @@ for worker, assigned in workers.items():
 
 6. **The four-phase workflow** (Research -> Synthesis -> Implementation -> Verification) provides a structured task execution pattern. The core constraint is that the coordinator must digest research findings before writing the implementation spec; delegating understanding is not allowed.
 
-7. **Fault recovery** is a built-in capability of the Coordinator pattern. Through the status field in task notifications, partial results in the Scratchpad, and the coordinator's reassignment capability, the system can gracefully handle worker failures and partial completion.
+7. **Fault recovery** is a built-in capability of the Coordinator pattern. Through the status field in task notifications, partial results in the Scratchpad, and the coordinator's reassignment capability, one failed worker or one half-finished phase does not stall the whole pipeline.
 
 8. **Pattern selection**: Coordinator is suitable for coordinated, complex multi-step tasks, while Fork is suitable for independent parallel search tasks. The two are mutually exclusive and cannot be used simultaneously. Understanding the strengths and limitations of each is key to making the right choice.
 

@@ -17,7 +17,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from .. import mermaid, plain, render, style_css
+from .. import art, mermaid, plain, render, style_css
 from ..app import _article
 from ..core import load_configs, load_unit, read_text, unit_stream
 from ..labels import esc
@@ -180,8 +180,7 @@ def page_for(model, lang: str, body: str | None = None) -> str:
     labels = LABELS[lang]
     unit = model.unit(lang, CHAPTER)
     html_lang = "zh-CN" if lang == "zh" else "en"
-    mark = (BOOK_DIR / "illustrations" / f"{CHAPTER}.svg").read_text(
-        encoding="utf-8").strip()
+    mark = art.inline_svg(BOOK_DIR / "illustrations" / f"{CHAPTER}.svg")
     recap_items = "\n".join(f"    <li>{esc(item)}</li>"
                             for item in recap(unit, lang))
     return (PAGE.replace("@@HTML_LANG@@", html_lang)

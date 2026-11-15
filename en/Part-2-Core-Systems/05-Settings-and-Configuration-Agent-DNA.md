@@ -106,7 +106,7 @@ The merge rules look simple, but these are the spots where configurations usuall
 | Expect `projectSettings` to lock security items | Security-sensitive checks deliberately exclude `projectSettings`; to lock, use `policySettings` (5.2) |
 | Assume `policySettings` deep-merges with other layers | It is "first non-empty source wins" -- no merging; enterprise policy ships whole (5.1.3) |
 
-Let's demonstrate the merge process with a complete example:
+A complete example walks the merge process:
 
 ```
 Scenario: A Frontend Team's Project Configuration
@@ -638,12 +638,12 @@ print(json.dumps(merged, sort_keys=True))
 
 ## Key Takeaways
 
-1. **Six-Layer Priority Chain**: pluginSettings -> userSettings -> projectSettings -> localSettings -> flagSettings -> policySettings, where the latter overrides the former. Understanding the role of each layer is the foundation for designing sound configuration strategies.
-2. **Merge Strategy**: Arrays merge by concatenation and deduplication, objects merge deeply, and scalars override directly. The array concatenation design ensures permission rules only ever increase; merging never accidentally removes them.
+1. **Six-Layer Priority Chain**: pluginSettings -> userSettings -> projectSettings -> localSettings -> flagSettings -> policySettings, where the latter overrides the former.
+2. **Merge Strategy**: Arrays merge by concatenation and deduplication, objects merge deeply, and scalars override directly. The array concatenation design ensures permission rules only ever increase.
 3. **Security Boundaries**: All security-sensitive checks exclude `projectSettings` to prevent supply chain attacks from malicious repositories. This is a direct manifestation of the "decreasing trust radius" principle.
 4. **Special Merge for the Policy Layer**: policySettings uses "first non-empty source wins" instead of deep merge, ensuring the determinism and auditability of enterprise policies.
 5. **Dual Feature Flags**: `feature()` provides compile-time dead code elimination (zero runtime overhead), while GrowthBook provides runtime experiment control (flexible but cache-dependent). The choice between the two depends on whether the feature needs dynamic adjustment after release.
 6. **Immutable State**: The Store uses `Object.is` reference comparison to enforce immutable update patterns, combined with React's `useSyncExternalStore` for fine-grained subscription rendering. 34 lines of code cover everything state management needs.
-7. **DeepImmutable Types**: Makes the type system refuse direct state modification, keeping the right thing easy and the wrong thing impossible.
+7. **DeepImmutable Types**: Makes the type system refuse direct state modification.
 
 > **Three sentences to keep:** ①The six layers never delete one another; they merge by type -- arrays only grow, scalars let the later writer win. ②Because the merge rules stay predictable, the security checks can shut projectSettings out wholesale and block repository-level supply-chain attacks. ③When you set policy for a team, hold one line: each layer carries only what belongs to it; change one configuration entry, and the whole station changes its ways.

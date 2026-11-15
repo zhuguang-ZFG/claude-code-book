@@ -36,7 +36,14 @@ def pages(pdf: Path) -> int:
         doc.close()
 
 
-def main(dist: Path) -> int:
+def main(dist: Path, sizes_only: bool = False) -> int:
+    """Compare the READMEs to `dist`.
+
+    `sizes_only` drops the page counts, which follow the installed CJK face: a
+    Windows build with Microsoft YaHei runs longer than CI's Noto CJK, so a
+    local runner can only hold the HTML sizes, the one claim that is the same
+    on every machine.
+    """
     bad, missing = [], []
     for doc, pdf_rx, html_rx in CLAIMS:
         readme = (ROOT / doc).read_text(encoding="utf-8")
@@ -45,6 +52,8 @@ def main(dist: Path) -> int:
         if not m:
             missing.append(f"{doc}: no PDF page claim matches — the wording "
                            "changed; re-pin the pattern in this script")
+        elif sizes_only:
+            print(f"  {doc}: page counts not measured (font-dependent)")
         else:
             for lang, claimed in (("zh", int(m.group(1))),
                                   ("en", int(m.group(2)))):
@@ -90,4 +99,6 @@ def main(dist: Path) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "yuyu-book" / "dist"))
+    flags = [a for a in sys.argv[1:] if a != "--sizes-only"]
+    dist = Path(flags[0]) if flags else ROOT / "yuyu-book" / "dist"
+    sys.exit(main(dist, sizes_only="--sizes-only" in sys.argv[1:]))

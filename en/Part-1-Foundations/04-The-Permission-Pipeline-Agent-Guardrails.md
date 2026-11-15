@@ -144,7 +144,7 @@ The `PermissionResult` returned by `checkPermissions` has four behaviors:
 
 `passthrough` is a unique design. When a tool has no special permission logic, it can return `passthrough` so the pipeline keeps flowing. In subsequent steps, the pipeline automatically turns `passthrough` into `ask`, accompanied by a permission request message.
 
-> **Design Insight:** Why is `passthrough` needed instead of having tools without special permission logic return `ask` directly? The difference lies in "intent" -- `passthrough` means "I have no opinion, let subsequent stages decide," while `ask` means "I believe this operation requires user confirmation." If a subsequent allow rule matches, `passthrough` will be overridden to `allow`, but `ask` will not be overridden. This subtle difference produces different behaviors in specific scenarios.
+> **Design Insight:** Why is `passthrough` needed instead of having tools without special permission logic return `ask` directly? The difference lies in "intent" -- `passthrough` means "I have no opinion, let subsequent stages decide," while `ask` means "I believe this operation requires user confirmation." If a subsequent allow rule matches, `passthrough` will be overridden to `allow`, but `ask` will not be overridden.
 
 <!-- block: ch04.b-20fe98c8 -->
 ### 4.1.4 Stage 4: Interactive Prompt -- User Confirmation
@@ -179,7 +179,7 @@ sequenceDiagram
     end
 ```
 
-> **Best Practice:** In enterprise environments, if you want to reduce the disruption of frequent permission prompts seen by users, you can combine three strategies: (1) Pre-configure allow rules in the project configuration to cover common operations; (2) Use auto mode to let the classifier automatically handle common requests; (3) Configure Hook scripts to implement custom auto-approval logic. Stack all three and they cover every scenario from simple to complex.
+> **Best Practice:** In enterprise environments, if you want to reduce the disruption of frequent permission prompts seen by users, you can combine three strategies: (1) Pre-configure allow rules in the project configuration to cover common operations; (2) Use auto mode to let the classifier automatically handle common requests; (3) Configure Hook scripts to implement custom auto-approval logic.
 
 One tool call passes four gates: shape, rules, context — and only last, a human.
 
@@ -227,7 +227,7 @@ This design can be understood through a real-world analogy: imagine a "non-trans
 ## 4.3 The Permission Mode Spectrum
 
 <!-- block: ch04.b-f0965a63 -->
-Claude Code defines five internal permission modes that form a spectrum from strict to permissive. Read the spectrum first; the permission configuration follows from it.
+Claude Code defines five internal permission modes that form a spectrum from strict to permissive.
 
 ```mermaid
 flowchart LR
@@ -266,7 +266,7 @@ The `default` mode is the most conservative. Aside from tools explicitly permitt
 
 The `plan` mode restricts the Agent to read-only operations. Its UI indicator is a pause icon.
 
-In plan mode, write tools (Edit, Write) have their permission checks return `deny`, but read tools (Read, Grep, Glob) pass normally. A noteworthy detail is that when plan mode's bypass availability flag is true, it means the user was originally using bypass mode and then switched to plan mode, and at this point the bypass permission logic still takes effect.
+In plan mode, write tools (Edit, Write) have their permission checks return `deny`, but read tools (Read, Grep, Glob) pass normally. When plan mode's bypass availability flag is true, it means the user was originally using bypass mode and then switched to plan mode, and at this point the bypass permission logic still takes effect.
 
 **Applicable scenario:** Code review and architecture analysis. Developers want the Agent to first "look at" the code without modifying anything, provide analysis and suggestions, and then decide whether to execute modifications.
 
@@ -430,7 +430,7 @@ The combination of six operations and five configuration sources yields 30 possi
 
 Meanwhile, `persistPermissionUpdates` writes updates to the file system, ensuring they remain in effect after restarts. Only local settings, user settings, and project settings persist. Session-level and command-line argument-level updates are only effective at runtime.
 
-The separation design of these two functions is very important: memory application is synchronous and immediate, while file persistence may involve I/O operations. In the user approval handling method of the permission context, the two are called in sequence.
+The two functions are kept apart because memory application is synchronous and immediate, while file persistence may involve I/O operations. In the user approval handling method of the permission context, the two are called in sequence.
 
 In high-performance systems, first ensure the in-memory state is correct (affecting current behavior), then asynchronously write to persistent storage (affecting future behavior). If persistence fails, the current session's behavior stays intact, but the rules will be lost after a restart.
 
@@ -600,13 +600,13 @@ for call in ("Bash(git status)", "Bash(rm -rf /)", "Bash(npm test)"):
 
 1. **Four-stage pipeline:** Permission checking advances sequentially through validateInput -> rule matching -> checkPermissions -> interactive prompt. Any stage can make a final decision. This defense-in-depth design ensures that no single security checkpoint is a "silver bullet," but each layer can independently short-circuit and block unsafe operations.
 
-2. **Priority Rule:** Deny rules have the highest priority and are always checked before allow rules. Even when a user has configured `bypassPermissions` mode, deny rules and safetyCheck remain in effect. This rule ensures the non-negotiability of security policies -- regardless of what mode the system is in, explicitly denied rules are always effective.
+2. **Priority Rule:** Deny rules have the highest priority and are always checked before allow rules. Even when a user has configured `bypassPermissions` mode, deny rules and safetyCheck remain in effect.
 
-3. **PermissionContext Immutability:** Every permission update produces a new context object, ensuring concurrent safety. This is consistent with the "immutable state flow" principle from Chapter 2 and the tool context management from Chapter 3 -- immutability is a core design pattern that runs throughout the entire system.
+3. **PermissionContext Immutability:** Every permission update produces a new context object, ensuring concurrent safety. This is consistent with the "immutable state flow" principle from Chapter 2 and the tool context management from Chapter 3.
 
 4. **ResolveOnce Atomic Race:** User interaction and the classifier's automatic approval race for the same `claim()` call, and only one of them wins. This lightweight mutex avoids complex lock management, and the decision stays deterministic.
 
-5. **Five-Mode Spectrum:** From the strictest `default` to the most permissive `bypassPermissions`, with `plan` (read-only), `auto` (AI classifier), and `bubble` (sub-agent bubbling) as three special modes in between, covering the complete range of scenarios from interactive development to automation. Choosing the right mode is key to balancing security and efficiency.
+5. **Five-Mode Spectrum:** From the strictest `default` to the most permissive `bypassPermissions`, with `plan` (read-only), `auto` (AI classifier), and `bubble` (sub-agent bubbling) as three special modes in between, covering the complete range of scenarios from interactive development to automation.
 
 6. **Bash Tool Fine-Grained Control:** Supports three rule formats -- exact matching, prefix matching (`:*` syntax), and wildcard matching -- along with speculative classifier automatic approval. BashTool's permission system is the most complex part of the entire pipeline because the composability and expressiveness of shell commands far exceed those of other tool types.
 

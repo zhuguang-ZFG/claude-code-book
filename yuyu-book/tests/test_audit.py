@@ -16,8 +16,10 @@ def page(n_units=1, svgs=0, extra=""):
         f'<div class="compass"><h4 class="cc-tag">问题</h4></div>'
         f'<h2 id="ch{i:02d}-s">节</h2><p>正文</p></article>'
         for i in range(1, n_units + 1))
-    figures = "".join(f'<figure id="fig-{i}"><svg id="mm-{i}"></svg></figure>'
-                      for i in range(svgs))
+    figures = "".join(
+        f'<figure id="fig-{i}"><svg id="mm-{i}" aria-labelledby="fig-cap-{i}">'
+        f'</svg><figcaption id="fig-cap-{i}">图 {i}</figcaption></figure>'
+        for i in range(svgs))
     return (f'<html><body>{articles}{figures}{extra}</body></html>')
 
 
@@ -49,9 +51,9 @@ class Rejects(unittest.TestCase):
         self.assertRejects(page() + page(), "duplicate ids", n_units=2)
 
     def test_duplicate_id_inside_a_diagram_counts_too(self):
-        html = page(svgs=1).replace('<svg id="mm-0">',
-                                    '<svg id="mm-0"><g id="node0"></g>'
-                                    '<g id="node0"></g>')
+        html = page(svgs=1).replace('<svg id="mm-0" aria-labelledby="fig-cap-0">',
+                                    '<svg id="mm-0" aria-labelledby="fig-cap-0">'
+                                    '<g id="node0"></g><g id="node0"></g>')
         self.assertIn('id="node0"', html)
         self.assertRejects(html, "duplicate ids")
 
@@ -98,6 +100,32 @@ class Rejects(unittest.TestCase):
 
     def test_unbalanced_close_tag(self):
         self.assertRejects(page(extra="</section>"), "unbalanced closing tags")
+
+    def test_a_plate_that_names_nothing_is_refused(self):
+        self.assertRejects(
+            page(extra='<figure id="fig-x"><svg class="flowchart" '
+                       'role="graphics-document document"></svg></figure>'),
+            "no name and no aria-hidden")
+
+    def test_a_hidden_shell_is_not_counted(self):
+        check(page(extra='<div class="k-plate" aria-hidden="true">'
+                         '<svg role="img"></svg></div>'))
+        check(page(extra='<figure id="fig-y"><svg aria-hidden="true"></svg>'
+                         '</figure>'))
+
+    def test_a_title_child_names_the_drawing(self):
+        """`<title>` is the third way to name a drawing, and art.py honours it.
+
+        The verdict has to wait for the closing tag: the name lives in the
+        child, not in the root's attributes.
+        """
+        from yuyu_book import art
+        svg = '<svg viewBox="0 0 8 8"><title>A cancels</title></svg>'
+        self.assertNotIn("aria-hidden", art.mark_decorative(svg))
+        check(page(extra=f'<figure id="fig-t">{svg}</figure>'))
+        self.assertRejects(page(extra='<svg viewBox="0 0 8 8"><title>  '
+                                     '</title></svg>'),
+                           "no name and no aria-hidden")
 
 
 if __name__ == "__main__":

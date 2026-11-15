@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .. import art
 from ..labels import esc
 from ..paths import BOOK_DIR, REPO_ROOT
 from . import tokens
@@ -135,12 +136,10 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
 
 
 def _svg(name: str) -> str:
-    return (BOOK_DIR / "illustrations" / f"{name}.svg").read_text(
-        encoding="utf-8").strip()
+    return art.inline_svg(BOOK_DIR / "illustrations" / f"{name}.svg")
 
 
 def cards_for(model, lang: str) -> list[dict]:
-    labels = LABELS[lang]
     parts = {part.id: part for part in model.parts}
     out: list[dict] = []
     for unit in model.editions[lang].units:

@@ -5,7 +5,14 @@ import html
 
 from .labels import COLON, FRONT_NO, _LABELS, esc, note, ui
 
-__all__ = ["COLON", "FRONT_NO", "_LABELS", "esc", "note", "ui"]
+__all__ = [
+    "COLON", "FRONT_NO", "_LABELS", "esc", "note", "ui", "tier_legend",
+    # re-exports: callers import every page builder from `pages`
+    "KIND_GROUP", "IDX_SLOT", "fill_index_folios", "notes_page",
+    "principles_page", "source_registry", "subject_index_page",
+    "_ROMAN", "cover", "how_to_read", "imprint", "part_divider",
+    "revisions_page", "route_map_page", "toc_html", "volume_divider",
+]
 
 def tier_legend(paths: dict | None, lang: str) -> str:
     """How many sections sit at each level, so a reader can size the shortcut."""
@@ -101,6 +108,6 @@ def src_field(src: dict, key: str, lang: str) -> str:
 from .backmatter import (KIND_GROUP, IDX_SLOT, fill_index_folios,  # noqa: E402
                          notes_page, principles_page, source_registry,
                          subject_index_page)
-from .frontmatter import (FRONT_NO, _ROMAN, cover, how_to_read,  # noqa: E402
+from .frontmatter import (_ROMAN, cover, how_to_read,  # noqa: E402
                           imprint, part_divider, revisions_page,
                           route_map_page, toc_html, volume_divider)

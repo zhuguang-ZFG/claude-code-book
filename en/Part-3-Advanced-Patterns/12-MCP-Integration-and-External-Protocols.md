@@ -11,7 +11,7 @@
 - Trace an MCP tool from discovery through mapping, naming and the four permission gates, and write an allowlist-plus-denylist policy for a team
 - Explain why the Bridge's two-way traffic, its SSE sequence-number handoff and its multi-session isolation each need a gate of their own, and how MCP joins up with the tool system (Chapter 3) and the hook system (Chapter 8)
 
-**Difficulty:** 12.1 is Start, 12.2 and 12.3 are Core; 12.4 Bridge system and the hands-on exercises are Advanced — skip them on a first read and come back when you build.
+**Difficulty:** 12.1 is Start, 12.2 and 12.3 are Core; 12.4 Bridge system and the hands-on exercises are Advanced; skip them on a first read and come back when you build.
 
 You connect an MCP server that queries your database. The first call prompts you to confirm; so does the second. Fed up, you write `"mcp__*"` in the configuration to allow everything, and the world goes quiet. Two weeks later a colleague pulls the same branch and adds a scraper server with a tool that also goes by `query` -- from then on it does anything on your machine without asking once.
 
@@ -66,7 +66,7 @@ Before diving into technical details, let's first understand the fundamental pro
 **The Fragmented Integration Dilemma**
 
 <!-- block: ch12.b-6f2b66b5 -->
-In the LLM application ecosystem, a core challenge has long persisted: every AI application needs to connect to external data sources and tools, but each application's integration approach is different. Imagine you're a database vendor who wants to make your data accessible to various AI tools. Without a unified standard, you'd need to develop a separate adapter for each AI platform — one for Claude, one for ChatGPT, one for Cursor... This is like the era before USB standards, when every phone had its own unique charging port.
+Suppose you're a database vendor who wants to make your data accessible to various AI tools. Without a unified standard, you'd need to develop a separate adapter for each AI platform: one for Claude, one for ChatGPT, one for Cursor... This is like the era before USB standards, when every phone had its own unique charging port.
 
 <!-- block: ch12.mcp-usb-c -->
 MCP emerged to become the "USB-C port" of the AI world. It defines an open standard protocol that lets any AI application connect to any data source or tool through one common port. For tool developers, implementing an MCP server once means every MCP-compatible AI application can use it; for AI application developers, implementing an MCP client once grants access to the entire MCP ecosystem.
@@ -99,7 +99,7 @@ flowchart TD
 <!-- block: ch12.b-0a2aed98 -->
 2. **Transport Agnostic**: The MCP protocol itself is not bound to any specific network transport method. The same MCP server can provide services through stdio, HTTP, WebSocket, and other methods. An MCP server can therefore run in a local process (high performance, low latency) or sit on a remote server (centralized management, multi-user sharing) with no change to the business logic.
 
-3. **Security by Design**: MCP integrates security strategies into every layer of the protocol — from capability negotiation during connection establishment, to permission checks during tool invocation, to enterprise-level approval controls; even untrusted third-party tools cannot compromise the overall system's security.
+3. **Security by Design**: MCP integrates security strategies into every layer of the protocol: from capability negotiation during connection establishment, to permission checks during tool invocation, to enterprise-level approval controls; even untrusted third-party tools cannot compromise the overall system's security.
 
 > **Analogy:** Think of MCP as the USB protocol stack. The physical layer (USB-C cable) corresponds to MCP's transport layer (stdio/SSE/WS); the protocol layer (USB descriptors and endpoints) corresponds to MCP's capability declarations and tool discovery; the application layer (USB device drivers) corresponds to specific MCP tool implementations. Just as you don't need to know how a mouse works internally to use it, Claude Code doesn't need to know how an MCP server works internally to invoke its tools.
 
@@ -155,7 +155,7 @@ flowchart TD
 }
 ```
 
-**The SSE protocol** fits remotely deployed MCP servers. Server-Sent Events is an HTTP-based unidirectional push technology: the client sends requests via HTTP POST, and the server streams responses and notifications via SSE. The advantage is deployment flexibility — the MCP server can run anywhere in the cloud, and Claude Code only needs to know the URL to connect. However, this introduces additional network latency and authentication complexity.
+**The SSE protocol** fits remotely deployed MCP servers. Server-Sent Events is an HTTP-based unidirectional push technology: the client sends requests via HTTP POST, and the server streams responses and notifications via SSE. The advantage is deployment flexibility: the MCP server can run anywhere in the cloud, and Claude Code only needs to know the URL to connect. However, this introduces additional network latency and authentication complexity.
 
 **The sse-ide and ws-ide protocols** specialize the standard transports for IDE integration, adding IDE identification information (such as the `ideName` field, identifying whether it's VS Code or JetBrains) on top of standard SSE/WebSocket protocols. Moving platform-specific logic out of the generic protocol keeps the core protocol clean.
 
@@ -163,11 +163,11 @@ flowchart TD
 
 **The WebSocket protocol** is full-duplex, for scenarios that need data flowing both ways in real time. Unlike SSE's unidirectional push, WebSocket allows the server to proactively send messages to the client and allows the client to send requests at any time without establishing new HTTP connections.
 
-**The SDK protocol** is the most special type — it doesn't start any process or open any network connection. SDK-type MCP servers embed directly into the Claude Code process through function calls, with near-zero latency. It's primarily for SDK integration: an application embedding Claude Code registers MCP tools directly, with no extra inter-process communication. For this reason, SDK servers are exempt from enterprise security policy checks — they run in the same process as Claude Code, with security boundaries guaranteed by the host application.
+**The SDK protocol** is the most special type: it doesn't start any process or open any network connection. SDK-type MCP servers embed directly into the Claude Code process through function calls, with near-zero latency. It's primarily for SDK integration: an application embedding Claude Code registers MCP tools directly, with no extra inter-process communication. For this reason, SDK servers are exempt from enterprise security policy checks — they run in the same process as Claude Code, with security boundaries guaranteed by the host application.
 
 > **Best Practice:** Prefer the stdio protocol. Only consider SSE/HTTP/WebSocket when the MCP server must run on a remote machine (e.g., accessing an internal company database, using centralized compute resources). The SDK protocol is only for programmatic integration scenarios.
 
-> **Anti-pattern Warning:** Do not put slow work into stdio server initialization. Claude Code connects to all configured MCP servers in parallel at startup; if one server's initialization takes too long (e.g., establishing a database connection pool, loading a large model), it will slow down the entire startup process. Consider lazy initialization strategies — establish connections only on the first tool invocation.
+> **Anti-pattern Warning:** Do not put slow work into stdio server initialization. Claude Code connects to all configured MCP servers in parallel at startup; if one server's initialization takes too long (e.g., establishing a database connection pool, loading a large model), it will slow down the entire startup process. Consider lazy initialization strategies, establishing connections only on the first tool invocation.
 
 ### 12.1.3 Connection Manager: MCPConnectionManager
 
@@ -182,7 +182,7 @@ Its core interface provides two operations:
 - **Reconnect**: Triggers the reconnection flow for a specified MCP server, returning the updated tool list, command list, and resource list. This is used when server configuration changes or after recovering from a network interruption.
 - **Toggle**: Controls the enabled/disabled state of a specified MCP server. Disabling a server disconnects it and removes all its tools; enabling a server re-establishes the connection and registers tools.
 
-Child components access these operations through two hooks: one for the reconnect function (`useMcpReconnect`) and one for the toggle function (`useMcpToggle`). Both require usage within the `MCPConnectionManager` component tree, or they will throw an error. This is the standard React Context safety pattern — ensuring only legitimate component hierarchies consume the Context.
+Child components access these operations through two hooks: one for the reconnect function (`useMcpReconnect`) and one for the toggle function (`useMcpToggle`). Both require usage within the `MCPConnectionManager` component tree, or they will throw an error.
 
 ```mermaid
 flowchart TD
@@ -253,8 +253,8 @@ Each state maps to its own user-interaction strategy:
 
 <!-- block: ch12.b-75c8067c -->
 - **Connected**: The server has connected and tools are available. `ConnectedMCPServer` contains the complete MCP Client instance, server capability declarations, configuration information, and a cleanup function (for graceful disconnection).
-- **Failed**: The connection attempt failed. The system records the failure reason (network error, authentication failure, server not responding, etc.) and decides whether to enter the retry flow. Not all failures merit a retry — authentication failures require user intervention, while the system can retry network timeouts automatically.
-- **NeedsAuth**: The server requires authentication but valid credentials were not provided. This is a critical aspect of security design — the system does not blindly retry connections that need authentication (which would lock accounts) but instead hands control to the user.
+- **Failed**: The connection attempt failed. The system records the failure reason (network error, authentication failure, server not responding, etc.) and decides whether to enter the retry flow. Not all failures merit a retry. Authentication failures require user intervention, while the system can retry network timeouts automatically.
+- **NeedsAuth**: The server requires authentication but valid credentials were not provided. This is a critical aspect of security design: the system does not blindly retry connections that need authentication (which would lock accounts) but instead hands control to the user.
 - **Pending**: Awaiting reconnection. `PendingMCPServer` records the number of reconnection attempts and the maximum retry count, supporting exponential backoff retry. This strategy avoids connection storms when the server is persistently unavailable.
 - **Disabled**: A server that the user actively disabled or policy forcibly disabled. It will not auto-reconnect; only explicit user re-enablement will trigger a connection attempt.
 
@@ -287,7 +287,7 @@ sequenceDiagram
     Note over CLI,Server: Connected state
 ```
 
-> **Connection to Chapter 3:** MCP tools only appear in the tool list when the server is in the Connected state. When a server transitions from Connected to any other state, the system immediately removes all its tools from the available tool list. This integrates tightly with the tool registration mechanism described in Chapter 3 — tool availability is dynamic, not static.
+> **Connection to Chapter 3:** MCP tools only appear in the tool list when the server is in the Connected state. When a server transitions from Connected to any other state, the system immediately removes all its tools from the available tool list. This integrates tightly with the tool registration mechanism described in Chapter 3. Tool availability is dynamic, not static.
 
 ```ill
 ch12-mcp-state-dial
@@ -332,7 +332,7 @@ flowchart LR
 
 **Discovery Stage**
 
-After an MCP server successfully connects (entering the Connected state), Claude Code retrieves the server's tool list through a `tools/list` request. This request is part of the MCP protocol standard; the server must return metadata for all tools it provides — including tool names, descriptions, input parameter schemas, and behavioral annotations (hints).
+After an MCP server successfully connects (entering the Connected state), Claude Code retrieves the server's tool list through a `tools/list` request. This request is part of the MCP protocol standard; the server must return metadata for all tools it provides: tool names, descriptions, input parameter schemas, and behavioral annotations (hints).
 
 > **Analogy:** Tool discovery is like sitting down at a restaurant and having the waiter hand you a menu. The menu lists all available dishes (tool names), ingredient descriptions (input parameters), and flavor tags (behavioral annotations). You don't need to visit the kitchen to see how the chef cooks — the menu is enough for you to make a choice.
 
@@ -341,11 +341,11 @@ After an MCP server successfully connects (entering the Connected state), Claude
 The core tool mapping logic includes several key steps:
 
 <!-- block: ch12.b-6c296e7f -->
-1. **Unicode Sanitization**: scrub the returned tool list of control characters and illegal characters. This step may seem simple, but it's a classic example of defensive programming — you should never trust any external input, including characters in tool names.
+1. **Unicode Sanitization**: scrub the returned tool list of control characters and illegal characters. Tool names are external input too; don't trust the characters in them.
 
 2. **Prefix Decision**: Based on configuration, the system decides whether to add a server name prefix to tool names. In most modes, the prefix is mandatory (ensuring tool names don't conflict across servers); but in SDK mode, when the environment variable `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` is present, tools register with their original names, so an MCP tool can override a built-in tool of the same name.
 
-3. **Tool Object Construction**: Each MCP tool maps to a Claude Code internal `Tool` object. The mapping is a full "protocol adaptation" — it translates MCP semantics into Claude Code tool system semantics.
+3. **Tool Object Construction**: Each MCP tool maps to a Claude Code internal `Tool` object; the mapping translates MCP semantics into Claude Code tool system semantics.
 
 Once an MCP tool becomes a Claude Code internal `Tool` object, it carries these key properties:
 
@@ -360,7 +360,7 @@ Once an MCP tool becomes a Claude Code internal `Tool` object, it carries these 
 
 **Behavioral Annotation Bridging Design**
 
-The three "Hint" mappings in the table above deserve special attention. The MCP protocol defines tool behavioral annotations (such as `readOnlyHint`, `destructiveHint`), while Claude Code's tool system has its own semantic model (such as `isConcurrencySafe()`, `isDestructive()`). The mapping between these two semantic systems is not 1:1 — MCP's annotations are "suggestive" (hint), while Claude Code's methods are "decisive" (decision).
+The three "Hint" mappings in the table above connect two semantic systems. The MCP protocol defines tool behavioral annotations (such as `readOnlyHint`, `destructiveHint`), while Claude Code's tool system has its own semantic model (such as `isConcurrencySafe()`, `isDestructive()`). The mapping between these two semantic systems isn't one-to-one: MCP's annotations are "suggestive" (hint), while Claude Code's methods are "decisive" (decision).
 
 The key to this bridging design is that it allows MCP servers to describe their tool behavior in standardized language, while Claude Code can make final decisions based on its own security policies. If an MCP server's annotations are inaccurate (for example, a tool marked `readOnlyHint` that actually modifies data), Claude Code's permission pipeline will still double-check at runtime.
 
@@ -376,7 +376,7 @@ MCP tools adopt a unified three-part naming convention `mcp__{server}__{tool}`. 
 
 **Why Prefixes?**
 
-Imagine a scenario: you're simultaneously connected to two MCP servers — one for GitHub tools and one for GitLab tools, and both provide a tool named `create_issue`. Without namespace isolation, the two tools would create a name conflict, and the model couldn't distinguish them. The three-part naming ensures global name uniqueness by using the server name as a namespace, even when different servers provide identically named tools.
+Imagine a scenario: you're simultaneously connected to two MCP servers, one for GitHub tools and one for GitLab tools, and both provide a tool named `create_issue`. Without namespace isolation, the two tools would create a name conflict, and the model couldn't distinguish them. The three-part naming ensures global name uniqueness by using the server name as a namespace, even when different servers provide identically named tools.
 
 **Implementation Details of the Naming Convention**
 
@@ -388,11 +388,11 @@ Key design details:
 
 **SDK prefix skip**: When the environment variable `CLAUDE_AGENT_SDK_MCP_NO_PREFIX` is present and the server type is `sdk`, tools register with their original names. This design supports an advanced use case: allowing MCP tools to override built-in tools by name. For example, an SDK-registered `Read` tool can override Claude Code's built-in Read tool, implementing custom behavior. This is a "backdoor" mechanism typically used in SDK embedding scenarios (e.g., integrating Claude Code into another application that needs custom file reading behavior).
 
-**Permission checks use fully qualified names**: The `getToolNameForPermissionCheck` function ensures permission rule matching uses the `mcp__server__tool` format. This solves a subtle security problem: if an MCP server provides a tool named `Write` (without a prefix), its permission check should not match the built-in `Write` tool's rules — otherwise, the MCP Write tool could exploit a user's permission grant for the built-in Write tool.
+**Permission checks use fully qualified names**: The `getToolNameForPermissionCheck` function ensures permission rule matching uses the `mcp__server__tool` format. This solves a subtle security problem: if an MCP server provides a tool named `Write` (without a prefix), its permission check should not match the built-in `Write` tool's rules. Otherwise, the MCP Write tool could exploit a user's permission grant for the built-in Write tool.
 
 **Edge Cases in Name Resolution**
 
-Let's analyze some edge cases:
+Edge cases come in a few kinds:
 
 ```
 mcp__github__create_issue     → server="github", tool="create_issue"  ✓ Clear
@@ -629,7 +629,7 @@ SDK-type servers being exempt from policy checks is an important design decision
 
 ### 12.3.3 Plugin Deduplication
 
-When a plugin-provided MCP server points to the same underlying process/URL as a manually configured server, the system automatically deduplicates. Deduplication may seem like a minor feature, but it's extremely important in practice — without it, the system might connect to the same MCP server multiple times, consuming double the resources, exposing duplicate tool lists (confusing the model), and even causing concurrency conflicts.
+When a plugin-provided MCP server points to the same underlying process/URL as a manually configured server, the system automatically deduplicates. Without it, the system might connect to the same MCP server multiple times, consuming double the resources, exposing duplicate tool lists (confusing the model), and even causing concurrency conflicts.
 
 **The Signature Mechanism for Deduplication**
 
@@ -675,7 +675,7 @@ The design logic behind this priority is: the user's explicit configuration (man
 
 ### 12.3.4 IDE Tool Allowlist
 
-For IDE-integrated MCP servers, the system enforces an additional security layer — a tool allowlist restriction. An IDE MCP server may load only these two tools:
+For IDE-integrated MCP servers, the system loads only allowlisted tools. The allowlist has two entries:
 
 | Tool Name | Function | Security Consideration |
 |--------|------|---------|
@@ -686,7 +686,7 @@ For IDE-integrated MCP servers, the system enforces an additional security layer
 
 Behind this seemingly strict design is a well-considered security decision. Third-party developers write IDE extensions, which can expose arbitrary tools through the MCP protocol. Without an allowlist restriction, a malicious VS Code extension could expose a `deleteFiles` or `executeCommand` tool, and when a user uses that extension in Claude Code, these dangerous tools would register.
 
-The allowlist's design philosophy is the "principle of least privilege" — IDE integration only needs two core capabilities: executing code (letting Claude Code run code snippets in the IDE context) and getting diagnostic information (letting Claude Code see compilation errors and code issues). The IDE MCP channel should not expose any functionality beyond this scope.
+The allowlist follows the principle of least privilege. IDE integration needs two capabilities: executing code (letting Claude Code run code snippets in the IDE context) and getting diagnostic information (letting Claude Code see compilation errors and code issues). The IDE MCP channel should not expose any functionality beyond this scope.
 
 **When the Allowlist Is Enforced**
 

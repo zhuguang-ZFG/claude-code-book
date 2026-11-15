@@ -13,8 +13,8 @@ import json
 import re
 from pathlib import Path
 
-from .core import (BOOK_DIR, CACHE_DIR, REPO_ROOT, BuildError, FENCE_RE,
-                   MermaidBlock, read_text)
+from .core import (CACHE_DIR, REPO_ROOT, BuildError, FENCE_RE, MermaidBlock,
+                   read_text)
 
 MERMAID_PKG = REPO_ROOT / "node_modules" / "mermaid" / "package.json"
 MERMAID_ESM = REPO_ROOT / "node_modules" / "mermaid" / "dist" / "mermaid.esm.min.mjs"
@@ -25,7 +25,7 @@ MM_DIR = CACHE_DIR / "mermaid"
 THEME = {
     "themeVariables": {
         "fontFamily": "'Noto Serif SC','Source Han Serif SC','思源宋体','Songti SC','SimSun',Georgia,serif",
-        "fontSize": "13px",
+        "fontSize": "15px",
         "primaryColor": "#F3EAD8",
         "primaryTextColor": "#26221B",
         "primaryBorderColor": "#43392B",
@@ -57,7 +57,11 @@ THEME = {
     },
     "flowchart": {"htmlLabels": True, "curve": "natural"},
     "themeCSS": ".node rect,.node circle,.node ellipse{filter:none}"
-                " .node .label text{fill:#26221B} .flowchart-link{stroke-linecap:round}",
+                " .node .label text{fill:#26221B} .flowchart-link{stroke-linecap:round}"
+                # d3 axis ticks carry a hard-coded font-size=10 attribute and
+                # never see themeVariables; at 85% column scale that lands on
+                # 8.5px. A CSS rule beats the presentation attribute.
+                " g.tick text{font-size:14px}",
 }
 
 # ------- re-inking the author's own colours ------------------------------
@@ -93,17 +97,17 @@ def _hsl(hexc: str) -> tuple[float, float, float]:
         d = d[:6]
     r, g, b = (int(d[i:i + 2], 16) / 255 for i in (0, 2, 4))
     hi, lo, delta = max(r, g, b), min(r, g, b), max(r, g, b) - min(r, g, b)
-    l = (hi + lo) / 2
+    light = (hi + lo) / 2
     if delta == 0:
-        return 0.0, 0.0, l
-    s = delta / (2 - hi - lo) if l > 0.5 else delta / (hi + lo)
+        return 0.0, 0.0, light
+    s = delta / (2 - hi - lo) if light > 0.5 else delta / (hi + lo)
     if hi == r:
         h = ((g - b) / delta + (6 if g < b else 0)) / 6
     elif hi == g:
         h = ((b - r) / delta + 2) / 6
     else:
         h = ((r - g) / delta + 4) / 6
-    return h * 360, s, l
+    return h * 360, s, light
 
 
 def _family(hexc: str) -> str:
@@ -113,9 +117,9 @@ def _family(hexc: str) -> str:
     directive fills a node dark, so a dark hex is read for its hue like any
     other and comes back as that hue's tint.
     """
-    h, s, l = _hsl(hexc)
+    h, s, light = _hsl(hexc)
     if s < 0.14:
-        return "card" if l > 0.88 else "neutral"
+        return "card" if light > 0.88 else "neutral"
     if h < 15 or h >= 345:
         return "danger"
     if h < 75:
@@ -239,7 +243,6 @@ def render_all(blocks: list[MermaidBlock], caps: dict[str, str],
     MM_DIR.mkdir(parents=True, exist_ok=True)
 
     out: dict[str, tuple[str, str]] = {}
-    todo: dict[str, MermaidBlock] = {}
     browser_ver = "edge-static"
     try:
         from playwright.sync_api import sync_playwright

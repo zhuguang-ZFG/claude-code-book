@@ -19,7 +19,6 @@ uv.lock, which is what keeps the exported pins from going stale.
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import platform
 import re
@@ -289,7 +288,17 @@ def check(full: bool) -> int:
     if full:
         steps += [
             ("render build", [python(), "-m", "yuyu_book", "--check"]),
+            # The collected edition has its own manifest, volumes and plate
+            # budget; nothing above renders it, so it would rot unseen.
+            ("collected edition", [python(), "scripts/bookctl.py", "build",
+                                   "--product", "collected", "--check"]),
             ("pdf", [python(), "-m", "yuyu_book", "--lang", "both", "--pdf"]),
+            # Last, because `pdf` is the step that publishes the reader HTML:
+            # the README quotes its size, the one claim a Windows runner can
+            # check (page counts follow the installed CJK face). CI runs the
+            # same script again for the page counts on its own dist.
+            ("artifact claims", [python(), "scripts/check_artifact_claims.py",
+                                 "--sizes-only"]),
         ]
     measurements = []
     try:

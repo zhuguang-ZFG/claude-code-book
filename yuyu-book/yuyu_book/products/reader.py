@@ -9,6 +9,7 @@ glosses.json），不再从 dist HTML 反向提取。
 from pathlib import Path
 import re
 
+from .. import art
 from ..labels import esc
 from ..paths import BOOK_DIR, REPO_ROOT
 from . import tokens
@@ -441,7 +442,7 @@ def page_for(lang: str) -> tuple[str, int]:
     t = LANGS[lang]
     model = load_for(lang)
     glossary = glossary_of(model)
-    svgs = {u: (ART / f"{u}.svg").read_text(encoding="utf-8").strip()
+    svgs = {u: art.inline_svg(ART / f"{u}.svg")
             for u in t["order"] + ["cover", "keeper",
                                    "part-p1", "part-p2", "part-p3", "part-p4"]
             if (ART / f"{u}.svg").exists()}
@@ -482,7 +483,7 @@ def page_for(lang: str) -> tuple[str, int]:
             num += 1
             topic = TOPICS_EN.get(uid, "")
             if topic and "YouTube · 搜" not in "".join(
-                    l for l, _ in t["videos"].get(uid, [])):
+                    name for name, _ in t["videos"].get(uid, [])):
                 t["videos"].setdefault(uid, []).append(
                     ("YouTube · 搜「" + topic + "」",
                      YT_SEARCH + topic.replace(" ", "+")))

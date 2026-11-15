@@ -35,7 +35,7 @@ python -m playwright install chromium   # 注意是 Python 包提供的 CLI，�
 ```bash
 python scripts/bookctl.py doctor       # 一次列全 python/node/浏览器/字体/依赖/写权限
 python scripts/bookctl.py check --fast # 依赖 + 源码装配 + 两套单测 + 内容/图语法 + 视频 + 产品幂等（PR 层）
-python scripts/bookctl.py check --full # fast + 渲染装配 + 双语 PDF
+python scripts/bookctl.py check --full # fast + 渲染装配 + 合订本 + 双语 PDF
 python scripts/bookctl.py build --product book --lang both --pdf
 python scripts/bookctl.py deps         # requirements.txt 与 uv.lock 对照
 python scripts/bookctl.py clean        # 删除 yuyu-book/dist（不依赖 rm -rf）
@@ -55,6 +55,7 @@ python scripts/bookctl.py build --regen-index         # 重建索引后继续完
 ```bash
 make            # 列出可用目标
 make doctor     # 环境报告
+make lint       # ruff 静态检查（开发机依赖，不是构建依赖）
 make book       # 双语 HTML
 make book-pdf   # 双语 HTML + PDF
 make check      # = check --fast
@@ -283,7 +284,8 @@ PDF 阶段另有五道：命名目标缺失（`no destination found for ...`）�
 
 ## 8. 提交前检查清单
 
-- [ ] `python scripts/bookctl.py check --fast`（或 `make check`）通过；涉及图版/PDF 时用 `check --full`
+- [ ] `python scripts/bookctl.py check --fast`（或 `make check`）通过；涉及图版/PDF/合订本时用 `check --full`
+- [ ] 动过 `yuyu_book/`、`scripts/`、`video/` 或 `tests/` 时跑过 `make lint`（ruff 不在构建依赖里，CI 也不装它，这一条靠本地纪律）
 - [ ] 中文与英文两份 Markdown 同步修改
 - [ ] 英文书稿无汉字残留（附录 D 的双语译名列除外）
 - [ ] 新单元已在 `manifest.json` 登记，且 `guides` 三字段双语齐备
@@ -295,7 +297,7 @@ PDF 阶段另有五道：命名目标缺失（`no destination found for ...`）�
 - [ ] 章节增删导致 PDF 页数或单文件体积变化时，两份 README「离线整书」那一行的数字跟着改（Book CI 的 `scripts/check_artifact_claims.py` 会替你核对）
 - [ ] 涉及显示问题，注明阅读平台、文件与复现步骤
 
-CI 的书籍门禁统一在 `.github/workflows/book.yml`：`Fast` 运行源码装配、两套单测、内容、图语法、视频配置和产品幂等检查；`Full` 在 Fast 后运行渲染与双语 PDF；`Omp` 独立检查第二分册；`Bootstrap` 矩阵检查 Windows 与 Ubuntu 环境。`.github/workflows/release.yml` 负责版本一致性、最终装配、校验和与标签发布；`pages.yml` 负责站点部署。旧 `check-book.yml` 已退出。工作流存在不等于已执行通过，合并时必须核对同一候选提交的远端状态。架构边界见 [架构决策记录](docs/architecture-decisions.md)。
+CI 的书籍门禁统一在 `.github/workflows/book.yml`：`Fast` 运行源码装配、两套单测、内容、图语法、视频配置和产品幂等检查；`Full` 在 Fast 后运行渲染、九卷合订本与双语 PDF；`Omp` 独立检查第二分册；`Bootstrap` 矩阵检查 Windows 与 Ubuntu 环境。`.github/workflows/release.yml` 负责版本一致性、最终装配、校验和与标签发布；`pages.yml` 负责站点部署。旧 `check-book.yml` 已退出。工作流存在不等于已执行通过，合并时必须核对同一候选提交的远端状态。架构边界见 [架构决策记录](docs/architecture-decisions.md)。
 
 视频迁移的实物比较使用 `python scripts/bookctl.py video compare --help`。指定章节、长短格式、旧 SRT/VTT、新流程生成的 transcript JSON，以及独立渲染的旧新版视频；`--report` 写出带输入 SHA-256 的审阅结果。缺少任何一侧的视频或字幕证据都不能判为通过；抽样帧检查不代替 `video check --audio`。分句或时间轴有意变更时，保留差异报告并审阅，不能放宽比较阈值消除结果。示例及已知缺口见 [P6 验收续作](docs/migrations/spec-verification-2026-11-09.md)。
 

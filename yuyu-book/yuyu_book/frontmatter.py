@@ -1,7 +1,8 @@
 """Front-matter page builders: cover, imprint, revisions, routes, TOC."""
 from __future__ import annotations
 
-from .pages import FRONT_NO, esc, note, tier_legend, ui
+from .labels import esc, note, ui
+from .pages import tier_legend
 
 def cover(manifest: dict, lang: str) -> str:
     from .art import cover_plate
@@ -202,13 +203,17 @@ def toc_html(entries: list[dict], lang: str) -> str:
 
     for e in entries:
         kind = e["kind"]
-        if kind in ("part", "hr"):
+        if kind in ("part", "hr", "volume"):
             close()
-        if kind == "part":
+        if kind in ("part", "volume"):
             no = (f'<span class="tp-no">{esc(e["no"])}</span>'
                   if e["no"] else "")
+            # a bound volume outranks a part: in a nine-volume omnibus the
+            # part rows repeat Ⅰ–Ⅶ in every volume, so the volume row has to
+            # look like a different rank or the contents reads as one list
+            cls = "toc-vol" if kind == "volume" else "toc-part"
             chunks[-1].append(
-                f'<a class="toc-part" href="#{e["anchor"]}">{no}'
+                f'<a class="{cls}" href="#{e["anchor"]}">{no}'
                 f'<span class="tp-tx">{esc(e["title"])}</span>'
                 f'<span class="page-ref" data-ref="{e["anchor"]}"></span></a>')
         elif kind == "hr":

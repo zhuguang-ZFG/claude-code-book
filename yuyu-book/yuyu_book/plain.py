@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import html
 import re
+from pathlib import Path
 
 from . import registry
 from .blocks import ID_RE, parse_blocks

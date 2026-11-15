@@ -1151,7 +1151,7 @@ def task_subagent(picture: Drawing):
         picture.box((left, 508, left + 380, 578), fill, color)
         picture.text((left + 190, 538), label, 20, color, True, "mm")
     picture.box((586, 600, 800, 660), WHITE, INK, radius=10)
-    picture.text((693, 622), "wait", 21, ink if False else INK, True, "mm")
+    picture.text((693, 622), "wait", 21, INK, True, "mm")
     picture.text((693, 648), "收第一件落地的事", 16, MUTED, anchor="mm")
     picture.arrow([(320, 586), (320, 630), (578, 630)], MUTED, 2)
     picture.arrow([(960, 586), (960, 630), (808, 630)], MUTED, 2)
@@ -2279,7 +2279,7 @@ def callchain(picture: Drawing):
         picture.text((left + 16, 350), detail, 15, anchor="mm", width=170)
         if index < 4:
             picture.arrow([(left + 196, 340), (left + 212, 340)], MUTED, 3)
-    picture.note((92, 450, 1108, 540), "断格自检：", 
+    picture.note((92, 450, 1108, 540), "断格自检：",
                  "说不出入口 → 回第 3 章；说不清上下文 → 第 14 章；说不清工具 → 第 21 章。", BLUE, SKY)
     picture.text((600, 580), "每格都配一条可复验命令，才算复习完", 18, MUTED, anchor="mm")
     picture.text((600, 620), "不写新功能，只接线路", 18, MUTED, anchor="mm")
@@ -4399,7 +4399,7 @@ def failure_bands(picture: Drawing):
                    "同样是没接上，有的喊，有的不吭声。",
                    "退出码只对前面两种有效；后面几种只能自己读输出。")
     bands = (("会响", "退出码非 0", ORANGE,
-              ("Model \"…\" not found → 退出码 1", 
+              ("Model \"…\" not found → 退出码 1",
                "Unknown setting: modelRoles.default → 退出码 1")),
              ("不响", "要自己看输出", BLUE,
               ("--model 忘值 → 停在 Working...，没有退出码",

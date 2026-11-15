@@ -45,7 +45,7 @@ In the auto-compaction module, the `getEffectiveContextWindowSize` function work
 <!-- block: ch07.b-0f31563d -->
 > **Why reserve 20,000 tokens?** Because AutoCompact (Level 4 compression) needs to call the LLM to generate a summary, and the summary itself consumes output tokens. If you reserve no space, the compression operation itself may fail due to insufficient output space -- a classic "compression paradox."
 
-Let's use concrete numbers: suppose the model context window is 200,000 tokens and the maximum output tokens are 16,384:
+Concrete numbers: the model context window is 200,000 tokens and the maximum output is 16,384 tokens:
 - Reserved space = min(16,384, 20,000) = 16,384 tokens
 - Effective window = 200,000 - 16,384 = **183,616 tokens**
 
@@ -318,7 +318,7 @@ The compression prompt requires the model to output two XML blocks:
 <!-- block: ch07.b-2d35fafb -->
 The `formatCompactSummary` function handles post-processing: it first discards the `<analysis>` block (thinking scratchpad), then extracts the content of the `<summary>` block as the formal summary.
 
-This design pattern is noteworthy: the `<analysis>` block serves as a Chain-of-Thought carrier that improves summary quality, but it does not enter the final context window, avoiding token waste.
+The `<analysis>` block carries the Chain-of-Thought, which lifts summary quality, yet the block itself never enters the final context window, so it costs no tokens.
 
 ```mermaid
 flowchart TD
@@ -395,7 +395,7 @@ If the post-compression token count still exceeds the auto-compression threshold
 
 ## 7.5 Context Management Strategies for Long Conversations
 
-Having understood the compression mechanisms, let's look at how to optimize context management in practice.
+Compression is covered; the practical question is keeping the context under control.
 
 ### Strategy 1: Proactive Compression Over Reactive Compression
 

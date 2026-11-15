@@ -36,7 +36,7 @@ The design philosophy of these four types is: **only save information that you c
 
 An open type system (allowing arbitrary custom types) appears more flexible but has fatal flaws in the Agent scenario: (1) Type explosion -- different users and projects might create dozens of types, making it impossible for the Agent to efficiently determine which memories are relevant to the current conversation when reading; (2) Classification ambiguity -- the same piece of information might belong to multiple custom types, leading to duplicate storage; (3) Index bloat -- the MEMORY.md index would need to maintain classification logic for each type, adding unnecessary complexity.
 
-The closed four-type design embodies a "constraint is freedom" philosophy: constraining the classification method yields efficient consistent reasoning and precise relevance judgment.
+The closed four-type design embodies a "constraint is freedom" philosophy: with the classification fixed, the type count is capped, each piece of information has exactly one home, and the index never maintains matching logic for custom types.
 
 ### 6.1.2 Detailed Analysis of the Four Types
 
@@ -321,7 +321,7 @@ These checks stack on top of each other to form a defense-in-depth system. Even 
 
 ### 6.3.1 Background Extraction Based on the Fork Pattern
 
-The core of the memory extraction system resides in the memory extraction module. It is not executed directly by the main conversation but runs in the background through `runForkedAgent` -- a "perfect fork" pattern.
+Memory extraction lives in its own module and never runs inside the main conversation; it runs in the background through `runForkedAgent` -- a "perfect fork" pattern.
 
 The so-called "perfect fork" means the background Agent shares the exact same system prompt and tool set as the main conversation:
 
@@ -703,13 +703,13 @@ print(meta)
 
 ## Key Takeaways
 
-1. **Closed Four-Type System**: user, feedback, project, reference -- only save information you cannot derive from code, excluding derivable content like code patterns and Git history. The closed type system enables efficient consistent reasoning.
+1. **Closed Four-Type System**: user, feedback, project, reference -- only save information you cannot derive from code, excluding derivable content like code patterns and Git history.
 2. **Dual Capacity Protection**: The MEMORY.md index is limited to 200 lines / 25KB, with line truncation applied first then byte truncation, ensuring the index always remains a "quick browse" tool rather than a "deep reading" document.
-3. **Fork Pattern**: The background Agent perfectly forks the main conversation, sharing prompt cache and limiting write permissions through the `canUseTool` allowlist. It does not affect user experience and has an independent token budget.
+3. **Fork Pattern**: The background Agent perfectly forks the main conversation -- same system prompt and tool set, so the prompt cache is shared; write permissions are confined to the memory directory by the `canUseTool` allowlist. Extraction runs in the background on its own token budget, and a failure there does not reach the main conversation.
 4. **Mutex Extraction**: Memory writes by the main Agent and the background Agent are mutually exclusive -- when the main Agent writes, the background skips, avoiding redundant memories from duplicate extraction.
 5. **Cache Awareness**: Tool list consistency is a prerequisite for cache sharing. Permission filtering uses runtime callbacks rather than compile-time different tool lists. Consistent interface, variable behavior.
-6. **Validation First**: Memory is a snapshot, not a fact; verify the current state before making recommendations. "Clue not conclusion" is the correct mindset for using memory.
-7. **Least Privilege**: The background Agent's tool permission allowlist strictly limits write capabilities, embodying the Principle of Least Privilege.
+6. **Validation First**: Memory is a snapshot, not a fact; verify the current state before making recommendations -- treat memory as a clue, not a conclusion.
+7. **Least Privilege**: Permissions are granted per tool -- Read / Grep / Glob unrestricted, Bash read-only commands only, Edit / Write confined to the memory directory, everything else denied.
 8. **Trailing Extraction**: The trailing extraction mechanism ensures that during concurrent extraction, no conversation misses its memory extraction opportunity.
 
 > **Three sentences to keep:** ①This memory stores only what the code cannot derive -- user, feedback, project and reference each mind their own stall, and everything else stays out. ②A memory is a snapshot, not a fact: verify the current state before you use it -- treat memory as a clue, not a conclusion. ③To judge whether a memory deserves its place, ask one question: delete it, and does the behavior change?

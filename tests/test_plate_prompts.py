@@ -9,7 +9,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "yuyu-book"))
 
-from gen_ink_plates import ART_DIR, plates, to_plate  # noqa: E402
+from gen_ink_plates import plates, to_plate  # noqa: E402
 from yuyu_book import art  # noqa: E402
 
 from PIL import Image, ImageDraw  # noqa: E402

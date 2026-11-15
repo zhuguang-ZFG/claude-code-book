@@ -221,7 +221,6 @@ def normalize_h1(text: str, lang: str, file: str):
             continue
         if fence is not None or not line.startswith("# "):
             continue
-        rest = line[2:].strip()
         patterns = ZH_PATTERNS if lang == "zh" else EN_PATTERNS
         for rx, kind, fixed in patterns:
             g = rx.match(line)
@@ -265,7 +264,7 @@ def load_unit(unit_def: dict, kind: str, lang: str, repo_root: Path) -> Unit:
     body, ills = extract_illustrations(body, rel)
     # an ill fence is a drawing slot, not a code plate: it never reaches the
     # renderer as a <pre>, so its info string must not be counted as a language
-    langs = [l for l in langs if l != "ill"]
+    langs = [name for name in langs if name != "ill"]
     return Unit(id=unit_def["id"], kind=kind, lang=lang, no=no, title=title,
                 md=body, blocks=blocks, ills=ills, code_langs=langs, path=rel,
                 anchor=f"{unit_def['id']}" if kind == "front" else unit_def["id"])

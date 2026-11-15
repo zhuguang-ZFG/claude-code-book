@@ -10,7 +10,6 @@ unlettered artwork is kept separately so every run builds the same cover
 without painting over previous text.
 """
 import argparse
-import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 

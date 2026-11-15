@@ -821,6 +821,8 @@ Core style traits: flowing ink linework with an East-Asian brush spirit; visible
 
 （26 + 20 = 46，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
 
+`ch08-hook-decision`、`ch09-tool-funnel`、`ch13-cost-ledger` 共用中英文版 SVG，图内不放说明文字：退出码与 JSON 画成两张回执，MCP 工具画成绕过筛网的插头通路，usage 画成事件小票、消息账页与总账。函数名、权限边界和处置含义由正文与画廊的双语题注解释，避免缩小后文字碰线，也避免英文页混入中文标注。
+
 - 这 20 张的取舍与逐轮修订记录在 `.superpowers/sdd/2026-11-02-illustration-rollout/`
   里（`progress.md` 与 `fix-round-1-section.md`），不在本手册；要改画先读那两份。
 - 两类图共用同一套硬契约，即上一节第 4 条：`yuyu-book/yuyu_book/art.py` 要求单 svg + viewBox、

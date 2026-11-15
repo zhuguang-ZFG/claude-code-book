@@ -56,6 +56,13 @@ PLATE_ALT_FALLBACK = {"zh": "墨版插图", "en": "Ink plate"}
 # classes of its root element. render.py asks it, and the filmstrip frame-order
 # test asks the same object instead of keeping a looser copy of its own
 SEQ_ROOT = re.compile(r'<svg\b[^>]*class="[^"]*\bseq\b')
+# A source drawing may name itself; anything else is marked decorative so a
+# screen reader skips it. The <figcaption> is the figure's text, and turning
+# bare geometry into an unnamed "image" would only add a stop on the way to it.
+_SVG_NAMED = re.compile(
+    r'<svg\b[^>]*\b(?:aria-label="[^"\s][^"]*"'
+    r'|aria-labelledby="[^"\s][^"]*"'
+    r'|aria-hidden="true")')
 
 _BANNED = (
     (re.compile(r"<\s*script", re.I), "<script>"),
@@ -192,6 +199,41 @@ def cover_plate(lang: str = "zh", product: str = "book") -> str:
     return f'<div class="cover-art" aria-hidden="true">{text}</div>'
 
 
+def mark_decorative(text: str) -> str:
+    """Hide a drawing from assistive tech unless it names itself.
+
+    The caption under a body drawing is its text; the SVG repeats it in
+    geometry, so announcing the SVG too would read the figure twice. A source
+    file that carries a real name (`aria-label`, `aria-labelledby`, `<title>`)
+    keeps that, which is how the one annotated drawing (`ch02-cancel-chain`)
+    stays described on its own. `role` is not a name: an `img` with no label is
+    the very stop this rule exists to remove.
+    """
+    if _SVG_NAMED.search(text) or "<title" in text:
+        return text
+    root = re.search(r"<svg\b[^>]*>", text)
+    if not root:
+        return text
+    tag = root.group(0)
+    if 'aria-hidden="false"' in tag:
+        tag = tag.replace('aria-hidden="false"', 'aria-hidden="true"', 1)
+    else:
+        tag = tag[:4] + ' aria-hidden="true"' + tag[4:]
+    return text[:root.start()] + tag + text[root.end():]
+
+
+def inline_svg(path: Path, *, label: str | None = None) -> str:
+    """Read a shipped drawing for a product page, marked decorative.
+
+    The reader, the cards and the sample chapter inline the same files the book
+    does; they used the raw text, so the same drawing was announced as an
+    unnamed graphic there. One door keeps the rule in one place.
+    """
+    if not path.exists():
+        raise BuildError(f"{label or path.name}: no such drawing")
+    return mark_decorative(path.read_text(encoding="utf-8").strip())
+
+
 def drawing(name: str) -> str:
     """A body-scale drawing an `ill` slot asked for.
 
@@ -202,7 +244,7 @@ def drawing(name: str) -> str:
     if not text:
         raise BuildError(f"illustrations/{name}.svg: an ill slot asks for a "
                          "drawing that is not there")
-    return text
+    return mark_decorative(text)
 
 
 def photo(name: str) -> str:

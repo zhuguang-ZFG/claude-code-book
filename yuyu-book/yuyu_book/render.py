@@ -21,8 +21,11 @@ from markdown.extensions.codehilite import CodeHiliteExtension
 from .core import REPO_ROOT, BuildError, Unit
 from .style import ink_mark, knot
 from . import art, pages, plain
-from .plates import (_PLATE_PH_RE, drawing_slots, floor_wide_svg, illu_figure,
-                     mermaid_figure, plate_cap, plate_landscape)  # noqa: F401
+# `floor_wide_svg` is re-exported: the plate tests and STRUCTURE.md refer to
+# `render.floor_wide_svg`, so the binding is part of this module's surface.
+from .plates import (  # noqa: F401
+    _PLATE_PH_RE, drawing_slots, floor_wide_svg, illu_figure, mermaid_figure,
+    plate_cap, plate_landscape)
 from .refs import (RefLinker, _TAG_RE, _VOID_TAGS, footnotes_html, iter_doc,
                    process_links, resolve_local_links)
 

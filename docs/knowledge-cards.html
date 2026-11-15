@@ -81,7 +81,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-compass" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-compass" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M31.5 13.7c11.4-.5 19.5 8.8 18.8 19.3-.3 11.7-9.1 18-20 17C19 49.5 12.7 41 13.8 30c.4-8.5 6.7-14.9 14.6-15.6" stroke-width="2.4" pathLength="100"/>
   <circle class="spin" cx="32" cy="32" r="25" stroke-dasharray="2 6" stroke-width="1.3" opacity=".36"/>
   <path d="M31.8 17q-.8 15 .2 30" stroke-width="1.4" opacity=".65" pathLength="100"/>
@@ -117,7 +117,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>真正的转移不是模型更会聊，而是模型开始调工具，Agent Harness 是接住这件事的运行时。</li><li>包一层 API 不等于做一套 Harness——分不清这条线，系统一上生产就散架；那 51 万行代码，填的就是这些坑。</li><li>打量一个 Agent 系统，先数 Harness 那几层在不在：流式、权限、缓存、状态，缺了就不算。</li></ol>
+      <ol class="k-list"><li>真正的转移是模型开始调工具，光是更会聊撑不起这个判断，Agent Harness 是接住这件事的运行时。</li><li>包一层 API 不等于做一套 Harness：分不清这条线，系统一上生产就散架；那 51 万行代码，填的就是这些坑。</li><li>打量一个 Agent 系统，先数 Harness 那几层在不在：流式、权限、缓存、状态，缺了就不算。</li></ol>
       <p class="k-foot">第 1 章</p>
     </article>
   </div>
@@ -129,7 +129,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-chase" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-chase" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <g class="spin">
     <path d="M31.5 11.5C44 10 53.2 20.3 51 31.8q-1 7.1-6.2 12.1" stroke-width="2.6" pathLength="100"/>
     <path d="m44.8 43.9 1.1-9.4-9.1 3.4" stroke-width="2.5" pathLength="100"/>
@@ -153,11 +153,11 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
       <div class="k-plate" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" role="img" aria-label="Pausing event consumption differs from cancelling work and cleaning up" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
   <path d="M18 30Q15 20 29 19L327 21Q341 20 340 34L338 274Q340 282 326 282L28 280Q17 281 18 268ZM380 30Q378 20 392 20L692 18Q705 19 702 33L704 267Q704 282 690 281L392 283Q379 282 380 268Z" opacity=".35" pathLength="100"/>
   <g fill="currentColor" stroke="none" font-family="serif" text-anchor="middle">
-    <text x="178" y="53" font-size="20">A · PAUSE</text><text x="541" y="53" font-size="20">B · CANCEL</text>
-    <text x="75" y="113" font-size="18">UI</text><text x="270" y="113" font-size="18">yield</text>
-    <text x="75" y="215" font-size="18">API</text><text x="270" y="215" font-size="18">tool</text>
-    <text x="432" y="113" font-size="18">UI</text><text x="630" y="113" font-size="18">yield</text>
-    <text x="432" y="215" font-size="18">API</text><text x="630" y="215" font-size="18">tool</text>
+    <text class="il-head" x="178" y="53" font-size="28">A · PAUSE</text><text class="il-head" x="541" y="53" font-size="28">B · CANCEL</text>
+    <text x="75" y="113" font-size="26">UI</text><text x="270" y="113" font-size="26" textLength="56" lengthAdjust="spacingAndGlyphs">yield</text>
+    <text x="75" y="215" font-size="26">API</text><text x="270" y="215" font-size="26">tool</text>
+    <text x="432" y="113" font-size="26">UI</text><text x="630" y="113" font-size="26" textLength="56" lengthAdjust="spacingAndGlyphs">yield</text>
+    <text x="432" y="215" font-size="26">API</text><text x="630" y="215" font-size="26">tool</text>
   </g>
   <path d="M43 82C60 77 83 79 103 82l-1 47q-31 6-59 1q-3-25 0-48ZM238 82q29-5 64 0l1 46q-3 6-12 5l-53-2q-3-25 0-49ZM111 107q36-4 73 0M206 107q11-1 22 0M220 100l9 7-9 7" stroke-width="3.2" pathLength="100"/>
   <path d="M187 92q-1 14 1 30M199 91q1 16-1 32" stroke-width="5.8" pathLength="100"/>
@@ -189,7 +189,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-nut" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-nut" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <g class="wiggle">
     <path d="M30.5 7.8Q43 13 52.2 20l-.8 23Q42.6 50 31 55L12.1 43q-.5-11  .5-22.7Q21 13.1 30.5 7.8Z" stroke-width="2.6" pathLength="100"/>
     <path d="M30.8 22.1c6.5-1 11.2 3.4 11.2 9.4.2 6.6-4.5 11-10.7 10.4-6.4-.1-10.5-4.4-10-10.4.1-4 3-7.8 6.8-8.8" stroke-width="2.4" pathLength="100"/>
@@ -234,7 +234,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-gate" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-gate" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M5.7 32.4q5.1-1.1 10.8-.4" stroke-width="2.5" pathLength="100"/>
   <path d="M48 31.8q5.2-.8 10.5.2" stroke-width="2.5" pathLength="100"/>
   <path d="M21.4 12Q20 31 21.7 51.5l3-.5" stroke-width="2.7" pathLength="100"/>
@@ -278,7 +278,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-stack" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-stack" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M31 9q12 3.8 23 10.5-10 5.5-21.8 12Q20 27.5 10 20.4 19.6 13.5 31 9Z" stroke-width="2.4" pathLength="100"/>
   <path d="M31 9q-.7 5.4 1.2 11.3" stroke-width="1.1" opacity=".35" pathLength="100"/>
   <path class="ripple d1" d="M11.8 30.4q10.5 5.6 20.3 10.4Q43 35.5 52.4 30" stroke-width="2.4" opacity=".75" pathLength="100"/>
@@ -317,7 +317,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-memo" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-memo" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M15 9q11-1.3 22 .3 6.4 5.3 11.2 10.9l-.7 34.7Q31 54.2 15 54.8q1.2-23 0-45.8Z" stroke-width="2.4" pathLength="100"/>
   <path d="M37 9.3q-.8 5.4-.2 11.1l11.4-.2" stroke-width="1.5" pathLength="100"/>
   <path d="M21.3 27.7q4.5-1 8.3-.5m3.4.1 6.4-.2" stroke-width="1.6" opacity=".7" pathLength="100"/>
@@ -361,7 +361,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-gauge" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-gauge" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M9.8 44c-.2-13.4 10.4-24 22.1-24 12.6-1 23.8 10.8 22.2 23.8" stroke-width="2.6" pathLength="100"/>
   <path class="sweep" d="M32 44q4-8.9 12-15.5L33.4 44.8Z" fill="currentColor" stroke-width=".9" pathLength="100"/>
   <circle cx="32" cy="44" r="3" fill="currentColor" stroke="none"/>
@@ -393,7 +393,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>压缩不是黑箱，而是四级渐进——裁剪、微压缩、折叠、自动压缩，成本一级高过一级。</li><li>等撞上窗口天花板才动手，代价最高；连败三次，断路器还会拉闸。</li><li>主动压缩优于被动压缩：在关键节点手动触发并附注重点，比等系统自动出手留下更多有用的上下文。</li></ol>
+      <ol class="k-list"><li>压缩是四级渐进：裁剪、微压缩、折叠、自动压缩，成本一级高过一级。</li><li>等撞上窗口天花板才动手，代价最高；连败三次，断路器还会拉闸。</li><li>主动压缩优于被动压缩：在关键节点手动触发并附注重点，比等系统自动出手留下更多有用的上下文。</li></ol>
       <p class="k-foot">第 7 章</p>
     </article>
   </div>
@@ -405,7 +405,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-hook" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-hook" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M6.8 32.3C22 31.3 40 31.7 57 32.1" stroke-width="1.8" opacity=".65" pathLength="100"/>
   <path class="nudge" d="M53.5 27.5q1.5 2.6 3.8 4.5l-3.8 4.5" stroke-width="2.5" pathLength="100"/>
   <circle cx="17" cy="32" r="2.4" fill="currentColor" stroke="none"/>
@@ -425,31 +425,23 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     <article class="kcard k-core">
       <p class="k-kicker">核心机制</p>
       <div class="k-plate" aria-hidden="true"><svg class="a-hook-decision" viewBox="0 0 340 130" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-<path d="M12 22q26-4 54 0l1 34q-1 4-5 4l-46-1q-5-18 0-37" stroke-width="2.2" pathLength="100"/>
-<path d="M20 32q17-3 36 0" stroke-width="1.4" opacity=".5" pathLength="100"/>
-<path d="M22 39q14-2 30 0" stroke-width="1.1" opacity=".3" pathLength="100"/>
-<text x="26" y="53" fill="currentColor" stroke="none" font-size="8" font-family="inherit">exit 2</text>
-<path d="M12 78q24-4 50 0l1 30q-1 4-5 4l-42-1q-5-16 0-33" stroke-width="2.2" pathLength="100"/>
-<path d="M28 90q6-6 12 0t12 0" stroke-width="2.4" pathLength="100"/>
-<text x="27" y="104" fill="currentColor" stroke="none" font-size="8" font-family="inherit">{ }</text>
-<path d="M67 42q22 2 42 8" stroke-width="1.8" pathLength="100"/><path d="M109 50l8 1-6 6" stroke-width="1.8" pathLength="100"/>
-<path d="M63 90q24-2 46-10" stroke-width="1.8" pathLength="100"/><path d="M109 80l8-1-6-5" stroke-width="1.8" pathLength="100"/>
-<text x="76" y="36" fill="currentColor" stroke="none" font-size="7" opacity=".7">退出码</text>
-<text x="76" y="102" fill="currentColor" stroke="none" font-size="7" opacity=".7">JSON</text>
-<path d="M126 46q10-6 22-5l6 1q6 8 0 16l-8 1q-14 2-20-5" stroke-width="2.6" pathLength="100"/>
-<path d="M154 42l1 24" stroke-width="3" pathLength="100"/>
-<path d="M162 44q22-3 46 0" stroke-width="1.8" pathLength="100"/><path d="M208 44l8 3-8 4" stroke-width="1.8" pathLength="100"/>
-<path d="M162 62q22 3 46 0" stroke-width="1.8" pathLength="100"/><path d="M208 62l8-3-8-4" stroke-width="1.8" pathLength="100"/>
-<path d="M162 53q22 0 46 12" stroke-width="1.8" pathLength="100"/><path d="M208 65l9 2-7 6" stroke-width="1.8" pathLength="100"/>
-<path d="M218 30q20-3 40 0" stroke-width="1.5" opacity=".4" pathLength="100"/><path d="M258 30l7 3-7 3" stroke-width="1.5" opacity=".4" pathLength="100"/>
-<text x="222" y="26" fill="currentColor" stroke="none" font-size="7" opacity=".7">放行</text>
-<path d="M224 58l14 0" stroke-width="4" pathLength="100"/>
-<text x="244" y="62" fill="currentColor" stroke="none" font-size="7" opacity=".7">阻止</text>
-<path d="M222 76q16 4 28 14" stroke-width="1.8" pathLength="100"/><path d="M250 90l9 3-8 4" stroke-width="1.8" pathLength="100"/>
-<path d="M258 92q14 2 28-2" stroke-width="1.8" pathLength="100"/>
-<path d="M286 84q8 6 0 14q-12 3-16-3q-2-8 6-11" stroke-width="1.6" pathLength="100"/>
-<text x="226" y="116" fill="currentColor" stroke="none" font-size="7" opacity=".7">把消息交回模型</text>
-<path d="M12 118q150-6 316-2" stroke-width="1" opacity=".25" pathLength="100"/>
+<path d="M15 16q25-3 51 0q2 17 0 35q-25 2-51-1q-2-16 0-31" stroke-width="2.2" pathLength="100"/>
+<path d="M27 26l9 8-9 8M43 42q7-1 14 0" stroke-width="2" pathLength="100"/>
+<path d="M15 78q25-3 51 0q2 17 0 32q-25 3-51 0q-2-15 0-29" stroke-width="2.2" pathLength="100"/>
+<path d="M32 86q-6-1-6 5q1 4-4 5q5 1 4 5q0 5 6 4M50 86q6-1 6 5q-1 4 4 5q-5 1-4 5q0 5-6 4" stroke-width="1.8" pathLength="100"/>
+<path d="M77 34q31 1 57 22m-9-1 9 1-4-8" pathLength="100"/>
+<path d="M77 94q31-1 57-21m-9 1 9-1-4 8" pathLength="100"/>
+<path d="M147 46q18-3 35 0q3 18 0 37q-18 2-35-1q-2-17 0-33" stroke-width="2.5" pathLength="100"/>
+<path d="M156 57q8-2 17 0M156 66q8-1 17 0M156 75q8-1 17 0" stroke-width="1.2" opacity=".5" pathLength="100"/>
+<path d="M193 64q6 0 12 0q4-40 30-40q19-1 38 0m-8-5 8 5-8 5" pathLength="100"/>
+<path d="M205 64q31-1 68 0m-8-5 8 5-8 5" pathLength="100"/>
+<path d="M205 64q4 39 30 39q19-1 38 0m-8-5 8 5-8 5" pathLength="100"/>
+<path d="M288 23q5 4 9 9q10-13 18-18" stroke-width="2.8" pathLength="100"/>
+<path d="M290 52q11-2 21 0l8 11-8 13q-11 1-21-1l-8-11 8-11" stroke-width="2.1" pathLength="100"/>
+<path d="M291 64q10-1 20 0" stroke-width="3" pathLength="100"/>
+<path d="M288 91q17-2 34 0q2 10 0 19l-15 0-9 6 1-6-11-1q-2-9 0-16" stroke-width="2" pathLength="100"/>
+<path d="M295 98q10-1 20 0M295 104q7-1 14 0" stroke-width="1.2" opacity=".5" pathLength="100"/>
+<path d="M12 125q150-6 316-2" stroke-width="1" opacity=".25" pathLength="100"/>
 </svg></div>
       <p class="k-plain">不改源码就能插手关键节点：五种钩子挂在工具、会话、压缩、权限等生命周期事件上，能拦、能改输入、能补上下文</p>
       <p class="k-ana">✦ 像小区门禁：保安不盖楼，但每次进出都能拦下、改道或在登记本上补一句</p>
@@ -469,7 +461,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-fork" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-fork" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path class="pulse" d="M12.6 27.8c4.6-1.4 8.1 3.1 5.2 6.9-2.2 3.1-7.6 2.5-8.1-1.4-.5-2.5.7-4.5 2.9-5.5Z" stroke-width="2.4" pathLength="100"/>
   <path class="pulse" d="M47.6 12.8c4.6-1.4 8.1 3.1 5.2 6.9-2.2 3.1-7.6 2.5-8.1-1.4-.5-2.5.7-4.5 2.9-5.5Z" stroke-width="2.4" pathLength="100"/>
   <path class="pulse" d="M47.6 42.8c4.6-1.4 8.1 3.1 5.2 6.9-2.2 3.1-7.6 2.5-8.1-1.4-.5-2.5.7-4.5 2.9-5.5Z" stroke-width="2.4" pathLength="100"/>
@@ -514,7 +506,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-hub" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-hub" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M29.7 23.8c7.3-2.8 13.3 4.2 10.3 10.2-3 7-13 6-16.5-1-2.8-5 1.2-9 6.2-9.2Z" stroke-width="2.7" pathLength="100"/>
   <circle class="pulse" cx="12" cy="14" r="4" stroke-dasharray="22 4" stroke-width="2.2"/>
   <circle class="pulse" cx="52" cy="14" r="4" stroke-dasharray="22 4" stroke-width="2.2"/>
@@ -569,7 +561,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-plug" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-plug" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M7.7 8.7Q21 7 34 8l9 10q-1.2 18.7.2 38Q25 55 7.2 56q1-22.5.5-47.3Z" stroke-width="2.4" pathLength="100"/>
   <path d="M34 8q-.9 5.6-.3 10.8l9.3-.8" stroke-width="1.5" pathLength="100"/>
   <path d="M14 27.9q9-1.1 19-.1" stroke-width="1.5" opacity=".65" pathLength="100"/>
@@ -616,7 +608,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-wire" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-wire" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M4 32.3q28-1.2 56-.2" stroke-width="1.4" opacity=".45" pathLength="100"/>
   <path d="M18 44.2q-1.6-17 .2-32" stroke-width="2.6" pathLength="100"/>
   <path d="M46 44.2q1.4-17-.2-32" stroke-width="2.6" pathLength="100"/>
@@ -653,7 +645,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>MCP 是 AI 世界的"USB-C 接口"：协议即契约、传输无关、安全边界内嵌，把碎片化的工具集成变成标准组合。</li><li>四层权限模型按"默认不信任"层层设防——攻击者绕过一层，其余各层仍在保护；`mcp__{server}__{tool}` 命名让权限检查有了独立命名空间。</li><li>MCP 不是独立子系统，而是工具生态的自然延伸：注册调度走工具系统、四阶段检查走权限管线、生命周期拦截走钩子系统。</li></ol>
+      <ol class="k-list"><li>MCP 是 AI 世界的"USB-C 接口"：协议即契约、传输无关、安全边界内嵌，把碎片化的工具集成变成标准组合。</li><li>四层权限模型按"默认不信任"层层设防——攻击者绕过一层，其余各层仍在保护；`mcp__{server}__{tool}` 命名让权限检查有了独立命名空间。</li><li>MCP 落在工具生态之内，是这套生态的自然延伸：注册调度走工具系统、四阶段检查走权限管线、生命周期拦截走钩子系统。</li></ol>
       <p class="k-foot">第 12 章</p>
     </article>
   </div>
@@ -665,7 +657,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-funnel" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-funnel" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="7" cy="13" r="1.6" fill="currentColor" stroke="none"/>
   <circle cx="7" cy="32" r="1.6" fill="currentColor" stroke="none"/>
   <circle cx="7" cy="51" r="1.6" fill="currentColor" stroke="none"/>
@@ -705,7 +697,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>流式不是优化，而是架构选择。</li><li>它决定了从 QueryEngine 到工具执行，每个组件都按增量、可中断、可组合来设计，性能与成本都由此派生。</li><li>带走这句：缓存求字节级一致，优化先量瓶颈——工具输出的 token 往往比模型输出更值钱。</li></ol>
+      <ol class="k-list"><li>流式是一种架构选择，优化只是它的下游收益。</li><li>它决定了从 QueryEngine 到工具执行，每个组件都按增量、可中断、可组合来设计，性能与成本都由此派生。</li><li>带走这句：缓存求字节级一致，优化先量瓶颈——工具输出的 token 往往比模型输出更值钱。</li></ol>
       <p class="k-foot">第 13 章</p>
     </article>
   </div>
@@ -717,7 +709,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg class="a-flag" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" class="a-flag" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M11 51c11.4 1.2 8.3-18.2 19.5-23.7S44.6 20 47 11.5" stroke-dasharray="4 5.2" stroke-width="2"/>
   <circle cx="11" cy="51" r="3.2" fill="currentColor" stroke="none"/>
   <circle cx="11" cy="51" r="5.8" stroke-width="1.1" opacity=".4" pathLength="100"/>
@@ -760,7 +752,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   </div>
   <div class="deck">
     <article class="kcard k-hook">
-      <div class="k-mark" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="k-mark" aria-hidden="true"><svg aria-hidden="true" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M21.8 52.2Q25.6 32 30 16.3" stroke-width="2.6" pathLength="100"/>
   <path d="M38.4 52.1Q35.5 32 30.5 16.3" stroke-width="2.4" pathLength="100"/>
   <path d="M17.5 30.7Q30 29.4 42.6 30.1" stroke-width="2" pathLength="100"/>

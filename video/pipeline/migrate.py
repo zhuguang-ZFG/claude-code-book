@@ -6,7 +6,6 @@ draft script cut from the content pack until a producer reviews it.
 """
 from __future__ import annotations
 
-import shutil
 from pathlib import Path
 
 from . import content, timeline, voice

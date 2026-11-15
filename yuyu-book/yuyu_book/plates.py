@@ -15,8 +15,32 @@ _PLATE_PH_RE = re.compile(
 _FLOOR_FROM = 1150.0
 _FLOOR_RATIO = 0.85
 _FLOOR_CAP = 2600.0
-_VIEWBOX_RE = re.compile(r'viewBox="0 0 ([0-9.]+) ([0-9.]+)"')
+# mermaid sometimes emits a negative origin ("-5.2 -3 1282 618") when a label
+# overhangs the layout; those plates need the same floor and print caps as an
+# origin-at-zero one, so match the origin instead of assuming it.
+_VIEWBOX_RE = re.compile(
+    r'viewBox="(-?[0-9.]+)[\s,]+(-?[0-9.]+)[\s,]+([0-9.]+)[\s,]+([0-9.]+)"')
 _SVG_ROOT_RE = re.compile(r"<svg\b[^>]*>")
+
+
+def _lift_axis_ticks(svg: str) -> str:
+    """Raise the d3 axis labels mermaid never themes.
+
+    Mermaid's gantt/timeline axes are d3 output: each tick carries a
+    ``font-size="10"`` presentation attribute, so themeVariables and themeCSS
+    both miss it and a floored plate lands on 8.5px. A rule inside the SVG's
+    own <style> outranks the attribute; scoping it by the root id keeps it off
+    every other plate on the page.
+    """
+    tag = _SVG_ROOT_RE.match(svg)
+    if not tag or "tick" not in svg:
+        return svg
+    ident = re.search(r'\bid="([^"]+)"', tag.group(0))
+    at = svg.find("<style>")
+    if not ident or at < 0:
+        return svg
+    rule = f"#{ident.group(1)} .tick text{{font-size:14px}}"
+    return svg[:at + 7] + rule + svg[at + 7:]
 
 
 def floor_wide_svg(svg: str) -> tuple[str, str | None]:
@@ -32,7 +56,7 @@ def floor_wide_svg(svg: str) -> tuple[str, str | None]:
     vb = _VIEWBOX_RE.search(head)
     if not vb:
         return svg, None
-    vw = float(vb.group(1))
+    vw = float(vb.group(3))
     if vw < _FLOOR_FROM:
         return svg, None
     floor = f"{round(min(vw * _FLOOR_RATIO, _FLOOR_CAP))}px"
@@ -61,7 +85,7 @@ def _plate_metrics(svg: str) -> tuple[float, float, float] | None:
     if not vb:
         return None
     fonts = [float(x) for x in re.findall(r"font-size:\s*([0-9.]+)px", svg)]
-    return (float(vb.group(1)), float(vb.group(2)),
+    return (float(vb.group(3)), float(vb.group(4)),
             max(fonts) if fonts else 16.0)
 
 
@@ -92,6 +116,7 @@ def plate_landscape(svg: str) -> bool:
 def mermaid_figure(uid: str, svg: str, fig_no: str, caption: str,
                    lang: str) -> str:
     cap_word = "图" if lang == "zh" else "Figure"
+    svg = _lift_axis_ticks(svg)
     svg, floor = floor_wide_svg(svg)
     classes = ["diagram"]
     if floor:
@@ -105,10 +130,21 @@ def mermaid_figure(uid: str, svg: str, fig_no: str, caption: str,
     # 170mm tall, so a cap of its own would push the caption onto a second sheet.
     cap = None if land else plate_cap(svg)
     style = f' style="--plate-cap:{cap}"' if cap else ""
+    # Mermaid writes role="graphics-document document" and no name, so a screen
+    # reader announces the drawing as an unnamed graphic. The caption is the
+    # name it already has on the page; point the root at it.
+    root = _SVG_ROOT_RE.match(svg)
+    if root:
+        head = root.group(0)
+        at = root.end() - (2 if head.endswith("/>") else 1)
+        labelled = svg[:at] + f' aria-labelledby="fig-cap-{uid}"' + svg[at:]
+    else:
+        labelled = svg
     return (f'<figure class="{" ".join(classes)}" id="fig-{uid}"{style}>'
-            f'<div class="diagram-frame">{svg}</div>'
+            f'<div class="diagram-frame">{labelled}</div>'
             f'<figcaption><span class="fig-no">{cap_word} {fig_no}</span>'
-            f'<span class="fig-cap">{caption}</span>{hint}</figcaption></figure>')
+            f'<span class="fig-cap" id="fig-cap-{uid}">{caption}</span>'
+            f'{hint}</figcaption></figure>')
 
 
 def drawing_slots(unit: Unit) -> dict[str, tuple[str, str]]:

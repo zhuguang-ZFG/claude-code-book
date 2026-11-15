@@ -370,7 +370,7 @@ This implementation embodies key design decisions distilled from Claude Code's s
 
 ### Step 2: Tool System
 
-Claude Code's tool system moves default value population into the `buildTool` factory function. Each tool only needs to define its unique parts, while the factory provides common behavior. Let's implement a streamlined version:
+Claude Code's tool system moves default value population into the `buildTool` factory function. Each tool only needs to define its unique parts, while the factory provides common behavior. Following that design, build a streamlined version:
 
 ```typescript
 // toolSystem.ts
@@ -1082,7 +1082,7 @@ flowchart TD
 
 ### Multimodal Interaction
 
-Current tool systems are text-centric, but multimodal interaction is changing this landscape. Claude Code already handles image input (`ImageSizeError`, `ImageResizeError`) and Computer Use tools. Future Agent Harnesses will need:
+Current tool systems are text-centric, but multimodal interaction is changing that. Claude Code already handles image input (`ImageSizeError`, `ImageResizeError`) and Computer Use tools. Future Agent Harnesses will need:
 
 - **Native multimodal tools:** Tool inputs and outputs are no longer limited to text, but include images, audio, and video
 - **Visual understanding tools:** Screenshot analysis, UI element location, chart interpretation
@@ -1322,10 +1322,10 @@ When you build the cart yourself, failures are usually not wrong tech choices â€
 
 **Book Conclusion**
 
-From understanding the Agent Harness concept in Chapter 1 to building a custom implementation with your own hands in this chapter, we've completed a full journey. Claude Code, as the benchmark for industrial-grade Agent Harnesses, demonstrates what this technology looks like in actual production environments: not a simple API call wrapper, but a complete software architecture integrating conversation management, tool orchestration, permission control, context engineering, memory systems, and observability.
+From the Agent Harness concept in Chapter 1 to the custom implementation in this chapter, Claude Code shows what an industrial-grade Harness looks like in production: not a wrapper around API calls, but a single architecture that brings together conversation management, tool orchestration, permission control, context engineering, memory systems, and observability.
 
-Agent Harness represents a new software paradigm -- not the programmer telling the machine what to do at every step, but the programmer building a framework within which the machine makes autonomous decisions. The quality of this framework determines the upper bound of the agent's capabilities and the lower bound of its safety.
+Agent Harness changes who decides: the programmer no longer dictates every step, but builds a framework within which the machine makes its own decisions. The quality of that framework sets the agent's capability ceiling and safety floor.
 
-Looking back across the entire book, we see a clear design philosophy: **at every decision point, Claude Code chose the safer, more controllable, more observable option.** Loops over recursion (easier to debug), fail-closed defaults (safer), progressive compression (more controllable), circuit breaker protection (more robust). These choices may individually seem conservative, but together they constitute a system you can trust in production environments.
+The book keeps returning to one set of tradeoffs: **at every decision point, Claude Code chose the safer, more controllable, more observable option.** Loops over recursion (easier to debug), fail-closed defaults (safer), progressive compression (more controllable), circuit breaker protection (more robust). Each choice looks conservative on its own; together they are what makes the system trustworthy in production.
 
-Future software developers need two kinds of skill at once: traditional deterministic programming, and this new "meta-programming" -- building Harnesses for AI agents. We hope this book provides a solid starting point for your exploration on this path. Remember, the best Harness doesn't limit the agent's capabilities -- it maximizes the agent's potential while ensuring safety.
+Future software developers need two skills at once: traditional deterministic programming, and the "meta-programming" of building Harnesses for AI agents. The best Harness does not limit the agent's capabilities; it secures safety first, then releases the agent's potential.

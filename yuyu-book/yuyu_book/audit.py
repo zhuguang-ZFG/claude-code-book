@@ -10,16 +10,31 @@ from .core import BuildError
 VOID = {"br", "img", "hr", "meta", "input", "link", "wbr"}
 
 
+def named_svg(attrs: dict[str, str]) -> bool:
+    """A graphic is either named or explicitly hidden; `role` is neither.
+
+    `role="graphics-document"` with no label is exactly the unlabelled stop a
+    screen reader cannot announce, so it does not count as a name.
+    """
+    if attrs.get("aria-hidden") == "true":
+        return True
+    return any((attrs.get(k) or "").strip()
+               for k in ("aria-label", "aria-labelledby"))
+
+
 class _Parser(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.ids: list[str] = []
         self.hrefs: list[str] = []
         self.svgs = 0
+        self.unnamed: list[str] = []
         self.scripts = 0
         self.imgs_external = 0
         self.classes: dict[str, int] = {}
         self.open_stack: list[str] = []
+        self.hidden_stack: list[bool] = []
+        self.svg_frames: list[dict] = []
         self.stray: list[str] = []
         self.nested: int = 0
 
@@ -33,6 +48,11 @@ class _Parser(HTMLParser):
             self.hrefs.append(a["href"][1:])
         if tag == "svg":
             self.svgs += 1
+            # A `<title>` child names the drawing just as well as aria-label,
+            # so the verdict waits for the closing tag.
+            self.svg_frames.append({"class": a.get("class", "<no class>"),
+                                    "hidden": any(self.hidden_stack),
+                                    "named": named_svg(a), "title": ""})
         if tag == "script":
             self.scripts += 1
         if tag == "img" and not a.get("src", "").startswith("data:"):
@@ -45,24 +65,54 @@ class _Parser(HTMLParser):
                     and ("pre" in self.open_stack or "code" in self.open_stack):
                 self.nested += 1
             self.open_stack.append(tag)
+            self.hidden_stack.append(a.get("aria-hidden") == "true")
+
+    def handle_data(self, data):
+        if self.svg_frames and self.open_stack and self.open_stack[-1] == "title":
+            self.svg_frames[-1]["title"] += data
+
+    def _finalize_svg(self):
+        if not self.svg_frames:
+            return
+        frame = self.svg_frames.pop()
+        if not frame["hidden"] and not frame["named"] and not frame["title"].strip():
+            self.unnamed.append(frame["class"])
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, [kv for kv in attrs])
         if tag not in VOID and self.open_stack and self.open_stack[-1] == tag:
             self.open_stack.pop()
+            self.hidden_stack.pop()
+        if tag == "svg":
+            self._finalize_svg()
 
     def handle_endtag(self, tag):
         if tag in VOID:
             return
         if self.open_stack and self.open_stack[-1] == tag:
             self.open_stack.pop()
+            self.hidden_stack.pop()
         elif tag in self.open_stack:
             while self.open_stack and self.open_stack[-1] != tag:
-                self.stray.append(self.open_stack.pop())
+                dropped = self.open_stack.pop()
+                self.hidden_stack.pop()
+                if dropped == "svg":
+                    self._finalize_svg()
+                self.stray.append(dropped)
             if self.open_stack:
                 self.open_stack.pop()
+                self.hidden_stack.pop()
         else:
             self.stray.append(tag)
+        if tag == "svg":
+            self._finalize_svg()
+
+
+def exposed_svgs(html_text: str) -> list[str]:
+    """The exposed `<svg>` roots that neither name themselves nor are hidden."""
+    p = _Parser()
+    p.feed(html_text)
+    return p.unnamed
 
 
 def audit(html_text: str, *, n_units: int, expect_svgs: int | None,
@@ -91,6 +141,10 @@ def audit(html_text: str, *, n_units: int, expect_svgs: int | None,
         errors.append(f"only {p.classes} articles for {n_units} units")
     if expect_svgs is not None and p.svgs < expect_svgs:
         errors.append(f"svg count {p.svgs} < expected {expect_svgs}")
+    if p.unnamed:
+        errors.append(f"{len(p.unnamed)} exposed <svg> roots carry no name and "
+                      f"no aria-hidden — a screen reader announces them as "
+                      f"unnamed graphics: {sorted(set(p.unnamed))[:6]}")
     if "mermaid-missing" in p.classes:
         errors.append(f'{p.classes["mermaid-missing"]} missing diagrams')
     if p.stray:

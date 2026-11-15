@@ -72,7 +72,7 @@ Inside QueryEngine's query loop, the system processes streaming events one by on
 
 With the work split into phases, the system processes tool calls and progress messages in real time, without waiting for the full response.
 
-**Where is the real value of streaming processing?** Let's understand it with a comparison. Suppose the model generates a response requiring three tool calls, with a total time of 5 seconds:
+**Where is the real value of streaming processing?** A comparison makes it clear. Suppose the model generates a response requiring three tool calls, with a total time of 5 seconds:
 
 | Strategy | Model outputs tool1 (1s) | Model outputs tool2 (2s) | Model outputs tool3 (2s) | Total time |
 |----------|--------------------------|--------------------------|--------------------------|------------|
@@ -93,7 +93,7 @@ This immediate detection relies on `content_block_start` and `content_block_delt
 
 ### 13.1.4 Complete Streaming Data Flow Overview
 
-Let's connect the streaming API interaction process from user input to final output into a complete data flow diagram:
+Here is the full data flow, from user input to final output:
 
 ```mermaid
 flowchart TD
@@ -427,7 +427,7 @@ flowchart LR
 
 **updateUsage** handles usage data from single streaming events. Since Anthropic API's `message_delta` events only return incremental fields, `updateUsage` uses `> 0` guards for each field to distinguish "not returned" from "truly zero". You cannot skip this guard: if the API returns `input_tokens: 0` (because that request used caching), the system won't incorrectly overwrite the previously recorded true value to zero.
 
-This seemingly simple guard reveals a profound design issue: **semantic ambiguity of incremental protocols.** When a field is missing or zero, does it mean "this quantity really is zero" or "this event doesn't contain information about this quantity"? Without distinction, "100% cache hit rate" leads to the absurd result of "displaying zero input tokens".
+When a field is missing or zero, does that mean "this quantity really is zero" or "this event carries no information about this quantity"? That is the **semantic ambiguity of incremental protocols**. Conflate the two and the 100% cache-hit turn overwrites the recorded input-token count with zero, so the display shows "zero input tokens".
 
 The essence of the `> 0` guard is a **monotonic increase guarantee**: usage fields only increase, never decrease or get overwritten with smaller values. Query usage at any moment and the number you get is the largest seen so far.
 
@@ -498,7 +498,7 @@ Turn    Input    Output    Cache Read    Cache Create    Cumulative Cost($)
 
 Turn 5 alone costs $0.27, and $0.24 of that comes from its 63K cache creation tokens; the model's own 2,000-token output accounts for $0.03. Reads climb back to 89% on turn 6, which means the surging input has become a reusable prefix; what actually pulls input back down to 30K is the compaction at turn 7. This case shows: **tool output token costs are often more worth watching than the model's own output.**
 
-The cost ledger keeps two pens: updateUsage records each event, and accumulateUsage totals them into the session's running account -- detail first, totals after, so the numbers stay reconciled.
+Event slips update the message ledger first, then feed the total ledger: updateUsage updates fields, accumulateUsage sums them one field at a time.
 
 ```ill
 ch13-cost-ledger

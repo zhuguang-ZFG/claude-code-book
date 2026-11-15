@@ -15,6 +15,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DIST = ROOT / "yuyu-book" / "dist"
 sys.path.insert(0, str(ROOT / "yuyu-book"))
 
 PAGES = {
@@ -27,6 +28,8 @@ PAGES = {
     "docs/sample-chapter.html": "zh",
     "docs/sample-chapter.en.html": "en",
 }
+# Imported after sys.path so the test reads the gate's own scanner.
+from yuyu_book.audit import exposed_svgs  # noqa: E402
 # The sample rehosts a book chapter verbatim; the book's own guide band uses
 # h4 labels under the chapter h1 by design, so heading-order is checked on the
 # product shells only.
@@ -56,6 +59,39 @@ def media_block(css: str, condition: str) -> str:
             index += 1
         return css[start:index - 1]
     return ""
+
+
+def exposed_unnamed_svgs(page: str) -> list[str]:
+    """The gate's own scanner, so a test cannot drift from what a build refuses."""
+    return exposed_svgs(page)
+
+
+class SvgExposure(unittest.TestCase):
+    def test_a_bare_drawing_is_flagged(self):
+        self.assertEqual(exposed_unnamed_svgs('<svg viewBox="0 0 1 1"></svg>'),
+                         ["<no class>"])
+
+    def test_a_wrapper_hides_everything_inside_it(self):
+        page = '<div aria-hidden="true"><span><svg class="a-x"></svg></span></div>'
+        self.assertEqual(exposed_unnamed_svgs(page), [])
+
+    def test_a_named_drawing_is_left_alone(self):
+        page = ('<svg role="img" aria-label="Pausing differs from cancelling">'
+                '</svg><svg aria-labelledby="cap-1"></svg>'
+                '<svg aria-hidden="true"></svg>')
+        self.assertEqual(exposed_unnamed_svgs(page), [])
+
+    def test_role_alone_is_not_a_name(self):
+        page = '<svg class="flowchart" role="graphics-document document"></svg>'
+        self.assertEqual(exposed_unnamed_svgs(page), ["flowchart"])
+
+    def test_aria_hidden_false_stays_exposed(self):
+        page = '<svg class="a-x" aria-hidden="false" role="img"></svg>'
+        self.assertEqual(exposed_unnamed_svgs(page), ["a-x"])
+
+    def test_an_empty_label_is_not_a_name(self):
+        page = '<svg aria-label="" aria-labelledby="  "></svg>'
+        self.assertEqual(exposed_unnamed_svgs(page), ["<no class>"])
 
 
 class PageContracts(unittest.TestCase):
@@ -126,6 +162,35 @@ class PageContracts(unittest.TestCase):
             for tag in re.findall(r"<svg\b[^>]*>", page):
                 if 'role="img"' in tag:
                     self.assertRegex(tag, r'aria-label="[^"]+"', path)
+
+    def test_every_exposed_drawing_is_named_or_hidden(self):
+        """A plate repeats its caption; one announced bare reads as noise.
+
+        Hidden on the SVG itself or on a wrapper both count — the drawing
+        shelf wraps its plates rather than editing 46 files — but something
+        has to say it, and `role="img"` without a label does not.
+        """
+        for path in PAGES:
+            page = read(path)
+            exposed = exposed_unnamed_svgs(page)
+            self.assertEqual(exposed, [], f"{path}: {len(exposed)} drawings "
+                                          f"announce nothing: {exposed[:3]}")
+
+    def test_the_built_books_name_every_exposed_plate(self):
+        """The products above copy a chapter; the books themselves are bigger.
+
+        They ship 160-1400 Mermaid roots apiece, each rendered by the same
+        `mermaid_figure`, so this is where a missing name actually shows up.
+        `dist/` is generated, so a bare checkout skips rather than fails.
+        """
+        built = sorted(DIST.glob("*.html"))
+        if not built:
+            self.skipTest("no built books in dist/ (run `bookctl.py build`)")
+        for path in built:
+            page = path.read_text(encoding="utf-8")
+            exposed = exposed_unnamed_svgs(page)
+            self.assertEqual(exposed, [], f"{path.name}: {len(exposed)} drawings "
+                                          f"announce nothing: {exposed[:3]}")
 
     def test_every_page_states_its_colour_scheme(self):
         for path in PAGES:

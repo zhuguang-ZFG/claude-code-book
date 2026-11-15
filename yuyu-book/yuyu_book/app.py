@@ -419,6 +419,21 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     return out
 
 
+_EYEBROW_OPEN = '<p class="eyebrow">'
+
+
+def _stamp_volume(body: list[str], vol_no: str) -> list[str]:
+    """Put the bound volume in front of every unit's eyebrow.
+
+    Each volume restarts its own part numbers and chapter numbers, so in the
+    omnibus "第一部分 基础篇 · 第 1 章" appears nine times. The eyebrow is the
+    only running label the reader passes on every page, which makes it the one
+    place where the volume has to be named.
+    """
+    tag = f'{_EYEBROW_OPEN}<span class="vol-tag">{pages.esc(vol_no)}</span>'
+    return [chunk.replace(_EYEBROW_OPEN, tag) for chunk in body]
+
+
 def build_collected(lang: str, spec: dict, volumes, *,
                     mode: str, browser: str | None, autolink: bool,
                     out_dir: Path, do_pdf: bool, edge: str | None,
@@ -461,7 +476,9 @@ def build_collected(lang: str, spec: dict, volumes, *,
             index_rows += [(e[lang]["term"], e[lang]["refs"][0]["anchor"])
                            for e in asm.idx_entries if e[lang]["refs"]]
 
-        toc_entries.append({"kind": "part", "anchor": vol.id,
+        # "volume", not "part": the contents page has to show that a new bound
+        # book starts here, since each volume restarts its own Ⅰ–Ⅶ parts
+        toc_entries.append({"kind": "volume", "anchor": vol.id,
                             "no": vol.no[lang], "title": vol.title[lang]})
         outline.append((1, vol.label(lang), vol.id))
         rail.append(f'<p class="rail-part">{pages.esc(vol.label(lang))}</p>')
@@ -484,12 +501,12 @@ def build_collected(lang: str, spec: dict, volumes, *,
         body.append(pages.volume_divider(
             {"id": vol.id, "no": vol.no, "title": vol.title,
              "motto": {"zh": vol.manifest.get("subtitle", {}).get(lang, "")},
-             "goal": {}}, lang, n, rows))
+             "goal": vol.reading}, lang, n, rows))
         product = vol.manifest.get("product", "book")
         extra = (f" agent-book agent-{product}"
                  if product in {"opencode", "deepseek", "hermes", "codex"} else "")
         body.append(f'<section class="volume{extra}" data-volume="{vol.id}">')
-        body.extend(asm.body)
+        body.extend(_stamp_volume(asm.body, vol.no[lang]))
         body.append("</section>")
 
     foot = pages.ui("diagrams", lang)

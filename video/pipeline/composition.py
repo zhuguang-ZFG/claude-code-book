@@ -8,7 +8,7 @@ from __future__ import annotations
 import hashlib
 from html import escape
 
-from . import content, model
+from . import model
 
 
 def scene_plan(episode: dict, scenes: dict, pack: dict) -> dict:

@@ -7,7 +7,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from yuyu_book import pages, plain, registry, render  # noqa: E402
-from yuyu_book.core import (BOOK_DIR, REPO_ROOT, BuildError, expected_ids,
+from yuyu_book.core import (REPO_ROOT, BuildError, expected_ids,
                             load_configs, load_unit,
                             unit_stream)  # noqa: E402
 from yuyu_book.style import CSS, ink_mark, page, trace, wheel  # noqa: E402
@@ -337,6 +337,24 @@ class Contents(Config):
         for group in groups:
             parts = re.findall(r'class="toc-part"', group)
             self.assertLessEqual(len(parts), 1, "one heading per group")
+
+    def test_a_bound_volume_outranks_a_part_in_the_contents(self):
+        entries = [
+            {"kind": "volume", "anchor": "vol1", "no": "卷一", "title": "第一卷"},
+            {"kind": "part", "anchor": "p1", "no": "Ⅰ", "title": "基础篇"},
+            {"kind": "row", "anchor": "ch01", "no": "01", "title": "第一章"},
+            {"kind": "volume", "anchor": "vol2", "no": "卷二", "title": "第二卷"},
+            {"kind": "part", "anchor": "q1", "no": "Ⅰ", "title": "基础篇"},
+        ]
+        html = pages.toc_html(entries, "zh")
+        self.assertIn('class="toc-vol"', html)
+        groups = re.findall(
+            r'<div class="toc-group">(.*?)</div>\s*'
+            r'(?=<div class="toc-group">|</section>)', html, re.S)
+        for group in groups:
+            heads = re.findall(r'class="toc-(?:part|vol)"', group)
+            self.assertLessEqual(len(heads), 1, "one heading per group")
+        self.assertIn('data-ref="vol1"', html)
 
     def test_appendix_gutter_labels_are_letters_in_both_languages(self):
         for apx in self.manifest["appendices"]:

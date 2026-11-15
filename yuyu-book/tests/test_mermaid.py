@@ -378,7 +378,19 @@ class FigureMarkup(unittest.TestCase):
         self.assertIn('<figure class="diagram" id="fig-abababababab">', zh)
         self.assertIn('<span class="fig-no">图 7-1</span>', zh)
         self.assertIn('<span class="fig-no">Figure 7-1</span>', en)
-        self.assertIn('<div class="diagram-frame"><svg/></div>', zh)
+        self.assertIn('<div class="diagram-frame"><svg aria-labelledby='
+                      '"fig-cap-abababababab"/></div>', zh)
+        self.assertIn('<span class="fig-cap" id="fig-cap-abababababab">循环</span>',
+                      zh)
+
+    def test_the_root_takes_its_name_from_the_caption_below_it(self):
+        html = render.mermaid_figure("c" * 12, '<svg role="graphics-document document"'
+                                     ' id="mm-c"></svg>', "3-1", "三次重试", "zh")
+        label = re.search(r'<svg[^>]*aria-labelledby="([^"]+)"', html)
+        self.assertIsNotNone(label, "the root must name the caption it belongs to")
+        self.assertIn(f'id="{label.group(1)}"', html)
+        self.assertIn("三次重试", html)
+        self.assertNotIn('aria-label=""', html)
 
     def test_diagram_frame_holds_the_svg_and_no_block_element_is_nested(self):
         html = render.mermaid_figure("a" * 12, '<svg id="mm-a"><g/></svg>',
@@ -416,6 +428,33 @@ class FigureMarkup(unittest.TestCase):
         self.assertIn('<svg style="min-width:1700px;" viewBox="0 0 2000 500">', out)
         self.assertIn("<style>.a{min-width:1px}</style>", out)
         self.assertIn('<g style="max-width:9px"/>', out)
+
+    def test_a_negative_viewbox_origin_still_gets_the_floor(self):
+        # mermaid shifts the origin when a label overhangs the layout; those
+        # plates used to slip past the floor and render at column scale.
+        svg = ('<svg id="mm-z" width="100%" style="max-width: 100%;" '
+               'viewBox="-5.2 -3 1282 618"></svg>')
+        out, floor = render.floor_wide_svg(svg)
+        self.assertEqual(floor, "1090px")
+        self.assertIn("min-width:1090px;", out)
+        html = render.mermaid_figure("z" * 12, svg, "9-9", "框图", "zh")
+        self.assertIn('<figure class="diagram wide"', html)
+        self.assertIn('<span class="fig-hint">可横向拖动</span>', html)
+
+    def test_axis_ticks_get_a_scoped_font_rule(self):
+        # d3 writes font-size="10" as an attribute, so themeVariables never
+        # reach the gantt/timeline axes; the rule must be scoped by root id or
+        # it would restyle every other plate on the page.
+        svg = ('<svg id="mm-t" width="100%" style="max-width: 100%;" '
+               'viewBox="0 0 1200 400"><style>#mm-t{font-size:15px}</style>'
+               '<g class="tick"><text font-size="10">0</text></g></svg>')
+        html = render.mermaid_figure("t" * 12, svg, "1-1", "图", "zh")
+        self.assertIn("#mm-t .tick text{font-size:14px}", html)
+        self.assertEqual(html.count("font-size:14px"), 1)
+        quiet = svg.replace('class="tick"', 'class="node"')
+        self.assertNotIn("font-size:14px",
+                         render.mermaid_figure("t" * 12, quiet, "1-1", "图",
+                                               "zh"))
 
 
 class DiagramsSurviveRendering(unittest.TestCase):

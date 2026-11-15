@@ -11,7 +11,7 @@
 <!-- block: apxd.b-173b10a3 -->
 ## 核心概念关系图
 
-以下图表展示了本书核心术语之间的关系，帮助读者建立整体概念框架：
+两张图分工不同：第一张标的是术语之间谁调用谁、谁配置谁，第二张只排压缩策略的轻重顺序。
 
 ```mermaid
 flowchart TD
@@ -268,7 +268,7 @@ flowchart LR
 | Templates | 模板系统 | 启用作业分类器（Job Classifier）的分类模块，用于识别和路由不同类型的用户请求。由 `TEMPLATES` 功能标志控制 | Job Classifier, Feature Flag | 第 9 章 |
 | Token | 词元 / Token | 模型处理文本的基本单位，也是上下文窗口容量和 API 计费的核心度量。所有上下文管理策略都是围绕怎样用好 Token 展开的 | Context Window, Token Budget, Compaction | 第 2 章 |
 | Token Budget | Token 预算 | 规划和监控单次会话可用 Token 总量的管理机制，提供用量预警和分配策略。由 `TOKEN_BUDGET` 功能标志控制 | Token, Context Window, Compaction | 第 7 章 |
-| Tool | 工具 | 智能体可调用的外部能力单元（如文件读写、Bash 命令、网络搜索等），通过标准化接口注册和执行。所有工具都遵循 Tool Interface 定义的协议 | Tool Registry, Build Tool, Permission Pipeline | 第 3 章 |
+| Tool | 工具 | 智能体可调用的外部能力单元（如文件读写、Bash 命令、网络搜索等），通过标准化接口注册和执行。接口上那七个方法回答的都是同一类问题：这个工具能不能用、会不会改文件、能不能并行跑、权限由谁放行 | Tool Registry, Build Tool, Permission Pipeline | 第 3 章 |
 | Tool Interface | 工具接口 | 所有工具必须遵循的标准协议，定义了 isEnabled、isReadOnly、isConcurrencySafe、isDestructive、checkPermissions 等核心方法 | Tool, Build Tool | 第 3 章 |
 | Tool Orchestration | 工具编排 | 智能体根据任务需要选择、组合和排序多个工具调用的高层调度能力 | Tool, Agent, Main Loop | 第 3 章 |
 | Tool Permission Context | 工具权限上下文 | 包含当前权限模式、已授权规则和待处理检查的状态对象，贯穿工具执行的权限决策流程 | Permission Pipeline, Permission Mode | 第 4 章 |
@@ -301,7 +301,7 @@ flowchart LR
 
 ## 丛书共享词
 
-同丛另有《Omp 从入门到精通：原理与实战》一册（本仓库 `omp/`，仍在施工中），讲同一个终端里的另一套 agent harness。两册共有 **15** 条同名术语，其中 **12** 条两边写法完全一致，剩下 **3** 条各有主张——这不是笔误，而是让每一册在自己的正文里前后一致：
+同丛另有《Omp 从入门到精通：原理与实战》一册（本仓库 `omp/`，仍在施工中），讲同一个终端里的另一套 agent harness。两册共有 **15** 条同名术语，其中 **12** 条两边写法完全一致，剩下 **3** 条各有主张，为的是让每一册在自己的正文里前后一致，与笔误无关：
 
 | 英文原名 | 本书 | Omp 分册 | 差在哪 |
 |---|---|---|---|

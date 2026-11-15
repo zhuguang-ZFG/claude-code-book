@@ -13,8 +13,6 @@ Regenerate after touching yuyu-book/illustrations/:
 Style system: yang0/handraw-style (FD-001 ink editorial, C-32 charcoal,
 C-15 cinnabar) — see CREDITS.md and docs/illustration-prompts.md.
 """
-import json
-
 from .. import art
 from ..paths import BOOK_DIR, REPO_ROOT
 from . import tokens
@@ -85,8 +83,8 @@ PLAIN = {
     "ch11-skill-stairs": "五级台阶：官越大说了算，官缺了往下补",
     "ch12-mcp-state-dial": "一座钟面：五个状态绕环走，卡住就退避重试",
     "ch13-concurrency-gate": "一扇闸门：只读的齐头并进，动手的排队独占",
-    "ch09-tool-funnel": "一层筛子：禁令先排除、白名单再收窄，MCP 工具始终在池",
-    "ch13-cost-ledger": "两支笔记总账：updateUsage 记每一笔，accumulateUsage 汇合计",
+    "ch09-tool-funnel": "筛网收窄内置工具，插头旁路保留 MCP 工具；进入工具池后，执行仍须通过权限检查",
+    "ch13-cost-ledger": "事件小票先更新消息账页，再汇入总账：updateUsage 更新字段，accumulateUsage 逐项累加",
     "ch14-plan-gate": "一间带门的作坊：先在左屋画图，再进右屋动工",
     "ch15-harness-wheel": "一只车轮：对话循环是毂，五根辐条撑起整车",
     "apxa": "藏宝图：源码去哪儿翻，一图定位",
@@ -150,10 +148,10 @@ PLAIN_EN = {
     "ch08-hook-decision": "Two lanes into one gate: the exit code and the "
                           "JSON decision merge into one handling -- approve, "
                           "block, or hand a message back",
-    "ch09-tool-funnel": "A sieve: global denies drop first, a whitelist "
-                        "narrows further, MCP tools always stay in",
-    "ch13-cost-ledger": "Two pens on one ledger: updateUsage records each "
-                        "event, accumulateUsage totals the session",
+    "ch09-tool-funnel": "The sieve narrows built-in tools; the plug bypass keeps "
+                        "MCP tools in the pool. Execution still requires permission checks",
+    "ch13-cost-ledger": "Event slips update the message ledger, then feed the total: "
+                        "updateUsage updates fields; accumulateUsage adds them up",
     "ch14-plan-gate": "A workshop with a door: sketch in the read-only "
                       "room, build in the other",
     "ch15-harness-wheel": "A wheel: the dialog loop is the hub; five "

@@ -21,73 +21,138 @@
   "kicker": {
     "zh": "合订本 · 卷一至卷九"
   },
-  "langs": ["zh"],
+  "langs": [
+    "zh"
+  ],
   "output_prefix": "yuyu-collected",
   "revisions_registry": "",
   "subject_index_registry": "",
   "volumes": [
     {
       "id": "vol1",
-      "no": {"zh": "卷一"},
-      "title": {"zh": "御舆：解码 Agent Harness"},
+      "no": {
+        "zh": "卷一"
+      },
+      "title": {
+        "zh": "御舆：解码 Agent Harness"
+      },
       "manifest": "manifest.json",
-      "sources": "sources.json"
+      "sources": "sources.json",
+      "reading": {
+        "zh": "总纲：工具、权限、上下文、钩子、协作、MCP、成本这几件事在这里第一次定义，其余八卷按各自的实现回答同一批问题。"
+      }
     },
     {
       "id": "vol2",
-      "no": {"zh": "卷二"},
-      "title": {"zh": "Omp 从入门到精通：原理与实战"},
+      "no": {
+        "zh": "卷二"
+      },
+      "title": {
+        "zh": "Omp 从入门到精通：原理与实战"
+      },
       "manifest": "manifest-omp.json",
-      "sources": "sources-omp.json"
+      "sources": "sources-omp.json",
+      "reading": {
+        "zh": "自带模型层入门（第 2 章）：token、上下文窗口、推理档位；先补这台机器，再回卷一看构件。"
+      }
     },
     {
       "id": "vol3",
-      "no": {"zh": "卷三"},
-      "title": {"zh": "Pi Agent：从原理到实战"},
+      "no": {
+        "zh": "卷三"
+      },
+      "title": {
+        "zh": "Pi Agent：从原理到实战"
+      },
       "manifest": "manifest-pi.json",
-      "sources": "sources-pi.json"
+      "sources": "sources-pi.json",
+      "reading": {
+        "zh": "入口是「砍掉了什么」：同一层边界在极简实现里还剩几条，适合与卷一逐节对照。"
+      }
     },
     {
       "id": "vol4",
-      "no": {"zh": "卷四"},
-      "title": {"zh": "OpenCode：从原理到实战"},
+      "no": {
+        "zh": "卷四"
+      },
+      "title": {
+        "zh": "OpenCode：从原理到实战"
+      },
       "manifest": "manifest-opencode.json",
-      "sources": "sources-opencode.json"
+      "sources": "sources-opencode.json",
+      "reading": {
+        "zh": "沿一次任务追到客户端、服务、工具、权限与插件生命周期；与卷二对照，能分出配置项和实际请求的差别。"
+      }
     },
     {
       "id": "vol5",
-      "no": {"zh": "卷五"},
-      "title": {"zh": "DeepSeek Harness：插件化运行时"},
+      "no": {
+        "zh": "卷五"
+      },
+      "title": {
+        "zh": "DeepSeek Harness：插件化运行时"
+      },
       "manifest": "manifest-deepseek.json",
-      "sources": "sources-deepseek.json"
+      "sources": "sources-deepseek.json",
+      "reading": {
+        "zh": "插件化运行时：读代码之前先做 Cordis 的依赖等待、失败与清理实验，再按生命周期顺序看实现。"
+      }
     },
     {
       "id": "vol6",
-      "no": {"zh": "卷六"},
-      "title": {"zh": "Hermes Agent：记忆、技能与持续任务"},
+      "no": {
+        "zh": "卷六"
+      },
+      "title": {
+        "zh": "Hermes Agent：记忆、技能与持续任务"
+      },
       "manifest": "manifest-hermes.json",
-      "sources": "sources-hermes.json"
+      "sources": "sources-hermes.json",
+      "reading": {
+        "zh": "记忆、技能与持续任务：卷一第 6 章的长期记忆，在这里变成可操作的资料库、修订与恢复流程。"
+      }
     },
     {
       "id": "vol7",
-      "no": {"zh": "卷七"},
-      "title": {"zh": "Codex CLI：执行边界与工程实践"},
+      "no": {
+        "zh": "卷七"
+      },
+      "title": {
+        "zh": "Codex CLI：执行边界与工程实践"
+      },
       "manifest": "manifest-codex.json",
-      "sources": "sources-codex.json"
+      "sources": "sources-codex.json",
+      "reading": {
+        "zh": "执行边界最严的一卷：审批、沙箱、JSONL；读完回卷一第 4 章的权限管线对一遍。"
+      }
     },
     {
       "id": "vol8",
-      "no": {"zh": "卷八"},
-      "title": {"zh": "Kimi Code：从插件到审查助手"},
+      "no": {
+        "zh": "卷八"
+      },
+      "title": {
+        "zh": "Kimi Code：从插件到审查助手"
+      },
       "manifest": "manifest-kimi.json",
-      "sources": "sources-kimi.json"
+      "sources": "sources-kimi.json",
+      "reading": {
+        "zh": "把 Skill、自定义 Agent、Hook、MCP、ACP 拼成一条交付流水；与卷七的失败恢复并读，两种实现互相印证。"
+      }
     },
     {
       "id": "vol9",
-      "no": {"zh": "卷九"},
-      "title": {"zh": "提示词工程：从提问到 Agent 协作"},
+      "no": {
+        "zh": "卷九"
+      },
+      "title": {
+        "zh": "提示词工程：从提问到 Agent 协作"
+      },
       "manifest": "manifest-prompt.json",
-      "sources": "sources-prompt.json"
+      "sources": "sources-prompt.json",
+      "reading": {
+        "zh": "提示词与任务构造：卷一没有这一域，当补章读；练习在青禾工作坊里做。"
+      }
     }
   ]
 }

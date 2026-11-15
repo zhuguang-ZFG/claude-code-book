@@ -173,6 +173,13 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
      sheet reads as a printing slip; the block is short enough to move whole */
   .chapter-notes{break-inside:avoid}
   figure.diagram,figure{break-inside:avoid;max-height:none}
+  /* an inline drawing takes the whole 176 mm text block, so the label sizes
+     chosen for the 285 px phone column would print at twice the body size.
+     Paper re-caps the label scale; the screen keeps the larger attributes. */
+  .illu-frame svg text{font-size:14px}
+  .illu-frame svg text.il-head{font-size:16px}
+  .illu-frame svg text.il-big{font-size:24px}
+  .illu-frame svg text.frame-no{font-size:7px}
   /* An A4 text column here is 257mm tall. A plate capped at 200mm needs 78% of
      it, so almost no page can host one and the figure jumps to the next sheet,
      leaving the hole behind it. 150mm still shows a full architecture diagram
