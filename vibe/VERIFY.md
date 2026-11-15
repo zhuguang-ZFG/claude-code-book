@@ -2,9 +2,11 @@
 
 ## 2026-11-15 · 插图与文风二轮
 
-给新增章节补五幅正文手绘，并按风险顺序补了一节评审清单：
+给新增章节补七幅正文手绘，并按风险顺序补了一节评审清单：
 
 - `vibe-ch02-card.svg`：任务卡的五个部分与一支笔。
+- `vibe-ch04-paths.svg`：输入、程序、输出三个位置与回退基线。
+- `vibe-ch06-report.svg`：命令、输入、期望、实际四行现场。
 - `vibe-ch07-loop.svg`：失败测试 → 只改一处 → 通过，三帧胶片。
 - `vibe-ch09-gates.svg`：单元、端到端、人工、回滚四道门。
 - `vibe-ch10-boundary.svg`：私密联系方式、数据库与公开窗口之间的围栏和锁。
@@ -18,9 +20,9 @@ python scripts/bookctl.py build --product vibe --lang zh --pdf --epub
 ```
 
 ```text
-yuyu-vibe-zh.html  0.4 MB / 17 units / 7 plates / 13 cited links / 3 headpieces
-yuyu-vibe-zh.pdf   4.3 MB / 74 页 / 21 书签 / 152 个链接 / 0 空白页
-yuyu-vibe-zh.epub  238,115 B / 6 张图 / 138 条导航
+yuyu-vibe-zh.html  0.4 MB / 17 units / 9 plates / 13 cited links / 3 headpieces
+yuyu-vibe-zh.pdf   4.4 MB / 75 页 / 21 书签 / 152 个链接 / 0 空白页
+yuyu-vibe-zh.epub  238,255 B / 6 张图 / 138 条导航
 ```
 
 校验：
