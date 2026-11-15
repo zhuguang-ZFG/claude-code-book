@@ -4,18 +4,6 @@ import sys
 import time
 import unittest
 from pathlib import Path
-    def test_the_smallest_label_sets_the_height(self):
-        # 600x1200 with 15 px body text passes at 150 mm only because the
-        # node labels are 12 px; measuring the largest size would leave them
-        # at about 4.4 pt.
-        svg = ('<svg id="mm-abc123def456" width="100%" viewBox="0 0 600 1200" '
-               'style="max-width:100%">'
-               '<style>.a{font-size: 15px}.b{font-size: 12px}</style>'
-               '<text class="a">节点</text><text class="b">边</text></svg>')
-        cap = render.plate_cap(svg)
-        self.assertIsNotNone(cap)
-        self.assertGreater(float(cap[:-2]), 150.0)
-
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -309,6 +297,18 @@ class PlatePrintGeometry(unittest.TestCase):
         mm = float(cap[:-2])
         self.assertGreater(mm, 150.0, cap)
         self.assertLessEqual(mm, 245.0, cap)
+
+    def test_the_smallest_label_sets_the_height(self):
+        # 600x1200 with 15 px body text passes at 150 mm only because the
+        # node labels are 12 px; measuring the largest size would leave them
+        # at about 4.4 pt.
+        svg = ('<svg id="mm-abc123def456" width="100%" viewBox="0 0 600 1200" '
+               'style="max-width:100%">'
+               '<style>.a{font-size: 15px}.b{font-size: 12px}</style>'
+               '<text class="a">节点</text><text class="b">边</text></svg>')
+        cap = render.plate_cap(svg)
+        self.assertIsNotNone(cap)
+        self.assertGreater(float(cap[:-2]), 150.0)
 
     def test_a_legible_plate_keeps_the_default_cap(self):
         for w, h in ((700, 400), (1200, 900), (400, 300)):

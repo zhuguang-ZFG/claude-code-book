@@ -69,6 +69,7 @@ blockquote p:last-child{margin-bottom:0}
 
 /* ------- code ------- */
 code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
+  overflow-wrap:anywhere;
   border:1px solid var(--line);border-radius:var(--r-1);padding:.06em .34em;
   color:var(--bronze-3)}
 .codehilite{margin:1.1rem 0 1.25rem;border-radius:var(--r-2);position:relative;
