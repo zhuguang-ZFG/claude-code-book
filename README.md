@@ -77,7 +77,7 @@ make book-pi-epub   # 再加 EPUB
 
 新增 [Vibe Coding：把想法做成能跑的软件](vibe/README.md)，8 章加附录 A–C，走中文独立构建入口 `make book-vibe-all`（HTML/PDF/EPUB）。全书用一份旧书市集 CSV 走完任务卡、样例、迭代、报错、风险边界、验收与交接；示例程序只用 Python 3.12 标准库。GitHub 资源入口固定在附录 B 的提交上。
 
-十册另可合订为《Agent Harness 十卷合订本》：`manifest-collected.json` 逐卷引用各册的清单与来源，`make book-collected` 出中文单文件 HTML。合订本不合并各册的索引与页码，只新增卷宗与卷级目录；十册的图版全部内联，因此不再另出 PDF 与 EPUB。
+十册另可合订为《Agent Harness 十卷合订本》：`manifest-collected.json` 逐卷引用各册的清单与来源，`make book-collected` 出中文单文件 HTML。需要打印或离线阅读时，可用 `python scripts/bookctl.py build --product collected --lang zh --pdf` 生成中文 PDF，再用 `python scripts/build_epub.py --html yuyu-book/dist/yuyu-collected-zh.html --output yuyu-book/dist/yuyu-collected-zh.epub --lang zh` 从同一 HTML 生成 EPUB。合订本不合并各册的索引与页码，只新增卷宗与卷级目录。2026-11-16 本机实测：PDF 1921 页、107.5 MB、321 书签、0 空白页；EPUB 52.0 MB、2,413 条导航。
 
 ## 阅读说明
 

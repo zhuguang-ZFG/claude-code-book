@@ -86,9 +86,9 @@ book-prompt-all book-kimi-all book-vibe-all:
 	$(BOOKCTL) build --product $(patsubst book-%-all,%,$@) --lang zh --pdf --epub
 
 # The ten-volume collected edition binds every shipped book; each volume
-# keeps its own manifest, so only the collection manifest is passed. It ships
-# the single HTML: binding ten books inlines every plate, and the print pass
-# over that document is not a build step anyone should wait for.
+# keeps its own manifest, so only the collection manifest is passed.
+# The single HTML is the default; the optional PDF pass inlines every plate
+# and takes about 20 minutes locally.
 book-collected:
 	$(BOOKCTL) build --product collected --lang zh
 
