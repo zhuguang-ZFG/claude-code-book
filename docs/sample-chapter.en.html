@@ -340,10 +340,6 @@ ul>li::before{content:"◆";position:absolute;left:-1.15em;top:0;
    the volume it opens. The larger numeral and tighter rule give it one rank
    above the part sheets that follow. */
 .collected .volume-divider{padding-top:clamp(2.8rem,7vw,4.6rem)}
-/* Chromium's index blocks avoid splitting, so a long letter can overflow the
-   column and leave a stray fragment page when the next volume door breaks.
-   The omnibus lets a block continue on the next column instead. */
-.collected .back-index .idx-block{break-inside:auto}
 .collected .volume-divider .pd-no{font-size:1rem;color:var(--cinnabar);
   letter-spacing:.62em}
 .collected .volume-divider .pd-title{letter-spacing:.12em}
@@ -1289,6 +1285,12 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
      is 665px of a much taller sheet — two columns is the book convention and
      halves the index */
   .idx-cols{columns:2;column-gap:2.2rem}
+  /* The index is the last block before a volume door. Its screen bottom
+     padding can fail to fit the final line and Chromium keeps a sheet alive
+     just to paint it; the next door then opens on the following page. Standalone
+     volumes end the book here, so only the omnibus needs the page box's own
+     margin to be the air. Same trap as `article` padding above. */
+  .collected .back-index{padding-bottom:0}
   /* the folio slot: a screen has no pages, so the row hides its page reference;
      paper reserves the box here and the PDF pass writes the number into it —
      nothing in the HTML can know the page a row lands on */

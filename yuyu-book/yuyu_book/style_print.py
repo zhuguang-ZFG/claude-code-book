@@ -54,6 +54,12 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
      is 665px of a much taller sheet — two columns is the book convention and
      halves the index */
   .idx-cols{columns:2;column-gap:2.2rem}
+  /* The index is the last block before a volume door. Its screen bottom
+     padding can fail to fit the final line and Chromium keeps a sheet alive
+     just to paint it; the next door then opens on the following page. Standalone
+     volumes end the book here, so only the omnibus needs the page box's own
+     margin to be the air. Same trap as `article` padding above. */
+  .collected .back-index{padding-bottom:0}
   /* the folio slot: a screen has no pages, so the row hides its page reference;
      paper reserves the box here and the PDF pass writes the number into it —
      nothing in the HTML can know the page a row lands on */
