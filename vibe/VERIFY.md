@@ -1,5 +1,37 @@
 # 验证记录
 
+## 2026-11-15 · 插图与文风二轮
+
+给新增章节补五幅正文手绘，并按风险顺序补了一节评审清单：
+
+- `vibe-ch02-card.svg`：任务卡的五个部分与一支笔。
+- `vibe-ch07-loop.svg`：失败测试 → 只改一处 → 通过，三帧胶片。
+- `vibe-ch09-gates.svg`：单元、端到端、人工、回滚四道门。
+- `vibe-ch10-boundary.svg`：私密联系方式、数据库与公开窗口之间的围栏和锁。
+- `vibe-ch11-atomic.svg`：旧版、临时产物、新版与失败丢弃路径。
+- 第 12 章新增“评审时按影响面排序”，把行为、数据边界、失败路径、测试、依赖与许可证排在样式之前；Google 工程实践只作类别参照，链接仍指向附录 B.3。
+
+文风二轮集中在新增章节：删掉“这一章”自称、`真正的`、`才算` 等模板句；把“四层缺一不可”改成“四层各管一段”，把“精通阶段不是功能更多”改成“看别人能否接手”。
+
+```bash
+python scripts/bookctl.py build --product vibe --lang zh --pdf --epub
+```
+
+```text
+yuyu-vibe-zh.html  0.4 MB / 17 units / 7 plates / 13 cited links / 3 headpieces
+yuyu-vibe-zh.pdf   4.3 MB / 74 页 / 21 书签 / 152 个链接 / 0 空白页
+yuyu-vibe-zh.epub  238,115 B / 6 张图 / 138 条导航
+```
+
+校验：
+
+```text
+python scripts/check_book.py                 447 Markdown files, 438 Mermaid diagrams, 0 errors
+python -m unittest discover -s yuyu-book/tests -q   604 tests OK
+python -m unittest discover -s tests -q             292 tests OK
+python -m ruff check yuyu-book scripts video tests  All checks passed
+```
+
 ## 2026-11-15 · 0.2.0 内容重构
 
 把试读版从 8 章扩成 12 章 + 附录 A–D，并做去 AI 味与来源补充：
