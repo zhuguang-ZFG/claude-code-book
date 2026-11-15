@@ -6,7 +6,6 @@
 
 ```bash
 python scripts/bookctl.py build --product vibe --lang zh --check
-
 ```
 
 最终产物（同一命令加 `--pdf --epub`）：
@@ -60,6 +59,10 @@ EXIT:2
 ```
 
 `test_missing_input_leaves_no_output` 同时确认没有留下目标文件。
+
+## 来源核对
+
+附录 B 的六个 GitHub 固定提交在 2026-11-15 逐个请求 `/<repo>/commit/<sha>`，均返回 HTTP 200；构建器把来源页链接写成 `/tree/<sha>`，读者看到的是同一提交。
 
 ## 未测范围
 
