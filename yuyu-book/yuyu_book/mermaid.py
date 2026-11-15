@@ -256,13 +256,15 @@ def render_all(blocks: list[MermaidBlock], caps: dict[str, str],
             last_err = None
             for kind, path in launched:
                 try:
-                    browser = (p.chromium.launch(executable_path=path)
-                               if path else p.chromium.launch(
-                                   channel=kind,
-                                   args=["--allow-file-access-from-files"])
-                               if kind in ("msedge", "chrome")
-                               else p.chromium.launch(
-                                   args=["--allow-file-access-from-files"]))
+                    browser = (p.chromium.launch(
+                        executable_path=path,
+                        args=["--allow-file-access-from-files"])
+                        if path else p.chromium.launch(
+                            channel=kind,
+                            args=["--allow-file-access-from-files"])
+                        if kind in ("msedge", "chrome")
+                        else p.chromium.launch(
+                            args=["--allow-file-access-from-files"]))
                     break
                 except Exception as e:  # noqa: BLE001
                     last_err = e
