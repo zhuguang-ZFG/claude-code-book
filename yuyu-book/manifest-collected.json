@@ -2,7 +2,7 @@
   "schema_version": 1,
   "product": "collected",
   "version": "0.1.0",
-  "date": "2026-11-12",
+  "date": "2026-11-15",
   "author": "LinTsinghua",
   "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
   "license": {
@@ -10,16 +10,16 @@
     "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
   },
   "title": {
-    "zh": "Agent Harness 九卷合订本"
+    "zh": "Agent Harness 十卷合订本"
   },
   "subtitle": {
-    "zh": "御舆 · 六部 Harness 读本 · Kimi · 提示词工程"
+    "zh": "御舆 · 六部 Harness 读本 · Kimi · 提示词工程 · Vibe Coding"
   },
   "epigraph": {
     "zh": "一器而工聚焉者，车为多。——《周礼·考工记》"
   },
   "kicker": {
-    "zh": "合订本 · 卷一至卷九"
+    "zh": "合订本 · 卷一至卷十"
   },
   "langs": [
     "zh"
@@ -152,6 +152,20 @@
       "sources": "sources-prompt.json",
       "reading": {
         "zh": "提示词与任务构造：卷一没有这一域，当补章读；练习在青禾工作坊里做。"
+      }
+    },
+    {
+      "id": "vol10",
+      "no": {
+        "zh": "卷十"
+      },
+      "title": {
+        "zh": "Vibe Coding：把想法做成能跑的软件"
+      },
+      "manifest": "manifest-vibe.json",
+      "sources": "sources-vibe.json",
+      "reading": {
+        "zh": "从一句话到可验收原型：卷九把任务写清楚，这卷把它跑成能交接的软件。"
       }
     }
   ]

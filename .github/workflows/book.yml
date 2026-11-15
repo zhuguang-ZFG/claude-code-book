@@ -145,7 +145,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        product: [opencode, deepseek, hermes, codex, prompt, kimi]
+        product: [opencode, deepseek, hermes, codex, prompt, kimi, vibe]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -171,7 +171,7 @@ jobs:
           if-no-files-found: error
   collected:
     name: Collected edition
-    # Nine bound volumes inline every plate, so this document is built on main
+    # Ten bound volumes inline every plate, so this document is built on main
     # and on dispatch only; pull requests still cover its loader and assembly
     # contract through the builder suite.
     if: github.event_name != 'pull_request'

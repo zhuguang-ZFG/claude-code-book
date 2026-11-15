@@ -28,6 +28,8 @@ FILES = (
     "manifest-prompt.json",
     "sources-kimi.json",
     "sources-prompt.json",
+    "manifest-vibe.json",
+    "sources-vibe.json",
     "manifest-omp.json",
     "manifest-pi.json",
     "glosses.json",
