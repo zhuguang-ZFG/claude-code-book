@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "product": "vibe",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "date": "2026-11-15",
   "author": "朱光",
   "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
@@ -13,7 +13,7 @@
     "zh": "Vibe Coding：把想法做成能跑的软件"
   },
   "subtitle": {
-    "zh": "从一句需求到可验收原型 · 技术试读版"
+    "zh": "从一句需求到可维护原型 · 技术试读版"
   },
   "kicker": {
     "zh": "大模型与智能体工程 · 从意图到交付"
@@ -22,7 +22,7 @@
     "zh": "书中旧书市集案例为原创虚构数据。示例程序在 Python 3.12 下逐段运行；不同模型与工具的实际输出不保证相同，未实测的部分在正文中保留边界。"
   },
   "epigraph": {
-    "zh": "先把感觉写成条件，再让模型动手。"
+    "zh": "把输入、规则、验收和回退写下来，再让模型开始写。"
   },
   "langs": ["zh"],
   "output_prefix": "yuyu-vibe",
@@ -37,42 +37,47 @@
     {
       "id": "vibe-p1",
       "no": {"zh": "第一篇"},
-      "title": {"zh": "起步：把感觉写成任务"},
-      "motto": {"zh": "先说明交付，再让模型补实现。"},
-      "goal": {"zh": "把一句愿望变成有输入、规则、验收和回退的任务卡。"},
+      "title": {"zh": "入门：把感觉写成任务"},
+      "motto": {"zh": "写清输入、输出、验收和回退，再让模型写第一行。"},
+      "goal": {"zh": "把一句愿望变成能执行的任务卡，并留下第一个可运行版本。"},
       "units": [
         {"id": "vibe-ch01", "zh": "vibe/ch01.md"},
         {"id": "vibe-ch02", "zh": "vibe/ch02.md"},
-        {"id": "vibe-ch03", "zh": "vibe/ch03.md"}
+        {"id": "vibe-ch03", "zh": "vibe/ch03.md"},
+        {"id": "vibe-ch04", "zh": "vibe/ch04.md"}
       ]
     },
     {
       "id": "vibe-p2",
       "no": {"zh": "第二篇"},
-      "title": {"zh": "迭代：让错误变成证据"},
-      "motto": {"zh": "一圈只改一处，一次只验一个原因。"},
-      "goal": {"zh": "用最小循环推进实现，并把报错变成可复现的证据。"},
+      "title": {"zh": "进阶：让错误变成证据"},
+      "motto": {"zh": "每圈只改一处，跑一次，留下能复现的输出。"},
+      "goal": {"zh": "用最小循环、回归测试和风险分级，把报错变成可复现的证据。"},
       "units": [
-        {"id": "vibe-ch04", "zh": "vibe/ch04.md"},
         {"id": "vibe-ch05", "zh": "vibe/ch05.md"},
-        {"id": "vibe-ch06", "zh": "vibe/ch06.md"}
+        {"id": "vibe-ch06", "zh": "vibe/ch06.md"},
+        {"id": "vibe-ch07", "zh": "vibe/ch07.md"},
+        {"id": "vibe-ch08", "zh": "vibe/ch08.md"}
       ]
     },
     {
       "id": "vibe-p3",
       "no": {"zh": "第三篇"},
-      "title": {"zh": "交付：从能跑到敢用"},
-      "motto": {"zh": "验收、回滚、交接，缺一不可。"},
-      "goal": {"zh": "把原型变成别人能运行、能检查、能接手的项目。"},
+      "title": {"zh": "精通：从能跑到可维护"},
+      "motto": {"zh": "发布前跑验收和回滚演练，再把运行方式交给下一个人。"},
+      "goal": {"zh": "把原型变成能部署、能检查、能接手、能维护的项目。"},
       "units": [
-        {"id": "vibe-ch07", "zh": "vibe/ch07.md"},
-        {"id": "vibe-ch08", "zh": "vibe/ch08.md"}
+        {"id": "vibe-ch09", "zh": "vibe/ch09.md"},
+        {"id": "vibe-ch10", "zh": "vibe/ch10.md"},
+        {"id": "vibe-ch11", "zh": "vibe/ch11.md"},
+        {"id": "vibe-ch12", "zh": "vibe/ch12.md"}
       ]
     }
   ],
   "appendices": [
     {"id": "vibe-apxa", "zh": "vibe/appendix-a.md"},
     {"id": "vibe-apxb", "zh": "vibe/appendix-b.md"},
-    {"id": "vibe-apxc", "zh": "vibe/appendix-c.md"}
+    {"id": "vibe-apxc", "zh": "vibe/appendix-c.md"},
+    {"id": "vibe-apxd", "zh": "vibe/appendix-d.md"}
   ]
 }

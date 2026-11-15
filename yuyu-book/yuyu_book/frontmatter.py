@@ -132,7 +132,7 @@ def route_map_page(manifest: dict, lang: str, nos: dict[str, str]) -> str:
     chapters = sum(len(p["units"]) for p in manifest["parts"])
     return (f'<section class="front-page route-map" id="route-map">'
             f'<h1 class="page-title">{esc(ui("route_map", lang))}</h1>'
-            f'<p class="rm-lead">{esc(route_map_lead(lang, chapters))}</p>'
+            f'<p class="rm-lead">{esc(route_map_lead(lang, chapters, manifest.get("product", "")))}</p>'
             f'{map_svg}'
             f'<ul class="rm-key">{keys}</ul>'
             f'<ul class="rm-legs">{"".join(li(*r) for r in rows)}</ul></section>')

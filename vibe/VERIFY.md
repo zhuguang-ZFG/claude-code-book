@@ -1,5 +1,35 @@
 # 验证记录
 
+## 2026-11-15 · 0.2.0 内容重构
+
+把试读版从 8 章扩成 12 章 + 附录 A–D，并做去 AI 味与来源补充：
+
+- 三篇结构：入门（第 1–4 章）、进阶（第 5–8 章）、精通（第 9–12 章）。
+- 新增第 4、7、10、11 章及附录 D；重排旧章并更新前言、README、术语表。
+- 附录 B.3 增加五本社区开源书（固定提交、许可证、阅读问题），`sources-vibe.json` 同步 5 条 `vibe-book-*` 来源；5 个 `/tree/<sha>` 链接在 2026-11-15 返回 HTTP 200。
+- 全书扫掉“本章动作”“短合同”“缝/吵架”“骨架”“安全绳”“隐藏不等于禁止”等模板句；路线图引言对 vibe 改为平实说明，主书保留原比喻。
+
+```bash
+python scripts/bookctl.py build --product vibe --lang zh --pdf --epub
+```
+
+```text
+yuyu-vibe-zh.html  0.4 MB / 17 units / 2 plates / 13 cited links / 3 headpieces
+yuyu-vibe-zh.pdf   4.2 MB / 71 页 / 21 书签 / 151 个链接 / 0 空白页
+yuyu-vibe-zh.epub  237,418 B / 6 张图 / 137 条导航
+```
+
+校验：
+
+```text
+python scripts/check_book.py                 447 Markdown files, 438 Mermaid diagrams, 0 errors
+python -m unittest discover -s yuyu-book/tests -q   604 tests OK
+python -m unittest discover -s tests -q             292 tests OK
+python -m ruff check yuyu-book scripts video tests  All checks passed
+```
+
+功能抽查：第 7 章同名不同作者测试在旧键下失败（`AssertionError: 1 != 2`），改为 `title + author` 后通过；第 9 章改讲缺输入、退出码、旧产物与回滚；第 10 章 SQLite 唯一约束与公开视图沿用已实测示例；第 12 章补依赖、许可证、来源与技术债交接。
+
 ## 2026-11-15 · 排版修订
 
 修掉主书模板文案与空页，并给三个篇题补手绘墨版。

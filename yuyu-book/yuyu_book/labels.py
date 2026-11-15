@@ -100,9 +100,17 @@ def ui(key: str, lang: str) -> str:
     return _LABELS[key][lang]
 
 
-def route_map_lead(lang: str, chapters: int) -> str:
+def route_map_lead(lang: str, chapters: int, product: str = "") -> str:
     """The lead must name the book it is in: the old string hard-coded fifteen,
     so every 8- or 18-chapter volume called itself a fifteen-chapter book."""
+    if product == "vibe":
+        if lang == "zh":
+            return (f"全书分三篇，共 {chapters} 章：前言说明读法与开始前的检查，"
+                    "正文按入门、进阶、精通推进，附录收模板、来源、术语和练习路线。")
+        return (f"The book has three parts and {chapters} chapters: the foreword "
+                "explains how to read it, the chapters move from beginner to "
+                "advanced to production, and the appendices hold templates, "
+                "sources, a glossary and a practice path.")
     if lang == "zh":
         return (f"把全书想成一条路：前言套车出发，{chapters} 章是路上依次排开的"
                 "驿站，附录是停在路边的岔线，随时可以折过去取个东西再回来。")
