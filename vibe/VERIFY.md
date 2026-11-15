@@ -13,7 +13,7 @@ python scripts/bookctl.py build --product vibe --lang zh --check
 ```text
 yuyu-vibe-zh.html  314 KB
 yuyu-vibe-zh.pdf   3.3 MB / 49 页 / 16 书签 / 90 个链接
-yuyu-vibe-zh.epub  288 KB / 4 张图 / 93 条导航
+yuyu-vibe-zh.epub  273 KB / 4 张图 / 93 条导航
 ```
 
 结果：
@@ -32,7 +32,7 @@ title  Vibe Coding：把想法做成能跑的软件 — 朱光
 width  390
 chapters 8
 figures 3
-图内最小文字 12.47 px
+图内最小文字 12.14 px
 ```
 
 ## 示例程序
