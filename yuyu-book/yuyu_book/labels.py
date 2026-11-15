@@ -84,13 +84,6 @@ _LABELS = {
              "Core is required, Advanced can wait. Dashed terms reveal a "
              "plain-language note on hover or tap."},
     "route_map": {"zh": "全书线路图", "en": "The Book's Route"},
-    "route_map_lead": {
-        "zh": "把全书想成一条路：前言套车出发，十五章是路上依次排开的驿站，"
-              "附录是停在路边的岔线，随时可以折过去取个东西再回来。",
-        "en": "Think of the book as one road: the foreword harnesses the team, "
-             "the fifteen chapters are the stations set out along it, and the "
-             "appendices are a siding you can turn into whenever you need "
-             "something and come back."},
     "rm_key_wheel": {"zh": "轮：前言发车", "en": "Wheel: the ride starts here"},
     "rm_key_ring": {"zh": "圈：一章一站", "en": "Ring: one chapter per stop"},
     "rm_key_siding": {"zh": "虚线：附录是岔线", "en": "Dashed: the appendices, a siding"},
@@ -105,6 +98,18 @@ _LABELS = {
 
 def ui(key: str, lang: str) -> str:
     return _LABELS[key][lang]
+
+
+def route_map_lead(lang: str, chapters: int) -> str:
+    """The lead must name the book it is in: the old string hard-coded fifteen,
+    so every 8- or 18-chapter volume called itself a fifteen-chapter book."""
+    if lang == "zh":
+        return (f"把全书想成一条路：前言套车出发，{chapters} 章是路上依次排开的"
+                "驿站，附录是停在路边的岔线，随时可以折过去取个东西再回来。")
+    return (f"Think of the book as one road: the foreword harnesses the team, "
+            f"the {chapters} chapters are the stations set out along it, and the "
+            "appendices are a siding you can turn into whenever you need "
+            "something and come back.")
 
 
 # the full-width colon is ours to choose, and the English book should not wear it

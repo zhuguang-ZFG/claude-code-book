@@ -188,6 +188,9 @@ section.front-page{break-before:page}
 .rev-v .rev-d{font-size:.78rem;color:var(--ink-3);font-weight:400}
 .revisions ul{margin:.2rem 0 0;padding-left:1.4rem;font-size:.96rem;color:var(--ink-2);
   list-style-type:none}
+/* the diamond is the only bullet: without this reset the browser also paints
+   its disc, and every item opens with "•◆" in the PDF */
+ul{list-style:none}
 ul>li{position:relative}
 ul>li::before{content:"◆";position:absolute;left:-1.15em;top:0;
   font-size:.55em;color:var(--bronze-2);line-height:2.8}
@@ -591,6 +594,11 @@ article p{margin:0 0 1.05em}
 article .chapter-body>p:first-of-type::first-letter{
   font-size:2.9em;line-height:.86;float:inline-start;padding:.08em .12em 0 0;
   color:var(--cinnabar);font-weight:700;font-family:var(--serif)}
+/* Chinese has no one-letter words: a display initial splits the first term
+   ("周/六上午", "任/务卡"), so the field guide opens on the sentence instead. */
+.vibe article .chapter-body>p:first-of-type::first-letter{
+  font-size:inherit;line-height:inherit;float:none;padding:0;
+  color:inherit;font-weight:inherit;font-family:inherit}
 ul,ol{padding-inline-start:1.6em;margin:0 0 1em}
 li{margin:.24em 0}
 li::marker{color:var(--bronze);font-family:var(--sans);font-size:.9em}

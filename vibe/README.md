@@ -30,6 +30,6 @@ make book-vibe-all
 
 - `python scripts/bookctl.py build --product vibe --lang zh --check`：结构、锚点、来源与图版检查通过。
 - 书中的 `shelf.py` 与 `test_shelf.py` 已在 Python 3.12 下用 8 行 fixtures 实际运行：4 张卡片、2 个重复组、跳过第 5/9 行，缺输入时退出码 2 且不生成输出。
-- 390 px 浏览器实测：文档宽度等于视口；3 张图内文字最小有效字号 11.97 px（按 SVG 缩放折算，不取行盒高度）。
+- 390 px 浏览器实测：文档宽度等于视口；Mermaid 图内文字最小有效字号 11.97 px（按 SVG 缩放折算，不取行盒高度）。
 
 完整运行记录与未测范围见 [VERIFY.md](VERIFY.md)。

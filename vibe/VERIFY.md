@@ -1,5 +1,30 @@
 # 验证记录
 
+## 2026-11-15 · 排版修订
+
+修掉主书模板文案与空页，并给三个篇题补手绘墨版。
+
+```bash
+python scripts/bookctl.py build --product vibe --lang zh --pdf --epub
+```
+
+```text
+yuyu-vibe-zh.html  305 KB
+yuyu-vibe-zh.pdf   3.3 MB / 47 页 / 16 书签 / 90 个链接
+yuyu-vibe-zh.epub  220 KB / 6 张图 / 92 条导航
+```
+
+```text
+[zh]
+  yuyu-vibe-zh.html: 0.3 MB, 12 units, 2 plates, 8 cited links, 0 glosses,
+  0 lead bands, 0 tier chips, 0 emblems, 3 headpieces, 0 keeper notes
+CHECK OK
+```
+
+改动：线路图按实际单元数改写章数；没有修订条目时不再输出空白“版本与修订”页；
+无序列表只保留一枚菱形；正文首字下沉只在主书启用；第 6 章删去与风险表重复的高图，
+把被挤到下一页的半页空白收回；三个篇题各加一幅 `part-vibe-p*.svg`。
+
 ## 2026-11-15 · 首次装配
 
 命令：

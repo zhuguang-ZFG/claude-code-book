@@ -193,7 +193,8 @@ def assemble_book(lang: str, manifest: dict, sources: dict, *,
         rev_name = manifest.get("revisions_registry", "revisions.json")
         loaded = registry.load(rev_name) if rev_name else None
         rev = loaded.get("entries", []) if isinstance(loaded, dict) else []
-        body.append(pages.revisions_page(rev, lang))
+        if rev:
+            body.append(pages.revisions_page(rev, lang))
         body.append(pages.how_to_read(manifest, lang, paths))
 
     front_id = manifest["front"]["id"]
@@ -374,6 +375,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
     body_class = f"lang-{lang}"
     if product in {"opencode", "deepseek", "hermes", "codex"}:
         body_class += f" agent-book agent-{product}"
+    elif product == "vibe":
+        body_class += " vibe"
     html_text = page(lang, f'{manifest["title"][lang]} — {manifest["author"]}',
                      CSS, body_class, body_html,
                      "\n".join(asm.rail) + "</nav>", "")
@@ -504,7 +507,8 @@ def build_collected(lang: str, spec: dict, volumes, *,
              "goal": vol.reading}, lang, n, rows))
         product = vol.manifest.get("product", "book")
         extra = (f" agent-book agent-{product}"
-                 if product in {"opencode", "deepseek", "hermes", "codex"} else "")
+                 if product in {"opencode", "deepseek", "hermes", "codex"}
+                 else (" vibe" if product == "vibe" else ""))
         body.append(f'<section class="volume{extra}" data-volume="{vol.id}">')
         body.extend(_stamp_volume(asm.body, vol.no[lang]))
         body.append("</section>")

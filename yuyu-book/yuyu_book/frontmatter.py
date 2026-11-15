@@ -1,7 +1,7 @@
 """Front-matter page builders: cover, imprint, revisions, routes, TOC."""
 from __future__ import annotations
 
-from .labels import esc, note, ui
+from .labels import esc, note, route_map_lead, ui
 from .pages import tier_legend
 
 def cover(manifest: dict, lang: str) -> str:
@@ -129,9 +129,10 @@ def route_map_page(manifest: dict, lang: str, nos: dict[str, str]) -> str:
                         [(esc(head), stops) for head, stops in legs]
                         + [(esc(siding), side)],
                         start_label=esc(nos.get(front, "")))
+    chapters = sum(len(p["units"]) for p in manifest["parts"])
     return (f'<section class="front-page route-map" id="route-map">'
             f'<h1 class="page-title">{esc(ui("route_map", lang))}</h1>'
-            f'<p class="rm-lead">{esc(ui("route_map_lead", lang))}</p>'
+            f'<p class="rm-lead">{esc(route_map_lead(lang, chapters))}</p>'
             f'{map_svg}'
             f'<ul class="rm-key">{keys}</ul>'
             f'<ul class="rm-legs">{"".join(li(*r) for r in rows)}</ul></section>')

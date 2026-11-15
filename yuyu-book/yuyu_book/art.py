@@ -45,10 +45,16 @@ COVER_RASTER_BYTES = 400_000
 PLATE_ALT = {
     "zh": {"cover": "卷首墨版：古车与四匹马", "p1": "篇题墨版：大罗盘",
            "p2": "篇题墨版：革带箱匣与罗盘", "p3": "篇题墨版：山径",
-           "p4": "篇题墨版：牌坊"},
+           "p4": "篇题墨版：牌坊",
+           "vibe-p1": "篇题墨版：把话写成任务卡",
+           "vibe-p2": "篇题墨版：错误关进循环里",
+           "vibe-p3": "篇题墨版：打包交付"},
     "en": {"cover": "Cover plate: the old chariot and its four horses",
            "p1": "Part plate: the great compass", "p2": "Part plate: the strapped chest and its compass",
-           "p3": "Part plate: the mountain path", "p4": "Part plate: the gateway"},
+           "p3": "Part plate: the mountain path", "p4": "Part plate: the gateway",
+           "vibe-p1": "Part plate: turning a sentence into a task card",
+           "vibe-p2": "Part plate: a bug caught in the loop",
+           "vibe-p3": "Part plate: packing the prototype for handoff"},
 }
 PLATE_ALT_FALLBACK = {"zh": "墨版插图", "en": "Ink plate"}
 
