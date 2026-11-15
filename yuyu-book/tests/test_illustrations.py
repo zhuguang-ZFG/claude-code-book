@@ -223,10 +223,12 @@ class ShippedPlates(unittest.TestCase):
                     text = path.read_text(encoding="utf-8")
                     self.assertIsNone(han.search(text), path.name)
 
-    def test_every_shipped_label_clears_the_narrow_column(self):
+    def test_every_attribute_sized_label_clears_the_narrow_column(self):
         """At 390 px the figure column is 285.6 px wide; a 720-unit plate is
         drawn at 0.397x. Labels under 10 px there stop being readable, and a
-        wide plate is exactly where that regression hides."""
+        wide plate is exactly where that regression hides. The strip frame
+        numbers are sized by CSS rather than an attribute and are measured in
+        the browser instead."""
         narrow_column = 285.6
 
         def label_sizes(svg: str):
@@ -251,7 +253,7 @@ class ShippedPlates(unittest.TestCase):
                 for size in label_sizes(path.read_text(encoding="utf-8")):
                     with self.subTest(drawing=path.name):
                         self.assertGreaterEqual(
-                            round(size, 2), 10.0,
+                            size, 10.0,
                             f"{path.name}: a label renders at {size:.2f}px "
                             f"in the 390 px column")
 

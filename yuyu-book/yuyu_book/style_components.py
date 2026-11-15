@@ -195,9 +195,14 @@ figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
       inset 0 0 0 1px rgba(236,226,204,.14)}
 }
 /* the frame numbers of a sequential plate: small, in the margin, so the
-   drawing stays the thing you look at */
-.illu-seq .frame-no{font-family:var(--sans);font-size:13px;
+   drawing stays the thing you look at. Below 480 px the plate itself is
+   drawn at 0.82x, so the number needs 13 px to land above 10 px; wider
+   screens keep the original 9 px. */
+.illu-seq .frame-no{font-family:var(--sans);font-size:9px;
   fill:currentColor;opacity:.5;stroke:none}
+@media (max-width:480px){
+  .illu-seq .frame-no{font-size:13px}
+}
 figcaption{margin:.7rem auto 0;max-width:var(--measure);font-family:var(--sans);
   font-size:.83rem;color:var(--ink-2);line-height:1.7;
   display:flex;gap:.7rem;justify-content:center;align-items:baseline}
