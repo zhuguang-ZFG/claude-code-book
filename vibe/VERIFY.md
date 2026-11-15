@@ -9,7 +9,7 @@
 ```text
 yuyu-vibe-zh.html  0.4 MB / 17 units / 9 plates / 13 cited links / 3 headpieces
 yuyu-vibe-zh.pdf   4.4 MB / 77 页 / 21 书签 / 152 个链接 / 0 空白页
-yuyu-vibe-zh.epub  239,706 B / 6 张图 / 139 条导航
+yuyu-vibe-zh.epub  239,734 B / 6 张图 / 139 条导航
 ```
 
 ## 2026-11-15 · 插图与文风二轮
