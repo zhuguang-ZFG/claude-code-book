@@ -60,6 +60,23 @@ def write_release_notes(staged: Path, version: str, revisions: dict) -> Path:
     return markdown
 
 
+# The eight volumes after 御舆 and Omp. Each carries its own manifest/sources
+# pair, so the release builds them with the same call the Makefile uses; pi is
+# not in `make book-agents` but has the same shape.
+COMPANION_VOLUMES = ("pi", "opencode", "deepseek", "hermes", "codex",
+                     "kimi", "prompt", "vibe")
+
+
+RELEASE_ONLY_PREFIXES = (
+    tuple(f"yuyu-{product}-" for product in COMPANION_VOLUMES) + ("yuyu-collected-",)
+)
+
+
+def release_only(name: str) -> bool:
+    """True for files shipped as release assets rather than as site pages."""
+    return name.startswith(RELEASE_ONLY_PREFIXES)
+
+
 def assemble(version: str, destination=None, *, epub=False) -> int:
     manifest = json.loads((ROOT / "yuyu-book/manifest.json").read_text(encoding="utf-8"))
     if version != manifest["version"]:
@@ -85,6 +102,17 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
         try:
             run("bilingual HTML/PDF", [sys.executable, "-m", "yuyu_book", "--lang", "both", "--pdf", "--out-dir", str(staged)])
             run("omp HTML/PDF", [sys.executable, "-m", "yuyu_book", "--manifest", "manifest-omp.json", "--sources", "sources-omp.json", "--lang", "zh", "--pdf", "--out-dir", str(staged)])
+            for product in COMPANION_VOLUMES:
+                run(f"{product} HTML/PDF", [sys.executable, "-m", "yuyu_book",
+                                            "--manifest", f"manifest-{product}.json",
+                                            "--sources", f"sources-{product}.json",
+                                            "--lang", "zh", "--pdf",
+                                            "--out-dir", str(staged)])
+            # The shipped registries are what each volume was built from; the
+            # release notes promise them, so they travel with the assets.
+            for product in COMPANION_VOLUMES:
+                for name in (f"manifest-{product}.json", f"sources-{product}.json"):
+                    shutil.copy2(ROOT / "yuyu-book" / name, staged / name)
             run("product idempotence and links", [sys.executable, "scripts/check_products.py"])
             run("video configuration", [sys.executable, "video/pipeline/cli.py", "check", "--config-only"])
             run("video content assembly", [sys.executable, "video/pipeline/cli.py", "build"])
@@ -93,19 +121,35 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
                     run(f"{lang} EPUB", [sys.executable, "scripts/build_epub.py", "--html", str(staged / f"yuyu-agent-harness-{lang}.html"), "--output", str(staged / f"yuyu-agent-harness-{lang}.epub"), "--lang", lang])
             if epub:
                 run("omp EPUB", [sys.executable, "scripts/build_epub.py", "--html", str(staged / "yuyu-omp-zh.html"), "--output", str(staged / "yuyu-omp-zh.epub"), "--lang", "zh"])
+                for product in COMPANION_VOLUMES:
+                    run(f"{product} EPUB", [sys.executable, "scripts/build_epub.py",
+                                            "--html", str(staged / f"yuyu-{product}-zh.html"),
+                                            "--output", str(staged / f"yuyu-{product}-zh.epub"),
+                                            "--lang", "zh"])
             site = staged / "site"
             site.mkdir()
             for path in (ROOT / "docs").iterdir():
                 if path.is_file() and path.suffix in (".html", ".json", ".svg"):
                     shutil.copy2(path, site / path.name)
+            # The site mirrors the Pages deployment (御舆 + Omp only); the
+            # companion volumes ship as release assets, not as site pages, so
+            # site.zip keeps the size of the site rather than of the shelf.
             for path in staged.glob("*.html"):
-                shutil.copy2(path, site / path.name)
+                if not release_only(path.name):
+                    shutil.copy2(path, site / path.name)
             shutil.copy2(ROOT / "cover.png", site / "cover.png")
             shutil.copy2(ROOT / "docs/illustration-prompts.md", site / "illustration-prompts.md")
+            # site.zip carries the omp page, so the portal must link it: the
+            # committed docs/portal.html is the offline variant without that
+            # link, and copying it straight in would ship a page that hides
+            # the very file sitting next to it.
+            run("site portal", [sys.executable, "scripts/build_site_portal.py",
+                                str(site / "portal.html"), "--omp"])
             shutil.copy2(site / "portal.html", site / "index.html")
             shutil.copy2(site / "yuyu-agent-harness-zh.html", site / "book.html")
             for path in staged.glob("*.pdf"):
-                shutil.copy2(path, site / path.name)
+                if not release_only(path.name):
+                    shutil.copy2(path, site / path.name)
             images = ROOT / "docs/images"
             if images.is_dir():
                 shutil.copytree(images, site / "images")

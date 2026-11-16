@@ -151,5 +151,22 @@ class ReleaseNotes(unittest.TestCase):
             self.assertEqual(ledger, {"version": "9.9.9", "entries": [entry]})
 
 
+class CompanionVolumes(unittest.TestCase):
+    def test_every_volume_has_its_manifest_and_sources(self):
+        for product in release.COMPANION_VOLUMES:
+            for name in (f"manifest-{product}.json", f"sources-{product}.json"):
+                self.assertTrue((ROOT / "yuyu-book" / name).is_file(), name)
+
+    def test_the_site_zip_keeps_the_shelf_out(self):
+        """Volumes ship as release assets; site.zip mirrors the two volumes the
+        Pages site actually serves, so it must not balloon to shelf size."""
+        for name in ("yuyu-vibe-zh.html", "yuyu-pi-zh.pdf", "yuyu-kimi-zh.epub",
+                     "yuyu-collected-zh.pdf"):
+            self.assertTrue(release.release_only(name), name)
+        for name in ("yuyu-agent-harness-zh.html", "yuyu-omp-zh.html",
+                     "portal.html", "site.zip"):
+            self.assertFalse(release.release_only(name), name)
+
+
 if __name__ == "__main__":
     unittest.main()

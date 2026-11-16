@@ -183,10 +183,10 @@ PDF 与图版渲染需要一个本机 Chromium 或 Edge（自动探测 `msedge`/
 发布目录由下面这条命令原子生成（版本必须等于 `yuyu-book/manifest.json` 的 `version`；`--epub` 可选）：
 
 ```bash
-python scripts/bookctl.py release --version 0.3.6 --out-dir ../book-release --epub
+python scripts/bookctl.py release --version 0.3.7 --out-dir ../book-release --epub
 ```
 
-目录里有中英双语 HTML/PDF、Omp 中文 HTML/PDF、可选 EPUB、`site.zip`、15 章视频清单、`release-notes.json` 与 `release-notes.md`（后者是 `gh release` 的正文）、`SHA256SUMS` 以及记录命令、提交、浏览器/字体与产物哈希的 `build-report.json` / `artifact-manifest.json`。任一步失败都不会留下半成品发布目录。
+目录里有中英双语 HTML/PDF、Omp 中文 HTML/PDF，以及 Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程与 Vibe Coding 八册各自的 HTML/PDF，可选 EPUB；`site.zip` 只镜像线上两册（御舆 + Omp），另附 15 章视频清单、`release-notes.json` 与 `release-notes.md`（后者是 `gh release` 的正文）、`SHA256SUMS` 以及记录命令、提交、浏览器/字体与产物哈希的 `build-report.json` / `artifact-manifest.json`。任一步失败都不会留下半成品发布目录。
 
 **状态（2026-11-08）：** `v0.3.6` 已由 `release.yml` 在标签推送运行（[run 42423483244](https://github.com/zhuguang-ZFG/claude-code-book/actions/runs/42423483244)）中装配并发布到 [GitHub Release](https://github.com/zhuguang-ZFG/claude-code-book/releases/tag/v0.3.6)：三册 HTML/PDF/EPUB、`site.zip`、15 章视频清单、`SHA256SUMS` 与两份构建报告共 15 个资产；已发布的 14 个文件逐一与 `SHA256SUMS` 对上。P3/P5 门禁仍待独立审阅，`task_verify` 仍为 unverified。改造边界与证据见 [架构决策记录](docs/architecture-decisions.md)、[P3 结构对照](docs/migrations/legacy-v2-structure.md)、[产品页视觉审计](docs/migrations/product-visual-audit.md) 与 [发布迁移说明](docs/migrations/release-migration.md)。
 
