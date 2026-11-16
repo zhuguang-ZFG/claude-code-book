@@ -36,9 +36,9 @@
 - **初次阅读：** 从[前言](00-前言.md)开始，再读 01 → 02 → 04 → 15。
 - **动手构建：** 先读基础篇与工程实践篇，增加记忆和扩展能力时查阅第二、三部分。
 - **按需查阅：** 使用下方四篇附录定位模块、工具、功能标志和术语。
-- **网站阅读：** [在线阅读入口](https://lintsinghua.github.io/)；也可直接点击本仓库的章节链接。
+- **网站阅读：** [在线阅读入口](https://zhuguang-zfg.github.io/claude-code-book/)；也可直接点击本仓库的章节链接。
 
-## 第二分册 · Omp（施工中）
+## 第二分册 · Omp（中文书稿完成）
 
 同仓新增开源终端 agent 教程分册《Omp 从入门到精通：原理与实战》（非官方）。书稿在 [omp/](omp/README.md)；产物前缀 `yuyu-omp-*`。写作钉 **omp/18.15.0**，本机核对见 [omp/VERIFY.md](omp/VERIFY.md)（含 18.16.0）。
 
@@ -65,7 +65,7 @@ make book-pi-epub   # 再加 EPUB
 
 插画策略：Mermaid 架构图 + 手绘概念图双轨。与御舆概念可对照，实现与钉版勿混用。
 
-## 后续四册（研究与试章）
+## 后续四册（研究分册）
 
 新增 [OpenCode](opencode/README.md)、[DeepSeek Harness](deepseek/README.md)、[Hermes](hermes/README.md)、[Codex CLI](codex/README.md) 四本中文分册，每册包含前言、18 章和附录 A–D，均有独立 HTML/PDF/EPUB 构建入口。插件与工具机制配有固定源码、原创示例和实际组件或宿主实验；英文版尚未启动。版本和实验范围见 [研究入口](docs/agent-series-research.md)。
 
@@ -75,7 +75,7 @@ make book-pi-epub   # 再加 EPUB
 
 ## 第十册 · Vibe Coding（技术试读版）
 
-新增 [Vibe Coding：把想法做成能跑的软件](vibe/README.md)，8 章加附录 A–C，走中文独立构建入口 `make book-vibe-all`（HTML/PDF/EPUB）。全书用一份旧书市集 CSV 走完任务卡、样例、迭代、报错、风险边界、验收与交接；示例程序只用 Python 3.12 标准库。GitHub 资源入口固定在附录 B 的提交上。
+新增 [Vibe Coding：把想法做成能跑的软件](vibe/README.md)，12 章加附录 A–D，走中文独立构建入口 `make book-vibe-all`（HTML/PDF/EPUB）。全书用一份旧书市集 CSV 走完任务卡、样例、迭代、报错、风险边界、验收与交接；示例程序只用 Python 3.12 标准库。GitHub 资源入口固定在附录 B 的提交上。
 
 十册另可合订为《Agent Harness 十卷合订本》：`manifest-collected.json` 逐卷引用各册的清单与来源，`make book-collected` 出中文单文件 HTML。需要打印或离线阅读时，可用 `python scripts/bookctl.py build --product collected --lang zh --pdf` 生成中文 PDF，再用 `python scripts/build_epub.py --html yuyu-book/dist/yuyu-collected-zh.html --output yuyu-book/dist/yuyu-collected-zh.epub --lang zh` 从同一 HTML 生成 EPUB。合订本不合并各册的索引与页码，只新增卷宗与卷级目录。2026-11-16 本机实测：PDF 1921 页、107.5 MB、321 书签、0 空白页；EPUB 52.0 MB、2,413 条导航。
 

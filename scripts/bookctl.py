@@ -280,6 +280,8 @@ def check(full: bool) -> int:
         ("builder tests", [python(), "-m", "unittest", "discover",
                            "-s", "yuyu-book/tests"]),
         ("content", [python(), "scripts/check_book.py"]),
+        ("omp plain language", [python(), "scripts/check_omp_plain.py",
+                                "--strict"]),
         ("mermaid", [npm() or "npm", "run", "check:diagrams"]),
         ("video configuration", [python(), "video/pipeline/cli.py", "check",
                                  "--config-only"]),

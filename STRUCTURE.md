@@ -66,7 +66,7 @@
 
 ### 3.1 `yuyu_book.cli`（命令行入口）
 
-仓级入口是 `python scripts/bookctl.py build --product book|omp`；它设置包路径并调用 `python -m yuyu_book`。也可以直接运行底层入口：在 `yuyu-book/` 下执行 `python -m yuyu_book`，或设 `PYTHONPATH=yuyu-book` 后从仓库根运行。CLI 只解析参数，应用装配交给 `yuyu_book.app`。下表是底层包入口的参数；仓级入口同时提供产品选择。
+仓级入口是 `python scripts/bookctl.py build --product <name>`，产品名与各自的 manifest 见 `yuyu-book/PRODUCTS.md`；它设置包路径并调用 `python -m yuyu_book`。也可以直接运行底层入口：在 `yuyu-book/` 下执行 `python -m yuyu_book`，或设 `PYTHONPATH=yuyu-book` 后从仓库根运行。CLI 只解析参数，应用装配交给 `yuyu_book.app`。下表是底层包入口的参数；仓级入口同时提供产品选择。
 
 | 参数 | 实际行为 |
 |------|----------|
@@ -180,8 +180,8 @@ yuyu-book/
 三条边界值得单独说：
 
 1. **20 单元契约只属于 `book`。** 第 2 节的表、`notes.json` 的 20 条按语、附录 D 生成的主题索引、`illustrations/` 那批章徽与题刻，都是按 book 的骨架钉死的；omp 改不动它们，反过来把 omp 的数字抄进这些契约就是改错了书。第 6 节的 HTML 契约对两个产品都成立，因为它数的是**各自**的单元数（`article` 数与 `compass` 卡数），不是硬写的 20。
-2. **omp 没有章徽，但装载器照样绿。** `app.build_edition()` 的期望值是 `单元数 − 磁盘上缺的图数`：omp 一枚章徽都没画，期望与实到同为 0，统计行因此显示 `0 emblems, 0 headpieces`。这不是漏了，是「画了却没上页面才算失败」这条规则的反向用法。
-3. **`check --fast` / `--full` 不含 omp。** `bookctl.check()` 没有 product 参数，两步构建都走默认登记表，所以它验的是御舆。omp 的构建命令、产物体积与本机已验证数字见 `omp/BUILD.md`，两书互链的写法见 `omp/overhaul/CROSSREF-MAP.md`（只写「参见御舆第 N 章」这类短链）。
+2. **omp 有章徽，统计仍按各自骨架算。** `app.build_edition()` 的期望值是 `单元数 − 磁盘上缺的图数`；omp 的 39 枚单元章徽与 7 幅篇题刻都在 `yuyu-book/illustrations-omp/`，构建统计行显示 `39 emblems, 7 headpieces`（数字见 `omp/BUILD.md`）。规则本身是「画了却没上页面才算失败」：缺图不静默，多画也不越界。
+3. **`check --fast` / `--full` 不构建 omp。** `bookctl.check()` 没有 product 参数，两步构建都走默认登记表，所以它验的是御舆。omp 另有一条散文预算 `scripts/check_omp_plain.py --strict`（缺开门句、超长句、小节以表格开头），它进了 `check --fast`；构建仍不进来。omp 的构建命令、产物体积与本机已验证数字见 `omp/BUILD.md`，两书互链的写法见 `omp/overhaul/CROSSREF-MAP.md`（只写「参见御舆第 N 章」这类短链）。
 
 ## 4. 其他工具目录
 

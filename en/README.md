@@ -36,9 +36,9 @@ Explore how an agent runtime connects the conversation loop, tools, permissions,
 - **First visit:** [Foreword](00-Foreword.md), then chapters 01 → 02 → 04 → 15.
 - **Build an agent:** read Parts 1 and 4; use Parts 2 and 3 when adding memory and extensions.
 - **Look up a concept:** use the four appendices below.
-- **Website:** [Online reading](https://lintsinghua.github.io/). Repository chapters remain directly readable on GitHub.
+- **Website:** [Online reading](https://zhuguang-zfg.github.io/claude-code-book/). Repository chapters remain directly readable on GitHub.
 
-## Second volume · Omp (in progress)
+## Second volume · Omp (Chinese manuscript complete, not yet on the site)
 
 This repository now carries a second, separate volume: the Chinese-language 《Omp 从入门到精通：原理与实战》 — an unofficial tutorial for an open-source terminal agent. Its manuscript lives in [../omp/](../omp/README.md) and its artifacts use the `yuyu-omp-*` prefix. It is written against **omp/18.15.0**; [../omp/VERIFY.md](../omp/VERIFY.md) records what was checked against a real install (18.16.0 included).
 

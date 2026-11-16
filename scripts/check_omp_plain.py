@@ -39,9 +39,21 @@ def units(only: str | None = None) -> list[Path]:
 
 
 def prose(text: str) -> list[tuple[int, str]]:
-    """Lines outside code fences, with their 1-based numbers."""
-    out, fence = [], None
+    """Lines outside code fences and HTML comment blocks, with their numbers.
+
+    The ``<!-- block: … -->`` markers are build bookkeeping, not prose: they
+    sit above the title and between scenes, so counting them would push a
+    chapter's opening one-liner out of the six-line window it is checked in.
+    """
+    out, fence, comment = [], None, False
     for number, line in enumerate(text.splitlines(), 1):
+        stripped = line.lstrip()
+        if comment:
+            comment = "-->" not in stripped
+            continue
+        if fence is None and stripped.startswith("<!--"):
+            comment = "-->" not in stripped
+            continue
         if line.startswith("```"):
             fence = None if fence else "```"
             continue

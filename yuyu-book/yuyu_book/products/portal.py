@@ -22,7 +22,7 @@ PAGE = """<!doctype html>
 @@FAVICON@@
 <title>御舆 · 站点导航 — 解码 Agent Harness</title>
 <meta property="og:title" content="御舆 · 站点导航 — 解码 Agent Harness">
-<meta property="og:description" content="一本书、一册入门、一廊插画、一套知识卡、一页样章、一份手册——大书、双语入门分册、插画画廊、知识卡、样章与再生提示词手册，全部离线自包含。本站只发布御舆；同仓第二分册《Omp 从入门到精通：原理与实战》仍在施工中。">
+<meta property="og:description" content="一本书、一册入门、一廊插画、一套知识卡、一页样章、一份手册——大书、双语入门分册、插画画廊、知识卡、样章与再生提示词手册，全部离线自包含。本站当前只发布御舆；同仓第二分册《Omp 从入门到精通：原理与实战》已完稿，站点待上线。">
 <meta property="og:type" content="website">
 <meta property="og:image" content="cover.png">
 <style>
@@ -74,7 +74,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
 <header>
   <h1>御舆 · 站点导航</h1>
   @@BRUSH@@
-  <p class="sub">解码 Agent Harness —— 一本书、一册入门、一廊插画、一套知识卡、一页样章、一份手册｜第二分册《Omp 从入门到精通》在仓库施工中</p>
+  <p class="sub">解码 Agent Harness —— 一本书、一册入门、一廊插画、一套知识卡、一页样章、一份手册｜第二分册《Omp 从入门到精通》已完稿，站点待上线</p>
   <p class="hint">全部页面离线自包含、无脚本依赖（入门分册与画廊内建的动效除外）；
   由 GitHub Actions 每次推送自动构建发布。</p>
   <img class="cover" src="cover.png" alt="御舆：解码 Agent Harness 封面">
@@ -90,10 +90,10 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
       <span class="alt">English edition: <a href="yuyu-agent-harness-en.html">Yù Yú (English)</a></span>
     </div>
     <div class="card">
-      <h2><span class="ico">🧭</span>第二分册 · Omp 从入门到精通（施工中）</h2>
+      <h2><span class="ico">🧭</span>第二分册 · Omp 从入门到精通（已完稿，站点待上线）</h2>
       <p>同仓第二本书：《Omp 从入门到精通：原理与实战》——开源终端 agent 的非官方教程，
       中文单语，与御舆共用构建器与图版管线，产物前缀 <code>yuyu-omp-*</code>。</p>
-      <p>本站只发布御舆，这张卡因此不带链接——带了就是一条死链；omp 上线要等它的书稿进 main。</p>
+      <p>书稿已在 main 上，随 CI 出中文 HTML/PDF；本站还没挂上它的页面，这张卡因此不带链接——带了就是一条死链。</p>
       <div class="soon">本地构建：<code>make book-omp</code>（中文 HTML）／<code>make book-omp-pdf</code>（再加 A4 PDF）</div>
       <span class="alt">书稿与构建口径在仓库内的 <code>omp/</code> 目录。</span>
     </div>

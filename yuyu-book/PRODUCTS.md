@@ -11,6 +11,7 @@
 | `codex` | 《Codex CLI：执行边界与工程实践》 | `manifest-codex.json` | `yuyu-codex-*` | 同上（`make book-codex-all`） |
 | `prompt` | 《提示词工程：从提问到 Agent 协作》 | `manifest-prompt.json` | `yuyu-prompt-*` | 同上（`make book-prompt-all`），随书练习包另见下 |
 | `kimi` | 《Kimi Code：从插件到审查助手》 | `manifest-kimi.json` | `yuyu-kimi-*` | 同上（`make book-kimi-all`） |
+| `vibe` | 《Vibe Coding：把想法做成能跑的软件》 | `manifest-vibe.json` | `yuyu-vibe-*` | `build --product vibe --lang zh --pdf --epub`（`make book-vibe-all`） |
 | `collected` | 《Agent Harness 十卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`） |
 
 御舆、omp、pi 各有一套通俗层登记表：`plain.registry_names()` 按 manifest 的 `product` 字段
@@ -35,6 +36,12 @@ CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。
 - `prompt` 另发随书练习包 `yuyu-prompt-zh-examples.zip`，由
   `python scripts/package_prompt.py --output yuyu-book/dist/yuyu-prompt-zh-examples.zip`
   重建；包内 `package-manifest.json` 记录全部源文件摘要，同一份源重打包得到同一字节。
+
+## Vibe 分册
+
+`vibe` 是第十册，中文单语，12 章加附录 A–D，声明 `plain_optional`，没有 `-vibe` 的
+guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/` 目录。构建走
+`make book-vibe-all`（HTML/PDF/EPUB），版本 0.2.0，证据见 `vibe/VERIFY.md`。
 
 ## 合订本
 

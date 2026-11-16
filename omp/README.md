@@ -1,6 +1,6 @@
 # 《Omp 从入门到精通：原理与实战》
 
-> **丛书分册（施工中）** · 与同仓《御舆：解码 Agent Harness》并列  
+> **丛书分册（中文书稿完成，站点待上线）** · 与同仓《御舆：解码 Agent Harness》并列  
 > 产物前缀约定：`yuyu-omp-*`（HTML/PDF；Book CI 已有独立 `omp` job，见 [BUILD.md](BUILD.md)）  
 > **非官方**：本书与 oh-my-pi / Stencil Labs / can1357 **无隶属关系**，亦不代表 Claude / Anthropic。
 
