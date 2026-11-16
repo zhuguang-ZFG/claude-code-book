@@ -113,6 +113,14 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
             for product in COMPANION_VOLUMES:
                 for name in (f"manifest-{product}.json", f"sources-{product}.json"):
                     shutil.copy2(ROOT / "yuyu-book" / name, staged / name)
+            shutil.copy2(ROOT / "yuyu-book/manifest-collected.json",
+                         staged / "manifest-collected.json")
+            # The compilation is the tenth volume's whole point: print it here
+            # so the release carries a PDF/EPUB that matches today's text.
+            run("collected HTML/PDF", [sys.executable, "-m", "yuyu_book",
+                                       "--manifest", "manifest-collected.json",
+                                       "--lang", "zh", "--pdf",
+                                       "--out-dir", str(staged)])
             run("product idempotence and links", [sys.executable, "scripts/check_products.py"])
             run("video configuration", [sys.executable, "video/pipeline/cli.py", "check", "--config-only"])
             run("video content assembly", [sys.executable, "video/pipeline/cli.py", "build"])
@@ -126,6 +134,10 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
                                             "--html", str(staged / f"yuyu-{product}-zh.html"),
                                             "--output", str(staged / f"yuyu-{product}-zh.epub"),
                                             "--lang", "zh"])
+                run("collected EPUB", [sys.executable, "scripts/build_epub.py",
+                                       "--html", str(staged / "yuyu-collected-zh.html"),
+                                       "--output", str(staged / "yuyu-collected-zh.epub"),
+                                       "--lang", "zh"])
             site = staged / "site"
             site.mkdir()
             for path in (ROOT / "docs").iterdir():
