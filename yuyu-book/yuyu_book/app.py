@@ -407,15 +407,8 @@ def build_edition(lang: str, manifest: dict, sources: dict, *,
         # paper has no hover and no locator chip that means anything without a
         # sheet number, so the index rows get their folios from a measuring
         # print and the book is printed again with the numbers in place
-        folios = {}
-        if pmeta.index_rows:
-            dest = pdf.measure(out,
-                               sorted({r.anchor for r in pmeta.index_rows}),
-                               edge or browser)
-            folios = {a: dest[a] + 1 for a in dest}
-            out.write_text(pages.fill_index_folios(html_text, folios),
-                           encoding="utf-8")
-        p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios)
+        p, folios = print_with_index(pdf, out, html_text, pmeta,
+                                     edge or browser)
         print(f"  {p.name}: {p.stat().st_size / 1e6:.1f} MB, "
               f"{pdf.sheet_count(p)} pages, {len(asm.outline)} bookmarks, "
               f"{len(folios)} index folios")
@@ -573,21 +566,42 @@ def build_collected(lang: str, spec: dict, volumes, *,
             keywords=f'v{spec["version"]} {spec["date"]}',
             lang=lang,
             front_anchor=front_anchor)
-        folios = {}
-        if pmeta.index_rows:
-            dest = pdf.measure(out,
-                               sorted({r.anchor for r in pmeta.index_rows}),
-                               edge or browser)
-            folios = {a: dest[a] + 1 for a in dest}
-            out.write_text(pages.fill_index_folios(html_text, folios),
-                           encoding="utf-8")
-        p = pdf.build_pdf(out, pmeta, edge or browser, folios=folios,
-                          heads=tuple(head_labels),
-                          verso_heads=tuple(verso_labels))
+        p, folios = print_with_index(pdf, out, html_text, pmeta,
+                                     edge or browser,
+                                     heads=tuple(head_labels),
+                                     verso_heads=tuple(verso_labels))
         print(f"  {p.name}: {p.stat().st_size / 1e6:.1f} MB, "
               f"{pdf.sheet_count(p)} pages, {len(outline)} bookmarks, "
               f"{len(folios)} index folios")
     return out
+
+
+def print_with_index(pdf, out, html_text, pmeta, browser, **kwargs):
+    """Print a book whose index needs page numbers, measuring from ink.
+
+    An empty index slot and a filled one can lay out differently. When filling
+    them repaged the book, the first measurement no longer describes the pages
+    that will ship, and `pdf.build_pdf` refuses the mismatch. Re-measuring the
+    filled HTML and printing once more puts the numbers on the sheets that carry
+    the rows. One retry only: a second drift still fails the build.
+    """
+    anchors = sorted({row.anchor for row in pmeta.index_rows}) if pmeta.index_rows else []
+    folios = {}
+    if anchors:
+        dest = pdf.measure(out, anchors, browser)
+        folios = {anchor: dest[anchor] + 1 for anchor in dest}
+        out.write_text(pages.fill_index_folios(html_text, folios),
+                       encoding="utf-8")
+    try:
+        return pdf.build_pdf(out, pmeta, browser, folios=folios, **kwargs), folios
+    except BuildError as exc:
+        if not anchors or "index folio(s) moved" not in str(exc):
+            raise
+    dest = pdf.measure(out, anchors, browser)
+    folios = {anchor: dest[anchor] + 1 for anchor in dest}
+    filled = pages.fill_index_folios(out.read_text(encoding="utf-8"), folios)
+    out.write_text(filled, encoding="utf-8")
+    return pdf.build_pdf(out, pmeta, browser, folios=folios, **kwargs), folios
 
 
 def pdf_meta(manifest, outline, toc_entries, lang, idx_entries=()) -> PrintManifest:
