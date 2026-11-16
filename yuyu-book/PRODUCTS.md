@@ -11,7 +11,7 @@
 | `codex` | 《Codex CLI：执行边界与工程实践》 | `manifest-codex.json` | `yuyu-codex-*` | 同上（`make book-codex-all`） |
 | `prompt` | 《提示词工程：从提问到 Agent 协作》 | `manifest-prompt.json` | `yuyu-prompt-*` | 同上（`make book-prompt-all`），随书练习包另见下 |
 | `kimi` | 《Kimi Code：从插件到审查助手》 | `manifest-kimi.json` | `yuyu-kimi-*` | 同上（`make book-kimi-all`） |
-| `collected` | 《Agent Harness 九卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`） |
+| `collected` | 《Agent Harness 十卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`） |
 
 御舆、omp、pi 各有一套通俗层登记表：`plain.registry_names()` 按 manifest 的 `product` 字段
 取同名兄弟文件——御舆用裸名（`glosses.json` / `notes.json` / `reading-paths.json`），
@@ -38,10 +38,10 @@ CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。
 
 ## 合订本
 
-`collected` 把九卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
+`collected` 把十卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
 manifest 与 sources，卷宗、卷目录和页码层级由 `build_collected()` 生成。`load_collection()`
 只做一件事——拒绝两卷共用同一个页面锚点或重复的卷 ID，否则合订本会出现两个同名页。
-合订本只出中文，并且只出单文件 HTML：九册把全部图版内联进同一份文档（2026-11-12 实测 72.5 MB、9 卷 228 个单元 308 张图版、本机 86 秒），再复制成 PDF/EPUB 既拖长构建也没有阅读收益。`make book-collected` 与 CI 的 `collected` 任务都只构建这一个 HTML；拉取请求阶段由构建器套件覆盖装载与锚点契约。
+合订本只出中文。`make book-collected` 与 CI 的 `collected` 任务只构建单文件 HTML（十册把全部图版内联进同一份文档，2026-11-16 实测 72 MB 级、10 卷、约 2790 个标题），PDF/EPUB 按需另出一趟：`build --product collected --lang zh --pdf --epub`，本机一次约二十分钟，产物与 HTML 落在同一 `dist/`。拉取请求阶段由构建器套件覆盖装载与锚点契约。
 
 这条路径长期卡在 `iter_doc()` 的注释扫描上：它每个分块都把文档余下部分重扫一遍，6 MB 的书要 381 秒、60 MB 的分册要 564 秒，合订本因此永远跑不完。改为记住下一个 `<!--` 的位置后，同样的 60 MB 只要 4.1 秒，全文分块逐字节不变。
 
