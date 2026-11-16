@@ -1560,7 +1560,8 @@ body.sample{--measure:44rem}
 <p><strong>难度定位：</strong>主干章：2.1 是起步；2.2、2.4 是主干，讲清一轮怎么跑、状态怎么跳；2.3 依赖注入和实战练习标了进阶，初读可跳过，不妨碍跟上主线。</p>
 <div class="hr-rule" aria-hidden="true"><svg class="hr-knot" viewBox="0 0 56 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M2.4 7.2c3.6-.3 7.6-.3 11.6-.1"/><circle cx="17.2" cy="7" r="2.7"/><path d="M19.9 7c2.8-3.4 5.3-3.4 8.1 0s5.3 3.4 8.1 0"/><circle cx="38.8" cy="7" r="2.7"/><path d="M41.5 6.9c4-.2 8-.2 12.1.1"/></svg></div>
 <h2 id="ch02-21-异步生成器对话循环的骨骼">2.1 异步生成器：对话循环的骨骼<span class="sec-tier t-start">起步</span></h2>
-<p>先试试“停”一个 Agent 有多难：你让它跑测试，它跑偏了，你按 Ctrl+C。界面确实停了。模型那边还在生成 token，子进程还在写文件，重试的定时器已经排进队列。你以为停了，其实只停了打印。本章的循环之所以做成异步生成器，就是为了这一刻：每个 <code>yield</code> 都是一个能插手的中转站，停得下来、清得干净、也扛得住生产快过消费。</p>
+<p>让 Agent 跑测试，它跑偏了，你按 Ctrl+C。界面停了。模型还在生成 token，子进程还在写文件，重试定时器已经排进队列。停掉的只是打印。</p>
+<p>主循环做成异步生成器，就是为了这一刻：每个 <code>yield</code> 都是一个能插手的中转站，停得下来，清得干净，也扛得住生产快过消费。</p>
 <p>Claude Code 的对话主循环是一个以 <code>async function*</code> 定义的异步生成器。普通函数跑完一次就结束；它是一个可暂停、可恢复、可取消的“活”的流程。每一次 <code>yield</code> 就像心跳的一次搏动，将<span class="gloss" tabindex="0" data-g="streaming">流式<span class="gloss-pop" role="tooltip"><b>流式</b><span class="gp-plain">结果一点点到就一点点用；书里指模型回复逐字涌出</span><span class="gp-why"><i class="gw-t">为什么</i>回复本就是一段段到的，非要等齐了才显示，人就只能对着一片空白干等。</span><span class="gp-analogy">接自来水不必等水缸装满，开着龙头就能洗</span></span></span>事件推向调用方。</p>
 <p>为什么非要用异步生成器？先看传统的编程模型：函数调用是同步的，调用者发起请求，被调用者执行计算，返回结果。但 Agent 的交互模式打破了这种同步假设。模型可能需要几十秒才能完成一次响应，而且响应是逐 token 到达的；工具执行可能耗时数分钟，期间需要实时反馈进度；用户可能随时中断操作，要求立即停止。</p>
 <p>面对这些需求，传统的函数调用模型力不从心。异步生成器正好补上这个缺口：它像一个可以随时暂停和恢复的“协程”，在“生产者”（对话循环）和“消费者”（UI 渲染层）之间建立了一条实时的事件管道。</p>
@@ -1857,7 +1858,7 @@ body.sample{--measure:44rem}
 <p>每条 continue 路径都精心构造了新的状态对象，确保不同的恢复策略之间不会冲突。<code>transition</code> 字段留着，后续迭代就认得出“我是怎么来到这里的”，往下的判断也就更有依据。</p>
 <blockquote class="callout callout-tip"><p class="callout-tag"><span class="callout-icon" aria-hidden="true"><svg class="ink-mark" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13.3 5.2C12.3 2.9 10.1 1.6 7.5 2 4.3 2.4 2 5.2 2.1 8.4c.1 3.2 2.7 5.7 5.9 5.6 3.1-.1 5.6-2.6 5.7-5.6.1-1.2-.1-2.3-.4-3.2"/><path d="M5.2 8.3l2.1 2.3 3.9-5"/></svg></span><strong>最佳实践：</strong></p><p class="callout-body"> 在设计自己的 Agent 循环时，为每条 Continue 路径记录原因（transition reason）是一个简单但极其有效的调试手段。当 Agent 行为异常时，追溯 transition 链可以帮助你快速定位是哪一次转换引入了问题。</p>
 </blockquote>
-<p>自己写循环时最容易踩的坑，就是只留一个出口、只记一种原因。下表把本章讲过的岔路列全：</p>
+<p>自己写循环最容易踩的坑，是只留一个出口、只记一种原因。岔路列全：</p>
 <div class="table-scroll" data-cols="3" tabindex="0"><table>
 <thead>
 <tr>
@@ -1909,8 +1910,6 @@ body.sample{--measure:44rem}
 - 何时触发 Snip 压缩（消息级历史裁剪）
 - 何时触发 Autocompact（对话历史正在摘要的标志）
 - 压缩后模型的推理能力是否受到影响</p>
-<blockquote class="callout callout-info"><p class="callout-tag"><span class="callout-icon" aria-hidden="true"><svg class="ink-mark" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.2 12.7C5.6 10.8 7.9 8.1 10.4 5"/><path d="M6.8 4.7 10.6 4.5l.3 3.9"/></svg></span><strong>交叉引用：</strong></p><p class="callout-body"> 上下文压缩管线的详细实现将在第二部分的核心篇中深入分析，包括缓存感知的压缩策略和上下文折叠的粒度控制。</p>
-</blockquote>
 <p><strong>最小可运行案例：</strong> 用生成器复刻一次「工具调用—结果回填」（Python 3.12 标准库，无第三方依赖；这是教学简化模型，不是 Claude Code 源码）。把代码存成 <code>case.py</code> 后运行 <code>python case.py</code>。</p>
 <p><strong>版本锁：</strong> Python 3.12 标准库，无第三方依赖。
 <strong>预期结果：</strong> <code>[('tool_use', 'read'), ('tool_result', 'READ'), ('done',)]</code>
@@ -1946,7 +1945,7 @@ body.sample{--measure:44rem}
 <blockquote>
 <p><strong>三句话带走：</strong>①主循环是一个异步生成器：yield 推事件、yield* 委托子生成器、return() 取消，状态不可变，每一跳都有 transition 可查。②把 callModel、microcompact、autocompact、uuid 四个副作用注入成 QueryDeps，循环内部就成了纯逻辑——可测性是设计出来的，不是事后补的。③掂量一个 Agent 循环就三问：能不能暂停、能不能取消、终止时收不收拾现场。</p>
 </blockquote>
-<div class="ch-close"><p>在下一章中，我们将转向 Agent 的“双手”——工具系统。对话循环是 Agent 的心脏，工具系统则是 Agent 的四肢。理解了工具系统的设计，你将知道 Agent 是如何从“只能说话”进化到“能动手做事”的。</p><div class="keeper"><span class="kp-art" aria-hidden="true"><svg class="a-keeper" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+<div class="ch-close"><p><a class="xref" href="yuyu-agent-harness-zh.html#ch03">第 3 章</a>转到工具系统：一次工具调用从 schema 校验到执行、渲染，走完整条路要过哪几道关。</p><div class="keeper"><span class="kp-art" aria-hidden="true"><svg class="a-keeper" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 23q9-4.8 19-13 9.8 8.5 20 12.1Q34 29.8 12 23Z" stroke-width="2.4" pathLength="100"/>
   <path d="M12.8 23.2q17.7 2.6 37.5-.7-9.4 6-21.3 4.7-9.5-.7-16.2-4Z" fill="currentColor" stroke="none"/>
   <path d="M27.2 27q-.7 4.5 4.9 5.8 4.4-1.3 4.7-5.6" stroke-width="1.4" pathLength="100"/>

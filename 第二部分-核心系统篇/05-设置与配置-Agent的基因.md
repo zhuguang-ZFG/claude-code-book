@@ -8,9 +8,9 @@
 
 ---
 
-你给团队定了规矩：`.claude/settings.json` 里写死 model 和权限基线，提交进 Git。第二天有人克隆了仓库，Claude Code 没读你那份配置，模型换了个更贵的，权限也松了——你明明写了，怎么没生效？
+`.claude/settings.json` 里写死 model 和权限基线，提交进 Git。第二天别人克隆仓库，Claude Code 没读这份配置：模型换了更贵的，权限也松了。
 
-答案在层序里。Claude Code 的行为是六层配置源逐层合并的结果，单个文件说了不算。写错位置，更高层就会把你的配置盖住。看懂层序，才谈得上改写 Agent 的基因。
+问题在层序。行为由六层配置源逐层合并，单个文件说了不算。写错位置，更高层会把你的配置盖住。
 
 > **读完你能干什么：**
 > - 给一个 20 人团队定六层各放什么，说清哪层该锁安全、哪层该放个人偏好
@@ -35,7 +35,7 @@ Claude Code 的配置源在配置常量模块中定义为一个有序数组，�
 <!-- block: ch05.b-336ab860 -->
 **pluginSettings -> userSettings -> projectSettings -> localSettings -> flagSettings -> policySettings**
 
-为了更直观地理解这六层配置源的关系，我们可以用一个类似"地层沉积"的模型来类比：
+六层的关系像地层沉积：
 
 ```mermaid
 graph BT
@@ -251,7 +251,7 @@ userSettings      → 个性化: verbose、主题等 UI 偏好
 
 ### 5.2.1 供应链攻击的威胁模型
 
-在理解安全边界设计之前，我们需要明确威胁模型。供应链攻击在 Agent 场景下的特殊性在于：
+安全边界要防什么，先定威胁模型。供应链攻击落在 Agent 场景里的特殊之处：
 
 **传统供应链攻击 vs Agent 供应链攻击**
 
@@ -348,7 +348,7 @@ graph TD
 
 > 在安全敏感的检查中，系统只读取信任级别 >= 3 星的配置源。这个原则贯穿了整个配置系统的安全设计。
 
-> **交叉引用提示：** 本章讨论的 `projectSettings` 排除机制与第8章（钩子系统）的安全模型紧密相关。hooks 的加载同样遵循这一信任模型——当 `allowManagedHooksOnly` 启用时，系统会完全屏蔽来自 projectSettings 的 hooks。
+> **交叉引用提示：** `projectSettings` 的排除机制和第 8 章的钩子安全模型是同一套信任假设：`allowManagedHooksOnly` 一开，来自 projectSettings 的 hooks 全部屏蔽。
 
 ```ill
 ch05-trust-ladder
