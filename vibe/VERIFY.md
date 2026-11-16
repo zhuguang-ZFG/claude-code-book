@@ -1,5 +1,34 @@
 # 验证记录
 
+## 2026-11-16 · 第三批正文手绘与文风三轮
+
+给尚无插图的五章补正文手绘，全部为无文字的线描（沿用 `illustrations-agents/` 现有风格，`currentColor`、单 `viewBox`、无 id/href/script）：
+
+- `vibe-ch01-split.svg`：模型铺结构（打字机与积木块），人写条件（清单与阀门）。
+- `vibe-ch03-cases.svg`：正常例、边界例、反例三张卡片汇入同一个程序。
+- `vibe-ch05-checkpoint.svg`：一页只改一行，逐版存档，落在提交印章上。
+- `vibe-ch08-lens.svg`：放大镜只照文件里决定风险的那几行。
+- `vibe-ch12-baton.svg`：接力棒从一只手递到另一只手，交接包里是运行、规则、决策三件套。
+
+文风三轮（主书）：`05-设置与配置` 删“从这些功能标志可以看出”并去掉“演进路径”复用；`09-子智能体` 删“简言之”；`03-工具系统` 把“统一的抓手”改为“统一的依据”，章尾“在下一章中，我们将深入”改为直陈。全书扫描“值得注意的是/总而言之/综上所述/让我们/赋能/抓手”等模式，正文命中仅剩上述已改处。
+
+校验：
+
+```bash
+python scripts/bookctl.py build --product vibe --lang zh --check
+python scripts/bookctl.py build --product vibe --lang zh --pdf --epub
+python -m unittest yuyu-book.tests.test_illustrations yuyu-book.tests.test_art yuyu-book.tests.test_mixed_art -q
+python scripts/check_book.py
+```
+
+```text
+yuyu-vibe-zh.html  0.4 MB / 17 units / 14 plates / 13 cited links / 3 headpieces
+yuyu-vibe-zh.pdf   4.5 MB / 81 页 / 21 书签 / 0 空白页
+yuyu-vibe-zh.epub  239,931 B / 6 张图 / 139 条导航
+test_illustrations + test_art + test_mixed_art   45 tests OK
+check_book.py   447 Markdown files, 438 Mermaid diagrams, 0 errors
+```
+
 ## 2026-11-15 · 恢复演练与 CI 门槛
 
 第 10 章在备份之后补“恢复也要演练”：把备份复制到临时副本，对照主库的 `books`/`contacts` 行数，并检查 `public_books` 的列不含 `email` 或 `contact`。第 11 章在发布检查单之后补 GitHub Actions 工作流：跑单元测试、生成样例页面，再用缺失输入断言非 0 退出且不留产物；示例注明 action 标签会移动，生产仓库应固定到完整 SHA。
