@@ -393,7 +393,7 @@ if (feature('KAIROS')) { ... }  // bundler 在 false 时完全移除该分支
 | `DAEMON` | 架构 | 后台守护进程 | 长驻后台运行的能力 |
 | `BRIDGE_MODE` | 架构 | 桥接模式 | 跨进程通信的桥梁 |
 
-从这些功能标志可以看出 Claude Code 的架构演进方向：KAIROS（长驻会话）和 DAEMON（后台守护进程）指向了 Agent 从"按需调用"到"持续运行"的演进路径；TEAMMEM（团队记忆）和 TEMPLATES（模板工作流）指向了从"个人工具"到"团队基础设施"的演进路径。
+这些功能标志标出了 Claude Code 的架构走向：KAIROS（长驻会话）和 DAEMON（后台守护进程）指向 Agent 从“按需调用”到“持续运行”的演进；TEAMMEM（团队记忆）和 TEMPLATES（模板工作流）指向从“个人工具”到“团队基础设施”的扩张。
 
 ### 5.3.2 GrowthBook 实验框架
 
