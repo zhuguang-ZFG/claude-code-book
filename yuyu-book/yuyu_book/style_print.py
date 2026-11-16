@@ -65,8 +65,13 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   .collected .sources{padding-bottom:0}
   /* the folio slot: a screen has no pages, so the row hides its page reference;
      paper reserves the box here and the PDF pass writes the number into it —
-     nothing in the HTML can know the page a row lands on */
-  .idx-row .page-ref{display:block}
+     nothing in the HTML can know the page a row lands on.
+     The box must be the same size empty and inked: with only a min-width the
+     filled number could widen a row, wrap it, and repage the index between the
+     measuring print and the final one (CI's Noto faces did exactly that). 1.9rem
+     holds a three-digit folio in any face this book ships. */
+  .idx-row .page-ref{display:block;white-space:nowrap;
+    min-width:1.9rem;width:1.9rem}
   /* the printed sheet is 665px of text box: a 7.5rem gutter for a two-character
      term would be a third of the line gone, so the gutter narrows with the page.
      6.4rem is where the longest single-word English term ("immutability") still
