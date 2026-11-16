@@ -167,7 +167,10 @@ Omp 分册由 347 页增至 432 页、体积由 37.8 MB 增至 61.3 MB，来自�
 README 的 CI PDF 体积曾写为 36.4 / 24.3 MB，而发布资产实测为 34.5 / 23.5 MB；页数 520 / 559 与 `check_artifact_claims.py` 的对账口径未变。两版 README 的 PDF 体积与本机 Windows 体积已按发布与本轮干净克隆实测回填。
 
 
-## 2026-11-16 v0.3.7 装配（本机 staged，标签待发）
+## 2026-11-16 v0.3.7 发布
+标签 `v0.3.7` 指向 `dda71254ea`；`release.yml`（[run 43834162260](https://github.com/zhuguang-ZFG/claude-code-book/actions/runs/43834162260)）
+在 180 分钟预算内完成装配与发布：60 个资产，`sha256sum --check SHA256SUMS` 在装配目录里先通过，
+再执行 `gh release create`。
 
 发布目录从两册扩到整架：御舆（中英）、Omp、Pi、OpenCode、DeepSeek Harness、Hermes、
 Codex CLI、Kimi Code、提示词工程、Vibe Coding，外加《Agent Harness 十卷合订本》。
@@ -190,3 +193,16 @@ Codex CLI、Kimi Code、提示词工程、Vibe Coding，外加《Agent Harness �
 `omp/`（`check_site_redirects` 直接报 `missing omp/yuyu-omp-zh.html`）；以及同一份 60 MB
 HTML 在 `site.zip` 里被复制两份。修法是先按 Pages 路径落 `site/omp/yuyu-omp-zh.html`，
 根目录 glob 跳过 `yuyu-omp-zh.html`。
+
+发布路上修掉三处真实缺陷，都是 CI 的 Noto 排版才暴露的：
+
+1. 索引页码槽位只有 `min-width`，空槽与三位数占宽不同，填号后某行换行、索引多一页，
+   `check --full` 直接报 14 个 folio 偏移。打印规则改为固定 `1.9rem` 且不换行，collected 的
+   `.agent-book .idx-ref` 同样处理。
+2. 即便如此，collected 在 CI 上仍可能整体漂移一页，于是 `print_with_index()` 增加了有界收敛：
+   填号后若 `build_pdf` 报漂移，用已填号的页面重新测量、从**原始空槽 HTML** 重新填号再印一次；
+   第二次仍漂移照样失败。
+3. 收敛重试的首版把已填号的 HTML 又交给 `fill_index_folios`（它只匹配空槽），报
+   「87 folio(s) with no row to fill」；改为从原始 HTML 重填，并加单测钉住两次输入。
+
+修完后中文 PDF 由 544 页变为 543 页，README 已按 CI 实测回填；Book CI 与 Release 在同一提交上均绿。
