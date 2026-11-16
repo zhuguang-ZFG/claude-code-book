@@ -177,30 +177,30 @@
     {
       "path": "/book/version",
       "legacy": "0.3.5",
-      "fresh": "0.3.6",
-      "reason": "P5 作为 0.3.6 发版，manifest.json 的版本号随之推进",
-      "commit": "6d4e3c0475d28d2ebb7630518a2f6721c9a01620"
+      "fresh": "0.3.7",
+      "reason": "十册发布在 0.3.7 结算，manifest.json 的版本号随之推进",
+      "commit": "8934600c97"
     },
     {
       "path": "/book/date",
       "legacy": "2026-11-02",
-      "fresh": "2026-11-06",
+      "fresh": "2026-11-16",
       "reason": "同一次版本推进带上的发版日期",
-      "commit": "6d4e3c0475d28d2ebb7630518a2f6721c9a01620"
+      "commit": "8934600c97"
     },
     {
       "path": "/registries/manifest/version",
       "legacy": "0.3.5",
-      "fresh": "0.3.6",
+      "fresh": "0.3.7",
       "reason": "与 /book/version 同源，都读 manifest.json",
-      "commit": "6d4e3c0475d28d2ebb7630518a2f6721c9a01620"
+      "commit": "8934600c97"
     },
     {
       "path": "/registries/manifest/date",
       "legacy": "2026-11-02",
-      "fresh": "2026-11-06",
+      "fresh": "2026-11-16",
       "reason": "与 /book/date 同源",
-      "commit": "6d4e3c0475d28d2ebb7630518a2f6721c9a01620"
+      "commit": "8934600c97"
     },
     {
       "path": "/registries/revisions/entries",
