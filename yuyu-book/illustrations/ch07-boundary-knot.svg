@@ -1,0 +1,14 @@
+<svg class="a-boundary-knot" viewBox="0 0 340 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 60q70-4 148-1" stroke-width="2.6" pathLength="100"/>
+<path d="M180 59q72-3 148 1" stroke-width="2.6" pathLength="100"/>
+<path d="M16 66q68-3 138-1m32-1q68-2 138 1" opacity=".35" stroke-width="1" pathLength="100"/>
+<path d="M160 52c-12-6-18 10-6 14s18-8 6-14" stroke-width="2.6" pathLength="100"/>
+<path d="M176 52c12-6 18 10 6 14s-18-8-6-14" stroke-width="2.6" pathLength="100"/>
+<g opacity=".5" stroke-width="1.2"><path d="M36 48l-2 24m16-26-2 24m18-25-2 24m18-25-2 24m18-24-2 24m18-25-2 24m18-25-2 24" pathLength="100"/></g>
+<g><path d="M214 42q12-2 24 0l1 14q-1 3-4 3l-20-1q-1-8 0-16" stroke-width="2" pathLength="100"/><path d="M218 48q8-1 16 0" stroke-width="1.2" pathLength="100"/></g>
+<g><path d="M252 38q12-2 24 0l1 16q-1 3-4 3l-20-1q-1-9 0-18" stroke-width="2" pathLength="100"/><path d="M256 44q8-1 16 0" stroke-width="1.2" pathLength="100"/></g>
+<g><path d="M290 42q12-2 24 0l1 14q-1 3-4 3l-20-1q-1-8 0-16" stroke-width="2" pathLength="100"/><path d="M294 48q8-1 16 0" stroke-width="1.2" pathLength="100"/></g>
+<path d="M158 82q12 3 24 0" opacity=".5" stroke-width="1.1" stroke-dasharray="2 4" pathLength="100"/>
+<path d="M100 88q16-2 32 0m80 6q14 1 28 0" opacity=".3" stroke-width=".9" pathLength="100"/>
+<circle cx="168" cy="94" r="1.6" fill="currentColor" stroke="none" opacity=".7"/>
+</svg>

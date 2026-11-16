@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'yuyu-book'))
 from yuyu_book.pdf import _launch
 
-PAGES = ('portal.html', 'beginner-reader.html', 'beginner-reader.en.html', 'illustration-gallery.html')
+PAGES = ('portal.html', 'beginner-reader.html', 'illustration-gallery.html')
 
 
 def check(directory: Path, destination: Path) -> list[str]:

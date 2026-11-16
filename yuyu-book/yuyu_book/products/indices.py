@@ -26,7 +26,6 @@ from .loader import load_repo_model
 
 OUT = {
     "search": "search-index.json",
-    "language": "language-map.json",
     "concept": "concept-map.json",
 }
 SCHEMA_VERSION = 1
@@ -91,37 +90,6 @@ def search_index(model: BookModel) -> dict:
     }
 
 
-def language_map(model: BookModel) -> dict:
-    zh = model.editions.get("zh")
-    en = model.editions.get("en")
-    if zh is None or en is None:
-        raise IndexDrift("the language map needs both editions loaded")
-    if [u.id for u in zh.units] != [u.id for u in en.units]:
-        raise IndexDrift("the editions no longer list the same units")
-    units = []
-    for zu, eu in zip(zh.units, en.units):
-        za, ea = _anchors(zu), _anchors(eu)
-        if len(za) != len(ea) or [x[0] for x in za] != [x[0] for x in ea]:
-            raise IndexDrift(
-                f"{zu.id}: section structure drifted between editions "
-                f"({len(za)} zh vs {len(ea)} en)")
-        sections = [{
-            "level": z[0],
-            "zh": {"title": z[1], "anchor": z[2]},
-            "en": {"title": e[1], "anchor": e[2]},
-        } for z, e in zip(za, ea)]
-        units.append({
-            "id": zu.id,
-            "zh": {"no": zu.no, "title": zu.title, "anchor": zu.anchor},
-            "en": {"no": eu.no, "title": eu.title, "anchor": eu.anchor},
-            "sections": sections,
-        })
-    return {
-        "schema_version": SCHEMA_VERSION,
-        "baseline": model.version,
-        "units": units,
-    }
-
 
 def concept_map(model: BookModel, glosses: dict) -> dict:
     known = {unit.id for edition in model.editions.values()
@@ -176,11 +144,10 @@ def _write(name: str, data: dict) -> Path:
 def build() -> list[Path]:
     from ..io import load_json
     from ..paths import BOOK_DIR
-    model = load_repo_model(["zh", "en"])
+    model = load_repo_model(["zh"])
     glosses = load_json(BOOK_DIR / "glosses.json")
     return [
         _write(OUT["search"], search_index(model)),
-        _write(OUT["language"], language_map(model)),
         _write(OUT["concept"], concept_map(model, glosses)),
     ]
 

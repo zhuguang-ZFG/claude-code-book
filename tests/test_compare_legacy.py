@@ -208,19 +208,16 @@ class CLIInputBoundaries(unittest.TestCase):
                     self.assertIn(str(policy).replace("\\", "/"), report)
                     self.assertIn("## Verdict", report)
 
-    def test_missing_english_artifact_is_an_input_error_not_drift(self):
+    def test_missing_required_artifact_is_an_input_error_not_drift(self):
         with tempfile.TemporaryDirectory() as directory:
             dist = Path(directory)
-            (dist / "yuyu-agent-harness-zh.html").write_text(
-                "<!doctype html><html lang='zh'><title>Book</title></html>",
-                encoding="utf-8")
             result = subprocess.run(
                 [sys.executable, str(ROOT / "scripts/compare_legacy.py"),
                  "--dist", str(dist)], cwd=ROOT, capture_output=True,
                 text=True, encoding="utf-8")
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIn("missing build artifacts", result.stderr)
-        self.assertIn("yuyu-agent-harness-en.html", result.stderr)
+        self.assertIn("yuyu-agent-harness-zh.html", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 
 

@@ -93,6 +93,10 @@ flowchart LR
 
 比如 `userSettings` 设置 `model: "claude-sonnet-4"`、`policySettings` 设置 `model: "claude-opus-4"`，生效的是 `"claude-opus-4"`；两者都设置 `permissions.allow: ["Bash(*)"]`，得到的则是合并后的去重数组。
 
+```ill
+ch05-merge-splice
+```
+
 **为什么数组采用拼接而非替换？** 这不是随手定的。在权限系统中，每一条规则都是一道"防线"：如果高优先级源的数组替换了低优先级源的数组，就意味着高优先级源必须完整枚举所有需要的权限规则，任何遗漏都会变成安全漏洞。拼接策略让每层只需要关心自己要"增加"的规则，系统会自动合并所有层的安全策略。
 
 反模式警告：不要用数组拼接来"撤销"下层的规则。例如，你不能通过在上层设置一个空数组来清除下层的权限——空数组拼接后下层规则依然存在。如果需要撤销，应该使用 `permissions.deny` 字段来显式拒绝。
@@ -531,7 +535,7 @@ graph TD
 - **`useAppState(selector)`**：使用 `useSyncExternalStore` 订阅状态切片。只有 selector 返回值发生 `Object.is` 变化时才触发重渲染。这是一种精细化的订阅机制，避免了"订阅整个状态树导致全组件树重渲染"的问题。
 - **`useSetAppState()`**：只获取 `setState` 函数，不订阅任何状态。返回的引用永远不会变化，使用此 hook 的组件不会因状态变更而重渲染。
 
-此外还有一个安全变体 `useAppStateMaybeOutsideOfProvider`，用于可能在 `AppStateProvider` 之外渲染的组件——它在没有 Provider 时返回 `undefined` 而非抛出异常。
+还有一个安全变体 `useAppStateMaybeOutsideOfProvider`，用于可能在 `AppStateProvider` 之外渲染的组件——它在没有 Provider 时返回 `undefined` 而非抛出异常。
 
 **`useSyncExternalStore` 的选择意义**
 

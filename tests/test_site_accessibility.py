@@ -21,19 +21,16 @@ sys.path.insert(0, str(ROOT / "yuyu-book"))
 PAGES = {
     "docs/portal.html": "zh",
     "docs/beginner-reader.html": "zh",
-    "docs/beginner-reader.en.html": "en",
     "docs/illustration-gallery.html": "zh",
     "docs/knowledge-cards.html": "zh",
-    "docs/knowledge-cards.en.html": "en",
     "docs/sample-chapter.html": "zh",
-    "docs/sample-chapter.en.html": "en",
 }
 # Imported after sys.path so the test reads the gate's own scanner.
 from yuyu_book.audit import exposed_svgs  # noqa: E402
 # The sample rehosts a book chapter verbatim; the book's own guide band uses
 # h4 labels under the chapter h1 by design, so heading-order is checked on the
 # product shells only.
-SAMPLE = {"docs/sample-chapter.html", "docs/sample-chapter.en.html"}
+SAMPLE = {"docs/sample-chapter.html"}
 
 
 def read(path: str) -> str:

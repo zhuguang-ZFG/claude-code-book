@@ -28,8 +28,8 @@ from .chapter_copy import hook, recap
 from .loader import load_repo_model
 
 CHAPTER = "ch02"
-OUT = {"zh": "sample-chapter.html", "en": "sample-chapter.en.html"}
-BOOK = {"zh": "yuyu-agent-harness-zh.html", "en": "yuyu-agent-harness-en.html"}
+OUT = "sample-chapter.html"
+BOOK = "yuyu-agent-harness-zh.html"
 
 LABELS = {
     "zh": {
@@ -44,20 +44,6 @@ LABELS = {
                  "<a href=\"beginner-reader.html\">入门分册</a>"),
         "foot": ("正文与插图取自《御舆：解码 Agent Harness》第 2 章，"
                  "由同一构建管线生成 · 大书内容 CC BY-NC-SA 4.0"),
-    },
-    "en": {
-        "title": "Sample · Chapter 2 The Dialog Loop — Yù Yú",
-        "kicker": "Yù Yú · Sample chapter",
-        "hint": ("What follows is Chapter 2 exactly as the full edition ships "
-                 "it — plates, tables and quotations included."),
-        "recap": "Three sentences to keep",
-        "go": "Continue in the full edition →",
-        "meta": ("baseline v@@BASELINE@@ · "
-                 "<a href=\"portal.html\">site index</a> · "
-                 "<a href=\"knowledge-cards.en.html\">knowledge cards</a> · "
-                 "<a href=\"beginner-reader.en.html\">beginner reader</a>"),
-        "foot": ("Chapter 2 of Yù Yú: Decoding Agent Harness, rendered by the "
-                 "same build pipeline · book text CC BY-NC-SA 4.0"),
     },
 }
 
@@ -172,14 +158,14 @@ def chapter_article(lang: str, unit_id: str = CHAPTER) -> str:
             tiers=paths.get(unit.id))
         if unit.id == unit_id:
             article = _article(payload, manifest, sources, lang, notes=notes)
-            return _INTERNAL.sub(rf'href="{BOOK[lang]}#\1"', article)
+            return _INTERNAL.sub(rf'href="{BOOK}#\1"', article)
     raise ValueError(f"sample chapter: missing source for {unit_id}")
 
 
 def page_for(model, lang: str, body: str | None = None) -> str:
     labels = LABELS[lang]
     unit = model.unit(lang, CHAPTER)
-    html_lang = "zh-CN" if lang == "zh" else "en"
+    html_lang = "zh-CN"
     mark = art.inline_svg(BOOK_DIR / "illustrations" / f"{CHAPTER}.svg")
     recap_items = "\n".join(f"    <li>{esc(item)}</li>"
                             for item in recap(unit, lang))
@@ -197,7 +183,7 @@ def page_for(model, lang: str, body: str | None = None) -> str:
                          body if body is not None else chapter_article(lang))
                 .replace("@@RECAP_LABEL@@", esc(labels["recap"]))
                 .replace("@@RECAP_ITEMS@@", recap_items)
-                .replace("@@BOOK@@", BOOK[lang])
+                .replace("@@BOOK@@", BOOK)
                 .replace("@@CHAPTER@@", CHAPTER)
                 .replace("@@GO@@", esc(labels["go"]))
                 .replace("@@FOOT@@", labels["foot"])
@@ -209,12 +195,12 @@ def page_for(model, lang: str, body: str | None = None) -> str:
 def build(lang: str) -> Path:
     model = load_repo_model([lang])
     page = page_for(model, lang)
-    out = REPO_ROOT / "docs" / OUT[lang]
+    out = REPO_ROOT / "docs" / OUT
     out.write_text(page, encoding="utf-8")
     return out
 
 
 def main() -> None:
-    for lang in ("zh", "en"):
+    for lang in ("zh",):
         out = build(lang)
         print(f"{out} ({out.stat().st_size} bytes)")

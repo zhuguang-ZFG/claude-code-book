@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate README banner SVGs — local, offline, no external services.
 
-Produces two files referenced by README.md / en/README.md:
+Produces two files referenced by README.md:
   docs/banner.svg      waving ink-gradient header with the book title
   docs/tagline.svg     looping brush-typing animation of the chapter arc
 

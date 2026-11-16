@@ -802,17 +802,20 @@ class EndToEndNoBrowser(unittest.TestCase):
     def test_check_mode_passes_for_both_languages(self):
         out = self.check()
         self.assertIn("20 units", out)
-        self.assertEqual(out.count("20 lead bands"), 2, out)
+        # Only the zh edition ships now, so the check prints one manifest line.
+        self.assertEqual(out.count("20 lead bands"), 1, out)
 
     def test_no_plain_leaves_no_lead_band(self):
         """`--no-plain` is documented as closing the plain layer whole, and the
         lead band calls itself a plain-language device — but its text lives in
         the manifest, so nothing in the assembler stopped it from being built
         back in while the marks, panels, chips and keeper notes all went away."""
+        # Only zh ships now; --no-plain must still close every layer in the
+        # single manifest line the check prints.
         out = self.check("--no-plain")
-        self.assertEqual(out.count("0 lead bands"), 2, out)
+        self.assertEqual(out.count("0 lead bands"), 1, out)
         for needle in ("0 glosses", "0 tier chips", "0 keeper notes"):
-            self.assertEqual(out.count(needle), 2, f"{needle}: {out}")
+            self.assertEqual(out.count(needle), 1, f"{needle}: {out}")
 
 
 class PrintManifestContract(unittest.TestCase):

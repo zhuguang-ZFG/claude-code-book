@@ -122,11 +122,10 @@ class ReleaseNotes(unittest.TestCase):
     def test_every_revision_bullet_matches_the_ledger(self):
         entry = self.revision()
         body = release.release_notes_markdown("9.9.9", entry)
-        for heading in ("## 内容修订", "## Content changes"):
-            self.assertIn(heading, body)
-        for language in ("zh", "en"):
-            for bullet in entry[language]:
-                self.assertIn(f"- {bullet}", body)
+        self.assertIn("## 内容修订", body)
+        self.assertNotIn("## Content changes", body)
+        for bullet in entry["zh"]:
+            self.assertIn(f"- {bullet}", body)
         self.assertIn("sha256sum --check SHA256SUMS", body)
 
     def test_empty_language_section_is_omitted(self):

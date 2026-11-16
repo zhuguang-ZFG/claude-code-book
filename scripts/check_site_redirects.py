@@ -23,14 +23,10 @@ ALIASES = {
 REQUIRED = {
     "portal.html",
     "yuyu-agent-harness-zh.html",
-    "yuyu-agent-harness-en.html",
     "beginner-reader.html",
-    "beginner-reader.en.html",
     "illustration-gallery.html",
     "knowledge-cards.html",
-    "knowledge-cards.en.html",
     "sample-chapter.html",
-    "sample-chapter.en.html",
 }
 SKIP_SCHEMES = {"http", "https", "mailto", "data", "javascript", "tel"}
 

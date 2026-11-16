@@ -997,53 +997,11 @@ LANGS = {
         "page_head": PAGE_HEAD_ZH,
         "page_tail": PAGE_TAIL_ZH,
     },
-    "en": {
-        "book": "yuyu-agent-harness-en.html",
-        "out": "beginner-reader.en.html",
-        "order": ORDER_EN, "parts": PARTS_EN,
-        "total": sum(len(us) for _, _, _, us in PARTS_EN) + len(APPENDIX_STATIONS),
-        "widths": {u: 148 for u in ORDER_EN},
-        "lang": "en",
-        "captions": CAPTIONS_EN, "transitions": TRANSITIONS_EN,
-        "videos": VIDEOS_EN,
-        "takeaways": TAKEAWAYS_EN,
-        "part_link": "Depth? Open {part} in the full book →",
-        "quiz_label": "Test yourself · the answer is in the chapter",
-        "appendix_part": "Appendix",
-        "gain_label": "After this chapter you can: ",
-        "bound_label": "Not covered here: ",
-        "note_label": "The courier's note · author's chapter summary",
-        "replay_label": "Replay the ink drawing of “{name}”",
-        "verified_note": "link existence verified 2026-10-31 (non-normative)",
-        "station_word": "Station {num} / {total}",
-        "go_deeper": "Go deeper — open this chapter in the full book →",
-        "prev": "← prev",
-        "next": "next →",
-        "hero_tag": "Opening · for everyone",
-        "hero_h2": "What is this book about?",
-        "hero_plain": ("LLMs are brilliant, but to make one truly work for you takes a "
-                       "whole set of driving gear — this book takes that gear apart, "
-                       "piece by piece. No programming required; just follow the pictures."),
-        "hero_link": "Want depth? Open the preface →",
-        "appendix_tag": "Appendix", "appendix_tier": "At hand",
-        "appendix_h2": "New words on the road?",
-        "appendix_plain": ("Glossary, source map, tool inventory, feature flags — all in "
-                           "the appendices, ready to be looked up."),
-        "appendix_link": "Depth? Open Appendix D →",
-        "keeper_tag": "Arrived · a word from the old courier",
-        "keeper_h2": "The road ends — what next?",
-        "keeper_plain": ("This reader is just the map; the real scenery is in the full "
-                         "book — every station has a door marked “go deeper”."),
-        "keeper_link": "Back to the full book →",
-        "analogy_label": "Think of it as: ",
-        "page_head": PAGE_HEAD_EN,
-        "page_tail": PAGE_TAIL_EN,
-    },
 }
 
 
 def main():
-    for lang in ("zh", "en"):
+    for lang in ("zh",):
         out, n = build(lang)
         print(f"{out} ({n} stations)")
 

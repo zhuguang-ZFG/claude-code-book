@@ -33,7 +33,8 @@ from .model import Diagnostic
 from .paths import REPO_ROOT
 
 LEDGER = "claims.json"
-MANUSCRIPT_LANGS = ("zh", "en")
+MANUSCRIPT_LANGS = ("zh",)
+LANG_ORDER = ("zh", "en")
 KINDS = ("version", "price", "count", "default", "performance", "flag")
 RISKS = ("high", "normal")
 STATUSES = ("active", "retired")
@@ -75,6 +76,13 @@ def _parse_day(value):
         return None
 
 
+def _text_langs(texts: dict) -> tuple[str, ...]:
+    """Languages present in a manuscript-text map, in canonical order."""
+    present = set(texts or {})
+    return (tuple(lang for lang in LANG_ORDER if lang in present)
+            or MANUSCRIPT_LANGS)
+
+
 def validate(ledger: dict, texts: dict, sources: dict, *,
              today: date | None = None, release: bool = False
              ) -> list[Diagnostic]:
@@ -91,6 +99,7 @@ def validate(ledger: dict, texts: dict, sources: dict, *,
         raise BuildError(str(_diag("error", "claims-shape", "",
                                    "claims must be a JSON array")))
     today = today or date.today()
+    langs = _text_langs(texts)
     errors: list[Diagnostic] = []
     warnings: list[Diagnostic] = []
     seen: set[str] = set()
@@ -157,7 +166,7 @@ def validate(ledger: dict, texts: dict, sources: dict, *,
             continue
 
         locators: dict[str, dict] = {}
-        for lang in MANUSCRIPT_LANGS:
+        for lang in langs:
             loc = entry.get(lang)
             if not isinstance(loc, dict):
                 errors.append(_diag("error", "claim-locator", cid,
@@ -204,11 +213,10 @@ def validate(ledger: dict, texts: dict, sources: dict, *,
                     "one edition was updated without the other"))
             locators[lang] = loc
 
-        if (len(locators) == 2
-                and locators["zh"]["unit"] != locators["en"]["unit"]):
+        if len({loc["unit"] for loc in locators.values()}) > 1:
             errors.append(_diag(
                 "error", "claim-locator", cid,
-                "zh and en locators name different units"))
+                f"{' and '.join(langs)} locators name different units"))
 
         if (verified is not None and review_days is not None
                 and status == "active"):

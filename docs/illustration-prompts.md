@@ -806,24 +806,27 @@ Core style traits: flowing ink linework with an East-Asian brush spirit; visible
 
 </details>
 
-## 手册不覆盖的另一类：20 张章内插图
+## 手册不覆盖的另一类：30 张章内插图
 
 本手册的 26 条提示词只覆盖**章徽、篇题刻、老驿卒、扉页车图**这一类——它们是靠生图提示词
-起稿、再转成手写 SVG 的。盘上另有 **20 张章内插图**（正文里跟着小节走的那种）不属于这条管线，
-它们没有中英双语提示词，也不必强行编一份，故在此登记边界，别让「46 张图 vs 26 条提示词」
+起稿、再转成手写 SVG 的。盘上另有 **30 张章内插图**（正文里跟着小节走的那种）不属于这条管线，
+它们没有中英双语提示词，也不必强行编一份，故在此登记边界，别让「56 张图 vs 26 条提示词」
 这个差额看起来像漏项：
 
-`ch01-five-pillars`、`ch02-turn-loop`、`ch02-cancel-chain`、`ch03-tool-bench`、`ch03-tool-pipeline`、
-`ch04-gate-steps`、`ch05-trust-ladder`、`ch06-memory-funnel`、`ch07-four-levels`、
-`ch08-hook-line`、`ch08-hook-decision`、`ch09-fork-pipeline`、`ch09-tool-funnel`、
-`ch10-coordinator-fork`、`ch11-skill-stairs`、
-`ch12-mcp-state-dial`、`ch13-concurrency-gate`、`ch13-cost-ledger`、`ch14-plan-gate`、`ch15-harness-wheel`
+`ch01-five-pillars`、`ch01-open-room`、`ch02-turn-loop`、`ch02-cancel-chain`、`ch03-tool-bench`、`ch03-tool-pipeline`、
+`ch04-gate-steps`、`ch04-risk-road`、`ch05-trust-ladder`、`ch05-merge-splice`、`ch06-memory-funnel`、`ch06-trailing-lantern`、
+`ch07-four-levels`、`ch07-boundary-knot`、`ch08-hook-line`、`ch08-hook-decision`、`ch09-fork-pipeline`、`ch09-tool-funnel`、
+`ch10-coordinator-fork`、`ch10-four-stations`、`ch11-skill-stairs`、`ch11-paths-lantern`、
+`ch12-mcp-state-dial`、`ch12-bridge`、`ch13-concurrency-gate`、`ch13-cost-ledger`、`ch14-plan-gate`、`ch14-trace-route`、
+`ch15-harness-wheel`、`ch15-six-mileposts`
 
-（26 + 20 = 46，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
+（26 + 30 = 56，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
 
 `ch08-hook-decision`、`ch09-tool-funnel`、`ch13-cost-ledger` 共用中英文版 SVG，图内不放说明文字：退出码与 JSON 画成两张回执，MCP 工具画成绕过筛网的插头通路，usage 画成事件小票、消息账页与总账。函数名、权限边界和处置含义由正文与画廊的双语题注解释，避免缩小后文字碰线，也避免英文页混入中文标注。
 
-- 这 20 张的取舍与逐轮修订记录在 `.superpowers/sdd/2026-11-02-illustration-rollout/`
+- 2026-11-17 新增 8 张直绘插图，补平每章两张的密度：`ch04-risk-road`（§4.2.2，allow/ask/deny 三块界石）、`ch05-merge-splice`（§5.1.2，两股配置捻成一股绳）、`ch06-trailing-lantern`（§6.3.4，队伍末尾提灯跟随）、`ch07-boundary-knot`（§7.3，消息绳上的压缩结）、`ch10-four-stations`（协调者四阶段逐格胶片）、`ch11-paths-lantern`（§11.3.3，岔道口灯笼亮起）、`ch14-trace-route`（§14.1.1，虚线蓝图走成实线）、`ch15-six-mileposts`（§15.2，六块里程碑）。这批与 `ch01-open-room`、`ch12-bridge` 同为直绘，无独立提示词条目。
+
+- 首批 20 张的取舍与逐轮修订记录在 `.superpowers/sdd/2026-11-02-illustration-rollout/`
   里（`progress.md` 与 `fix-round-1-section.md`），不在本手册；要改画先读那两份。
 - 两类图共用同一套硬契约，即上一节第 4 条：`yuyu-book/yuyu_book/art.py` 要求单 svg + viewBox、
   至少一处 `currentColor`、禁 id/href/url/script/style，质感只能来自几何笔触。

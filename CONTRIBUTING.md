@@ -35,8 +35,8 @@ python -m playwright install chromium   # 注意是 Python 包提供的 CLI，�
 ```bash
 python scripts/bookctl.py doctor       # 一次列全 python/node/浏览器/字体/依赖/写权限
 python scripts/bookctl.py check --fast # 依赖 + 源码装配 + 两套单测 + 内容/图语法 + 视频 + 产品幂等（PR 层）
-python scripts/bookctl.py check --full # fast + 渲染装配 + 合订本 + 双语 PDF
-python scripts/bookctl.py build --product book --lang both --pdf
+python scripts/bookctl.py check --full # fast + 渲染装配 + 合订本 + PDF
+python scripts/bookctl.py build --product book --pdf
 python scripts/bookctl.py deps         # requirements.txt 与 uv.lock 对照
 python scripts/bookctl.py clean        # 删除 yuyu-book/dist（不依赖 rm -rf）
 ```
@@ -44,9 +44,8 @@ python scripts/bookctl.py clean        # 删除 yuyu-book/dist（不依赖 rm -r
 调试单个阶段也通过同一入口，不再调用已删除的 `yuyu-book/build.py`：
 
 ```bash
-python scripts/bookctl.py build --check               # 临时装配两语版，不写 dist、不出 PDF
+python scripts/bookctl.py build --check               # 临时装配，不写 dist、不出 PDF
 python scripts/bookctl.py build --lang zh             # 只出中文版 HTML
-python scripts/bookctl.py build --lang en --pdf       # 英文版 HTML + PDF
 python scripts/bookctl.py build --regen-index         # 重建索引后继续完整构建
 ```
 
@@ -56,15 +55,15 @@ python scripts/bookctl.py build --regen-index         # 重建索引后继续完
 make            # 列出可用目标
 make doctor     # 环境报告
 make lint       # ruff 静态检查（开发机依赖，不是构建依赖）
-make book       # 双语 HTML
-make book-pdf   # 双语 HTML + PDF
+make book       # 中文 HTML
+make book-pdf   # 中文 HTML + PDF
 make check      # = check --fast
 make check-full # = check --full
 make index      # --regen-index
 make clean      # 删除 yuyu-book/dist
 ```
 
-两个变量可以覆盖：`make PYTHON=python3`（Linux CI 用）、`make BOOK_LANG=zh`（只出一语；刻意不叫 `LANG`，那是 shell 已经在导出的 locale 变量）。
+一个变量可以覆盖：`make PYTHON=python3`（Linux CI 用）。`BOOK_LANG` 只接受 `zh`（刻意不叫 `LANG`，那是 shell 已经在导出的 locale 变量）。
 
 改动前后都建议跑一遍既有内容门：
 
@@ -77,22 +76,21 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 `yuyu-book/tests` 不需要浏览器、不渲染图、不写书稿；它把 `--check` 抓不到的东西钉死：附录 D 表格到索引的映射、`MermaidBlock.line` 必须仍是文件里的行号（图题靠它对位）、`第 N 章` 在 `<code>/<pre>/<svg>` 子树里不许被加链、配色 token 的 WCAG 4.5:1 对比度。Windows 控制台若因中文断言报编码错误，加 `PYTHONIOENCODING=utf-8`。
 
-还有一道只在 Book CI 里跑的门：`python scripts/check_artifact_claims.py`。中文版 README 与 `en/README.md` 的「离线整书」各引了一遍 PDF 页数与单文件 HTML 体积，八项都核对。页数跟着构建机那套中文字体走（CI 装 Noto CJK，换一台装了微软雅黑的 Windows 两份都排得更长，README 里照实写着那台机器的数字），所以本地对着自己的 `dist/` 跑必红，只有指向同一次 CI 刚排出来的产物才绿；单文件 HTML 与字体无关，体积那四项本地也能核。数字对不上、产物缺失、或者那两句话被改写成别的说法，都退出非零。
+还有一道只在 Book CI 里跑的门：`python scripts/check_artifact_claims.py`。README 的「离线整书」引了一遍 PDF 页数与单文件 HTML 体积，八项都核对。页数跟着构建机那套中文字体走（CI 装 Noto CJK，换一台装了微软雅黑的 Windows 两份都排得更长，README 里照实写着那台机器的数字），所以本地对着自己的 `dist/` 跑必红，只有指向同一次 CI 刚排出来的产物才绿；单文件 HTML 与字体无关，体积那四项本地也能核。数字对不上、产物缺失、或者那两句话被改写成别的说法，都退出非零。
 
 ## 3. 新增或修改一章
 
-1. **写 Markdown**，中英文两份都要动。
+1. **写 Markdown**，只维护中文稿。
 2. **首行 H1 必须能被构建器识别**（`core.normalize_h1()` 的模板，围栏内不算）：
    - 中文：`# 前言` / `# 第 2 章：对话循环 -- Agent 的心跳` / `# 附录 A：源码导航地图`
-   - 英文：`# Foreword` / `# Chapter 2: The Dialog Loop -- The Agent's Heartbeat` / `# Appendix A: Architecture Navigation Map`
    - 冒号可省；正文里的 ` -- `（两侧空格）会被规整成破折号 `—`，连续空格会被压成一个。
    - 找不到顶层 H1，或第一个 H1 不匹配上面任一模板，直接 `BuildError`。
-3. **在 `yuyu-book/manifest.json` 登记**：`parts[].units[]`（或 `appendices[]`）里加 `{id, zh, en}`；`id` 同时就是成品里的锚点（`#ch09`、`#apxd`），改 `id` 等于改全书链接目标。两个语言路径都必须存在，否则 `validate_configs()` 报错。
-4. **补罗盘条目** `guides[<id>]`：`question` / `deliverable` / `boundary` 三个字段，每个都要 **zh 与 en 双语非空**。校验要求 guides 恰好覆盖所有单元（多一个少一个都不行），`audit` 还要求成品里的罗盘卡数量不少于单元数。
+3. **在 `yuyu-book/manifest.json` 登记**：`parts[].units[]`（或 `appendices[]`）里加 `{id, zh}`；`id` 同时就是成品里的锚点（`#ch09`、`#apxd`），改 `id` 等于改全书链接目标。两个语言路径都必须存在，否则 `validate_configs()` 报错。
+4. **补罗盘条目** `guides[<id>]`：`question` / `deliverable` / `boundary` 三个字段，每个都要 **非空**。校验要求 guides 恰好覆盖所有单元（多一个少一个都不行），`audit` 还要求成品里的罗盘卡数量不少于单元数。
 5. **挂来源** `guides[<id>].sources`：填 `sources.json` 里已有的 id，写错 id 会被 `unknown source id` 拒绝。这些 id 在书里渲染成"来源锚点"chip，指向 `#source-<id>`。
-6. **补通俗层**（可选但强烈建议）：`guides[<id>].plain` 是一句章首导读带，`guides[<id>].analogy` 是紧跟其后的“打个比方”。两者都要 zh / en 双语，且必须同时给 `guides[<id>].plain_evidence` —— 一组稳定块 ID，例如 `ch03.tool-generics`，指回书稿里真正支撑这句话的块。块不能是代码围栏，且必须含登记过的词形；导读带要求中英两侧都有证据。两语不共用标记时分别登记两个 ID，不要把中文证据当作英文证据。旧 `文件:行号` 只供历史迁移读取，不再新增。
+6. **补通俗层**（可选但强烈建议）：`guides[<id>].plain` 是一句章首导读带，`guides[<id>].analogy` 是紧跟其后的“打个比方”。两者都要写明，且必须同时给 `guides[<id>].plain_evidence` —— 一组稳定块 ID，例如 `ch03.tool-generics`，指回书稿里真正支撑这句话的块。块不能是代码围栏，且必须含登记过的词形；导读带要求证据。中文证据当作英文证据。旧 `文件:行号` 只供历史迁移读取，不再新增。
 7. **画一枚章徽**：`yuyu-book/illustrations/<id>.svg`（新篇再加 `part-<篇id>.svg`）。不画不会失败——构建器只统计"磁盘上有的图是否都上了页面"——但每个单元的标题行就空着一格。规格见第 5.2 节。
-8. 顺手更新 `yuyu-book/revisions.json` 的版本说明（zh/en 各一份）。
+8. 顺手更新 `yuyu-book/revisions.json` 的版本说明。
 
 ## 4. 新增一条来源（`yuyu-book/sources.json`）
 
@@ -129,15 +127,15 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 - 必须闭合，未闭合会报 `unclosed code fence at line N`，并且审计会以"`<pre>`/`<code>` 内嵌块级元素"再抓一次。
 - **声明语言**：` ```json `、` ```typescript `、` ```bash ` 等。围栏 info 串会成为代码板右上角的语言角标（`data-lang`）；不写语言的围栏拿不到角标，且按纯文本高亮。围栏数量与渲染出的代码块数量必须一一对应，否则报"rendered code blocks but N source fences"。
 - Mermaid 围栏固定写 ` ```mermaid `。图题取自动态扫描的**最近上层 H2**，所以每张图前要有一个 H2 标题；没有就回落成"架构示意"。图内换行用 `<br/>`，写字面量 `\n` 会被 `scripts/check_book.py` 拦下。
-- **图与图之间的距离**：`scripts/check_book.py` 按 manifest 的两语正文，量相邻两个视觉断点（图版、表格、代码围栏）之间那段纯文字有多长；超过 `WALL_CEILING`（当前中文 2885、英文 8049 字符）就报错，同时把每种语言最长的三处打在输出末尾，当作下一轮的点位清单。这两个数是**当轮实测的最大墙**，不是许可额度——墙只许变矮：补图之后顺手把上限改低到新实测值，放宽上限得在提交信息里说清为什么。
+- **图与图之间的距离**：`scripts/check_book.py` 按 manifest 的正文，量相邻两个视觉断点（图版、表格、代码围栏）之间那段纯文字有多长；超过 `WALL_CEILING`（当前中文 2885、英文 8049 字符）就报错，同时把每种语言最长的三处打在输出末尾，当作下一轮的点位清单。这两个数是**当轮实测的最大墙**，不是许可额度——墙只许变矮：补图之后顺手把上限改低到新实测值，放宽上限得在提交信息里说清为什么。
 - **图的宽度**：Mermaid 按自己的坐标排版，正文栏只有 635px。viewBox 宽超过 1150 单位的图版会被 `floor_wide_svg()` 钉上 `min-width`（最宽 2600px），屏幕上横向拖动阅读、图题带"可横向拖动"提示，打印时归零回到整页可见。所以画超大依赖图前先想清楚：横向铺开 = 读者要拖，宁可拆成两张 H2 下的小图。
-- **图在纸面上的尺寸**：纸面没有滚动条，只有两块可用地——竖版版心 176×245mm（665×926 CSS px）与横版折页 170mm 高（993×642 CSS px）。构建时 `plate_cap()` 给"很高、按 6pt 字号底线缩放后正好还放得进栏宽"的图写一条 `--plate-cap`（150–245mm），让它独占版面而不是被压小——成品里中文版抬了 6 张、英文版 10 张；`plate_landscape()` 把"横过来才读得清"的图（竖着不足 6pt、横着能到 5pt 且好上一成半）挂上 `landscape` 类，独占一张 `@page plate-landscape` 横向 A4——中文版 18 张、英文版 25 张，一张图一张纸。折页**不写** `--plate-cap`：横版纸面只有 170mm 高，图版吃满 165mm 就会把图题挤到下一张纸上。两头都够不着的极端长条仍留在正文流里，纸面上就是小：中文版还剩 1 张（3725×1330 单位，约 2.4pt），英文版 3 张（2.4–3.3pt）。这几个数是量成品得来的，不是契约：`grep -c '<figure[^>]*landscape' yuyu-book/dist/*.html` 数一遍，PDF 里横过来的纸页与它一一相等，改图之后要跟着改这段。**HTML 才是全保真产物**，这类图请引导读者在屏幕上横向拖开看。
+- **图在纸面上的尺寸**：纸面没有滚动条，只有两块可用地——竖版版心 176×245mm（665×926 CSS px）与横版折页 170mm 高（993×642 CSS px）。构建时 `plate_cap()` 给"很高、按 6pt 字号底线缩放后正好还放得进栏宽"的图写一条 `--plate-cap`（150–245mm），让它独占版面而不是被压小——成品里抬了 6 张；`plate_landscape()` 把"横过来才读得清"的图（竖着不足 6pt、横着能到 5pt 且好上一成半）挂上 `landscape` 类，独占一张 `@page plate-landscape` 横向 A4——18 张，一张图一张纸。折页**不写** `--plate-cap`：横版纸面只有 170mm 高，图版吃满 165mm 就会把图题挤到下一张纸上。两头都够不着的极端长条仍留在正文流里，纸面上就是小：中文版还剩 1 张（3725×1330 单位，约 2.4pt），这几个数是量成品得来的，不是契约：`grep -c '<figure[^>]*landscape' yuyu-book/dist/*.html` 数一遍，PDF 里横过来的纸页与它一一相等，改图之后要跟着改这段。**HTML 才是全保真产物**，这类图请引导读者在屏幕上横向拖开看。
 - **三个会把整本书的图打崩的写法**：别给 `.diagram-frame` 或图版容器加 `width:fit-content`——mermaid 的 SVG 根节点写的是 `width="100%"`，百分比宽度在 fit-content 父级里塌成 0，159 张图会集体消失（`test_build_contracts` 里有一条负向断言盯着它）；别加 `filter:`——打印引擎会把滤镜子树光栅化，图里的字退化成像素（PDF 里选不中、搜不到），文件体积还能翻倍；也别在 `figure.landscape` 上写 `break-after:page`——命名页面本身就会结束这一张纸，两个都写会在每个折页后面多出一张空白。
 - **图的颜色**：优先不写颜色，`mermaid.py` 的 `THEME` 会把无主节点排成书色。已经写了 `classDef`/`style` 的图也不必回改正文——构建时 `reink_colors()` 按色相把 fill/stroke/color 重染进 `BOOK_FAMILIES` 七组书色（蓝→sky、绿→jade、橙黄→brass、红→cinnabar、紫→plum、近白→card、其余→neutral），角色区分保留，色板统一。写新图时按语义选色即可，别指望某个具体十六进制出现在成品里。
 
 **引用与链接**
 
-- 跨章引用直接写"第 9 章""附录 B"（英文写 `Chapter 9` / `Appendix B`），构建时自动加链（覆盖第 1–15 章与附录 A–D）；调试时可加 `--no-autolink`。
+- 跨章引用直接写"第 9 章""附录 B"，构建时自动加链（覆盖第 1–15 章与附录 A–D）；调试时可加 `--no-autolink`。
 - 不要在正文里写指向 `.md` 的相对链接——书稿之间的互指应通过"第 N 章"表达，否则审计报 `residual .md links`。
 - 不要手写锚点、图号、脚注编号：它们全部派生自 Markdown 标题与链接顺序。
 - 外链写成普通 Markdown 链接即可，构建器会自动加上标编号并在单元末尾生成"引用链接"清单。
@@ -162,25 +160,25 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 命中不了的标签会保持成普通引用块，不会报错——所以想真正出框，请照抄上表的标签写法。
 
-**双语同步**
+**单语同步**
 
-`en/` 下的英文镜像与中文逐单元对应，章节标题模板不同但结构一致；只改中文不改英文会让两语版的图数、脚注数、索引词条数对不上。英文书稿不得夹带汉字，唯一例外精确到附录 D 术语表的第二列（中文译名）；`test_manifest` 会扫描全部英文单元，定义列或正文里的残留都会按文件与行号报错。
+书稿只有一份中文正文；改动后重跑生成器即可，图数、脚注数、索引词条数对不上。英文书稿不得夹带汉字，唯一例外精确到附录 D 术语表的第二列（中文译名）；`test_manifest` 会扫描全部英文单元，定义列或正文里的残留都会按文件与行号报错。
 
 ### 5.1 通俗层：白话注、导读带、阅读路线
 
 通俗层是构建时叠在书稿上的一层，**从不回写 Markdown**。四个落点：
 
-**术语白话注**（`yuyu-book/glosses.json`）一条一个术语：`term.{zh,en}`、`forms.{zh,en}`（正文里要匹配的表面写法，大小写与连字符照抄）、`plain.{zh,en}`（一句能懂的话）、`analogy`（可选比方）、`priority`、`evidence`。只有 `priority: "core"` 的词会在正文首现处画虚线，而章末面板列的就是这批画了线的词——两处是同一批，构建时断言，不存在「只进面板不上正文」的中间档。`"extra"` 的词两者都不沾，只在附录 D 可查。一个单元最多 22 个新词，超了构建失败——那时把最通用的词降成 `extra`，而不是删掉解释（本书正是这样给 `Agent Harness` 与主循环腾出位置的）。
+**术语白话注**（`yuyu-book/glosses.json`）一条一个术语：`term.zh`、`forms.zh`（正文里要匹配的表面写法，大小写与连字符照抄；`term.en` / `forms.en` 保留英文原名供检索）、`plain.{zh,en}`（一句能懂的话）、`analogy`（可选比方）、`priority`、`evidence`。只有 `priority: "core"` 的词会在正文首现处画虚线，而章末面板列的就是这批画了线的词——两处是同一批，构建时断言，不存在「只进面板不上正文」的中间档。`"extra"` 的词两者都不沾，只在附录 D 可查。一个单元最多 22 个新词，超了构建失败——那时把最通用的词降成 `extra`，而不是删掉解释（本书正是这样给 `Agent Harness` 与主循环腾出位置的）。
 
-**导读带与比方**在 `guides[<id>].plain` / `.analogy`，配 `guides[<id>].plain_evidence`。长度上限（超出即 `BuildError`）：导读带 zh 60 字 / en 170 字符，比方 zh 52 / en 160；浮窗里的白话 zh 40 / en 130，比方 zh 44 / en 130。
+**导读带与比方**在 `guides[<id>].plain` / `.analogy`，配 `guides[<id>].plain_evidence`。长度上限（超出即 `BuildError`）：导读带 60 字 / 字符，比方 zh 52 / en 160；浮窗里的白话 zh 40 / en 130，比方 zh 44 / en 130。
 
 **阅读路线**（`yuyu-book/reading-paths.json`）按单元存一个小节顺序的位置列表，取值 `start` / `core` / `deep`（成品里渲染成"起步 / 主干 / 进阶"）。长度必须等于该单元实际渲染出的 `<h2>` 数：加了小节忘了同步，构建会直接报错，而不是把徽盖到别的小节上。
 
-**按语**（`yuyu-book/notes.json`）以单元 id 为键，`{zh, en}` 各一句，由坐在章末车辙上方的老驿卒说出来，书末「按语集」再把二十条按阅读顺序收成一页。门禁是 `plain.validate_notes()`：中文 ≤36 字、英文 ≤130 字符，英文里不许夹汉字，二十个单元缺一条或多一条没主的都让构建失败；最要紧的是**术语锁**——句子里必须有一个 `glosses.json` 登记过的词形，而且那个词形要真的站在这一单元自己的 Markdown 里（构建器读的是源文件，不认「意思差不多」：第 1 章正文写的是 `Agent Harness`，写「智能体线束」会被退回；第 14 章写「规划模式」，写「计划模式」同样被退回）。旁白可以借书自己的比喻，不许凭空造词，也不许替书稿发表它没说过的论断——这是这一层与「白话不能以说错为代价」同一条底线的另一面。按语里也宁可不写数字：写了，`test_docclaims` 就要拿它跟仓库重算出来的值对表（`KEEPER_TOTALS` 目前钉住附录 B 那行的工具总数，要写别的数先去那里登记它从哪算来）；把数目写成汉字（「五十五」「六十多」）等于对一切门禁隐身——这本书正是被一个写成汉字的约数骗过的，所以这条规矩先管到自己这一层。
+**按语**（`yuyu-book/notes.json`）以单元 id 为键，一句中文，由坐在章末车辙上方的老驿卒说出来，书末「按语集」再把二十条按阅读顺序收成一页。门禁是 `plain.validate_notes()`：中文 ≤36 字、英文 ≤130 字符，英文里不许夹汉字，二十个单元缺一条或多一条没主的都让构建失败；最要紧的是**术语锁**——句子里必须有一个 `glosses.json` 登记过的词形，而且那个词形要真的站在这一单元自己的 Markdown 里（构建器读的是源文件，不认「意思差不多」：第 1 章正文写的是 `Agent Harness`，写「智能体线束」会被退回；第 14 章写「规划模式」，写「计划模式」同样被退回）。旁白可以借书自己的比喻，不许凭空造词，也不许替书稿发表它没说过的论断——这是这一层与「白话不能以说错为代价」同一条底线的另一面。按语里也宁可不写数字：写了，`test_docclaims` 就要拿它跟仓库重算出来的值对表（`KEEPER_TOTALS` 目前钉住附录 B 那行的工具总数，要写别的数先去那里登记它从哪算来）；把数目写成汉字（「五十五」「六十多」）等于对一切门禁隐身——这本书正是被一个写成汉字的约数骗过的，所以这条规矩先管到自己这一层。
 
 整层可以 `--no-plain` 关掉，用来对比开合前后的成品。
 
-**底线：通俗不能以说错为代价。** 每一句白话都要能在书稿里指出行号；`validate_plain()` 会逐条核对证据指针落在代码围栏之外、那一行确实含登记过的词形，core 词条与每条导读带要求中英两侧都有证据。写不出证据的白话，就是还没读懂正文——先别写。
+**底线：通俗不能以说错为代价。** 每一句白话都要能在书稿里指出行号；`validate_plain()` 会逐条核对证据指针落在代码围栏之外、那一行确实含登记过的词形，core 词条与每条导读带都要求证据。写不出证据的白话，就是还没读懂正文——先别写。
 
 ### 5.2 插图：章徽、篇题刻与扉页车图
 
@@ -208,15 +206,14 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
   "review_days": 90,
   "status": "active",
   "zh": {"unit": "ch04", "block": "ch04.release-notes", "quote": "Claude Code 2.1.310（本书基线）"},
-  "en": {"unit": "ch04", "block": "ch04.release-notes", "quote": "Claude Code 2.1.310 (this book's baseline)"}
-}
+  }
 ```
 
 规则：
 
-- `id` 是小写连字符 slug，全书唯一；中英两侧共用这一个 id，不许各起一个。
+- `id` 是小写连字符 slug，全书唯一。
 - `kind` 取 `version` / `price` / `count` / `default` / `performance` / `flag`；`risk` 取 `high` / `normal`；`status` 取 `active` / `retired`。
-- `value` 是这条断言的最小可核对 token（`2.1.310`、`$3.00`、`55`、`72%`、`PROACTIVE`）。它必须**同时**出现在 `zh.quote` 与 `en.quote` 里：只改一侧的译文，另一侧的门禁立刻失败。`quote` 必须是所在 block 的原文子串，不是改写。
+- `value` 是这条断言的最小可核对 token（`2.1.310`、`$3.00`、`55`、`72%`、`PROACTIVE`）。它必须出现在 `zh.quote` 中`en.quote` 里：只改一侧的译文，另一侧的门禁立刻失败。`quote` 必须是所在 block 的原文子串，不是改写。
 - 引用块要先在 Markdown 里落一个稳定标记（`<!-- block: ch04.release-notes -->`），再把 `unit` / `block` 写进账本。自动生成的 `b-xxxxxxxx` 在两语版本里通常不同，所以两侧的 `block` 各写各的，`id` 必须相同。
 - `source` 必须是 `sources.json` 已有的 id；`verified` 是复核日期（`YYYY-MM-DD`），`review_days` 是复查周期。
 - `status: "retired"` 表示断言已不适用：账本不再追它的正文位置，但条目保留作历史。
@@ -256,7 +253,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 新增或修改规则、回归测试、runner 或 CI 策略仍须独立审阅；本地测试通过不等于受管验证已通过。
 
 P5 内容的本地来源提交为 `6d4e3c0475d28d2ebb7630518a2f6721c9a01620`。
-该提交包含双语练习、断言账本与构建前校验；不包含 P3 样式拆分、P4 产品适配或视频迁移。
+该提交包含练习、断言账本与构建前校验；不包含 P3 样式拆分、P4 产品适配或视频迁移。
 
 
 ## 6. 审计会拒绝什么
@@ -280,24 +277,22 @@ PDF 阶段另有五道：命名目标缺失（`no destination found for ...`）�
 
 ## 7. PDF 的机器相关性
 
-`pdf.py` 打印 A4 后用 PyMuPDF 补书签、眉标、页脚页码与目录页码。眉标要量真实字宽，所以必须拿到一个本机 CJK 字体文件：`CJK_FONTS` 依次列 Windows（微软雅黑/宋体/黑体）、macOS（PingFang/Songti）与 Linux（Noto CJK，Debian/Ubuntu 上是 `fonts-noto-cjk`）的常见路径。中文版找不到任何一份就直接 `BuildError`，不会静默产出丢字的眉标；英文版走内置 Helvetica，无此要求。书签、页脚页码与目录页码本身用内置 Helvetica 数字，不受字体影响。因此装好字体的 runner 才能产出可交付的 PDF，`book.yml` 已为此安装 `fonts-noto-cjk`。
+`pdf.py` 打印 A4 后用 PyMuPDF 补书签、眉标、页脚页码与目录页码。眉标要量真实字宽，所以必须拿到一个本机 CJK 字体文件：`CJK_FONTS` 依次列 Windows（微软雅黑/宋体/黑体）、macOS（PingFang/Songti）与 Linux（Noto CJK，Debian/Ubuntu 上是 `fonts-noto-cjk`）的常见路径。中文版找不到任何一份就直接 `BuildError`，不会静默产出丢字的眉标。书签、页脚页码与目录页码本身用内置 Helvetica 数字，不受字体影响。因此装好字体的 runner 才能产出可交付的 PDF，`book.yml` 已为此安装 `fonts-noto-cjk`。
 
 ## 8. 提交前检查清单
 
 - [ ] `python scripts/bookctl.py check --fast`（或 `make check`）通过；涉及图版/PDF/合订本时用 `check --full`
 - [ ] 动过 `yuyu_book/`、`scripts/`、`video/` 或 `tests/` 时跑过 `make lint`（ruff 不在构建依赖里，CI 也不装它，这一条靠本地纪律）
-- [ ] 中文与英文两份 Markdown 同步修改
-- [ ] 英文书稿无汉字残留（附录 D 的双语译名列除外）
-- [ ] 新单元已在 `manifest.json` 登记，且 `guides` 三字段双语齐备
+- [ ] 新单元已在 `manifest.json` 登记，且 `guides` 三字段齐备
 - [ ] 新来源已过第 4 节的门禁，`snapshot`/`accessed`/`scope` 写实
-- [ ] 动到通俗层时，每条新写的白话都带指得回书稿的 `plain_evidence` / `evidence`，中英两侧齐备；新单元有 `illustrations/<id>.svg`，并在 `notes.json` 里留一条按语（术语锁会替你核对那句里有没有本单元真正用过的词形）
+- [ ] 动到通俗层时，每条新写的白话都带指得回书稿的 `plain_evidence` / `evidence`；新单元有 `illustrations/<id>.svg`，并在 `notes.json` 里留一条按语（术语锁会替你核对那句里有没有本单元真正用过的词形）
 - [ ] 若动到版本号，`revisions.json` 与 `manifest.json` 的 `version`/`date` 一致
-- [ ] 版本、价格、数量、默认行为、性能数字或功能标志的增改，已在 `claims.json` 登记，且中英 `quote` 都含同一个 `value`（第 5.3 节）
-- [ ] 事实、推断、教学简化与作者建议按第 5.4 节的标签分开，英文侧同标
-- [ ] 章节增删导致 PDF 页数或单文件体积变化时，两份 README「离线整书」那一行的数字跟着改（Book CI 的 `scripts/check_artifact_claims.py` 会替你核对）
+- [ ] 版本、价格、数量、默认行为、性能数字或功能标志的增改，已在 `claims.json` 登记，且 `quote` 含同一个 `value`（第 5.3 节）
+- [ ] 事实、推断、教学简化与作者建议按第 5.4 节的标签分开，
+- [ ] 章节增删导致 PDF 页数或单文件体积变化时，README「离线整书」那一行的数字跟着改（Book CI 的 `scripts/check_artifact_claims.py` 会替你核对）
 - [ ] 涉及显示问题，注明阅读平台、文件与复现步骤
 
-CI 的书籍门禁统一在 `.github/workflows/book.yml`：`Fast` 运行源码装配、两套单测、内容、图语法、视频配置和产品幂等检查；`Full` 在 Fast 后运行渲染、九卷合订本与双语 PDF；`Omp` 独立检查第二分册；`Bootstrap` 矩阵检查 Windows 与 Ubuntu 环境。`.github/workflows/release.yml` 负责版本一致性、最终装配、校验和与标签发布；`pages.yml` 负责站点部署。旧 `check-book.yml` 已退出。工作流存在不等于已执行通过，合并时必须核对同一候选提交的远端状态。架构边界见 [架构决策记录](docs/architecture-decisions.md)。
+CI 的书籍门禁统一在 `.github/workflows/book.yml`：`Fast` 运行源码装配、两套单测、内容、图语法、视频配置和产品幂等检查；`Full` 在 Fast 后运行渲染、九卷合订本与 PDF；`Omp` 独立检查第二分册；`Bootstrap` 矩阵检查 Windows 与 Ubuntu 环境。`.github/workflows/release.yml` 负责版本一致性、最终装配、校验和与标签发布；`pages.yml` 负责站点部署。旧 `check-book.yml` 已退出。工作流存在不等于已执行通过，合并时必须核对同一候选提交的远端状态。架构边界见 [架构决策记录](docs/architecture-decisions.md)。
 
 视频迁移的实物比较使用 `python scripts/bookctl.py video compare --help`。指定章节、长短格式、旧 SRT/VTT、新流程生成的 transcript JSON，以及独立渲染的旧新版视频；`--report` 写出带输入 SHA-256 的审阅结果。缺少任何一侧的视频或字幕证据都不能判为通过；抽样帧检查不代替 `video check --audio`。分句或时间轴有意变更时，保留差异报告并审阅，不能放宽比较阈值消除结果。示例及已知缺口见 [P6 验收续作](docs/migrations/spec-verification-2026-11-09.md)。
 

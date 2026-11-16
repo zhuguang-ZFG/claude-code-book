@@ -26,7 +26,7 @@ def checksum_lines(staged: Path) -> str:
 
 
 def release_notes_markdown(version: str, entry: dict) -> str:
-    """Readable release body: dated heading and bilingual revision bullets.
+    """Readable release body: dated heading and Chinese revision bullets.
 
     ``gh release create --notes-file`` renders this file as Markdown, so the
     body has to be prose; the machine-readable ledger stays in
@@ -35,7 +35,7 @@ def release_notes_markdown(version: str, entry: dict) -> str:
     date = str(entry.get("date") or "").strip()
     heading = f"# 御舆 v{version}" + (f"（{date}）" if date else "")
     lines = [heading]
-    for language, title in (("zh", "内容修订"), ("en", "Content changes")):
+    for language, title in (("zh", "内容修订"),):
         bullets = [" ".join(str(item).splitlines()).strip()
                    for item in entry.get(language) or []]
         bullets = [bullet for bullet in bullets if bullet]
@@ -100,7 +100,7 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
             if result.returncode:
                 raise subprocess.CalledProcessError(result.returncode, command)
         try:
-            run("bilingual HTML/PDF", [sys.executable, "-m", "yuyu_book", "--lang", "both", "--pdf", "--out-dir", str(staged)])
+            run("Chinese HTML/PDF", [sys.executable, "-m", "yuyu_book", "--lang", "zh", "--pdf", "--out-dir", str(staged)])
             run("omp HTML/PDF", [sys.executable, "-m", "yuyu_book", "--manifest", "manifest-omp.json", "--sources", "sources-omp.json", "--lang", "zh", "--pdf", "--out-dir", str(staged)])
             for product in COMPANION_VOLUMES:
                 run(f"{product} HTML/PDF", [sys.executable, "-m", "yuyu_book",
@@ -124,9 +124,11 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
             run("product idempotence and links", [sys.executable, "scripts/check_products.py"])
             run("video configuration", [sys.executable, "video/pipeline/cli.py", "check", "--config-only"])
             run("video content assembly", [sys.executable, "video/pipeline/cli.py", "build"])
-            for lang in ("zh", "en"):
-                if epub:
-                    run(f"{lang} EPUB", [sys.executable, "scripts/build_epub.py", "--html", str(staged / f"yuyu-agent-harness-{lang}.html"), "--output", str(staged / f"yuyu-agent-harness-{lang}.epub"), "--lang", lang])
+            if epub:
+                run("zh EPUB", [sys.executable, "scripts/build_epub.py",
+                                "--html", str(staged / "yuyu-agent-harness-zh.html"),
+                                "--output", str(staged / "yuyu-agent-harness-zh.epub"),
+                                "--lang", "zh"])
             if epub:
                 run("omp EPUB", [sys.executable, "scripts/build_epub.py", "--html", str(staged / "yuyu-omp-zh.html"), "--output", str(staged / "yuyu-omp-zh.epub"), "--lang", "zh"])
                 for product in COMPANION_VOLUMES:

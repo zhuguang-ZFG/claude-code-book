@@ -294,7 +294,7 @@ def check(full: bool) -> int:
             # budget; nothing above renders it, so it would rot unseen.
             ("collected edition", [python(), "scripts/bookctl.py", "build",
                                    "--product", "collected", "--check"]),
-            ("pdf", [python(), "-m", "yuyu_book", "--lang", "both", "--pdf"]),
+            ("pdf", [python(), "-m", "yuyu_book", "--lang", "zh", "--pdf"]),
             # Last, because `pdf` is the step that publishes the reader HTML:
             # the README quotes its size, the one claim a Windows runner can
             # check (page counts follow the installed CJK face). CI runs the
@@ -401,8 +401,7 @@ def build(args) -> int:
 def epub(args) -> int:
     """Convert the editions just built, respecting Chinese-only products."""
     chinese_only = (*ZH_PRODUCTS, *COLLECTION_PRODUCTS)
-    langs = (["zh"] if args.product in chinese_only else
-             ["zh", "en"] if args.lang == "both" else [args.lang])
+    langs = ["zh"]
     out_dir = Path(args.out_dir) if args.out_dir else DIST
     for lang in langs:
         html = out_dir / f"{OUTPUT_PREFIXES[args.product]}-{lang}.html"
@@ -442,7 +441,7 @@ def main(argv=None) -> int:
     bl = sub.add_parser("build", help="build a product")
     bl.add_argument("--product", default="book", choices=[*BOOK_PRODUCTS, "site",
                     "reader", "gallery", "cards", "sample", "indices"])
-    bl.add_argument("--lang", default="both", choices=["zh", "en", "both"])
+    bl.add_argument("--lang", default="zh", choices=["zh"])
     bl.add_argument("--pdf", action="store_true")
     bl.add_argument("--epub", action="store_true")
     bl.add_argument("--out-dir")

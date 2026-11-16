@@ -29,10 +29,9 @@ KINDS = {"paragraph", "heading", "list", "table", "quote", "fence"}
 class SiteTables(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = load_repo_model(["zh", "en"])
+        cls.model = load_repo_model(["zh"])
         cls.glosses = load_json(BOOK_DIR / "glosses.json")
         cls.search = indices.search_index(cls.model)
-        cls.language = indices.language_map(cls.model)
         cls.concept = indices.concept_map(cls.model, cls.glosses)
 
     def shipped(self, name: str) -> str:
@@ -41,7 +40,6 @@ class SiteTables(unittest.TestCase):
     def test_the_shipped_tables_are_a_fresh_generation(self):
         want = {
             indices.OUT["search"]: self.search,
-            indices.OUT["language"]: self.language,
             indices.OUT["concept"]: self.concept,
         }
         for name, data in want.items():
@@ -73,53 +71,6 @@ class SiteTables(unittest.TestCase):
             self.assertIn(entry["section"], anchors, entry)
             self.assertIn(entry["kind"], KINDS, entry)
             self.assertTrue(entry["text"].strip(), entry)
-
-    def test_both_editions_are_indexed_unit_for_unit(self):
-        seen = {"zh": set(), "en": set()}
-        for entry in self.search["entries"]:
-            seen[entry["lang"]].add(entry["unit"])
-        self.assertEqual(seen["zh"], seen["en"])
-        self.assertEqual(seen["zh"],
-                         {u.id for u in self.model.editions["zh"].units})
-
-    def test_the_language_map_pairs_every_unit_section_for_section(self):
-        zh, en = self.model.editions["zh"], self.model.editions["en"]
-        self.assertEqual([row["id"] for row in self.language["units"]],
-                         [u.id for u in zh.units])
-        self.assertEqual([row["id"] for row in self.language["units"]],
-                         [u.id for u in en.units])
-        for row, zu, eu in zip(self.language["units"], zh.units, en.units):
-            self.assertEqual(row["zh"]["anchor"], zu.anchor, row["id"])
-            self.assertEqual(row["en"]["anchor"], eu.anchor, row["id"])
-            levels = [section["level"] for section in row["sections"]]
-            self.assertEqual(levels, [s.level for s in zu.sections], row["id"])
-            self.assertEqual(levels, [s.level for s in eu.sections], row["id"])
-            anchors = [section["zh"]["anchor"] for section in row["sections"]]
-            self.assertEqual(len(anchors), len(set(anchors)), row["id"])
-            for section in row["sections"]:
-                for lang in ("zh", "en"):
-                    self.assertTrue(section[lang]["title"].strip(), section)
-                    self.assertTrue(section[lang]["anchor"].strip(), section)
-
-    def test_a_drifted_edition_pair_refuses_to_make_a_map(self):
-        solo = BookModel(version="test")
-        solo.editions["zh"] = Edition("zh", [Unit(
-            id="ch01", kind="chapter", lang="zh", path="a.md", title="一")])
-        with self.assertRaises(indices.IndexDrift):
-            indices.language_map(solo)
-
-        model = BookModel(version="test")
-        model.editions["zh"] = Edition("zh", [Unit(
-            id="ch01", kind="chapter", lang="zh", path="a.md", title="一",
-            sections=[Section(2, "小节", 1, [])])])
-        model.editions["en"] = Edition("en", [Unit(
-            id="ch01", kind="chapter", lang="en", path="b.md", title="One")])
-        with self.assertRaises(indices.IndexDrift):
-            indices.language_map(model)
-
-        model.editions["en"].units[0].id = "ch02"
-        with self.assertRaises(indices.IndexDrift):
-            indices.language_map(model)
 
     def test_the_concept_map_lists_every_registered_term_once(self):
         want = sorted(gid for gid, raw in self.glosses.items()

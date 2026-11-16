@@ -6,7 +6,7 @@
 
 <a href="https://zhuguang-zfg.github.io/claude-code-book/beginner-reader.html"><img src="docs/tagline.svg" width="660" alt="对话循环 · 工具系统 · 权限管线 · 记忆 · 上下文 · 钩子 · 子智能体 · 编排 · 技能 · MCP · 流式 · Plan" /></a>
 
-**中文** · [English](en/README.md)
+**中文**
 
 [![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-9C4630)](LICENSE)
 [![Book CI](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml/badge.svg)](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml)
@@ -42,7 +42,7 @@
 
 同仓新增开源终端 agent 教程分册《Omp 从入门到精通：原理与实战》（非官方）。书稿在 [omp/](omp/README.md)；产物前缀 `yuyu-omp-*`。写作钉 **omp/18.15.0**，本机核对见 [omp/VERIFY.md](omp/VERIFY.md)（含 18.16.0）。
 
-两条命令各编各的书，不再是「尚未接入」：`make book` / `make book-pdf` 仍只构建御舆（双语），`make book-omp` / `make book-omp-pdf` 构建 omp 中文版（后者多出 A4 PDF），等价命令是 `python scripts/bookctl.py build --product omp --lang zh [--pdf]`。两边产物同名不同前缀，都落在 `yuyu-book/dist/`，编一本不会盖掉另一本。站点上御舆在根目录，Omp 在 `/omp/yuyu-omp-zh.html`；它由 Pages 的独立 job 构建，失败只让门户那张卡不带链接，不挡御舆部署。构建口径与本机实测的体积/页数见 [omp/BUILD.md](omp/BUILD.md)，双产品的机制与边界见 [STRUCTURE.md](STRUCTURE.md) 的 §3.6。
+两条命令各编各的书，不再是「尚未接入」：`make book` / `make book-pdf` 仍只构建御舆，`make book-omp` / `make book-omp-pdf` 构建 omp 中文版（后者多出 A4 PDF），等价命令是 `python scripts/bookctl.py build --product omp --lang zh [--pdf]`。两边产物同名不同前缀，都落在 `yuyu-book/dist/`，编一本不会盖掉另一本。站点上御舆在根目录，Omp 在 `/omp/yuyu-omp-zh.html`；它由 Pages 的独立 job 构建，失败只让门户那张卡不带链接，不挡御舆部署。构建口径与本机实测的体积/页数见 [omp/BUILD.md](omp/BUILD.md)，双产品的机制与边界见 [STRUCTURE.md](STRUCTURE.md) 的 §3.6。
 
 `make check` / `make check-full`（即 `bookctl check --fast` / `--full`）负责御舆装配、共享测试与全仓内容检查。Omp 的结构和交付门禁由 `omp/overhaul/audit_structure.py --check`、`audit_delivery.py` 单独检查；内容 CI 还会装配 Omp 中文源稿，Book CI 的独立 `omp` job 则构建中文 HTML/PDF。Windows 本地可运行 `powershell -File omp/overhaul/ci-local.ps1`，同时验证御舆中文 HTML 与 Omp 中文 HTML/PDF。
 
@@ -61,7 +61,7 @@ make book-pi-epub   # 再加 EPUB
 插件章节已扩写，新增 pi-purge 完整案例。本机 2026-11-09 实测：HTML 1.4 MB；PDF 174 页 / 41 书签 / 9.33 MB（18 个索引页脚）；EPUB 1.31 MB（EPUBCheck 0 错误）。
 构建口径与本地证据见 [pi/BUILD-PLAN.md](pi/BUILD-PLAN.md) 与 [pi/VERIFY.md](pi/VERIFY.md)。
 
-概念可以互查，实现与钉版不能混用：御舆侧入口见 [docs/COMPARE-OMP.md](docs/COMPARE-OMP.md)，Omp 侧入口见 [omp/COMPARE-YUYU.md](omp/COMPARE-YUYU.md)，逐词共享表见 [docs/yuyu-overhaul/SHARED-TERMS.md](docs/yuyu-overhaul/SHARED-TERMS.md)。Omp 英文版目前只有 [预留说明](en/omp/README.md)，尚未开启构建。
+概念可以互查，实现与钉版不能混用：御舆侧入口见 [docs/COMPARE-OMP.md](docs/COMPARE-OMP.md)，Omp 侧入口见 [omp/COMPARE-YUYU.md](omp/COMPARE-YUYU.md)，逐词共享表见 [docs/yuyu-overhaul/SHARED-TERMS.md](docs/yuyu-overhaul/SHARED-TERMS.md)。Omp 分册为中文单行本。
 
 插画策略：Mermaid 架构图 + 手绘概念图双轨。与御舆概念可对照，实现与钉版勿混用。
 
@@ -142,16 +142,15 @@ Claude Code 为 Anthropic 产品，本书是独立的技术分析作品，并非
 
 ## 离线整书
 
-`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（中文版 6.4 MB / 英文版 6.5 MB）与 A4 排版的 PDF（中文版 543 页 / 34.8 MB，英文版 583 页 / 23.9 MB），中英各一份，产物在 `yuyu-book/dist/`。PDF 页数与体积随构建机的中文字体变化；上述数字来自 CI 的 Noto CJK 排版，不代替 Windows 本机实测。构建日志会报告每份 PDF 的实际页数与体积。
+`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（6.4 MB）与 A4 排版的 PDF（543 页 / 34.8 MB），产物在 `yuyu-book/dist/`。PDF 页数与体积随构建机的中文字体变化；上述数字来自 CI 的 Noto CJK 排版，不代替 Windows 本机实测。构建日志会报告每份 PDF 的实际页数与体积。
 
-HTML 体积与 PDF 页数以[最近一次 Full 构建](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml)为准。本轮加笔三幅章内墨线图后，中文 HTML 舍入为 6.4 MB，中英 PDF 排到 543、583 页。已发布的 `v0.3.6` 标签与资产保持不变。
+HTML 体积与 PDF 页数以[最近一次 Full 构建](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml)为准。本轮加笔三幅章内墨线图后，中文 HTML 舍入为 6.4 MB，PDF 排到 543 页。已发布的 `v0.3.6` 标签与资产保持不变。
 
-| 文件 | 语言 |
-|------|------|
-| `yuyu-agent-harness-zh.html` / `.pdf` | 中文 |
-| `yuyu-agent-harness-en.html` / `.pdf` | English |
+| 文件 |
+|------|
+| `yuyu-agent-harness-zh.html` / `.pdf` |
 
-整书包含封面、版本与许可页、修订史、阅读路线、带页码的目录和**全书线路图**。线路图在目录后独占一页：前言是路头的辐轮，十五章沿四段蛇形道路排站，附录走虚线岔线。每章的「本章问题 / 读完交付 / 本章边界」罗盘与来源锚点，帮助读者先判断这一章能解决什么。每版 160 张（中英合计 320）Mermaid 图与 20 张解释性手绘组成 180 张编号图版，全部随书内联。书中另有代码块语言角标、脚注、来源与许可页、主题索引；中文版索引在 A–Z 后另列中文词条。
+整书包含封面、版本与许可页、修订史、阅读路线、带页码的目录和**全书线路图**。线路图在目录后独占一页：前言是路头的辐轮，十五章沿四段蛇形道路排站，附录走虚线岔线。每章的「本章问题 / 读完交付 / 本章边界」罗盘与来源锚点，帮助读者先判断这一章能解决什么。每版 160 张 Mermaid 图与 20 张解释性手绘组成 180 张编号图版，全部随书内联。书中另有代码块语言角标、脚注、来源与许可页、主题索引；索引在 A–Z 后另列中文词条。
 
 插图采用混合格式：章徽、驿卒与解释图保留自绘动画 SVG，第一、二篇题刻使用生成后审阅的透明墨版 PNG；封面与其余篇题仍是 SVG。章眉手绘走线按单元 id 生成，章末车辙与分部道路呼应阅读路线。宽屏（≥1360px）提供常驻侧栏目录。全部图像随离线文件打包，深色屏幕反色不影响纸面的黑墨。
 
@@ -161,7 +160,7 @@ PDF 另有侧边书签、页脚页码、奇偶页眉，以及带目标页码的�
 
 每章末的驿卒用一行按语回看这一段路，20 行内容存在 `yuyu-book/notes.json`，书末按阅读顺序收齐并链回原章。按语受术语锁约束：必须含有本章正文真正使用的注册词形；中文不超过 36 字，英文不超过 130 字符且不夹汉字。它不是另一份正文。
 
-全书另有 48 份手写线描图——扉页一幅四马古车、20 枚章徽配在章名右侧、4 幅题刻，另有 1 位驿卒与 22 幅解释图，SVG 源稿完整保留。解释图分别承担关系或状态的读图任务，例如暂停与取消的差别、权限门、记忆漏斗、Fork 四格、状态表盘、消息桥与并发闸。除已采用墨版的两幅篇题外，这些图继续使用 `currentColor` SVG，保留暗色、减动效与打印下的同一含义。通俗层可用 `--no-plain` 整块关闭。
+全书另有 56 份手写线描图——扉页一幅四马古车、20 枚章徽配在章名右侧、4 幅题刻，另有 1 位驿卒与 30 幅解释图，SVG 源稿完整保留。解释图分别承担关系或状态的读图任务，例如暂停与取消的差别、权限门、记忆漏斗、Fork 四格、状态表盘、消息桥与并发闸。除已采用墨版的两幅篇题外，这些图继续使用 `currentColor` SVG，保留暗色、减动效与打印下的同一含义。通俗层可用 `--no-plain` 整块关闭。
 
 ```bash
 npm ci                                              # 图版渲染需要 Mermaid 11.17.2
@@ -186,7 +185,7 @@ PDF 与图版渲染需要一个本机 Chromium 或 Edge（自动探测 `msedge`/
 python scripts/bookctl.py release --version 0.3.7 --out-dir ../book-release --epub
 ```
 
-目录里有中英双语 HTML/PDF、Omp 中文 HTML/PDF，以及 Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程与 Vibe Coding 八册各自的 HTML/PDF，可选 EPUB；`site.zip` 只镜像线上两册（御舆 + Omp），另附 15 章视频清单、`release-notes.json` 与 `release-notes.md`（后者是 `gh release` 的正文）、`SHA256SUMS` 以及记录命令、提交、浏览器/字体与产物哈希的 `build-report.json` / `artifact-manifest.json`。任一步失败都不会留下半成品发布目录。
+目录里有中文 HTML/PDF、Omp 中文 HTML/PDF，以及 Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程与 Vibe Coding 八册各自的 HTML/PDF，可选 EPUB；`site.zip` 只镜像线上两册（御舆 + Omp），另附 15 章视频清单、`release-notes.json` 与 `release-notes.md`（后者是 `gh release` 的正文）、`SHA256SUMS` 以及记录命令、提交、浏览器/字体与产物哈希的 `build-report.json` / `artifact-manifest.json`。任一步失败都不会留下半成品发布目录。
 
 **状态（2026-11-16）：** `v0.3.7` 已由 `release.yml` 在标签推送运行（[run 43834162260](https://github.com/zhuguang-ZFG/claude-code-book/actions/runs/43834162260)）装配并发布到 [GitHub Release](https://github.com/zhuguang-ZFG/claude-code-book/releases/tag/v0.3.7)：十册各自的 HTML/PDF/EPUB、合订本三件套、八册的 `manifest` / `sources`、`site.zip`、视频清单、`SHA256SUMS` 与两份构建报告共 **60 个资产**；`sha256sum --check SHA256SUMS` 在装配目录里通过后才发布。上一版 `v0.3.6`（run 42423483244）只含三册，其标签与资产保持不变。改造边界与证据见 [架构决策记录](docs/architecture-decisions.md)、[P3 结构对照](docs/migrations/legacy-v2-structure.md)、[产品页视觉审计](docs/migrations/product-visual-audit.md) 与 [发布迁移说明](docs/migrations/release-migration.md)。
 

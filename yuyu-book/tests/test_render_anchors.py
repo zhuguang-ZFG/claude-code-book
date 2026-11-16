@@ -35,12 +35,13 @@ class IdsAndSlugs(unittest.TestCase):
         self.assertEqual(render.book_slug("!!!"), "section")
 
     def test_heading_ids_are_slugified_consistently_for_both_languages(self):
+        # The en edition is gone; keep the slug invariant for every shipped
+        # zh heading instead of comparing the two language corpora.
         for unit_def, kind, _part in unit_stream(load_configs()[0]):
-            for lang in ("zh", "en"):
-                u = load_unit(unit_def, kind, lang, REPO_ROOT)
-                for rx in re.finditer(r"^###\s+(.+)$", u.md, re.M):
-                    slug = render.book_slug(rx.group(1))
-                    self.assertRegex(slug, r"^[a-z0-9\w\u4e00-\u9fff-]+$")
+            u = load_unit(unit_def, kind, "zh", REPO_ROOT)
+            for rx in re.finditer(r"^###\s+(.+)$", u.md, re.M):
+                slug = render.book_slug(rx.group(1))
+                self.assertRegex(slug, r"^[a-z0-9\w\u4e00-\u9fff-]+$")
 
 
 class StrayAnglesAndQuotes(unittest.TestCase):

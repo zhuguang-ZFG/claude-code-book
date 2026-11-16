@@ -17,14 +17,14 @@ import build_beginner_reader as reader  # noqa: E402
 # per language: (file, how the count is quoted in og:description, station label)
 EDITIONS = {
     "zh": ("docs/beginner-reader.html", r"的 (\d+) 站看图入门", r"第 (\d+) / (\d+) 站"),
-    "en": ("docs/beginner-reader.en.html", r"in (\d+) stations", r"Station (\d+) / (\d+)"),
 }
 
 
 class StationCounts(unittest.TestCase):
-    def test_both_editions_walk_the_same_number_of_stations(self):
-        self.assertEqual(reader.LANGS["zh"]["total"], reader.LANGS["en"]["total"],
-                         "the two readers are the same walk; one edition grew a station")
+    def test_the_reader_is_a_single_chinese_walk(self):
+        self.assertEqual(sorted(reader.LANGS), ["zh"],
+                         "the English edition was removed; a second language "
+                         "here would rebuild it")
 
     def test_the_count_is_derived_from_the_station_lists(self):
         for lang, t in reader.LANGS.items():
@@ -67,13 +67,12 @@ class StationFurniture(unittest.TestCase):
         self.assertEqual(reader.PLATES, len(list(reader.ART.glob("*.svg"))))
 
     def test_the_shipped_pages_all_quote_that_plate_count(self):
-        """The gallery, the portal and both readers advertise the same drawing
+        """The gallery, the portal and the reader advertise the same drawing
         shelf; a page that still says the old number is a page nobody re-ran."""
         quoted = {
             "docs/illustration-gallery.html": f"{reader.PLATES} 幅手绘插图",
             "docs/portal.html": f"{reader.PLATES} 幅手绘插图",
             "docs/beginner-reader.html": f"{reader.PLATES} 幅手绘插图",
-            "docs/beginner-reader.en.html": f"{reader.PLATES} hand-inked figures",
         }
         for path, text in quoted.items():
             page = (ROOT / path).read_text(encoding="utf-8")
@@ -155,21 +154,13 @@ class StationNavigation(unittest.TestCase):
             self.assertNotIn('createElement("p")', page, path)
             self.assertIn('class="st-navrow"', page, path)
 
-    def test_both_editions_style_the_nav_rows_and_progress_bar(self):
-        # the English sheet once shipped the markup without these rules: the
-        # counter collided with the link and the link fell back to UA blue.
+    def test_the_reader_styles_the_nav_rows_and_progress_bar(self):
         for lang, (path, _og, _label) in EDITIONS.items():
             page = (ROOT / path).read_text(encoding="utf-8")
             self.assertIn(".st-navrow{display:flex;justify-content:space-between",
                           page, path)
             self.assertIn(".prog{position:fixed;top:0;left:0;height:3px",
                           page, path)
-
-    def test_the_english_resume_banner_speaks_english(self):
-        page = (ROOT / EDITIONS["en"][0]).read_text(encoding="utf-8")
-        banner = page[page.index('class="resume"'):]
-        banner = banner[:banner.index("</div>")]
-        self.assertNotRegex(banner, r"[\u4e00-\u9fff]")
 
 
 if __name__ == "__main__":

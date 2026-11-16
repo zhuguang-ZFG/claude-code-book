@@ -112,7 +112,7 @@ graph TD
 
 1. **内置智能体**（built-in）：优先级最低，作为默认选项
 2. **插件智能体**（plugin）：可以覆盖内置智能体
-3. **用户设置**（userSettings） -> **项目设置**（projectSettings） -> **Flag 设置**（flagSettings） -> **策略设置**（policySettings）：优先级依次升高
+3. **用户设置**（userSettings）、**项目设置**（projectSettings）、**Flag 设置**（flagSettings）、**策略设置**（policySettings）：优先级依次升高
 
 策略级别的自定义智能体因此能覆盖同名的内置智能体。
 
@@ -157,7 +157,7 @@ Explore Agent 是一个高速只读搜索智能体。它的定义中声明了严
 
 **第二，omitClaudeMd 优化。** Explore 是只读搜索智能体，不需要 commit/PR/lint 规则。CLAUDE.md 通常包含项目的编码规范、commit 消息格式、PR 模板等内容，这些对于一个只做搜索的智能体完全无用。省略 CLAUDE.md 不仅减少了 token 消耗，更重要的是减少了系统提示的噪声，让模型更聚焦于搜索任务本身。这一优化据估计每周可节省 5-15 Gtoken。
 
-> **最佳实践：怎么把 Explore Agent 用好**
+> **怎么把 Explore Agent 用好**
 >
 > Explore Agent 最适合以下场景：
 > - **代码考古**：快速定位某个 bug 的根因，追踪调用链路
@@ -191,7 +191,7 @@ General Purpose Agent 是最灵活的智能体，拥有全部工具权限（使�
 
 General Purpose Agent 的设计哲学是"默认信任，边界后移"。它一上来不限定这个子智能体能用哪些工具，而是依赖全局安全层（权限系统、工具过滤函数）来确保安全。省掉白名单换来的是灵活：同一份定义能配不同任务，工具集在运行时才拼起来，不必为每种任务写一份允许清单。
 
-> **反模式警告：不要用 General Purpose Agent 做只读任务**
+> **不要用 General Purpose Agent 做只读任务**
 >
 > 虽然 General Purpose Agent 技术上可以执行只读搜索，但这会带来不必要的成本和安全风险。只读任务应该使用 Explore Agent：它的 haiku 模型更便宜、省略 CLAUDE.md 节省 token、工具限制消除了意外修改的风险。这是一个典型的**最小权限原则**的应用。
 
@@ -660,7 +660,7 @@ stateDiagram-v2
 - 将结果格式化为任务通知传递给调用者
 - 如果是后台智能体，将通知排队等待主智能体下一轮处理
 
-> **最佳实践：合理设置 maxTurns**
+> **合理设置 maxTurns**
 >
 > maxTurns 控制子智能体的最大执行轮次。设置过低会让任务还没完成就中断；设置过高可能浪费 token 在无效的循环中。推荐的经验值：
 > - 只读搜索任务：10-15 轮

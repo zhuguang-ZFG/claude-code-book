@@ -145,10 +145,7 @@ class StarHistoryTests(unittest.TestCase):
         self.assertIn("scripts/star_history.py update", workflow)
 
     def test_readmes_use_local_svgs(self):
-        cases = {
-            "README.md": "docs/images/",
-            "en/README.md": "../docs/images/",
-        }
+        cases = {"README.md": "docs/images/"}
         for name, prefix in cases.items():
             text = (ROOT / name).read_text(encoding="utf-8")
             self.assertIn(f"{prefix}star-history-light.svg", text)

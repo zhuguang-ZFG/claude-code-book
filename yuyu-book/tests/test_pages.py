@@ -292,10 +292,13 @@ class Compass(Config):
             self.assertIn(f'href="#source-{sid}"', html)
 
     def test_english_compass_uses_english_copy(self):
+        # With the en mirror gone the surviving contract is that a compass
+        # prints its own unit's copy and never borrows another unit's.
         guide = self.manifest["guides"]["ch01"]
-        html = pages.compass(self.units["ch01"], guide, self.sources, "en")
-        self.assertIn(guide["question"]["en"], html)
-        self.assertNotIn(guide["question"]["zh"], html)
+        other = self.manifest["guides"]["ch07"]
+        html = pages.compass(self.units["ch01"], guide, self.sources, "zh")
+        self.assertIn(guide["question"]["zh"], html)
+        self.assertNotIn(other["question"]["zh"], html)
 
     def test_chips_point_at_real_registry_entries(self):
         registry = pages.source_registry(self.sources, "zh")
@@ -358,10 +361,9 @@ class Contents(Config):
 
     def test_appendix_gutter_labels_are_letters_in_both_languages(self):
         for apx in self.manifest["appendices"]:
-            for lang in ("zh", "en"):
-                u = load_unit(apx, "appendix", lang, REPO_ROOT)
-                self.assertEqual(u.no_plain, apx["id"][-1].upper(),
-                                 f"{apx['id']} {lang}: {u.no_plain}")
+            u = load_unit(apx, "appendix", "zh", REPO_ROOT)
+            self.assertEqual(u.no_plain, apx["id"][-1].upper(),
+                             f"{apx['id']}: {u.no_plain}")
 
     def test_chapter_gutter_labels_are_zero_padded_numbers(self):
         for part in self.manifest["parts"]:
@@ -391,20 +393,22 @@ class BackMatter(Config):
         self.assertIn("b70dc411", html)
 
     def test_the_english_registry_holds_no_untranslated_annotation(self):
-        """A row falls back to the Chinese field when its mirror is missing, so
-        this is where a half-translated registry would surface: an English reader
-        gets the date, the licence and the usage note in English or not at all."""
-        en = pages.source_registry(self.sources, "en")
-        leaks = sorted(set(re.findall(r"[一-鿿]", en)))
-        self.assertEqual(leaks, [], f"English registry prints {leaks}")
-        guide = self.manifest["guides"]["ch01"]
-        chips = pages.compass(self.units["ch01"], guide, self.sources, "en")
-        self.assertNotIn("：", chips, "English compass wears a full-width colon")
-        self.assertEqual(re.findall(r"[一-鿿]", chips), [],
-                         "English compass carries Chinese source text")
+        """A row falls back to the base field when its mirror is missing. With
+        the en edition gone the surviving invariant is within zh: every row
+        still prints its own usage note, and every chip carries a real title."""
         zh = pages.source_registry(self.sources, "zh")
         self.assertTrue(re.search(r"[一-鿿]", zh),
                         "the Chinese registry lost its own text")
+        scopes = re.findall(r'<div class="reg-scope">(.*?)</div>', zh, re.S)
+        self.assertEqual(len(scopes), len(self.sources))
+        self.assertEqual([s for s in scopes if s.strip()], scopes,
+                         "a registry row lost its usage note")
+        guide = self.manifest["guides"]["ch01"]
+        chips = pages.compass(self.units["ch01"], guide, self.sources, "zh")
+        titles = re.findall(r'class="source-chip"[^>]*>(.*?)</a>', chips)
+        self.assertEqual(len(titles), len(guide["sources"]))
+        self.assertEqual([t for t in titles if t.strip()], titles,
+                         "a source chip lost its title")
 
     def test_subject_index_links_only_to_units_that_exist(self):
         entries = registry.load("subject-index.json")
@@ -492,18 +496,19 @@ class BackMatter(Config):
         from yuyu_book import app as build
         from html import unescape
         entries = registry.load("subject-index.json")
-        for lang in ("zh", "en"):
-            printed = [e for e in entries if e[lang]["refs"]]
-            html = pages.subject_index_page(entries, lang)
-            rendered = [unescape(t).replace("_<wbr>", "_") for t in
-                        re.findall(r'<span class="idx-term">(.*?)</span>', html, re.S)]
-            outline = [(1, d["id"], d["id"])
-                       for d, _k, _p in unit_stream(self.manifest)]
-            rows = build.pdf_meta(self.manifest, outline, [], lang,
-                                  entries).index_rows
-            self.assertEqual([r.term for r in rows], rendered, lang)
-            self.assertEqual([r.anchor for r in rows],
-                             [e[lang]["refs"][0]["anchor"] for e in printed], lang)
+        # The print hand-off is zh-only now; keep both ordering contracts.
+        lang = "zh"
+        printed = [e for e in entries if e[lang]["refs"]]
+        html = pages.subject_index_page(entries, lang)
+        rendered = [unescape(t).replace("_<wbr>", "_") for t in
+                    re.findall(r'<span class="idx-term">(.*?)</span>', html, re.S)]
+        outline = [(1, d["id"], d["id"])
+                   for d, _k, _p in unit_stream(self.manifest)]
+        rows = build.pdf_meta(self.manifest, outline, [], lang,
+                              entries).index_rows
+        self.assertEqual([r.term for r in rows], rendered, lang)
+        self.assertEqual([r.anchor for r in rows],
+                         [e[lang]["refs"][0]["anchor"] for e in printed], lang)
 
     def test_folios_land_in_the_slot_of_their_own_row(self):
         """A row's slot is keyed by the anchor it links to, so `SessionStart`
@@ -578,9 +583,17 @@ class Principles(Config):
                         "the picture must follow the reason, not lead it")
 
     def test_the_english_page_leaks_no_chinese(self):
-        html = pages.principles_page(self._groups("en"), "en")
-        self.assertEqual(sorted(set(re.findall(r"[一-鿿]", html))), [],
-                         "the English principles page printed Chinese text")
+        from html import unescape
+        # The en page is gone; the mirror-leak check becomes a within-zh one:
+        # every printed reason must be the term's own Chinese copy, with no
+        # empty slot or English fallback from the hover-card data.
+        groups = self._groups()
+        html = pages.principles_page(groups, "zh")
+        printed = re.findall(r'<span class="pr-why"><i class="pr-t">为什么</i>'
+                             r'(.*?)</span>', html, re.S)
+        expected = [unescape(t["why"]) for g in groups for t in g["terms"]]
+        self.assertGreater(len(printed), 0)
+        self.assertEqual(printed, expected)
 
     def test_a_reason_pointer_outside_the_book_is_a_build_failure(self):
         glosses = {"ag": {"term": {"zh": "异步生成器", "en": "async generator"},

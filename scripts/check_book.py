@@ -22,7 +22,7 @@ SKIP_ROOTS = {'video'}
 # are the worst wall each edition actually measures today, so the check goes
 # red the moment a wall grows or a new one opens up. The fix is a plate; a
 # raised ceiling needs a reason in the commit message.
-WALL_CEILING = {'zh': 2885, 'en': 8049}
+WALL_CEILING = {'zh': 2885}
 WALL_REPORT = 3
 WALL_PROSE = re.compile(r'[一-鿿A-Za-z0-9]')
 WALL_MARKUP = re.compile(r'[#*`>|\[\]()!:\s]')
@@ -32,14 +32,14 @@ def book_units(root):
     """Every assembled unit path, per language, straight from the manifest."""
     manifest = json.loads(
         (root / 'yuyu-book' / 'manifest.json').read_text(encoding='utf-8'))
-    out = {'zh': [], 'en': []}
+    out = {'zh': []}
     front = manifest.get('front')
     groups = [*manifest['parts'],
               {'units': [front] if isinstance(front, dict) else front or []},
               {'units': manifest.get('appendices', [])}]
     for group in groups:
         for unit in group.get('units', []):
-            for lang in ('zh', 'en'):
+            for lang in ('zh',):
                 if unit.get(lang):
                     out[lang].append(unit[lang])
     return out

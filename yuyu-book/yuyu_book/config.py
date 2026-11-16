@@ -39,7 +39,7 @@ def validate_configs(manifest: dict, sources: dict) -> None:
     if len(ids) != len(set(ids)):
         errors.append("duplicate unit ids in manifest")
 
-    langs = list(manifest.get("langs") or ("zh", "en"))
+    langs = list(manifest.get("langs") or ("zh",))
     for unit_def, kind, _part in unit_stream(manifest):
         for lang in langs:
             if lang not in unit_def:
@@ -94,18 +94,8 @@ def validate_configs(manifest: dict, sources: dict) -> None:
         if kind == "community" and pinned.get("commit"):
             if len(pinned["commit"]) < 40:
                 errors.append(f"source {sid}: commit must be full sha")
-        # Everything below is text *we* wrote about a source, not text from it,
-        # so the English edition owns an English copy of it: a forum thread's
-        # Chinese title is searchable by URL and post id, and an English reader
-        # deserves to know what it says.
-        for field in MIRRORED_FIELDS:
-            value = str(src.get(field, ""))
-            mirror = str(src.get(f"{field}_en", ""))
-            if HAN_RE.search(value) and not mirror.strip():
-                errors.append(f"source {sid}: {field} carries Chinese, so it "
-                              f"needs {field}_en for the English edition")
-            if mirror and HAN_RE.search(mirror):
-                errors.append(f"source {sid}: {field}_en still carries Chinese")
+        # Source descriptions are Chinese-only now that the English edition is
+        # gone: a forum thread's Chinese title is what the source is called.
 
     if errors:
         raise BuildError("config invalid:\n  " + "\n  ".join(errors))

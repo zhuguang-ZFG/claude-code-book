@@ -186,11 +186,10 @@ class ShippedPlates(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest, _sources = load_configs()
         cls.slots = {}
-        for lang in ("zh", "en"):
-            for unit_def, kind, _part in unit_stream(cls.manifest):
-                u = load_unit(unit_def, kind, lang, REPO_ROOT)
-                if u.ills:
-                    cls.slots[(lang, u.id)] = u
+        for unit_def, kind, _part in unit_stream(cls.manifest):
+            u = load_unit(unit_def, kind, "zh", REPO_ROOT)
+            if u.ills:
+                cls.slots[("zh", u.id)] = u
 
     def test_every_slot_hangs_a_drawing_that_passes_the_loader(self):
         self.assertTrue(self.slots, "no chapter asks for a drawing")
@@ -198,11 +197,6 @@ class ShippedPlates(unittest.TestCase):
             for block in unit.ills:
                 with self.subTest(lang=lang, unit=uid, drawing=block.name):
                     self.assertTrue(art._read(block.name, art.PLATE_BYTES))
-
-    def test_the_two_languages_ask_for_the_same_drawings_in_order(self):
-        for uid in {u for _l, u in self.slots}:
-            self.assertEqual([b.name for b in self.slots[("zh", uid)].ills],
-                             [b.name for b in self.slots[("en", uid)].ills], uid)
 
     def test_the_tool_chapter_hangs_a_bench_and_a_filmstrip(self):
         names = [b.name for b in self.slots[("zh", "ch03")].ills]

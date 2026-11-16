@@ -31,8 +31,6 @@ class PortalReducedMotion(unittest.TestCase):
         self.assertNotIn("@@", build_site_portal.PAGE, "unfilled token in the portal")
         self.assertIn(f"{reader.LANGS['zh']['total']} 站看图入门",
                       build_site_portal.PAGE)
-        self.assertIn(f"{reader.LANGS['en']['total']}-station picture walk",
-                      build_site_portal.PAGE)
         self.assertIn(f"{reader.PLATES} 幅手绘插图", build_site_portal.PAGE)
 
     def test_the_deployed_variant_links_the_omp_volume(self):

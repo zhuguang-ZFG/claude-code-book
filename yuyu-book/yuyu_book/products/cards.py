@@ -16,7 +16,7 @@ from . import tokens
 from .chapter_copy import content_plate, hook, recap
 from .loader import load_repo_model
 
-OUT = {"zh": "knowledge-cards.html", "en": "knowledge-cards.en.html"}
+OUT = {"zh": "knowledge-cards.html"}
 
 LABELS = {
     "zh": {
@@ -32,22 +32,6 @@ LABELS = {
                    "<a href=\"beginner-reader.html\">入门分册</a> · "
                    "<a href=\"illustration-gallery.html\">插画画廊</a> · "
                    "对应大书 v@@BASELINE@@"),
-    },
-    "en": {
-        "title": "Yù Yú · Knowledge Cards",
-        "sub": ("Fifteen chapters, three 3:4 cards each: the one-line hook, "
-                "the core mechanism, the three sentences to keep."),
-        "hint": ("Every card is drawn from the book's own plates; readable on "
-                 "a phone, and each card keeps to its own page in print. No "
-                 "scripts, so it looks the same offline."),
-        "kicker_hook": "The hook",
-        "kicker_core": "Core mechanism",
-        "kicker_recap": "Three to keep",
-        "deck": "cards",
-        "footer": ("Back to the <a href=\"portal.html\">site index</a> · "
-                   "<a href=\"beginner-reader.en.html\">beginner reader</a> · "
-                   "<a href=\"illustration-gallery.html\">illustration gallery</a> · "
-                   "baseline v@@BASELINE@@"),
     },
 }
 
@@ -222,6 +206,6 @@ def build(lang: str) -> tuple[Path, int]:
 
 
 def main() -> None:
-    for lang in ("zh", "en"):
+    for lang in ("zh",):
         out, count = build(lang)
         print(f"{out} ({count} decks)")

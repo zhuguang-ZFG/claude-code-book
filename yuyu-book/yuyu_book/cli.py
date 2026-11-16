@@ -23,7 +23,7 @@ from .core import (BOOK_DIR, REPO_ROOT, BuildError, dump_json, load_configs,
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--lang", default="both", choices=["zh", "en", "both"])
+    ap.add_argument("--lang", default="zh", choices=["zh"])
     ap.add_argument("--pdf", action="store_true")
     ap.add_argument("--check", action="store_true",
                     help="build into a temp dir and only validate")
@@ -50,7 +50,7 @@ def main(argv=None):
             from .collected import load_collection
             spec = registry.load(args.manifest)
             volumes = load_collection(spec)
-            langs = ["zh"] if args.lang == "both" else [args.lang]
+            langs = [args.lang]
             out_dir = Path(args.out_dir)
             if args.check:
                 out_dir = Path(tempfile.mkdtemp(prefix="yuyu-check-"))
@@ -89,12 +89,10 @@ def main(argv=None):
                 dump_json(BOOK_DIR / index_name,
                           registry.wrap(index_name, entries))
                 zh_n = sum(1 for e in entries if e["zh"]["refs"])
-                en_n = sum(1 for e in entries if e["en"]["refs"])
-                print(f"subject index: {len(entries)} terms ({zh_n} zh refs, "
-                      f"{en_n} en refs)")
+                print(f"subject index: {len(entries)} terms ({zh_n} zh refs)")
             else:
                 print("subject index: disabled for this product")
-        langs = ["zh", "en"] if args.lang == "both" else [args.lang]
+        langs = [args.lang]
         out_dir = Path(args.out_dir)
         if args.check:
             out_dir = Path(tempfile.mkdtemp(prefix="yuyu-check-"))

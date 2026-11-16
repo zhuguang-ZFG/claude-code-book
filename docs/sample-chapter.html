@@ -1671,9 +1671,7 @@ body.sample{--measure:44rem}
 <p><strong>Token 阻断检查</strong>：如果 token 数超过硬性限制，直接返回错误消息，不再发起 API 调用。这是一个“快速失败”机制：与其发送一个注定会失败的 API 请求，不如在本地就阻止它。</p>
 </li>
 </ol>
-<blockquote>
-<p><strong>最佳实践提示：</strong> 这七步管线的设计遵循了一个重要原则：<strong>压缩手段从轻量到重量排列，每一步都先尝试最小代价的方案。</strong> 这个原则在你自己构建 Agent 系统时也值得遵循：先用 Snip 裁剪历史消息序列，再用 Microcompact 减少缓存浪费，再用 Context Collapse 折叠冗余信息，最后才用 Autocompact 做全量摘要。因为每一步都会丢失一些信息，应该尽量延迟最“激进”的压缩手段的使用。</p>
-</blockquote>
+<p>七步管线按代价从轻到重排：先用 Snip 裁剪历史消息序列，再用 Microcompact 减少缓存浪费，再用 Context Collapse 折叠冗余信息，最后才用 Autocompact 做全量摘要。每一步都会丢信息，最“激进”的那一步所以放在最后。</p>
 <h3 id="ch02-阶段三api-调用">阶段三：API 调用</h3>
 <p>所有预处理完成后，进入核心的 API 调用阶段。这里使用注入的模型调用依赖发起流式请求，将组装好的消息列表、系统提示和工具定义传递给模型 API。模型调用函数返回一个异步生成器，逐个产出流式事件。每次收到事件，循环执行以下逻辑：</p>
 <ul>
@@ -1790,7 +1788,7 @@ body.sample{--measure:44rem}
 <div class="hr-rule" aria-hidden="true"><svg class="hr-knot" viewBox="0 0 56 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M2.4 7.2c3.6-.3 7.6-.3 11.6-.1"/><circle cx="17.2" cy="7" r="2.7"/><path d="M19.9 7c2.8-3.4 5.3-3.4 8.1 0s5.3 3.4 8.1 0"/><circle cx="38.8" cy="7" r="2.7"/><path d="M41.5 6.9c4-.2 8-.2 12.1.1"/></svg></div>
 <h2 id="ch02-23-依赖注入与可测试性">2.3 依赖注入与可测试性<span class="sec-tier t-deep">进阶</span></h2>
 <h3 id="ch02-querydeps-接口">QueryDeps 接口</h3>
-<p>对话主循环的设计中最值得注意的工程决策之一是依赖注入模式。系统定义了一个精简的依赖接口，包含四个核心依赖：模型调用函数、轻量压缩函数、自动压缩函数和 UUID 生成器。</p>
+<p>对话主循环最关键的工程决策是依赖注入模式。系统定义了一个精简的依赖接口，包含四个核心依赖：模型调用函数、轻量压缩函数、自动压缩函数和 UUID 生成器。</p>
 <p>生产环境的依赖实现返回真实的 API 调用、压缩逻辑和随机 UUID 生成器。</p>
 <p>在主循环中，通过参数获取依赖，如果未提供则使用生产环境默认值。测试时，调用方可以传入自定义的依赖对象，替换掉真实的 API 调用、压缩逻辑和 UUID 生成器。正如设计注释所说：</p>
 <blockquote>
@@ -1814,8 +1812,7 @@ body.sample{--measure:44rem}
 <p><strong>可组合性</strong>：<code>yield*</code> 委托语法允许将子生成器的输出直接转发。主循环的结果经委托语法传到外层生成器，工具执行也串在同一条链上。生成器链把不同层次的代码无缝拼在一起：对话循环产出事件，工具执行也产出事件，上层 UI 只需要一个统一的 <code>for await...of</code> 循环就能消费所有层次的事件。</p>
 </li>
 </ol>
-<blockquote class="callout callout-warning"><p class="callout-tag"><span class="callout-icon" aria-hidden="true"><svg class="ink-mark" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7.3 2.5 13.7 12.8c.3.6-.1 1.2-.7 1.2H3.1c-.7 0-1.1-.6-.8-1.2L6.6 2.5c.2-.5.5-.5.7 0z"/><path d="M8 6.3v3.2"/><circle cx="8" cy="11.5" r=".8" fill="currentColor" stroke="none"/></svg></span><strong>反模式警告：</strong></p><p class="callout-body"> 如果你正在构建自己的 Agent 循环，避免将对话状态存储在全局变量或 class 的实例属性中。全局状态让并发测试无从下手，class 实例状态则会让多个对话实例互相干扰。函数闭包是最安全的状态容器：它天然隔离、天然不可共享。</p>
-</blockquote>
+<p>对话状态别放进全局变量，也别挂成 class 的实例属性。全局状态让并发测试无从下手，实例状态会让多个对话互相干扰。函数闭包是最安全的状态容器：天然隔离，天然不可共享。</p>
 <div class="hr-rule" aria-hidden="true"><svg class="hr-knot" viewBox="0 0 56 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M2.4 7.2c3.6-.3 7.6-.3 11.6-.1"/><circle cx="17.2" cy="7" r="2.7"/><path d="M19.9 7c2.8-3.4 5.3-3.4 8.1 0s5.3 3.4 8.1 0"/><circle cx="38.8" cy="7" r="2.7"/><path d="M41.5 6.9c4-.2 8-.2 12.1.1"/></svg></div>
 <h2 id="ch02-24-状态转换模型">2.4 状态转换模型<span class="sec-tier t-core">主干</span></h2>
 <h3 id="ch02-state-类型与-continueterminal">State 类型与 Continue/Terminal</h3>
@@ -1856,8 +1853,7 @@ body.sample{--measure:44rem}
 </li>
 </ol>
 <p>每条 continue 路径都精心构造了新的状态对象，确保不同的恢复策略之间不会冲突。<code>transition</code> 字段留着，后续迭代就认得出“我是怎么来到这里的”，往下的判断也就更有依据。</p>
-<blockquote class="callout callout-tip"><p class="callout-tag"><span class="callout-icon" aria-hidden="true"><svg class="ink-mark" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13.3 5.2C12.3 2.9 10.1 1.6 7.5 2 4.3 2.4 2 5.2 2.1 8.4c.1 3.2 2.7 5.7 5.9 5.6 3.1-.1 5.6-2.6 5.7-5.6.1-1.2-.1-2.3-.4-3.2"/><path d="M5.2 8.3l2.1 2.3 3.9-5"/></svg></span><strong>最佳实践：</strong></p><p class="callout-body"> 在设计自己的 Agent 循环时，为每条 Continue 路径记录原因（transition reason）是一个简单但极其有效的调试手段。当 Agent 行为异常时，追溯 transition 链可以帮助你快速定位是哪一次转换引入了问题。</p>
-</blockquote>
+<p>每条 Continue 路径都记下原因（transition reason）。Agent 行为异常时，顺着 transition 链往回走，就能找到是哪一跳引入的问题。</p>
 <p>自己写循环最容易踩的坑，是只留一个出口、只记一种原因。岔路列全：</p>
 <div class="table-scroll" data-cols="3" tabindex="0"><table>
 <thead>

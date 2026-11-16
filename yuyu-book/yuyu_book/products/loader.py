@@ -86,7 +86,7 @@ def _terms(glosses: dict | None) -> list[Term]:
 def load_model(manifest: dict, notes: dict | None = None,
                glosses: dict | None = None, langs: list[str] | None = None,
                repo_root=REPO_ROOT) -> BookModel:
-    langs = list(langs or manifest.get("langs") or ("zh", "en"))
+    langs = list(langs or manifest.get("langs") or ("zh",))
     notes = notes or {}
     guides = manifest.get("guides") or {}
     model = BookModel(version=str(manifest.get("version") or ""))

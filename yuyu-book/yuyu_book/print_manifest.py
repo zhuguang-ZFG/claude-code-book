@@ -20,7 +20,7 @@ from dataclasses import dataclass
 
 from .diagnostics import BuildError
 
-LANGS = ("zh", "en")
+LANGS = ("zh",)
 
 
 @dataclass(frozen=True)

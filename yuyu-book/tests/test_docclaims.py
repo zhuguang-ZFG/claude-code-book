@@ -129,16 +129,13 @@ class ShippedCounts(Data):
 
     def setUp(self):
         super().setUp()
-        plates_zh, plates_en = self.plates("zh"), self.plates("en")
+        plates = self.plates("zh")
         src = str(len(registry.load("sources.json")))
         g = str(len(self.glosses))
         d = str(self.drawings())
-        body_word = {n: w for w, n in EN_NUM.items()}[self.body_plates("en")]
         self.claims = [
             ("README.md", r"\*\*术语表\*\* — (\d+) 条中英对照术语",
              [str(self.glossary_rows("zh"))]),
-            ("en/README.md", r"\*\*Glossary\*\* — (\d+) bilingual term",
-             [str(self.glossary_rows("en"))]),
             ("STRUCTURE.md", r"术语白话注，当前 (\d+) 条（(\d+) 个 core",
              [g, str(self.core_terms())]),
             # the reason layer is quoted in all three docs, and its size is a
@@ -149,16 +146,11 @@ class ShippedCounts(Data):
             ("README.md", r"(\d+) 个主干术语的原理", [str(self.why_terms())]),
             # three counts of the same figure went unpinned: an English number
             # spelled as a word, the style-system row, and the prose-plate row
-            ("en/README.md", r"\b(\d+) hand-drawn line illustrations", [d]),
             ("CREDITS.md", r"\*\*画风体系\*\*：(\d+) 份插图", [d]),
             ("STRUCTURE.md", r"\+ (\d+) 幅正文插图",
              [str(self.body_plates("zh"))]),
             # the same README sentence hides one further count as a word, and a
             # word is invisible to `\d+` — which is how twenty-six went stale
-            ("en/README.md", r"and ([a-z-]+) plates inside the prose",
-             [body_word]),
-            ("en/README.md", r"the (\d+) core terms' reasons",
-             [str(self.why_terms())]),
             ("STRUCTURE.md", r"主题索引（生成物，当前 (\d+) 个词条 = "
                              r"(\d+) 条英文原名 \+ (\d+) 条中文译名）",
              [str(len(self.index())), str(len([e for e in self.index()
@@ -190,25 +182,15 @@ class ShippedCounts(Data):
              [str(self.kinds()["spec"] + self.kinds()["blog"])]),
             ("CREDITS.md", r"## 五、npm（(\d+) 条）",
              [str(self.kinds()["npm"])]),
-            ("README.md", r"每版 (\d+) 张（中英合计 (\d+)）",
-             [str(plates_zh), str(plates_zh + plates_en)]),
-            ("STRUCTURE.md", r"中英文各有 (\d+) 个 Mermaid 围栏（合计 (\d+)）",
-             [str(plates_zh), str(plates_zh + plates_en)]),
-            ("CREDITS.md", r"全书 (\d+) 张图（中英各 (\d+)）",
-             [str(plates_zh + plates_en), str(plates_en)]),
-            ("en/README.md", r"All (\d+) diagrams per edition \((\d+) across "
-                            r"both\)", [str(plates_en),
-                                        str(plates_zh + plates_en)]),
+            ("STRUCTURE.md", r"全书 (\d+) 个 Mermaid 围栏",
+             [str(plates)]),
+            ("CREDITS.md", r"全书 (\d+) 张图",
+             [str(plates)]),
             ("README.md", r"`yuyu-book/` 把 (\d+) 个单元装配成",
-             [str(len(self.units))]),
-            ("en/README.md", r"assembles the (\d+) units into",
              [str(len(self.units))]),
             # the same registry is quoted by size in both READMEs
             ("README.md", r"`yuyu-book/sources\.json`（(\d+) 条，"
                           r"其中 (\d+) 条是 GitHub 开源仓库）",
-             [src, str(self.kinds()["github"])]),
-            ("en/README.md", r"`yuyu-book/sources\.json` \((\d+) entries, "
-                             r"(\d+) of them GitHub repositories\)",
              [src, str(self.kinds()["github"])]),
         ]
 
@@ -232,8 +214,7 @@ class ShippedCounts(Data):
         # the ledger is newest-first: the top entry is the version shipping
         entry = registry.load("revisions.json")["entries"][0]
         want = str(self.suite())
-        for lang, rx in (("zh", r"构建器测试 (\d+) 项全绿"),
-                         ("en", r"(\d+) builder tests green")):
+        for lang, rx in (("zh", r"构建器测试 (\d+) 项全绿"),):
             m = re.search(rx, entry[lang][-1])
             self.assertIsNotNone(
                 m, f"revisions.{lang}: the last note no longer states the "
@@ -249,9 +230,8 @@ class ShippedCounts(Data):
                   if g.get("priority") == "extra" and plain.marks(g)]
         self.assertEqual(leaked, [],
                          f"marked but registered as extra: {leaked}")
-        for lang in ("zh", "en"):
-            self.assertTrue(plain.Matcher(self.glosses, lang).rx,
-                            f"no markable form in {lang}")
+        self.assertTrue(plain.Matcher(self.glosses, "zh").rx,
+                        "no markable form in zh")
 
 
 CN_NUM = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7,
@@ -322,7 +302,7 @@ class TextTotalsMatchTheirOwnTables(Data):
         # of it: the sentences around it get reworded round after round.
         quotes = {
             "zh": [r"(\d+) 个生命周期事件",
-                   r"本章按功能分组介绍其中 (\d+) 个生命周期事件",
+                   r"数组里共 (\d+) 个生命周期事件，下面按功能分组",
                    r"下表把这 (\d+) 个事件的分类",
                    r"\*\*(\d+) 个生命周期事件\*\*"],
             "en": [r"(\d+) lifecycle events",
@@ -330,16 +310,12 @@ class TextTotalsMatchTheirOwnTables(Data):
                    r"typical uses of these (\d+) events",
                    r"\*\*(\d+) lifecycle events\*\*"],
         }
-        docs = ("README.md", r"(\d+) 个生命周期事件；JSON 响应协议", "zh"), \
-               ("en/README.md", r"(\d+) lifecycle events; JSON", "en"), \
-               ("yuyu-book/manifest.json", r'"zh": "(\d+) 个生命周期事件上', "zh"), \
-               ("yuyu-book/manifest.json",
-                r'"en": "Across (\d+) lifecycle events', "en")
+        docs = (("README.md", r"(\d+) 个生命周期事件；JSON 响应协议", "zh"),
+                ("yuyu-book/manifest.json", r'"zh": "(\d+) 个生命周期事件', "zh"))
         bad = []
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             rel = self.path("08-钩子", lang)
-            rows = len(self.table_after(rel, "下表" if lang == "zh"
-                                        else "The table below summarizes"))
+            rows = len(self.table_after(rel, "下表"))
             self.assertGreater(rows, 0, f"{rel}: no event table found")
             text = read_text(REPO_ROOT / rel)
             for rx in quotes[lang]:
@@ -351,9 +327,7 @@ class TextTotalsMatchTheirOwnTables(Data):
         for doc, rx, lang in docs:
             m = re.search(rx, read_text(REPO_ROOT / doc))
             self.assertIsNotNone(m, f"{doc}: nothing matches {rx!r}")
-            rows = len(self.table_after(self.path("08-钩子", lang),
-                                        "下表" if lang == "zh"
-                                        else "The table below summarizes"))
+            rows = len(self.table_after(self.path("08-钩子", lang), "下表"))
             if m.group(1) != str(rows):
                 bad.append(f"{doc}: {rx!r} says {m.group(1)}, the table lists "
                            f"{rows} events")
@@ -361,10 +335,8 @@ class TextTotalsMatchTheirOwnTables(Data):
 
     def test_the_tool_inventory_is_the_number_the_book_quotes(self):
         intro = {"zh": r"按 (\d+) 个功能类别列出 Claude Code 架构中注册的全部"
-                       r" (\d+) 个工具",
-                 "en": r"lists all (\d+) tools registered in the Claude Code "
-                       r"architecture, indexed across (\d+) functional"}
-        for lang in ("zh", "en"):
+                       r" (\d+) 个工具"}
+        for lang in ("zh",):
             apxb = self.path("附录/B", lang)
             rows = self.tools(lang)
             self.assertEqual(len(rows), len(set(rows)),
@@ -372,8 +344,7 @@ class TextTotalsMatchTheirOwnTables(Data):
             text = read_text(REPO_ROOT / apxb)
             m = re.search(intro[lang], text)
             self.assertIsNotNone(m, f"{apxb}: its own intro states no total")
-            want = ["12", str(len(rows))] if lang == "zh" \
-                else [str(len(rows)), "12"]
+            want = ["12", str(len(rows))]
             self.assertEqual(want, list(m.groups()),
                              f"{apxb}: rows and categories vs its own intro")
             bad = []
@@ -404,19 +375,6 @@ class TextTotalsMatchTheirOwnTables(Data):
                 ("yuyu-book/manifest.json",
                  [r'"zh": "(\d+) 个工具如何靠同一份类型契约']),
             ]
-        return [
-            (self.path("01-智能体编程", lang), [r"(\d+) Tools · Orchestration"]),
-            (self.path("03-工具系统", lang),
-             [r"(\d+) registered tools",
-              r"registers (\d+) specialized tools"]),
-            (self.path("13-流式架构", lang),
-             [r"Claude Code's (\d+) tools all build schemas at startup"]),
-            (self.path("15-构建你自己的", lang),
-             [r"In a codebase with (\d+) tools and hundreds of modules"]),
-            ("en/README.md", [r"(\d+) tools × 12 categories"]),
-            ("yuyu-book/manifest.json",
-             [r'"en": "How do (\d+) tools share one type contract']),
-        ]
 
     def test_the_schema_arithmetic_follows_the_tool_count(self):
         """The startup-cost sentence is 0.1-0.3ms per tool; it moves with the
@@ -424,9 +382,6 @@ class TextTotalsMatchTheirOwnTables(Data):
         for rel, rx in (
             (self.path("13-流式架构", "zh"),
              r"(\d+) 个工具都在启动时构建 schema，总开销为 ([\d.]+)-([\d.]+)ms"),
-            (self.path("13-流式架构", "en"),
-             r"(\d+) tools all build schemas at startup, total overhead is "
-             r"([\d.]+)-([\d.]+)ms"),
         ):
             m = re.search(rx, read_text(REPO_ROOT / rel))
             self.assertIsNotNone(m, f"{rel}: the schema-cost sentence moved")
@@ -441,11 +396,6 @@ class TextTotalsMatchTheirOwnTables(Data):
              r"缓存键由([一二三四五六七八九十])个维度构成",
              r"`CacheSafeParams` 精确地封装了前([一二三四五六七八九十])个维度",
              CN_NUM),
-            ("en", self.path("13-流式架构", "en"),
-             r"### 13\.5\.1 ([A-Za-z]+) Dimensions of Prompt Cache",
-             r"cache key consists of ([a-z]+) dimensions",
-             r"encapsulates the first ([a-z]+) dimensions",
-             EN_NUM),
         ):
             plate = self.dimensions(rel)
             text = read_text(REPO_ROOT / rel)
@@ -470,8 +420,7 @@ class TextTotalsMatchTheirOwnTables(Data):
                           f"{label}: the wrapped dimensions never name model — "
                           f"that is how the list lost a dimension once")
 
-    KEEPER_TOTALS = {("apxb", "zh"): r"(\d+) 枚腰牌",
-                     ("apxb", "en"): r"(\d+) tallies"}
+    KEEPER_TOTALS = {("apxb", "zh"): r"(\d+) 枚腰牌"}
 
     def test_the_postman_only_states_numbers_the_book_can_recount(self):
         """A keeper note is prose, but the numbers in it are the repository's.
@@ -483,9 +432,9 @@ class TextTotalsMatchTheirOwnTables(Data):
         comes from.
         """
         notes = registry.load("notes.json")
-        want = {lang: str(len(self.tools(lang))) for lang in ("zh", "en")}
+        want = {"zh": str(len(self.tools("zh")))}
         bad = []
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             for uid, body in notes.items():
                 rx = self.KEEPER_TOTALS.get((uid, lang))
                 if rx is None:
@@ -513,18 +462,15 @@ class TextTotalsMatchTheirOwnTables(Data):
         A stale figure is worse than a rough one: 六十多个工具 next to an appendix
         listing 55 tells a reader the two were written by different hands.
         """
-        stale = ("26 个生命周期事件", "26 lifecycle events", "all 26 events",
-                 "45+ 工具", "45+ tools", "45-plus tools", "45 个以上工具",
-                 "六十多个工具", "sixty-plus tools", "over sixty tools",
-                 "提示缓存共享的三个维度", "Three Dimensions of Prompt Cache")
-        docs = ("README.md", "en/README.md", "STRUCTURE.md", "CREDITS.md",
+        stale = ("26 个生命周期事件", "45+ 工具", "45 个以上工具",
+                 "六十多个工具", "提示缓存共享的三个维度")
+        docs = ("README.md", "STRUCTURE.md", "CREDITS.md",
                 "CONTRIBUTING.md", "yuyu-book/manifest.json")
         hits = []
         for needle in stale:
             for u, _k in self.units:
-                for lang in ("zh", "en"):
-                    if needle in read_text(REPO_ROOT / u[lang]):
-                        hits.append(f"{u[lang]}: still says {needle!r}")
+                if needle in read_text(REPO_ROOT / u["zh"]):
+                    hits.append(f"{u['zh']}: still says {needle!r}")
             for doc in docs:
                 if needle in read_text(REPO_ROOT / doc):
                     hits.append(f"{doc}: still says {needle!r}")

@@ -252,7 +252,7 @@ def main(argv=None) -> int:
     except (OSError, ValueError) as exc:
         print(f"invalid comparison rules: {exc}", file=sys.stderr)
         return 2
-    missing = [f"yuyu-agent-harness-{lang}.html" for lang in ("zh", "en")
+    missing = [f"yuyu-agent-harness-{lang}.html" for lang in ("zh",)
                if not (args.dist / f"yuyu-agent-harness-{lang}.html").is_file()]
     if missing:
         print(f"missing build artifacts under {args.dist}: "

@@ -6,11 +6,11 @@
 # the same lines directly, e.g. `python scripts/bookctl.py check --fast`.
 #
 #   PYTHON     python launcher (make PYTHON=python3 on Linux CI)
-#   BOOK_LANG  zh | en | both  -- deliberately NOT named LANG, which every
-#              shell already exports as the locale (C.UTF-8, zh_CN.UTF-8, ...)
+#   BOOK_LANG  zh  -- deliberately NOT named LANG, which every shell
+#              already exports as the locale (C.UTF-8, zh_CN.UTF-8, ...)
 
 PYTHON     ?= python
-BOOK_LANG  ?= both
+BOOK_LANG  ?= zh
 BOOKCTL    := $(PYTHON) scripts/bookctl.py
 
 .PHONY: help doctor lint check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
@@ -21,9 +21,9 @@ help:
 	@echo "make doctor     environment report (python/node/browser/font/deps)"
 	@echo "make lint       ruff static check (dev-only dependency)"
 	@echo "make check      fast checks: source build, tests, content, mermaid"
-	@echo "make check-full fast + rendered HTML + both PDF editions"
-	@echo "make book       both HTML editions (BOOK_LANG=zh|en|both, into yuyu-book/dist/)"
-	@echo "make book-pdf   both HTML editions + A4 PDF post-pass"
+	@echo "make check-full fast + rendered HTML + Chinese PDF"
+	@echo "make book       Chinese HTML (into yuyu-book/dist/)"
+	@echo "make book-pdf   Chinese HTML + A4 PDF post-pass"
 	@echo "make book-omp   omp Chinese HTML (yuyu-omp-zh.html); does not touch harness"
 	@echo "make book-omp-pdf  omp Chinese HTML + A4 PDF"
 	@echo "make book-pi    Pi Chinese HTML (yuyu-pi-zh.html)"

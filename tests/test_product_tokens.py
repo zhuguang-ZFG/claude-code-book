@@ -24,9 +24,8 @@ from yuyu_book import style_css, style_tokens  # noqa: E402
 from yuyu_book.products import tokens  # noqa: E402
 
 PAGES = ("docs/portal.html", "docs/beginner-reader.html",
-         "docs/beginner-reader.en.html", "docs/illustration-gallery.html",
-         "docs/knowledge-cards.html", "docs/knowledge-cards.en.html")
-SAMPLE_PAGES = ("docs/sample-chapter.html", "docs/sample-chapter.en.html")
+         "docs/illustration-gallery.html", "docs/knowledge-cards.html")
+SAMPLE_PAGES = ("docs/sample-chapter.html",)
 GENERATORS = ("yuyu-book/yuyu_book/products/portal.py",
               "yuyu-book/yuyu_book/products/reader.py",
               "yuyu-book/yuyu_book/products/gallery.py",
@@ -94,8 +93,6 @@ class SharedMarks(unittest.TestCase):
         zh = (ROOT / "docs/beginner-reader.html").read_text(encoding="utf-8")
         self.assertIn(f"font:16px/1.9 {tokens.SERIF_ZH}", zh)
         self.assertIn(f"border-radius:{tokens.RADIUS_STATION}", zh)
-        en = (ROOT / "docs/beginner-reader.en.html").read_text(encoding="utf-8")
-        self.assertIn(f"font:16px/1.8 {tokens.SERIF_EN}", en)
         gallery = (ROOT / "docs/illustration-gallery.html").read_text(
             encoding="utf-8")
         self.assertIn(f"font:14px/1.6 {tokens.SANS}", gallery)
@@ -105,11 +102,7 @@ class SharedMarks(unittest.TestCase):
         self.assertIn(f"font:15px/1.75 {tokens.SERIF_ZH}", zh_cards)
         self.assertIn(f"border-radius:{tokens.RADIUS_CARD}", zh_cards)
         self.assertIn(f"border-radius:{tokens.RADIUS_RESUME}", zh_cards)
-        en_cards = (ROOT / "docs/knowledge-cards.en.html").read_text(
-            encoding="utf-8")
-        self.assertIn(f"font:15px/1.75 {tokens.SERIF_EN}", en_cards)
-        for path, body_class in (("docs/sample-chapter.html", "lang-zh"),
-                                 ("docs/sample-chapter.en.html", "lang-en")):
+        for path, body_class in (("docs/sample-chapter.html", "lang-zh"),):
             sample = (ROOT / path).read_text(encoding="utf-8")
             self.assertIn(f'<body class="{body_class} sample">', sample, path)
             self.assertIn("font:400 17px/1.8 var(--serif)", sample, path)

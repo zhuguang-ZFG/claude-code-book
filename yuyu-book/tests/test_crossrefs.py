@@ -80,15 +80,16 @@ class WholeBookCrossReferences(unittest.TestCase):
     def setUpClass(cls):
         manifest, _sources = load_configs()
         cls.html = {}
-        for lang in ("zh", "en"):
-            # render every unit the way the book does, so the assertion is
-            # about real prose rather than a fixture
-            parts = []
-            for unit_def, kind, _part in unit_stream(manifest):
-                u = load_unit(unit_def, kind, lang, REPO_ROOT)
-                diagrams = {b.uid: ("图", "<svg/>") for b in u.blocks}
-                parts.append(render.render_unit(u, MAP, diagrams=diagrams)["html"])
-            cls.html[lang] = "\n".join(parts)
+        # The en edition was removed; render the shipped zh book only.
+        lang = "zh"
+        # render every unit the way the book does, so the assertion is
+        # about real prose rather than a fixture
+        parts = []
+        for unit_def, kind, _part in unit_stream(manifest):
+            u = load_unit(unit_def, kind, lang, REPO_ROOT)
+            diagrams = {b.uid: ("图", "<svg/>") for b in u.blocks}
+            parts.append(render.render_unit(u, MAP, diagrams=diagrams)["html"])
+        cls.html[lang] = "\n".join(parts)
         cls.manifest = manifest
 
     def test_every_generated_href_resolves_to_a_real_unit(self):
@@ -97,9 +98,9 @@ class WholeBookCrossReferences(unittest.TestCase):
                 self.assertIn(href, MAP, f"{lang}: xref to unknown unit {href}")
 
     def test_autolinking_actually_fires_in_prose(self):
-        for lang in ("zh", "en"):
+        for lang, doc in self.html.items():
             self.assertGreater(
-                self.html[lang].count('class="xref"'), 40,
+                doc.count('class="xref"'), 40,
                 f"{lang}: cross-references went missing")
 
     def test_autolink_can_be_switched_off(self):

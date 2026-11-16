@@ -18,13 +18,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CHAPTERS = [f"ch{number:02d}" for number in range(1, 16)]
 
-LABELS = {
-    "zh": ("**最小可运行案例：**", "**版本锁：**", "**预期结果：**",
-           "**前置：**", "**回链：**"),
-    "en": ("**Minimal runnable case:**", "**Version lock:**",
-           "**Expected result:**", "**Prerequisite:**", "**Backlink:**"),
-}
-STDLIB = {"zh": ("Python 3.12", "标准库"), "en": ("Python 3.12", "standard library")}
+LABELS = ("**最小可运行案例：**", "**版本锁：**", "**预期结果：**",
+          "**前置：**", "**回链：**")
+STDLIB = ("Python 3.12", "标准库")
 FENCE = re.compile(r"^```python\n(.*?)^```$", re.M | re.S)
 MARKER = "# exercise: "
 
@@ -35,9 +31,7 @@ def units() -> dict:
     for part in manifest["parts"]:
         for unit in part["units"]:
             if unit["id"] in CHAPTERS:
-                found[unit["id"]] = {
-                    lang: ROOT / unit[lang] for lang in ("zh", "en")
-                }
+                found[unit["id"]] = {"zh": ROOT / unit["zh"]}
     return found
 
 
@@ -78,33 +72,27 @@ class Exercises(unittest.TestCase):
             for unit, paths in cls.units.items()
         }
 
-    def test_every_chapter_has_exactly_one_case_in_both_editions(self):
+    def test_every_chapter_has_exactly_one_case(self):
         self.assertEqual(sorted(self.units), CHAPTERS)
         for unit, paths in self.units.items():
-            for lang in ("zh", "en"):
-                self.assertEqual(len(blocks(self.texts[unit][lang])), 1,
-                                 f"{paths[lang].name}: {unit} needs exactly one case")
-
-    def test_both_editions_carry_the_same_code(self):
-        for unit in CHAPTERS:
-            zh = blocks(self.texts[unit]["zh"])[0][0]
-            en = blocks(self.texts[unit]["en"])[0][0]
-            self.assertEqual(zh, en, f"{unit}: the two editions run different code")
+            lang = "zh"
+            self.assertEqual(len(blocks(self.texts[unit][lang])), 1,
+                             f"{paths[lang].name}: {unit} needs exactly one case")
 
     def test_the_labels_and_version_lock_sit_above_the_case(self):
         for unit in CHAPTERS:
-            for lang in ("zh", "en"):
-                text = self.texts[unit][lang]
-                code, line = blocks(text)[0]
-                above = "\n".join(text.splitlines()[max(0, line - 12):line])
-                for label in LABELS[lang]:
-                    self.assertIn(label, above,
-                                  f"{unit} {lang}: missing {label} above the case")
-                for token in STDLIB[lang]:
-                    self.assertIn(token, above,
-                                  f"{unit} {lang}: the version lock does not name {token}")
-                self.assertRegex(above, r"\*\*回链：\*\* \S|\*\*Backlink:\*\* \S",
-                                 f"{unit} {lang}: the backlink is empty")
+            lang = "zh"
+            text = self.texts[unit][lang]
+            code, line = blocks(text)[0]
+            above = "\n".join(text.splitlines()[max(0, line - 12):line])
+            for label in LABELS:
+                self.assertIn(label, above,
+                              f"{unit}: missing {label} above the case")
+            for token in STDLIB:
+                self.assertIn(token, above,
+                              f"{unit}: the version lock does not name {token}")
+            self.assertRegex(above, r"\*\*回链：\*\* \S",
+                             f"{unit}: the backlink is empty")
 
     def test_the_printed_result_is_what_the_reader_is_promised(self):
         env = dict(os.environ, PYTHONIOENCODING="utf-8")

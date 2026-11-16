@@ -139,7 +139,7 @@ def ch13_prices(text: str) -> dict:
 
 class ChapterOneTimeline(unittest.TestCase):
     def test_milestone_dates_match_their_primary_sources(self):
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 diffs = []
                 for marker, expected, source in MILESTONES:
@@ -155,7 +155,7 @@ class ChapterOneTimeline(unittest.TestCase):
                     "Chapter 1 milestone (marker, printed, expected, source)")
 
     def test_nodes_run_in_chronological_order(self):
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 dates = [date for date, _label in
                          chapter1_nodes(read(CH01[lang]))]
@@ -165,7 +165,7 @@ class ChapterOneTimeline(unittest.TestCase):
 
 class ChapterThirteenPrices(unittest.TestCase):
     def test_cache_premium_and_discount_follow_the_api(self):
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 p = ch13_prices(read(CH13[lang]))
                 self.assertAlmostEqual(p["write"] / p["input"], 1.25, places=6,
@@ -175,7 +175,7 @@ class ChapterThirteenPrices(unittest.TestCase):
                 self.assertLess(p["read"], p["input"], "a hit must be cheaper")
 
     def test_session_table_recomputes_from_the_price_table(self):
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 p = ch13_prices(read(CH13[lang]))
                 rows = CASE_ROW.findall(fenced_block(read(CH13[lang]), "63,000"))
@@ -194,7 +194,7 @@ class ChapterThirteenPrices(unittest.TestCase):
                 self.assertEqual(bad, [], "turn problems as (turn, detail)")
 
     def test_hit_rate_savings_line_follows_the_price_table(self):
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 p = ch13_prices(read(CH13[lang]))
                 lines = [line for line in read(CH13[lang]).splitlines()
@@ -221,7 +221,7 @@ class ChapterThirteenPrices(unittest.TestCase):
 
 class ChapterSixCacheSharing(unittest.TestCase):
     def test_simplified_calculation_adds_up(self):
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 block = fenced_block(read(CH06[lang]), "/ MTok")
                 parts = [number(n) for n in
@@ -262,7 +262,7 @@ class InstallInstructions(unittest.TestCase):
                     "re-read the registry and re-pin both the anchor and this test")
         floor = int(anchor.group(1))
         self.assertEqual(floor, 22, "the package this book anchors to")
-        for lang in ("zh", "en"):
+        for lang in ("zh",):
             with self.subTest(edition=lang):
                 lines = read(CH01[lang]).splitlines()
                 at = [i for i, line in enumerate(lines)

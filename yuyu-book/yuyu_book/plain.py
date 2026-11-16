@@ -63,11 +63,24 @@ _H2_RE = re.compile(r'<h2 id="([^"]+)">((?:(?!</?h2\b).)*)</h2>', re.S)
 def manifest_langs(manifest: dict | None) -> tuple[str, ...]:
     """The languages this product actually has an edition for.
 
-    御舆 declares nothing and gets both; the omp volume declares `langs: ["zh"]`
-    and its units carry only a `zh` path key, so asking it for `en` prose is a
-    KeyError, not a missing file.
+    An explicit `langs` wins. Otherwise infer from the unit path keys: a
+    manifest whose units carry both `zh` and `en` stays dual-edition, while a
+    zh-only manifest resolves to just `zh` without inventing a language whose
+    source files were removed. A manifest with no units falls back to `zh`.
     """
-    return tuple((manifest or {}).get("langs") or ("zh", "en"))
+    data = manifest or {}
+    declared = data.get("langs")
+    if declared:
+        return tuple(declared)
+    front = data.get("front")
+    groups = [*(data.get("parts") or []),
+              {"units": [front] if isinstance(front, dict) else front or []},
+              {"units": data.get("appendices") or []}]
+    units = [unit for group in groups for unit in group.get("units") or []]
+    if not units:
+        return ("zh",)
+    return tuple(lang for lang in ("zh", "en")
+                 if all(lang in unit for unit in units)) or ("zh",)
 
 
 def registry_names(manifest: dict | None) -> dict[str, str]:
@@ -111,7 +124,7 @@ def load_notes(manifest: dict | None = None) -> dict:
 
 def validate_notes(notes: dict, glosses: dict,
                    unit_texts: dict[str, dict[str, str]],
-                   langs: tuple[str, ...] = ("zh", "en")) -> None:
+                   langs: tuple[str, ...] = ("zh",)) -> None:
     errors: list[str] = []
     missing = sorted(set(unit_texts) - set(notes))
     extra = sorted(set(notes) - set(unit_texts))
@@ -348,7 +361,7 @@ def validate_plain(glosses: dict, paths: dict, manifest: dict,
             seen |= prose(ref, f"guide {uid}")
         if seen != set(langs):
             errors.append(f"guide {uid}: plain_evidence must point at prose in "
-                          f"both languages (found {sorted(seen)})")
+                          f"every printed edition (found {sorted(seen)})")
     if errors:
         raise BuildError("plain layer invalid:\n  " + "\n  ".join(errors))
 

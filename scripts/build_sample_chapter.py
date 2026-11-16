@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate docs/sample-chapter.html and .en.html.
+"""Regenerate docs/sample-chapter.html.
 
 The body is chapter 2 rendered from canonical sources through the shared
 edition pipeline; no prebuilt dist directory is required.
@@ -24,11 +24,10 @@ if __name__ == "__main__":
         from yuyu_book.products import sample_diagrams
         manifest, _sources = load_configs()
         editions = []
-        for lang in ("zh", "en"):
-            for definition, kind, _part in unit_stream(manifest):
-                if definition["id"] == "ch02":
-                    unit = load_unit(definition, kind, lang, ROOT)
-                    editions.append((unit.blocks, mermaid.captions_for(
-                        read_text(ROOT / unit.path), unit.blocks)))
+        for definition, kind, _part in unit_stream(manifest):
+            if definition["id"] == "ch02":
+                unit = load_unit(definition, kind, "zh", ROOT)
+                editions.append((unit.blocks, mermaid.captions_for(
+                    read_text(ROOT / unit.path), unit.blocks)))
         sample_diagrams.refresh(editions)
     main()

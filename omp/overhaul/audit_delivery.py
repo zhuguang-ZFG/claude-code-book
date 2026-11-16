@@ -75,14 +75,10 @@ def check(root: Path = ROOT) -> list[str]:
             errors.append(f"{identifier}: book implementation leaked into Omp definition")
     if shared < 20:
         errors.append(f"expected at least 20 related glossary entries, got {shared}")
+    # The repository ships Chinese only; the volume stays a single-language
+    # product rather than reserving a translation slot that no longer exists.
     if manifest.get("langs") != ["zh"]:
-        errors.append("Omp English reservation must keep langs=['zh']")
-    for name in ("README.md", "STATUS.md"):
-        path = root / "en" / "omp" / name
-        if not path.is_file():
-            errors.append(f"missing English reservation: {name}")
-        elif re.search(r"[\u4e00-\u9fff]", path.read_text(encoding="utf-8")):
-            errors.append(f"untranslated Chinese in en/omp/{name}")
+        errors.append("Omp stays Chinese-only: langs must be ['zh']")
     return errors
 
 

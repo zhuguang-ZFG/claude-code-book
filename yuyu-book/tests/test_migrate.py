@@ -145,13 +145,14 @@ class DualPaths(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            # The en edition is gone; prepend the fifty lines to every
+            # shipped zh file the registry refers to.
             for unit, _kind, _part in unit_stream(self.manifest):
-                for lang in ("zh", "en"):
-                    rel = unit[lang].replace("\\", "/")
-                    target = root / rel
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    target.write_text("\n" * 50 + read_text(REPO_ROOT / rel),
-                                      encoding="utf-8", newline="")
+                rel = unit["zh"].replace("\\", "/")
+                target = root / rel
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("\n" * 50 + read_text(REPO_ROOT / rel),
+                                  encoding="utf-8", newline="")
             plain.validate_plain(self.glosses, self.paths, self.manifest,
                                  root=root)
 

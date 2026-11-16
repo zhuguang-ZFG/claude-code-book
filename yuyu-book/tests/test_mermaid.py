@@ -368,7 +368,23 @@ class AuthorColoursReInked(unittest.TestCase):
                         with self.subTest(path=path.name, prop=prop):
                             self.assertIn(hexc.lower(), allowed)
                         checked += 1
-        self.assertGreater(checked, 2000)
+        # Coverage guard: the per-directive assertions above are vacuous if the
+        # glob silently matches nothing. Derive the floor from the shipped zh
+        # book through load_unit (an independent path) instead of the old magic
+        # 2000, which went stale when the en corpus was deleted.
+        manifest, _sources = load_configs()
+        shipped = 0
+        for unit_def, kind, _part in unit_stream(manifest):
+            unit = load_unit(unit_def, kind, "zh", REPO_ROOT)
+            for b in unit.blocks:
+                for line in mm.reink_colors(b.src).splitlines():
+                    if re.match(r"\s*(classDef|style)\s", line):
+                        shipped += len(re.findall(
+                            r"\b(fill|stroke|color)\s*:\s*(#[0-9a-fA-F]{3,8})",
+                            line))
+        self.assertGreater(shipped, 0, "shipped book has no colour directives")
+        self.assertGreaterEqual(checked, shipped,
+                                "the colour scan did not cover the shipped book")
 
 
 class FigureMarkup(unittest.TestCase):
@@ -506,11 +522,13 @@ class DiagramsSurviveRendering(unittest.TestCase):
     def test_diagram_uids_do_not_collide_across_the_two_languages(self):
         manifest, _sources = load_configs()
         seen = {}
-        for lang in ("zh", "en"):
-            for unit_def, kind, _part in unit_stream(manifest):
-                u = load_unit(unit_def, kind, lang, REPO_ROOT)
-                for b in u.blocks:
-                    seen.setdefault(b.uid, set()).add((lang, u.id))
+        # The en edition is gone; the invariant that survives is that one
+        # diagram uid is owned by exactly one shipped unit.
+        for unit_def, kind, _part in unit_stream(manifest):
+            u = load_unit(unit_def, kind, "zh", REPO_ROOT)
+            for b in u.blocks:
+                seen.setdefault(b.uid, set()).add(u.id)
+        self.assertGreater(len(seen), 0)
         self.assertEqual(sum(1 for v in seen.values() if len(v) > 1), 0)
 
 

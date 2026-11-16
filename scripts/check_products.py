@@ -13,10 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERATORS = ["build_beginner_reader.py", "build_illustration_gallery.py",
               "build_knowledge_cards.py", "build_sample_chapter.py",
               "build_site_indices.py", "build_site_portal.py"]
-OUTPUTS = ["beginner-reader.html", "beginner-reader.en.html", "illustration-gallery.html",
-           "knowledge-cards.html", "knowledge-cards.en.html", "sample-chapter.html",
-           "sample-chapter.en.html", "search-index.json", "concept-map.json", "language-map.json",
-           "portal.html"]
+OUTPUTS = ["beginner-reader.html", "illustration-gallery.html",
+           "knowledge-cards.html", "sample-chapter.html",
+           "search-index.json", "concept-map.json", "portal.html"]
 
 
 class Links(HTMLParser):
@@ -60,8 +59,8 @@ def main() -> int:
                     failures.append(f"{name}: missing target {href}")
             elif link.path and not (ROOT / "docs" / target_name).exists():
                 # The deployment flattens built books beside product pages.
-                published = {"yuyu-agent-harness-zh.html", "yuyu-agent-harness-en.html", "yuyu-omp-zh.html",
-                             "yuyu-agent-harness-zh.pdf", "yuyu-agent-harness-en.pdf", "yuyu-omp-zh.pdf"}
+                published = {"yuyu-agent-harness-zh.html", "yuyu-omp-zh.html",
+                             "yuyu-agent-harness-zh.pdf", "yuyu-omp-zh.pdf"}
                 if target_name not in published and not target_name.startswith("../"):
                     failures.append(f"{name}: missing file {href}")
     if failures:

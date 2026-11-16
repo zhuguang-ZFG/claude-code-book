@@ -88,7 +88,6 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
       编排、技能、MCP、流式、Plan、亲手造一个 Harness。滚动阅读时，@@PLATES@@ 幅手绘插图
       与按书的配色预渲染的图版会随你前进。</p>
       <a class="go" href="yuyu-agent-harness-zh.html">开始阅读 →</a>
-      <span class="alt">English edition: <a href="yuyu-agent-harness-en.html">Yù Yú (English)</a></span>
     </div>
     <div class="card">
       <h2><span class="ico">🧭</span>第二分册 · Omp 从入门到精通</h2>
@@ -102,13 +101,6 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
       一句记忆、一道自测、一段视频。由浅入深——底色一层比一层深。</p>
       <span class="go">15 分钟入门 →</span>
     </a>
-    <a class="card" href="beginner-reader.en.html" hreflang="en">
-      <h2><span class="ico">🌱</span>Beginner reader · illustrated<span lang="en"></span></h2>
-      <p>The same @@STATIONS_EN@@-station picture walk in English — plain language,
-      shallow to deep, every station with a sketch, a takeaway, a self-check
-      and curated videos.</p>
-      <span class="go">15-minute on-ramp →</span>
-    </a>
     <a class="card" href="illustration-gallery.html">
       <h2><span class="ico">🎨</span>插画画廊 · 看图说话<span lang="en"></span></h2>
       <p>@@PLATES@@ 幅手绘插图的中英双语题注画廊：点击任意一幅，看墨线逐笔重演、
@@ -120,14 +112,12 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
       <p>十五章各三张 3:4 手绘卡：一句话钩子、核心机制、三句带走。
       手机一屏一张，打印时每张卡独立成页。</p>
       <a class="go" href="knowledge-cards.html">抽卡复习 →</a>
-      <span class="alt">English: <a href="knowledge-cards.en.html">knowledge cards</a></span>
     </div>
     <div class="card">
       <h2><span class="ico">📜</span>样章 · 试读第 2 章<span lang="en"></span></h2>
       <p>从全书的心脏「对话循环」读起：完整一章正文、图版、表格与引文，
       由同一构建管线生成，单文件离线可开。</p>
       <a class="go" href="sample-chapter.html">免费试读 →</a>
-      <span class="alt">English: <a href="sample-chapter.en.html">sample chapter</a></span>
     </div>
   </div>
 </main>
@@ -154,7 +144,6 @@ OMP_TAIL_LIVE = """      <a class="go" href="omp/yuyu-omp-zh.html">开始阅读 
       <span class="alt">构建口径在仓库内的 <code>omp/</code> 目录。</span>"""
 
 PAGE = (PAGE.replace("@@STATIONS_ZH@@", str(LANGS["zh"]["total"]))
-           .replace("@@STATIONS_EN@@", str(LANGS["en"]["total"]))
            .replace("@@PLATES@@", str(PLATES))
            .replace("@@FAVICON@@", tokens.FAVICON)
            .replace("@@BRUSH@@", tokens.BRUSH)

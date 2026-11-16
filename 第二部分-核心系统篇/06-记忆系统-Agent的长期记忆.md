@@ -123,7 +123,7 @@ when_to_save: 了解到谁在做什么、为什么做、何时完成时
 body_structure: 事实或决策 + Why: 动机 + How to apply: 对建议的影响
 ```
 
-特别注意：相对日期必须转换为绝对日期（"周四" -> "2026-03-05"），因为记忆是跨会话持久的，相对日期在未来的对话中会失去意义。
+特别注意：相对日期必须换算成绝对日期（"周四"要写成"2026-03-05"），因为记忆是跨会话持久的，相对日期在未来的对话中会失去意义。
 
 **实际应用场景：**
 
@@ -435,7 +435,11 @@ sequenceDiagram
 
 提取不是每次对话都运行的。系统按计数器节流：每经过若干轮次才触发一次提取，阈值由功能开关配置。
 
-此外，还有一个 **trailing extraction**（尾随提取）机制来处理并发问题。当提取正在进行时又有新的对话完成，新上下文先攒起来。当前提取完成后，会用最新暂存的上下文运行一次尾随提取。尾随提取跳过节流计数器：它处理的是已经完成的工作，不该再等节流。
+还有一个 **trailing extraction**（尾随提取）机制来处理并发问题。当提取正在进行时又有新的对话完成，新上下文先攒起来。当前提取完成后，会用最新暂存的上下文运行一次尾随提取。尾随提取跳过节流计数器：它处理的是已经完成的工作，不该再等节流。
+
+```ill
+ch06-trailing-lantern
+```
 
 **trailing extraction 机制的时序图**
 
@@ -534,9 +538,9 @@ flowchart LR
 
 记忆启用的决策链在路径解析模块中定义：
 
-1. `CLAUDE_CODE_DISABLE_AUTO_MEMORY` 环境变量（1/true -> 关闭）
-2. `--bare`（SIMPLE 模式） -> 关闭
-3. CCR 无持久存储（无 `CLAUDE_CODE_REMOTE_MEMORY_DIR`） -> 关闭
+1. `CLAUDE_CODE_DISABLE_AUTO_MEMORY` 环境变量（设为 1 或 true 时关闭）
+2. `--bare`（SIMPLE 模式）时关闭
+3. CCR 无持久存储（没有 `CLAUDE_CODE_REMOTE_MEMORY_DIR`）时关闭
 4. `settings.json` 中的 `autoMemoryEnabled` 字段
 5. 默认：启用
 

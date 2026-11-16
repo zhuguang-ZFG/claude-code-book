@@ -1,0 +1,12 @@
+<svg class="a-mileposts" viewBox="0 0 340 130" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M14 116q74-24 152-48t158-42" opacity=".5" stroke-width="1.2" stroke-dasharray="4 8" pathLength="100"/>
+<g><path d="M40 92q9-2 18 0l1 18q-1 3-4 3l-14-1q-1-10 0-20" stroke-width="2.2" pathLength="100"/><path d="M49 96q1 4 0 8" stroke-width="1.6" pathLength="100"/></g>
+<g><path d="M88 80q9-2 18 0l1 18q-1 3-4 3l-14-1q-1-10 0-20" stroke-width="2.2" pathLength="100"/><path d="M94 84q1 4 0 8m6-8q1 4 0 8" stroke-width="1.6" pathLength="100"/></g>
+<g><path d="M136 68q9-2 18 0l1 18q-1 3-4 3l-14-1q-1-10 0-20" stroke-width="2.2" pathLength="100"/><path d="M142 72q1 4 0 8m5-8q1 4 0 8m5-8q1 4 0 8" stroke-width="1.6" pathLength="100"/></g>
+<g><path d="M184 56q9-2 18 0l1 18q-1 3-4 3l-14-1q-1-10 0-20" stroke-width="2.2" pathLength="100"/><path d="M190 60q1 4 0 8m4-8q1 4 0 8m4-8q1 4 0 8m4-8q1 4 0 8" stroke-width="1.5" pathLength="100"/></g>
+<g><path d="M232 44q9-2 18 0l1 18q-1 3-4 3l-14-1q-1-10 0-20" stroke-width="2.2" pathLength="100"/><path d="M238 48q1 4 0 8m4-8q1 4 0 8m4-8q1 4 0 8m4-8q1 4 0 8m-9-12q5-1 9 0" stroke-width="1.4" pathLength="100"/></g>
+<g><path d="M280 32q9-2 18 0l1 18q-1 3-4 3l-14-1q-1-10 0-20" stroke-width="2.4" pathLength="100"/><path d="M286 36q1 4 0 8m3-8q1 4 0 8m3-8q1 4 0 8m3-8q1 4 0 8" stroke-width="1.4" pathLength="100"/><path d="M291 32l4-5 5 3" stroke-width="1.8" pathLength="100"/></g>
+<path d="M44 118q8-1 16 0m36-12q8-1 16 0m36-12q8-1 16 0m36-12q8-1 16 0m36-12q8-1 16 0m36-12q8-1 16 0" opacity=".3" stroke-width=".9" pathLength="100"/>
+<circle cx="24" cy="112" r="1.6" fill="currentColor" stroke="none" opacity=".7"/>
+<circle cx="318" cy="26" r="1.6" fill="currentColor" stroke="none" opacity=".7"/>
+</svg>

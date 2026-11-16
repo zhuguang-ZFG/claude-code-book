@@ -19,8 +19,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "新旧两版同时上线，各给一部分人用，比谁效果好",
-        "en": "run two versions for different slices of users at once and compare"
+        "zh": "新旧两版同时上线，各给一部分人用，比谁效果好"
       },
       "units": [
         "ch05",
@@ -66,8 +65,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "一个能随时按下的停止开关，正在干活的得自己去瞅它",
-        "en": "a stop switch anyone can flip; running work must check it to bail out"
+        "zh": "一个能随时按下的停止开关，正在干活的得自己去瞅它"
       },
       "units": [
         "ch02",
@@ -116,8 +114,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "中间垫一层做转换，两边各说各话也能接上",
-        "en": "a middle layer translates so two mismatched sides connect"
+        "zh": "中间垫一层做转换，两边各说各话也能接上"
       },
       "units": [
         "ch12"
@@ -163,8 +160,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "把模型包在中间的那层程序：接需求、发工具、收结果",
-        "en": "the program wrapped around the model: it takes the request, hands out tools, checks permission, brings back the answer"
+        "zh": "把模型包在中间的那层程序：接需求、发工具、收结果"
       },
       "units": [
         "front",
@@ -211,8 +207,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "边算边一段段往外交结果的函数，取一段停一段",
-        "en": "a function that hands out results one piece at a time and can pause between pieces"
+        "zh": "边算边一段段往外交结果的函数，取一段停一段"
       },
       "units": [
         "ch02",
@@ -257,8 +252,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一组改动要么全生效要么全不生效，不会改到一半",
-        "en": "a batch of changes either all land or none does, never halfway"
+        "zh": "一组改动要么全生效要么全不生效，不会改到一半"
       },
       "units": [
         "ch02"
@@ -308,8 +302,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "聊天快装满时，把前面的内容自动折成一份摘要",
-        "en": "when the chat nears full, the harness summarizes the earlier part so the conversation can keep going"
+        "zh": "聊天快装满时，把前面的内容自动折成一份摘要"
       },
       "units": [
         "ch07",
@@ -354,8 +347,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一处出问题把压力传给邻居，一路跟着倒，越滚越大",
-        "en": "one failure loads its neighbours, which fail too, compounding outward"
+        "zh": "一处出问题把压力传给邻居，一路跟着倒，越滚越大"
       },
       "units": [
         "ch07"
@@ -401,8 +393,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "下游处理不过来，就反过来让上游慢一点",
-        "en": "when the consumer falls behind, it pushes the producer to slow down"
+        "zh": "下游处理不过来，就反过来让上游慢一点"
       },
       "units": [
         "front",
@@ -449,8 +440,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "卡在原地干等，等的时候什么都干不了",
-        "en": "stuck waiting in place, unable to do anything else meanwhile"
+        "zh": "卡在原地干等，等的时候什么都干不了"
       },
       "units": [
         "ch01"
@@ -494,8 +484,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "跑这类程序的一套引擎，兼管出厂打包，书里图它起得快",
-        "en": "the engine that runs and builds the program; chosen here for speed"
+        "zh": "跑这类程序的一套引擎，兼管出厂打包，书里图它起得快"
       },
       "units": [
         "front",
@@ -542,8 +531,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "把散在各处的零件压成一份成品，好分发、好起跑",
-        "en": "squash many source files into one distributable artifact"
+        "zh": "把散在各处的零件压成一份成品，好分发、好起跑"
       },
       "units": [
         "ch11",
@@ -552,10 +540,6 @@
       "related": [
         {
           "id": "idempotent",
-          "shared": 1
-        },
-        {
-          "id": "main-loop",
           "shared": 1
         },
         {
@@ -568,6 +552,10 @@
         },
         {
           "id": "skill",
+          "shared": 1
+        },
+        {
+          "id": "symbolic-link",
           "shared": 1
         }
       ]
@@ -589,8 +577,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "要用的东西已在手边备好的比例，低了就得现跑现取",
-        "en": "how often the thing you want is already kept nearby, ready to grab"
+        "zh": "要用的东西已在手边备好的比例，低了就得现跑现取"
       },
       "units": [
         "ch01",
@@ -636,8 +623,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "备好的那份不再算数，得扔掉重做，白白慢一次",
-        "en": "the kept copy no longer counts, so it's thrown out and rebuilt"
+        "zh": "备好的那份不再算数，得扔掉重做，白白慢一次"
       },
       "units": [
         "ch02",
@@ -684,8 +670,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "把接下来要做的事托给对方，他办完再回头喊你",
-        "en": "you hand over what to do next and get called when it finishes"
+        "zh": "把接下来要做的事托给对方，他办完再回头喊你"
       },
       "units": [
         "ch01",
@@ -732,8 +717,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "上面一喊停，底下每一层都收到停，各自收尾",
-        "en": "a stop call at the top reaches every layer below, each wrapping up"
+        "zh": "上面一喊停，底下每一层都收到停，各自收尾"
       },
       "units": [
         "front",
@@ -780,8 +764,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "一件事依次经手多人，谁有权限谁拦下，否则往后传",
-        "en": "a request passes down a line; whoever can handle it stops it there"
+        "zh": "一件事依次经手多人，谁有权限谁拦下，否则往后传"
       },
       "units": [
         "ch08",
@@ -829,8 +812,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "连着失败够多次就先跳过这步，别硬试拖累全局",
-        "en": "after enough failures in a row it skips the call instead of dragging everything"
+        "zh": "连着失败够多次就先跳过这步，别硬试拖累全局"
       },
       "units": [
         "ch07",
@@ -876,8 +858,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "A 要等 B 先就绪，B 又回头等 A，谁都起不了步",
-        "en": "A waits for B ready and B waits for A ready, so neither can start"
+        "zh": "A 要等 B 先就绪，B 又回头等 A，谁都起不了步"
       },
       "units": [
         "ch01",
@@ -922,8 +903,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "项目里那份说明文件，每次开工都被自动塞进背景里",
-        "en": "the project's note file, dropped into the background on every start so its rules survive a reset"
+        "zh": "项目里那份说明文件，每次开工都被自动塞进背景里"
       },
       "units": [
         "ch02",
@@ -968,8 +948,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "函数带着它出生时的环境一起走，别人够不着那份数据",
-        "en": "a function that carries its birth environment wherever it goes"
+        "zh": "函数带着它出生时的环境一起走，别人够不着那份数据"
       },
       "units": [
         "ch02",
@@ -1014,8 +993,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "啥都没预热，从零把程序拉起来花的那段时间",
-        "en": "bringing the program up from nothing, with nothing warmed beforehand"
+        "zh": "啥都没预热，从零把程序拉起来花的那段时间"
       },
       "units": [
         "ch15"
@@ -1046,8 +1024,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "出厂定稿的那一刻，跟跑起来才现场决定相对",
-        "en": "the moment the program is built, as opposed to while it runs"
+        "zh": "出厂定稿的那一刻，跟跑起来才现场决定相对"
       },
       "units": [
         "ch03",
@@ -1094,8 +1071,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "几件事同时在推进，抢同一份资源就得安排先后",
-        "en": "several tasks in flight at once, competing for shared things"
+        "zh": "几件事同时在推进，抢同一份资源就得安排先后"
       },
       "units": [
         "front",
@@ -1142,8 +1118,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "模型一轮能装下的内容总量上限，装满了就得把旧的挤出去",
-        "en": "how much text the model can hold in mind at once; new material pushes the oldest material off the edge"
+        "zh": "模型一轮能装下的内容总量上限，装满了就得把旧的挤出去"
       },
       "units": [
         "ch01",
@@ -1193,8 +1168,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "只派活、收结论，自己从不动手写代码的那个角色",
-        "en": "the one agent that splits the work among workers and merges their answers without touching tools itself"
+        "zh": "只派活、收结论，自己从不动手写代码的那个角色"
       },
       "units": [
         "ch10",
@@ -1239,8 +1213,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "能主动让位、之后从让处接着跑的一段流程",
-        "en": "a routine that gives up the floor and resumes exactly where it stopped"
+        "zh": "能主动让位、之后从让处接着跑的一段流程"
       },
       "units": [
         "ch02"
@@ -1286,8 +1259,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "出厂前把永远跑不到的代码整块扔掉，成品更小也不透密",
-        "en": "the build strips code that can never run, shrinking the artifact"
+        "zh": "出厂前把永远跑不到的代码整块扔掉，成品更小也不透密"
       },
       "units": [
         "ch03"
@@ -1331,8 +1303,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "两边各握着对方要的东西都不撒手，一起僵住不动",
-        "en": "each side holds what the other needs and neither lets go"
+        "zh": "两边各握着对方要的东西都不撒手，一起僵住不动"
       },
       "units": [
         "ch14"
@@ -1369,8 +1340,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "层层关卡各管一段，漏了一层还有下一层兜着",
-        "en": "several independent checks in a row; if one leaks, the next catches"
+        "zh": "层层关卡各管一段，漏了一层还有下一层兜着"
       },
       "units": [
         "front",
@@ -1418,8 +1388,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "开场先只报工具名字，真要用了才把完整说明书取来",
-        "en": "the model first sees only a list of tool names; the full manual is fetched only once it actually needs one"
+        "zh": "开场先只报工具名字，真要用了才把完整说明书取来"
       },
       "units": [
         "ch03"
@@ -1464,8 +1433,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "要用的东西不自己造，而是由外面递进来，随时能换",
-        "en": "you don't build what you need; it's handed in from outside and swappable"
+        "zh": "要用的东西不自己造，而是由外面递进来，随时能换"
       },
       "units": [
         "ch02",
@@ -1513,8 +1481,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "这一步做完就退不回去，比如删文件、覆盖数据",
-        "en": "a flag meaning the action cannot be undone afterwards, so it deserves a stricter warning"
+        "zh": "这一步做完就退不回去，比如删文件、覆盖数据"
       },
       "units": [
         "ch01",
@@ -1560,8 +1527,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一次把整包数据里的各部件分名别类取出，省得逐个翻",
-        "en": "pull many named parts out of one bundle in a single move"
+        "zh": "一次把整包数据里的各部件分名别类取出，省得逐个翻"
       },
       "units": [
         "ch01",
@@ -1606,8 +1572,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "从最开头一路走到最结尾，中间每一环都真连上",
-        "en": "all the way from the first step to the last, every link real"
+        "zh": "从最开头一路走到最结尾，中间每一环都真连上"
       },
       "units": [
         "ch10",
@@ -1653,8 +1618,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "会广播动静的物件，谁想听谁自己来挂上监听",
-        "en": "an object that broadcasts happenings to whoever subscribed"
+        "zh": "会广播动静的物件，谁想听谁自己来挂上监听"
       },
       "units": [
         "ch01"
@@ -1698,8 +1662,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "发生的事一条条排队送出来，边到边处理，不等攒齐",
-        "en": "happenings come out one by one and are handled as they arrive"
+        "zh": "发生的事一条条排队送出来，边到边处理，不等攒齐"
       },
       "units": [
         "ch01",
@@ -1745,8 +1708,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "每次重试之间等得越来越久，别追着人家猛敲门",
-        "en": "wait longer between each retry instead of hammering a struggling service"
+        "zh": "每次重试之间等得越来越久，别追着人家猛敲门"
       },
       "units": [
         "ch12"
@@ -1791,8 +1753,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "专门造东西的一道工序，规格统一，要几个现造几个",
-        "en": "a routine whose only job is building objects to one spec, on demand"
+        "zh": "专门造东西的一道工序，规格统一，要几个现造几个"
       },
       "units": [
         "ch01",
@@ -1838,8 +1799,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一看出事立刻停手报错，不硬撑到后面代价更大",
-        "en": "stop at the first sign of trouble instead of pushing on at higher cost"
+        "zh": "一看出事立刻停手报错，不硬撑到后面代价更大"
       },
       "units": [
         "ch02",
@@ -1887,8 +1847,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "代码里留的一道闸，不重装机就能让某功能开或关",
-        "en": "a built-in switch that turns a capability on or off without rebuilding"
+        "zh": "代码里留的一道闸，不重装机就能让某功能开或关"
       },
       "units": [
         "ch05",
@@ -1937,8 +1896,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "把此刻的对话原样复制成几份，让几路任务同时开工",
-        "en": "copying the conversation as it stands into several branches so parallel jobs share one starting point"
+        "zh": "把此刻的对话原样复制成几份，让几路任务同时开工"
       },
       "units": [
         "ch09",
@@ -1984,8 +1942,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "没人再引用的内存由系统定时清走，别的资源仍要自己收尾",
-        "en": "the runtime reclaims memory nothing references; other resources don't"
+        "zh": "没人再引用的内存由系统定时清走，别的资源仍要自己收尾"
       },
       "units": [
         "ch13"
@@ -2023,8 +1980,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "先留个空类型位，用时才填，一份定义套多种数据",
-        "en": "a type slot left blank until use, so one definition fits many data kinds"
+        "zh": "先留个空类型位，用时才填，一份定义套多种数据"
       },
       "units": [
         "ch03"
@@ -2070,8 +2026,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "出问题时不整个瘫掉，砍掉非必要部分，保住还能用的",
-        "en": "on failure, drop the nice-to-haves and keep the core running"
+        "zh": "出问题时不整个瘫掉，砍掉非必要部分，保住还能用的"
       },
       "units": [
         "ch02",
@@ -2120,8 +2075,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "在关键节点外挂一段你自己的脚本，时刻一到就自动跑",
-        "en": "your own script hung on a lifecycle moment so it runs by itself when that moment arrives"
+        "zh": "在关键节点外挂一段你自己的脚本，时刻一到就自动跑"
       },
       "units": [
         "ch08"
@@ -2165,8 +2119,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "同一件事做一次和做五遍，最后结果一模一样",
-        "en": "doing it once or five times leaves exactly the same result"
+        "zh": "同一件事做一次和做五遍，最后结果一模一样"
       },
       "units": [
         "ch03",
@@ -2213,8 +2166,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "数据不涂改，要改就整份抄新的再改，旧的照原样留着",
-        "en": "never overwrite data; copy it, change the copy, keep the original"
+        "zh": "数据不涂改，要改就整份抄新的再改，旧的照原样留着"
       },
       "units": [
         "ch01",
@@ -2264,8 +2216,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "你按停那一刻：正在跑的活要不要立刻收手、留下什么",
-        "en": "what happens the instant you hit stop: whether the running action is killed and what it leaves behind"
+        "zh": "你按停那一刻：正在跑的活要不要立刻收手、留下什么"
       },
       "units": [
         "front",
@@ -2310,8 +2261,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一份书面格式说明：这段数据该有哪些字段、各是什么类型",
-        "en": "a written spec of which fields a payload must carry and their types"
+        "zh": "一份书面格式说明：这段数据该有哪些字段、各是什么类型"
       },
       "units": [
         "ch01"
@@ -2357,8 +2307,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "用到的那一刻才去取，没用到就一直不搬进来",
-        "en": "fetch a thing only when it's first needed, not all at the start"
+        "zh": "用到的那一刻才去取，没用到就一直不搬进来"
       },
       "units": [
         "ch01",
@@ -2403,8 +2352,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "只发刚好够干这活的权限，多一分都不给",
-        "en": "grant only what this task needs and nothing more"
+        "zh": "只发刚好够干这活的权限，多一分都不给"
       },
       "units": [
         "ch03",
@@ -2451,13 +2399,11 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "问一次模型、跑一轮工具、再问一次，直到任务做完",
-        "en": "ask the model, run the tools it asks for, ask again, until the task is finished"
+        "zh": "问一次模型、跑一轮工具、再问一次，直到任务做完"
       },
       "units": [
         "front",
-        "ch02",
-        "apxd"
+        "ch02"
       ],
       "related": [
         {
@@ -2504,8 +2450,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "外部服务摆出来给 Agent 翻阅的现成资料，只能读不能执行",
-        "en": "readable data an outside service exposes -- files, records, docs -- as opposed to actions it can run"
+        "zh": "外部服务摆出来给 Agent 翻阅的现成资料，只能读不能执行"
       },
       "units": [
         "ch12",
@@ -2552,8 +2497,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "按统一协议接在外面的服务，给 Agent 补上额外的工具和资料",
-        "en": "an outside program that speaks one shared protocol, handing the agent extra tools and data"
+        "zh": "按统一协议接在外面的服务，给 Agent 补上额外的工具和资料"
       },
       "units": [
         "ch03",
@@ -2600,8 +2544,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "跨对话留在硬盘上的小纸条，下次开机还会被读进来",
-        "en": "notes kept on disk between conversations and re-read next time, so the agent does not start from zero"
+        "zh": "跨对话留在硬盘上的小纸条，下次开机还会被读进来"
       },
       "units": [
         "ch06"
@@ -2638,8 +2581,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "攒着不放的东西太多，撑爆存放处，程序当场倒下",
-        "en": "too much kept at once runs out of room and the process dies"
+        "zh": "攒着不放的东西太多，撑爆存放处，程序当场倒下"
       },
       "units": [
         "ch01"
@@ -2684,8 +2626,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "给第三方一张限额授权的通行条，不必交出主密码",
-        "en": "hands a third party a limited pass instead of your main password"
+        "zh": "给第三方一张限额授权的通行条，不必交出主密码"
       },
       "units": [
         "ch12",
@@ -2732,8 +2673,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "谁关心就登记，事一发生挨个通知，发事的不用认识谁",
-        "en": "anyone interested signs up; when something happens, all get told"
+        "zh": "谁关心就登记，事一发生挨个通知，发事的不用认识谁"
       },
       "units": [
         "ch08",
@@ -2780,8 +2720,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "另一个模型替你估计这次操作危不危险，决定放行还是来问你",
-        "en": "a second model that judges how risky an action looks, so it can approve or escalate without waiting for you"
+        "zh": "另一个模型替你估计这次操作危不危险，决定放行还是来问你"
       },
       "units": [
         "ch04"
@@ -2829,8 +2768,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "Agent 动手前该找谁批准、多久问一次的规矩",
-        "en": "the rule for who approves each action, and how often the agent has to stop and ask"
+        "zh": "Agent 动手前该找谁批准、多久问一次的规矩"
       },
       "units": [
         "ch04"
@@ -2875,8 +2813,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "每次调用工具都要连闯的几道关卡，任一道说停就停",
-        "en": "several gates every tool call must pass in order; if any gate says stop, it stops right there"
+        "zh": "每次调用工具都要连闯的几道关卡，任一道说停就停"
       },
       "units": [
         "ch01",
@@ -2926,8 +2863,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "先只看不改，把方案写清楚给人过目，点头之后才动手",
-        "en": "a look-but-do-not-touch phase: the agent drafts a proposal first and only edits after you approve it"
+        "zh": "先只看不改，把方案写清楚给人过目，点头之后才动手"
       },
       "units": [
         "ch14"
@@ -2967,8 +2903,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "别人打包好的一包能力，装上就多一批工具和命令",
-        "en": "someone else's bundled package of tools, commands and settings that you install in one go"
+        "zh": "别人打包好的一包能力，装上就多一批工具和命令"
       },
       "units": [
         "ch05",
@@ -3015,8 +2950,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "还没用上就先把要的东西搬到手边，用时不必现等",
-        "en": "fetch what you'll need before you need it, so nothing waits later"
+        "zh": "还没用上就先把要的东西搬到手边，用时不必现等"
       },
       "units": [
         "ch01"
@@ -3062,8 +2996,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一边只管做、一边只管用，两边速度不同就得协调",
-        "en": "one side only makes, the other only takes; their speeds rarely match"
+        "zh": "一边只管做、一边只管用，两边速度不同就得协调"
       },
       "units": [
         "ch02",
@@ -3110,8 +3043,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "一张“将来给你结果”的凭条，只兑一次，成或败都算交代",
-        "en": "a receipt for a value that arrives later; it settles exactly once"
+        "zh": "一张“将来给你结果”的凭条，只兑一次，成或败都算交代"
       },
       "units": [
         "front",
@@ -3162,8 +3094,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "前面那段没变的话服务端已经记着，不必重新算钱重新算时间",
-        "en": "the service remembers the unchanged front part of your request, so it is neither re-processed nor re-charged"
+        "zh": "前面那段没变的话服务端已经记着，不必重新算钱重新算时间"
       },
       "units": [
         "ch06",
@@ -3209,8 +3140,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "两件事同时抢着改同一份数据，结果取决于谁手快",
-        "en": "two paths touch the same data at once; the outcome depends on timing"
+        "zh": "两件事同时抢着改同一份数据，结果取决于谁手快"
       },
       "units": [
         "ch01",
@@ -3259,8 +3189,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "写一串模式符号，让机器照它在文本里筛出匹配的内容",
-        "en": "a pattern string the machine uses to pick out matching text"
+        "zh": "写一串模式符号，让机器照它在文本里筛出匹配的内容"
       },
       "units": [
         "ch03",
@@ -3307,8 +3236,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "跑起来那一刻才查数据合不合规格，当场挡住脏输入",
-        "en": "checking the data while the program runs, so bad input stops right there"
+        "zh": "跑起来那一刻才查数据合不合规格，当场挡住脏输入"
       },
       "units": [
         "ch03",
@@ -3355,8 +3283,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "圈一块受限的地方让代码玩，出事也溅不到外面",
-        "en": "an enclosed area where code plays without touching anything outside"
+        "zh": "圈一块受限的地方让代码玩，出事也溅不到外面"
       },
       "units": [
         "ch01",
@@ -3401,8 +3328,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "每块代码只管自己那件事，别把判断和跑腿搅一起",
-        "en": "each piece of code handles one job and doesn't mix in another's"
+        "zh": "每块代码只管自己那件事，别把判断和跑腿搅一起"
       },
       "units": [
         "ch03",
@@ -3448,8 +3374,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一件彻底办完才轮到下一件，中间绝不重叠",
-        "en": "one job finishes completely before the next one starts"
+        "zh": "一件彻底办完才轮到下一件，中间绝不重叠"
       },
       "units": [
         "ch01"
@@ -3496,8 +3421,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "把内存里的对象摊平成一段文字，好存好发；反过来叫还原",
-        "en": "flattening an object into text so it can be stored or sent, and undoing it"
+        "zh": "把内存里的对象摊平成一段文字，好存好发；反过来叫还原"
       },
       "units": [
         "ch08",
@@ -3543,8 +3467,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "从打开到退出的一段连续对话，中途记录会被存下来",
-        "en": "one continuous run of conversation whose history can be saved and picked up again later"
+        "zh": "从打开到退出的一段连续对话，中途记录会被存下来"
       },
       "units": [
         "ch04",
@@ -3590,8 +3513,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "存放选项的纯文本文件，改里面的字段就等于改 Agent 的行为",
-        "en": "the plain text file where options live: edit a field there and the agent behaves differently next run"
+        "zh": "存放选项的纯文本文件，改里面的字段就等于改 Agent 的行为"
       },
       "units": [
         "ch05"
@@ -3632,8 +3554,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "算数的同时还改了外面：写文件、发消息、动全局状态",
-        "en": "besides computing, it also changes things outside itself: files, messages, state"
+        "zh": "算数的同时还改了外面：写文件、发消息、动全局状态"
       },
       "units": [
         "ch01",
@@ -3679,8 +3600,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "全程只许存在一份的对象，谁来拿都是同一个",
-        "en": "one shared instance for the whole program; everyone gets the same one"
+        "zh": "全程只许存在一份的对象，谁来拿都是同一个"
       },
       "units": [
         "ch11"
@@ -3724,8 +3644,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "一份事先写好的操作说明书，被点到时交给模型照着做",
-        "en": "a written-down procedure the model can be handed and follow, instead of being re-taught every time"
+        "zh": "一份事先写好的操作说明书，被点到时交给模型照着做"
       },
       "units": [
         "ch11",
@@ -3772,8 +3691,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "把某一瞬间的全部原样抄一份留着，之后怎么变都不影响它",
-        "en": "a copy of everything at one instant, untouched by later changes"
+        "zh": "把某一瞬间的全部原样抄一份留着，之后怎么变都不影响它"
       },
       "units": [
         "ch02",
@@ -3822,8 +3740,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "程序约定好的三个口：喂进去的话、打印的话、抱怨的话",
-        "en": "three agreed channels: what you feed in, what it prints, what it complains"
+        "zh": "程序约定好的三个口：喂进去的话、打印的话、抱怨的话"
       },
       "units": [
         "ch08"
@@ -3868,8 +3785,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "把流程画成几个格子，箭头规定哪格能跳到哪格",
-        "en": "a flow drawn as boxes, with arrows listing the legal jumps"
+        "zh": "把流程画成几个格子，箭头规定哪格能跳到哪格"
       },
       "units": [
         "ch02"
@@ -3914,8 +3830,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "同一件事备几套做法，按情况挑一套，主干不动",
-        "en": "several interchangeable ways for one job; pick one, core code unchanged"
+        "zh": "同一件事备几套做法，按情况挑一套，主干不动"
       },
       "units": [
         "ch09"
@@ -3952,8 +3867,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "结果一点点到就一点点用；书里指模型回复逐字涌出",
-        "en": "handle bits as they land; here, the model's reply arrives word by word"
+        "zh": "结果一点点到就一点点用；书里指模型回复逐字涌出"
       },
       "units": [
         "front",
@@ -4002,8 +3916,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "被派出去办一件小事的另一条对话线，办完只带回结论",
-        "en": "a second agent spawned for one small task with its own message history, reporting back only the answer"
+        "zh": "被派出去办一件小事的另一条对话线，办完只带回结论"
       },
       "units": [
         "ch01",
@@ -4049,8 +3962,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一个指路牌式的假条目，打开它其实走到别处的真文件",
-        "en": "a shortcut entry that quietly sends you to a file somewhere else"
+        "zh": "一个指路牌式的假条目，打开它其实走到别处的真文件"
       },
       "units": [
         "ch11"
@@ -4093,8 +4005,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "每轮对话都置顶的岗位说明书：它是谁、能做什么、听谁的",
-        "en": "the standing instruction sent on top of every request: who it is, what it may do, what it must obey"
+        "zh": "每轮对话都置顶的岗位说明书：它是谁、能做什么、听谁的"
       },
       "units": [
         "ch02",
@@ -4139,8 +4050,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "为赶工欠下的马虎账，日后要连本带利花时间还",
-        "en": "the shortcut you take today, paid back with interest later"
+        "zh": "为赶工欠下的马虎账，日后要连本带利花时间还"
       },
       "units": [
         "ch12",
@@ -4186,8 +4096,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "程序运行途中悄悄记下发生了什么，事后传回来供分析",
-        "en": "the program writes down what happened while running and ships the numbers back for later analysis"
+        "zh": "程序运行途中悄悄记下发生了什么，事后传回来供分析"
       },
       "units": [
         "ch07",
@@ -4234,8 +4143,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "测试时用的假替身，照剧本回应，不去碰真的外部服务",
-        "en": "a stand-in built for tests that answers from a script instead of the real thing"
+        "zh": "测试时用的假替身，照剧本回应，不去碰真的外部服务"
       },
       "units": [
         "ch02"
@@ -4281,8 +4189,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一轮允许花掉的篇幅上限，快到线就提醒或收尾",
-        "en": "the cap on how much text a round may spend before it wraps up"
+        "zh": "一轮允许花掉的篇幅上限，快到线就提醒或收尾"
       },
       "units": [
         "ch02",
@@ -4328,8 +4235,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "立个牌子写明“这条已作废”，而不是悄悄抹掉",
-        "en": "a marker saying this entry is dead, instead of silently removing it"
+        "zh": "立个牌子写明“这条已作废”，而不是悄悄抹掉"
       },
       "units": [
         "ch02"
@@ -4377,8 +4283,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "一次动作的返回内容：文件正文、命令输出或报错，被塞回对话",
-        "en": "what an action hands back -- file text, command output or an error -- fed into the chat as a new message"
+        "zh": "一次动作的返回内容：文件正文、命令输出或报错，被塞回对话"
       },
       "units": [
         "ch01",
@@ -4425,8 +4330,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一整段对话被逐条写成的流水账，恢复和审计都靠它",
-        "en": "the message-by-message log of a conversation, used to resume it later or to audit what actually happened"
+        "zh": "一整段对话被逐条写成的流水账，恢复和审计都靠它"
       },
       "units": [
         "ch14",
@@ -4471,8 +4375,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "打包时抖落用不上的分支代码，只留真被摇到的那几根",
-        "en": "shaking unused branches off the bundle so only reachable code ships"
+        "zh": "打包时抖落用不上的分支代码，只留真被摇到的那几根"
       },
       "units": [
         "ch03",
@@ -4517,8 +4420,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "给天下文字统一编号的一张表，各系统认字不打架",
-        "en": "one shared numbering table so every system reads the same characters"
+        "zh": "给天下文字统一编号的一张表，各系统认字不打架"
       },
       "units": [
         "ch12"
@@ -4562,8 +4464,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一个位置只允许列出的几种形状之一，用前得先分辨是哪种",
-        "en": "one slot holding any of several listed shapes; you must tell which first"
+        "zh": "一个位置只允许列出的几种形状之一，用前得先分辨是哪种"
       },
       "units": [
         "ch02",
@@ -4608,8 +4509,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "一条一直留着的双向通道，两头随时都能主动开口",
-        "en": "a connection kept open so either side can speak up any time"
+        "zh": "一条一直留着的双向通道，两头随时都能主动开口"
       },
       "units": [
         "ch12"
@@ -4655,8 +4555,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "事先列好许可名册，名册外一律挡在门外",
-        "en": "a prepared list of the permitted; everything else is denied"
+        "zh": "事先列好许可名册，名册外一律挡在门外"
       },
       "units": [
         "ch01",
@@ -4701,8 +4600,7 @@
       },
       "priority": "core",
       "plain": {
-        "zh": "交出一个结果，然后停在原地等对方来取下一个",
-        "en": "hand out one value, then sit still until the caller asks for the next"
+        "zh": "交出一个结果，然后停在原地等对方来取下一个"
       },
       "units": [
         "ch01",
@@ -4747,8 +4645,7 @@
       },
       "priority": "extra",
       "plain": {
-        "zh": "把往外逐个交活这整件事，转包给另一段同样的代码",
-        "en": "delegate the whole hand-out job to another generator and pass its output along"
+        "zh": "把往外逐个交活这整件事，转包给另一段同样的代码"
       },
       "units": [
         "ch01",

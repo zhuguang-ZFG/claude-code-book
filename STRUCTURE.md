@@ -12,9 +12,8 @@
 ├── 第三部分-高级模式篇/        第 9–12 章
 ├── 第四部分-工程实践篇/        第 13–15 章
 ├── 附录/                    附录 A–D
-├── en/                      英文镜像，目录与文件一一对应
 ├── cover.png                封面图（只上 README；整书扉页用的是自绘矢量车图）
-├── README.md / en/README.md  双语门面与目录
+├── README.md                中文门面与目录
 ├── LICENSE                  CC BY-NC-SA 4.0 法律文本
 ├── STRUCTURE.md             本文件
 ├── CONTRIBUTING.md          环境与协作规范
@@ -35,32 +34,32 @@
 
 ## 2. 书稿：20 个单元
 
-单元（unit）是构建器眼中的最小装配单位：1 个前言 + 15 章 + 4 篇附录 = 20。每个单元在 `yuyu-book/manifest.json` 里登记一个 `id` 和双语两个路径，两个路径都必须存在（`core.validate_configs()` 会逐个检查）。
+单元（unit）是构建器眼中的最小装配单位：1 个前言 + 15 章 + 4 篇附录 = 20。每个单元在 `yuyu-book/manifest.json` 里登记一个 `id` 和它的源文件路径，路径必须存在（`core.validate_configs()` 会逐个检查）。
 
-| id | 中文路径 | 英文路径 |
-|----|----------|----------|
-| `front` | 00-前言.md | en/00-Foreword.md |
-| `ch01` | 第一部分-基础篇/01-智能体编程的新范式.md | en/Part-1-Foundations/01-The-New-Paradigm-of-Agent-Programming.md |
-| `ch02` | 第一部分-基础篇/02-对话循环-Agent的心跳.md | en/Part-1-Foundations/02-The-Dialog-Loop-Heartbeat-of-an-Agent.md |
-| `ch03` | 第一部分-基础篇/03-工具系统-Agent的双手.md | en/Part-1-Foundations/03-The-Tool-System-Agent-Hands.md |
-| `ch04` | 第一部分-基础篇/04-权限管线-Agent的护栏.md | en/Part-1-Foundations/04-The-Permission-Pipeline-Agent-Guardrails.md |
-| `ch05` | 第二部分-核心系统篇/05-设置与配置-Agent的基因.md | en/Part-2-Core-Systems/05-Settings-and-Configuration-Agent-DNA.md |
-| `ch06` | 第二部分-核心系统篇/06-记忆系统-Agent的长期记忆.md | en/Part-2-Core-Systems/06-The-Memory-System-Agent-Long-Term-Memory.md |
-| `ch07` | 第二部分-核心系统篇/07-上下文管理-Agent的工作记忆.md | en/Part-2-Core-Systems/07-Context-Management-Agent-Working-Memory.md |
-| `ch08` | 第二部分-核心系统篇/08-钩子系统-Agent的生命周期扩展点.md | en/Part-2-Core-Systems/08-The-Hook-System-Agent-Lifecycle-Extension-Points.md |
-| `ch09` | 第三部分-高级模式篇/09-子智能体与Fork模式.md | en/Part-3-Advanced-Patterns/09-Sub-Agents-and-the-Fork-Pattern.md |
-| `ch10` | 第三部分-高级模式篇/10-协调器模式-多智能体编排.md | en/Part-3-Advanced-Patterns/10-The-Coordinator-Pattern-Multi-Agent-Orchestration.md |
-| `ch11` | 第三部分-高级模式篇/11-技能系统与插件架构.md | en/Part-3-Advanced-Patterns/11-The-Skill-System-and-Plugin-Architecture.md |
-| `ch12` | 第三部分-高级模式篇/12-MCP集成与外部协议.md | en/Part-3-Advanced-Patterns/12-MCP-Integration-and-External-Protocols.md |
-| `ch13` | 第四部分-工程实践篇/13-流式架构与性能优化.md | en/Part-4-Engineering-Practice/13-Streaming-Architecture-and-Performance-Optimization.md |
-| `ch14` | 第四部分-工程实践篇/14-Plan模式与结构化工作流.md | en/Part-4-Engineering-Practice/14-Plan-Mode-and-Structured-Workflows.md |
-| `ch15` | 第四部分-工程实践篇/15-构建你自己的Agent-Harness.md | en/Part-4-Engineering-Practice/15-Building-Your-Own-Agent-Harness.md |
-| `apxa` | 附录/A-源码导航地图.md | en/Appendices/A-Architecture-Navigation-Map.md |
-| `apxb` | 附录/B-工具完整清单.md | en/Appendices/B-Complete-Tool-Inventory.md |
-| `apxc` | 附录/C-功能标志速查表.md | en/Appendices/C-Feature-Flag-Reference.md |
-| `apxd` | 附录/D-术语表.md | en/Appendices/D-Glossary.md |
+| id | 路径 |
+|----|------|
+| `front` | 00-前言.md |
+| `ch01` | 第一部分-基础篇/01-智能体编程的新范式.md |
+| `ch02` | 第一部分-基础篇/02-对话循环-Agent的心跳.md |
+| `ch03` | 第一部分-基础篇/03-工具系统-Agent的双手.md |
+| `ch04` | 第一部分-基础篇/04-权限管线-Agent的护栏.md |
+| `ch05` | 第二部分-核心系统篇/05-设置与配置-Agent的基因.md |
+| `ch06` | 第二部分-核心系统篇/06-记忆系统-Agent的长期记忆.md |
+| `ch07` | 第二部分-核心系统篇/07-上下文管理-Agent的工作记忆.md |
+| `ch08` | 第二部分-核心系统篇/08-钩子系统-Agent的生命周期扩展点.md |
+| `ch09` | 第三部分-高级模式篇/09-子智能体与Fork模式.md |
+| `ch10` | 第三部分-高级模式篇/10-协调器模式-多智能体编排.md |
+| `ch11` | 第三部分-高级模式篇/11-技能系统与插件架构.md |
+| `ch12` | 第三部分-高级模式篇/12-MCP集成与外部协议.md |
+| `ch13` | 第四部分-工程实践篇/13-流式架构与性能优化.md |
+| `ch14` | 第四部分-工程实践篇/14-Plan模式与结构化工作流.md |
+| `ch15` | 第四部分-工程实践篇/15-构建你自己的Agent-Harness.md |
+| `apxa` | 附录/A-源码导航地图.md |
+| `apxb` | 附录/B-工具完整清单.md |
+| `apxc` | 附录/C-功能标志速查表.md |
+| `apxd` | 附录/D-术语表.md |
 
-四个篇（`p1`–`p4`）在 manifest 里除 `units` 外还带 `no`/`title`/`motto`/`goal`，用于生成篇分隔页。中英文各有 160 个 Mermaid 围栏（合计 320），双语图源文本不同，因此分别渲染。
+四个篇（`p1`–`p4`）在 manifest 里除 `units` 外还带 `no`/`title`/`motto`/`goal`，用于生成篇分隔页。全书 160 个 Mermaid 围栏，渲染为矢量图后内嵌。
 
 ## 3. `yuyu-book/` 构建器
 
@@ -108,8 +107,8 @@
 | `plates.py` | 图版几何与打印：宽图 `min-width` 下限、竖版高度上限、横版判定、`<figure>` 标记与 `ill` 槽位题注；`mermaid_figure()` 还给每个图版根写 `aria-labelledby="fig-cap-<uid>"`，图题 `<span class="fig-cap">` 带同名 id——mermaid 自己只写 `role="graphics-document"`，不给名字，读屏会把整张图念成无名图形。`render.py` 重导出让既有调用不变 |
 | `frontmatter.py` | 前置页与导航：封面、版本与许可、修订页、阅读路线、全书线路图、篇分隔页、目录；`pages.py` 重导出 |
 | `backmatter.py` | 后置页：来源与许可、主题索引、索引页码回填、原理札记、按语集；`pages.py` 重导出 |
-| `pages.py` | 正文侧页面组件与双语 UI 标签表（前置页已拆到 `frontmatter.py`，后置页拆到 `backmatter.py`）。`compass()` 渲染"本章问题 / 读完交付 / 本章边界"三张卡加"来源锚点"chips；`principles_page()` 把每条 core 术语的 `why` 按章排成一页（纸面没有悬停，理由必须有另一条路走到读者眼前）；`notes_page()` 把 20 行按语按阅读顺序排成书末「按语集」，每行的章题链回正文——章末那一行只是它路过的位置，合集才是它能被检索、被读完的地方；`route_map_page()` 把全书画成一条路（前言是路头的辐轮，戴目录同一枚序号 `FRONT_NO`），图下再列一份带链接的站表——`aria-hidden` 的画里没有可达的编号，也没有链接；`part_divider()` 在篇分隔页起头放该篇题刻；`lead_band()` 放章首白话导读带；`fill_index_folios()` 把量好的页码写进主题索引每行预留的空位——按行自己链接的锚点认领而不按头词字面，空位没人填或多出一位都让构建失败；`note()` 把修订说明里的反引号排成真代码元素——这些笔记引用的是构建器自己的名字，一溜裸反引号在排好的书里读起来像笔误 |
-| `plain.py` | 通俗层：加载并校验 `glosses.json` 与 `reading-paths.json`。给正文首现术语套 `<span class="gloss">`（屏幕上悬停出白话浮窗，纸面上退回章末「新词」面板（按单元类型改称「本章新词」「开篇新词」「本附录新词」）；浮窗有两种落位——屏幕宽过「版心 + 浮窗」= 67rem 才贴着术语浮起，否则钉在视口底部作说明条，而宽表里的术语任何宽度都用说明条，因为横向滚动的容器会把画在它里面的浮窗一并裁掉），给每个单元算新词清单，给每个 H2 按位置表盖「起步 / 主干 / 进阶」tier 徽，并把 manifest 里的 `plain`/`analogy` 装配成导读带；浮窗本身是三层——白话定义、`why`（它非这样不可的理由）、`analogy`（比方），`why` 排在定义之后、比方之前。白话不许自由发挥：`validate_plain()` 要求每条证据 `file:line` 落在代码围栏之外且该行确实含登记过的表面词形，core 词条与每条导读带在中英两侧都要有证据；`why` 另有自己的 `why_evidence`，中英各一行、同样要落进正文的散文——理由不能是构建器替书稿编的；按语另有 `validate_notes()`，它读的是**该单元自己的源文件**：一条按语必须含一个已注册词形，且那个词形真的站在它那一章的正文里（术语锁），中文 ≤36 字、英文 ≤130 字符，英文里出现汉字即错，20 个单元一个都不能缺、也不许多出一个没主的 |
+| `pages.py` | 正文侧页面组件（前置页已拆到 `frontmatter.py`，后置页拆到 `backmatter.py`）。`compass()` 渲染"本章问题 / 读完交付 / 本章边界"三张卡加"来源锚点"chips；`principles_page()` 把每条 core 术语的 `why` 按章排成一页（纸面没有悬停，理由必须有另一条路走到读者眼前）；`notes_page()` 把 20 行按语按阅读顺序排成书末「按语集」，每行的章题链回正文——章末那一行只是它路过的位置，合集才是它能被检索、被读完的地方；`route_map_page()` 把全书画成一条路（前言是路头的辐轮，戴目录同一枚序号 `FRONT_NO`），图下再列一份带链接的站表——`aria-hidden` 的画里没有可达的编号，也没有链接；`part_divider()` 在篇分隔页起头放该篇题刻；`lead_band()` 放章首白话导读带；`fill_index_folios()` 把量好的页码写进主题索引每行预留的空位——按行自己链接的锚点认领而不按头词字面，空位没人填或多出一位都让构建失败；`note()` 把修订说明里的反引号排成真代码元素——这些笔记引用的是构建器自己的名字，一溜裸反引号在排好的书里读起来像笔误 |
+| `plain.py` | 通俗层：加载并校验 `glosses.json` 与 `reading-paths.json`。给正文首现术语套 `<span class="gloss">`（屏幕上悬停出白话浮窗，纸面上退回章末「新词」面板（按单元类型改称「本章新词」「开篇新词」「本附录新词」）；浮窗有两种落位——屏幕宽过「版心 + 浮窗」= 67rem 才贴着术语浮起，否则钉在视口底部作说明条，而宽表里的术语任何宽度都用说明条，因为横向滚动的容器会把画在它里面的浮窗一并裁掉），给每个单元算新词清单，给每个 H2 按位置表盖「起步 / 主干 / 进阶」tier 徽，并把 manifest 里的 `plain`/`analogy` 装配成导读带；浮窗本身是三层——白话定义、`why`（它非这样不可的理由）、`analogy`（比方），`why` 排在定义之后、比方之前。白话不许自由发挥：`validate_plain()` 要求每条证据 `file:line` 落在代码围栏之外且该行确实含登记过的表面词形，core 词条与每条导读带都要有证据；`why` 另有自己的 `why_evidence`，同样要落进正文的散文——理由不能是构建器替书稿编的；按语另有 `validate_notes()`，它读的是**该单元自己的源文件**：一条按语必须含一个已注册词形，且那个词形真的站在它那一章的正文里（术语锁），中文 ≤36 字，20 个单元一个都不能缺、也不许多出一个没主的 |
 | `art.py` | 插图装载：`illustrations/<unit-id>.svg` 是每单元一枚章徽，`illustrations/part-<id>.svg` 是每篇一幅题刻，`illustrations/cover.svg` 是扉页那幅四马古车图版。装载顺序是先查 `illustrations-omp/<id>.svg`、查不到再回落 `illustrations/<id>.svg`：两个分册的 id 不重叠（omp 的单元与篇一律带 `omp-` 前缀），一次查找不必知道当前装的是哪个产品，而驿卒 `keeper.svg` 全书仍只需一份。`_read()` 在装配前逐个把关——章徽/题刻不超过 6 KB、扉页图版另有 `PLATE_BYTES` 上限，都要带 `viewBox`、只用 `currentColor` 描线，且不得出现 `id=`、`href=`、`url(`、`<style>`、`<script>`。同一份图会被内联进单文件几十次，一个 id 就是一次重复 id；`currentColor` 则是"一张图同时管屏幕、暗色与纸面"的前提。正文插图再走一道 `mark_decorative()`：根元素自带 `aria-label`/`aria-labelledby`/`<title>` 的图保留自述（`ch02-cancel-chain.svg` 是目前唯一一份），其余补 `aria-hidden="true"`——图版的意思写在图题里，读屏不该在同一处停两遍；只有 `role` 不算名字，带 `aria-hidden="false"` 而无名的会被改写成 `true`。测试按这条规则扫全部 46 份源文件，`audit()` 对每份成品再扫一遍 |
 | `mermaid.py` | 图版预渲染与缓存：`.cache/mermaid/` 下的 SVG 以 `sha1(配色指纹 + mermaid 版本 + 浏览器版本 + 图源)` 为键（指纹由 `_style_fingerprint()` 现算，改一个色值旧图就会失效，不会拿旧配色继续服务）；`THEME` 是全书统一的图板配色，但主题只及于作者没管过的节点——正文另有 696 条 `classDef`、192 条 `style` 自带 Material/Tailwind 色，`reink_colors()` 在渲染前按色相把它们并入 `BOOK_FAMILIES` 的七组书色（fill 决定角色，`color:` 一律换成该角色的墨色，因为映射后的底色都是浅色，作者原来写的白字会看不见），图源文件本身不改；`captions_for()` 取该图之上最近的 H2 作图题（`block.line` 就是文件行号，所以紧贴围栏的标题也算），其上什么都没有才回落为"架构示意"/"Architecture sketch"；`source_fallback()` 供 `--mermaid source` 使用。图版刻意保持 crisp 直线：mermaid 11 的顶层 `look:'handDrawn'` 实测把单张图从 16.8 KB 抬到 111 KB、最大那幅从 78 KB 抬到 1.26 MB（rough.js 每个形状多道抖动描边），320 张全换会让单文件整书涨到几十 MB，手绘气质因此由 `style.py` 的走线、车辙、道路与墨记承担 |
 | `audit.py` | 落盘前的 HTML 契约检查，见第 6 节 |
@@ -118,7 +117,7 @@
 
 ### 3.2.1 `tests/`：构建契约
 
-`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段，以及英文书稿逐行零汉字门禁；附录 D 只豁免术语表第二列，定义列照常检查）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点、原理札记的成页与归属、主题索引每行恰一枚页码空位与按锚点认领的填充）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、`why` 的长度与双语证据门禁正反两面）、`test_notes`（按语的术语锁正反两面、长度上限、英文不许夹汉字、缺一条与多一条都算错、按语集成页与回链、驿卒图过装载器且小到能内联 20 次，最后拿真实的 `notes.json` 与 20 份单元源文件跑它自己的门禁）、`test_art`（全部手写图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `python -m yuyu_book --check --mermaid source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是；索引页码在量的一趟与打印的一趟之间是否还站得住）、`test_docclaims`（把 README / STRUCTURE / CREDITS / revisions 里引用的每个数字重算一遍：附录 D 词条数、白话注与 core 数、主题索引、手绘图、来源登记、每版图版、构建器测试总数；句子改了措辞导致正则找不到那句，同样算失败——数字悄悄烂掉才是真正的问题。另一半盯的是**正文声明的总数与它自己那张表**：第 8 章说的事件数必须等于汇总表行数、附录 B 数出的工具数必须等于全书每一处引用它的句子（连第 13 章 0.1–0.3ms × N 的算术一起核）、§13.5.1 的维度数以图版真正画出的枚数为准、附录 B 那行按语里的总数与附录 B 数出的行数对表（按语里宁可一个数字都不写，写了就必须能被重算），而被替换掉的旧措辞（`45+`、六十多个、26 个事件、三个维度）只要再出现就让测试红）、`test_product_isolation`（两个产品不许互相写对方的文件：御舆 20 单元与 omp 39 单元各自唯一、`glosses` / `notes` / `reading-paths` 三个登记表名按 product 派生后互斥且都在 `registry.FILES` 白名单里、产物文件名不可能撞车（前缀 `yuyu-agent-harness` vs `yuyu-omp`）、omp 必须**显式**把 `subject_index_registry` 声明成 `null`（否则 `app.build_edition()` 的默认值会把御舆的主题索引抢去盖章）、omp 只声明 `langs: ["zh"]` 而御舆继续不声明 `langs` 以保留双语默认，最后一条盯住「别的构建器单测不许加载 omp 清单」——单元数 20 是御舆的契约，不能被第二本书稀释）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
+`yuyu-book/tests/` 是构建器自己的单测（不启动浏览器、不渲染图、绝不写书稿）：`test_manifest`（20 单元 / 4 篇 / guides 覆盖与字段，以及附录 D 术语表的结构门禁）、`test_sources`（登记完整性、钉版、许可与 CREDITS 一致性）、`test_mermaid`（围栏抽取、图题对位、缓存键、源码回落）、`test_render_anchors`（slug、id 前缀、callout、表格容器、语言角标、脚注）、`test_crossrefs`（`RefLinker` 的加链与跳过子树）、`test_audit`（第 6 节每条契约正反两面）、`test_pages`（结构页与罗盘/来源页锚点、原理札记的成页与归属、主题索引每行恰一枚页码空位与按锚点认领的填充）、`test_plain`（浮窗装配、新词面板与正文标记数一致、tier 位置表长度、`why` 的长度与证据门禁正反两面）、`test_notes`（按语的术语锁正反两面、长度上限、缺一条与多一条都算错、按语集成页与回链、驿卒图过装载器且小到能内联 20 次，最后拿真实的 `notes.json` 与 20 份单元源文件跑它自己的门禁）、`test_art`（全部手写图齐全、每份都过装载器、体积上限、无重复 id，以及装载器对 `id=` / `href=` / `url(` / `<script>` / 非 `currentColor` 的拒绝）、`test_build_contracts`（WCAG 对比度、排版与打印契约、双宽度版心契约、依赖清单、仓库文档齐备，并跑一次真实的 `python -m yuyu_book --check --mermaid source`）、`test_pdf`（正文带怎么算：只有页眉页码的纸是洞，图版与横版纸页不是；索引页码在量的一趟与打印的一趟之间是否还站得住）、`test_docclaims`（把 README / STRUCTURE / CREDITS / revisions 里引用的每个数字重算一遍：附录 D 词条数、白话注与 core 数、主题索引、手绘图、来源登记、每版图版、构建器测试总数；句子改了措辞导致正则找不到那句，同样算失败——数字悄悄烂掉才是真正的问题。另一半盯的是**正文声明的总数与它自己那张表**：第 8 章说的事件数必须等于汇总表行数、附录 B 数出的工具数必须等于全书每一处引用它的句子（连第 13 章 0.1–0.3ms × N 的算术一起核）、§13.5.1 的维度数以图版真正画出的枚数为准、附录 B 那行按语里的总数与附录 B 数出的行数对表（按语里宁可一个数字都不写，写了就必须能被重算），而被替换掉的旧措辞（`45+`、六十多个、26 个事件、三个维度）只要再出现就让测试红）、`test_product_isolation`（两个产品不许互相写对方的文件：御舆 20 单元与 omp 39 单元各自唯一、`glosses` / `notes` / `reading-paths` 三个登记表名按 product 派生后互斥且都在 `registry.FILES` 白名单里、产物文件名不可能撞车（前缀 `yuyu-agent-harness` vs `yuyu-omp`）、omp 必须**显式**把 `subject_index_registry` 声明成 `null`（否则 `app.build_edition()` 的默认值会把御舆的主题索引抢去盖章）、omp 只声明 `langs: ["zh"]` 而御舆不声明 `langs`，默认即中文单语，最后一条盯住「别的构建器单测不许加载 omp 清单」——单元数 20 是御舆的契约，不能被第二本书稀释）。共享夹具（如 `test_pages.Config`）必须自己继承 `unittest.TestCase`：纯 mixin 基类会让 `discover` 静默跳过整批用例，这里曾因此有 22 个测试从未运行。跑法见 `CONTRIBUTING.md` 第 2 节。
 
 ### 3.3 数据文件
 
@@ -127,14 +126,14 @@
 | 文件 | 内容 |
 |------|------|
 | `manifest.json` | 书的骨架：`version` / `date` / `author` / `repository` / `license` / `title` / `subtitle` / `epigraph` / `start_reading` + `parts`(4) / `front` / `appendices`(4) / `guides`(20)。单元条目只有 `id`、`zh`、`en` 三个字段；`guides[<id>]` 除罗盘三卡与 `sources` 外，还带通俗层的 `plain`（章首导读带）、`analogy`（打个比方）与 `plain_evidence`（指回书稿的 `file:line` 或稳定块 ID） |
-| `glosses.json` | 术语白话注，当前 102 条（44 个 core 会在正文画虚线）。每条 `term` / `forms`（中英表面词形）/ `plain` / `analogy` / `why` + `why_evidence`（原理句与它的出处，44 个 core 各配一对，长度上限 zh 52 / en 190）/ `priority` / `evidence`。只有 `priority: "core"` 的词会在正文里画虚线并进入章末新词面板（面板与画线的是同一批词，构建时断言）；一个术语在某章只以行内代码现身时，虚线画在那段代码上——但只画读不成普通词的形状（带 `_`、数字或驼峰接缝的标识符），`Streaming` 这类普通词仍等正文，`<pre>` 图版一律不画（图版整块来读，虚线还会打断照抄）；`extra` 不上正文也不上面板，只在附录 D 里可查——一章最多 22 个新词，超了就下调 |
+| `glosses.json` | 术语白话注，当前 102 条（44 个 core 会在正文画虚线）。每条 `term` / `forms`（中文词形与保留的英文写法）/ `plain` / `analogy` / `why` + `why_evidence`（原理句与它的出处，44 个 core 各配一对，长度上限 zh 52 / en 190）/ `priority` / `evidence`。只有 `priority: "core"` 的词会在正文里画虚线并进入章末新词面板（面板与画线的是同一批词，构建时断言）；一个术语在某章只以行内代码现身时，虚线画在那段代码上——但只画读不成普通词的形状（带 `_`、数字或驼峰接缝的标识符），`Streaming` 这类普通词仍等正文，`<pre>` 图版一律不画（图版整块来读，虚线还会打断照抄）；`extra` 不上正文也不上面板，只在附录 D 里可查——一章最多 22 个新词，超了就下调 |
 | `reading-paths.json` | 三层阅读路线（起步 / 主干 / 进阶）。按单元存**位置**列表：数组长度必须等于该单元实际渲染出的 `<h2>` 数，对不上 `plain.stamp_tiers()` 直接报错，宁可不产出也不盖错章 |
-| `notes.json` | 按语层：以单元 id 为键的 20 条一句话旁白（中英各一份），由那位老驿卒在章末车辙上方说出来。门禁是 `plain.validate_notes()`：必须含一个已注册词形、且该词形出现在这一单元自己的正文里（术语锁），中文 ≤36 字、英文 ≤130 字符，英文不夹汉字，一个单元都不能缺。还有一道门在 `test_docclaims`：按语里写的数字必须能被重算——`KEEPER_TOTALS` 钉住附录 B 那行的工具总数与附录 B 真正数出来的行数相等，其余任何数字都要么不写、要么得先在表里登记它从哪算来；写成汉字的「五十五」测试读不到，正是这本书被约数骗过的原因 |
-| `illustrations/` | 48 份手写 SVG：20 枚单元章徽（`<unit-id>.svg`，64×64 描线）+ 4 幅篇题刻（`part-<id>.svg`，200×140 小版画）+ 1 幅扉页车图（`cover.svg`，1000×470 横构图，四马一盖车、三十辐的轮，约 11.7 KB，故享 `PLATE_BYTES`）+ 1 枚驿卒（`keeper.svg`，64×64，斗笠与提灯；章章内联一次，测试把它的体积钉在 3 KB 以内）+ 22 幅正文插图（`<chapter>-<name>.svg`，由正文的 ```ill 围栏点名，同样享 `PLATE_BYTES`；根元素带 `seq` 的是逐格胶片，滚动逐格显影、悬停循环播放）。全部 `currentColor`，无 id、无外链，见 `art.py` |
+| `notes.json` | 按语层：以单元 id 为键的 20 条一句话旁白，由那位老驿卒在章末车辙上方说出来。门禁是 `plain.validate_notes()`：必须含一个已注册词形、且该词形出现在这一单元自己的正文里（术语锁），中文 ≤36 字，一个单元都不能缺。还有一道门在 `test_docclaims`：按语里写的数字必须能被重算——`KEEPER_TOTALS` 钉住附录 B 那行的工具总数与附录 B 真正数出来的行数相等，其余任何数字都要么不写、要么得先在表里登记它从哪算来；写成汉字的「五十五」测试读不到，正是这本书被约数骗过的原因 |
+| `illustrations/` | 56 份手写 SVG：20 枚单元章徽（`<unit-id>.svg`，64×64 描线）+ 4 幅篇题刻（`part-<id>.svg`，200×140 小版画）+ 1 幅扉页车图（`cover.svg`，1000×470 横构图，四马一盖车、三十辐的轮，约 11.7 KB，故享 `PLATE_BYTES`）+ 1 枚驿卒（`keeper.svg`，64×64，斗笠与提灯；章章内联一次，测试把它的体积钉在 3 KB 以内）+ 30 幅正文插图（`<chapter>-<name>.svg`，由正文的 ```ill 围栏点名，同样享 `PLATE_BYTES`；根元素带 `seq` 的是逐格胶片，滚动逐格显影、悬停循环播放）。全部 `currentColor`，无 id、无外链，见 `art.py` |
 | `illustrations-omp/` | 47 份 omp 分册手写 SVG：39 枚单元章徽（`<unit-id>.svg`，64×64 描线，`omp-front` + `omp-ch01..33` + `omp-apxa..e` 一枚不缺）+ 7 幅篇题刻（`part-omp-p<n>.svg`，200×140，按 `manifest-omp.json` 的 7 篇各一幅）+ 1 幅正文插图（`omp-session-disk.svg`，第 7 章 §7.2，由正文的 `ill` 围栏点名）。规则与 `illustrations/` 同出一条：同一个 `art._read()` 把关——≤6 KB、带 `viewBox`、只用 `currentColor` 描线，不得出现 `id=`、`href=`、`url(`、`<style>`、`<script>`。章徽不挂御舆那套 `a-*` 动画类：成品里的画出规则是 `.ch-emblem path[pathLength],.ch-emblem circle[pathLength]`，本来就不分产品。缺不缺有两道门，各管一半：`app.build_edition()` 比对「装进页面的」与「托盘里能装的」，空托盘 0/0 也算通过，所以它只保证画出来的都上了页；`test_product_isolation.OmpArtTray` 则拿 manifest 的 39 个单元 id 直接问 `art.missing()`，一枚缺就红。这一批的进度记在 `docs/yuyu-overhaul/ILLUST-SYNC.md` |
 | `sources.json` | 以来源 id 为键的 55 条登记。字段：`title` `authority` `kind` `url` `pinned` `snapshot` `accessed` `license` `scope`，`community` 类另带 `normative`。凡本书自己写的中文注（快照、许可、用途，以及带中文括注的标题与社区帖标题）都配 `*_en` 镜像，渲染时按语言取字段——门禁：镜像缺失或镜像里仍有汉字即构建失败。kind 分布：`docs` 25、`github` 22、`blog` 4、`spec` 1、`npm` 1、`community` 2；55 条全部被 `guides.sources` 引用 |
 | `revisions.json` | "版本与修订"页的条目，zh / en 各一份 |
-| `subject-index.json` | 书末主题索引（生成物，当前 238 个词条 = 116 条英文原名 + 122 条中文译名），由 `--regen-index` 重建。中文块排在 Z 之后（`core.INDEX_CN_LETTER = "中"` 的字典序天然靠后），标题取 `ui("index_cn")`，块下一行 `ui("index_cn_note")` 说明排检法——全书只有这一块按部首笔画排；英文版只渲染英文块，没有本语言词条的行会被跳过。每行末尾预留的页码空位在屏幕上隐藏，出 PDF 时由两趟打印填上该单元真正所在的那一页 |
+| `subject-index.json` | 书末主题索引（生成物，当前 238 个词条 = 116 条英文原名 + 122 条中文译名），由 `--regen-index` 重建。中文块排在 Z 之后（`core.INDEX_CN_LETTER = "中"` 的字典序天然靠后），标题取 `ui("index_cn")`，块下一行 `ui("index_cn_note")` 说明排检法——全书只有这一块按部首笔画排；没有本语言词条的行会被跳过。每行末尾预留的页码空位在屏幕上隐藏，出 PDF 时由两趟打印填上该单元真正所在的那一页 |
 
 ### 3.3.1 块标识
 
@@ -144,7 +143,7 @@
 <!-- block: ch03.tool-generics -->
 ```
 
-ID 形如 `<单元 id>.<小写 slug>`，在单元内唯一。ID 属于具体语言的文件：中英可共用同一个 ID，也可因译文不同各自生成。解析器按 ID 在所有单元文件里查找；一次解析实际证明哪些语言，取决于哪些版本带有同一标记——只在一个版本出现的 ID 只证明该版本，两个版本共用才同时证明两边。`blocks.py` 校验格式、归属、重复、悬空，以及标记落在代码围栏内的情况。登记表迁移的历史等价记录见 `docs/migrations/line-ref-equivalence.json`。日常构建只接受稳定块 ID；即使 ID 放在围栏前，围栏内容也不能充当散文证据。旧行号读取及 `scripts/shift_anchors.py` 已删除，历史行号转换仅由离线 `migrate_line_refs.py` 负责。
+ID 形如 `<单元 id>.<小写 slug>`，在单元内唯一。ID 绑定到具体文件，同一单元的中文段落各占一个 ID。解析器按 ID 在所有单元文件里查找；一次解析实际证明哪些语言，取决于哪些版本带有同一标记——只在一个版本出现的 ID 只证明该版本，两个版本共用才同时证明两边。`blocks.py` 校验格式、归属、重复、悬空，以及标记落在代码围栏内的情况。登记表迁移的历史等价记录见 `docs/migrations/line-ref-equivalence.json`。日常构建只接受稳定块 ID；即使 ID 放在围栏前，围栏内容也不能充当散文证据。旧行号读取及 `scripts/shift_anchors.py` 已删除，历史行号转换仅由离线 `migrate_line_refs.py` 负责。
 
 ### 3.4 生成物（不要手改）
 
@@ -171,7 +170,7 @@ yuyu-book/
 |---|---|---|
 | 入口 | `python scripts/bookctl.py build --lang zh\|en\|both`（`--product` 缺省即 `book`） | `python scripts/bookctl.py build --product omp --lang zh`，或 `make book-omp` / `make book-omp-pdf` |
 | 实际命令行 | `python -m yuyu_book --lang <lang>` | `python -m yuyu_book --lang zh --manifest manifest-omp.json --sources sources-omp.json`（由 `bookctl.py` 的 `build()` 组装） |
-| 骨架 | `manifest.json`：4 部 / 15 章 / 前言 / 4 附录 = 第 2 节那张 20 单元表，双语 | `manifest-omp.json`：7 部 / 33 章 / 前言 / 附录 A–E，`langs: ["zh"]`；单元数是 39，构建统计行会把 `N units` 打出来，不必手抄 |
+| 骨架 | `manifest.json`：4 部 / 15 章 / 前言 / 4 附录 = 第 2 节那张 20 单元表 | `manifest-omp.json`：7 部 / 33 章 / 前言 / 附录 A–E，`langs: ["zh"]`；单元数是 39，构建统计行会把 `N units` 打出来，不必手抄 |
 | 通俗层登记表 | 裸名 `glosses.json` / `notes.json` / `reading-paths.json` | manifest 自称 `product: "omp"`，于是 `plain.registry_names()`（`yuyu_book/plain.py:70`）改取 `-omp` 同名兄弟——写第二本不会覆写第一本 |
 | 其余登记表 | `revisions.json`、`subject-index.json` | `revisions_registry` 键指向 `revisions-omp.json`；`subject_index_registry: null` → 不排书末主题索引（`app.build_edition()` 读取该键），索引页码回填那条工序因此在 omp 这边整层不存在 |
 | 产物名 | `output_prefix` 缺省 → `yuyu-agent-harness-*`（`app.build_edition()`） | `output_prefix: "yuyu-omp"` → `yuyu-omp-zh.html` / `.pdf` |
@@ -195,10 +194,10 @@ yuyu-book/
 | `scripts/draw_omp_illustrations.py` | 用 Pillow 与本机 CJK 字体重绘 omp 六张入门概念图：默认只写 `.scratch/` 预览，确认后加 `--out-dir omp/images`；单张超过构建器的 300,000 字节内嵌预算会在写盘前失败，语义边界与字体说明见 `omp/overhaul/PYTHON-ILLUSTRATIONS.md` |
 | `scripts/star_history.py` | 生成并增量维护 `docs/images/star-history-{light,dark}.svg` |
 | `tests/test_star_history.py` | 上面那个脚本的单测（`python -m unittest discover -s tests`） |
-| `.github/workflows/book.yml` | Book CI 的 `Fast` / `Full` / `Omp` / `Bootstrap` 四个 job：Fast 跑双语平衡检查与 `bookctl check --fast`；Full 在 Fast 之后跑 `check --full` 与 `scripts/check_artifact_claims.py` 并上传双语 HTML/PDF；Omp 独立检查第二分册（结构/交付审计 + 中文 HTML/PDF），故意不写 `needs`——omp 红不挡御舆发布；Bootstrap 在 Ubuntu/Windows 上跑 `doctor` 与源码装配 |
+| `.github/workflows/book.yml` | Book CI 的 `Fast` / `Full` / `Omp` / `Bootstrap` 四个 job：Fast 跑书稿契约检查与 `bookctl check --fast`；Full 在 Fast 之后跑 `check --full` 与 `scripts/check_artifact_claims.py` 并上传 HTML/PDF；Omp 独立检查第二分册（结构/交付审计 + 中文 HTML/PDF），故意不写 `needs`——omp 红不挡御舆发布；Bootstrap 在 Ubuntu/Windows 上跑 `doctor` 与源码装配 |
 | `.github/workflows/release.yml` | Release CI：`v*` 标签或手动触发，先跑 `check --full` 与产物声明核对，再调 `bookctl release --version <tag> --epub` 装配，`sha256sum --check` 后上传工件；标签推送时创建 GitHub Release。当前尚未在 CI 运行过 |
 | `.github/workflows/check-book.yml` | 已删除：原内容门（`check_book.py` + `check:diagrams` + unittest）并入 `book.yml` 的 `Fast` job |
-| `.github/workflows/pages.yml` | Pages CI：main 分支 push 后构建双语整书与导读页/图集，`Assemble the site` 把它们 `cp` 进 `site/`、再用 `scripts/build_site_portal.py` 生成首页，最后部署。它**不含** `omp/**` 触发路径，也没把 omp 塞进站点——与 book.yml 里「omp 独立 job、不挡发布」是同一条口径，见该步的注释 |
+| `.github/workflows/pages.yml` | Pages CI：main 分支 push 后构建整书与导读页/图集，`Assemble the site` 把它们 `cp` 进 `site/`、再用 `scripts/build_site_portal.py` 生成首页，最后部署。它**不含** `omp/**` 触发路径，也没把 omp 塞进站点——与 book.yml 里「omp 独立 job、不挡发布」是同一条口径，见该步的注释 |
 | `.github/workflows/update-star-history.yml` | 定时刷新 Star History |
 
 ## 5. 两层契约
@@ -242,15 +241,15 @@ yuyu-book/
 
 `audit()` 之后 `app.build_edition()` 还有四道本层专属的对账，任何一道不过同样 `BuildError`：正文术语标记数必须等于章末面板行数；按语数在正文与「按语集」里必须相等、且等于该语言真有按语的单元数（写了却不排版、排了两遍都算失败）；导读带、罗盘、新词面板、tier 徽、章徽、题刻各自的数量要写进统计行并且和预期相等；磁盘上每一枚能装配的图都必须真的出现在书里（`want_emblems` / `want_heads`），画了却没上页面就算失败。
 
-通俗层另有一道 `plain.validate_plain()`：证据指针必须落在代码围栏之外、且那一行真的含登记过的词形；core 词条与每条导读带要求中英两侧都有证据；core 词条还必须各有一句 `why`，并且这句 `why` 自己在中英两侧各有一行落入围栏外的散文（`why_evidence` 指到书外就是 `BuildError`）；一个单元的新词面板不超过 22 行；`reading-paths.json` 的位置表长度必须等于该单元的小节数。按语那一层由 `plain.validate_notes()` 把关：一条不许缺、一条不许多出来没主，中文 ≤36 字 / 英文 ≤130 字符，英文里出现汉字即错，而**术语锁**要求每句含一个已注册词形、且该词形就在它自己那一单元的源文件里——旁白可以借书的比喻，不能凭空造词，也不能指着别的章的词说自己说过。
+通俗层另有一道 `plain.validate_plain()`：证据指针必须落在代码围栏之外、且那一行真的含登记过的词形；core 词条与每条导读带都要求证据；core 词条还必须各有一句 `why`，并且这句 `why` 自己也有一行落入围栏外的散文（`why_evidence` 指到书外就是 `BuildError`）；一个单元的新词面板不超过 22 行；`reading-paths.json` 的位置表长度必须等于该单元的小节数。按语那一层由 `plain.validate_notes()` 把关：一条不许缺、一条不许多出来没主，中文 ≤36 字，而**术语锁**要求每句含一个已注册词形、且该词形就在它自己那一单元的源文件里——旁白可以借书的比喻，不能凭空造词，也不能指着别的章的词说自己说过。
 
-配置层还有一道 `core.validate_configs()`：guides 必须覆盖全部单元且 `question`/`deliverable`/`boundary` 的 zh、en 两语都非空；来源引用的 id 必须存在；来源字段与 URL 规则见 `CONTRIBUTING.md`。
+配置层还有一道 `core.validate_configs()`：guides 必须覆盖全部单元且 `question`/`deliverable`/`boundary` 三个字段都非空；来源引用的 id 必须存在；来源字段与 URL 规则见 `CONTRIBUTING.md`。
 
 ## 7. 改哪里（速查）
 
 | 想做的事 | 位置 |
 |----------|------|
-| 改正文、加图、改表格 | 第 2 节表里的对应 Markdown，中英两份一起改 |
+| 改正文、加图、改表格 | 第 2 节表里的对应 Markdown，改同一份 |
 | 增删单元或调整篇章顺序 | `yuyu-book/manifest.json` 的 `parts` / `appendices` / `guides` |
 | 改第二分册（`product=omp`）的正文或登记表 | 书稿 `omp/chNN.md`、登记表 `yuyu-book/*-omp.json`，构建走 `make book-omp` / `make book-omp-pdf`；御舆的 20 单元契约与 `check --fast/--full` 都不覆盖它，口径见 §3.6 与 `omp/BUILD.md` |
 | 改某章的问题·交付·边界卡 | `manifest.json` 的 `guides[<id>]` |

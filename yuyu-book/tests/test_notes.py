@@ -37,14 +37,12 @@ GLOSSARY = {
     },
 }
 UNIT_TEXTS = {
-    "ch02": {"zh": "主循环每转一圈，就少一段路。",
-             "en": "Every turn of the main loop is a mile less."},
+    "ch02": {"zh": "主循环每转一圈，就少一段路。"},
 }
 
 
-def note(zh="主循环走一圈，路就短一天。",
-         en="Every turn of the main loop is a day less of road."):
-    return {"ch02": {"zh": zh, "en": en}}
+def note(zh="主循环走一圈，路就短一天。"):
+    return {"ch02": {"zh": zh}}
 
 
 class NoteRules(unittest.TestCase):
@@ -63,33 +61,17 @@ class NoteRules(unittest.TestCase):
             plain.validate_notes(note(zh="远方概念在这里并不出现。"),
                                  GLOSSARY, UNIT_TEXTS)
 
-    def test_the_english_note_is_locked_by_the_english_forms(self):
-        with self.assertRaisesRegex(BuildError, "术语锁"):
-            plain.validate_notes(note(en="天色不早，收车。没有英文词形。"),
-                                 GLOSSARY, UNIT_TEXTS)
-
     def test_a_too_long_note_fails(self):
         long = "主循环" + "绕" * plain.NOTE_LIMITS["zh"]
         with self.assertRaisesRegex(BuildError, "上限"):
             plain.validate_notes(note(zh=long), GLOSSARY, UNIT_TEXTS)
 
-    def test_an_english_note_may_not_carry_han(self):
-        with self.assertRaisesRegex(BuildError, "汉字"):
-            plain.validate_notes(note(en="the main loop 绕了一圈"),
-                                 GLOSSARY, UNIT_TEXTS)
-
     def test_every_unit_needs_its_note_and_no_unit_invents_one(self):
         with self.assertRaisesRegex(BuildError, "ch03"):
             plain.validate_notes(note(), GLOSSARY,
-                                 {**UNIT_TEXTS, "ch03": {"zh": "", "en": ""}})
+                                 {**UNIT_TEXTS, "ch03": {"zh": ""}})
         with self.assertRaisesRegex(BuildError, "ch02"):
             plain.validate_notes({}, GLOSSARY, UNIT_TEXTS)
-
-    def test_an_empty_language_fails(self):
-        bad = {"ch02": {"zh": "主循环。", "en": "  "}}
-        with self.assertRaisesRegex(BuildError, "en"):
-            plain.validate_notes(bad, GLOSSARY, UNIT_TEXTS)
-
 
 class NotesPage(unittest.TestCase):
     def test_the_page_prints_each_note_once_with_a_way_back(self):
@@ -130,12 +112,10 @@ class ShippedNotes(unittest.TestCase):
         cls.glosses = registry.load("glosses.json")
         cls.manifest = registry.load("manifest.json")
         cls.notes = plain.load_notes()
-        cls.units = [SimpleNamespace(id=u["id"], path=u["zh"], en=u["en"])
+        cls.units = [SimpleNamespace(id=u["id"], path=u["zh"])
                      for u, _k, _p in unit_stream(cls.manifest)]
-        cls.unit_texts = {
-            u.id: {"zh": read_text(REPO_ROOT / u.path),
-                   "en": read_text(REPO_ROOT / u.en)}
-            for u in cls.units}
+        cls.unit_texts = {u.id: {"zh": read_text(REPO_ROOT / u.path)}
+                          for u in cls.units}
 
     def test_the_shipped_notes_pass_their_own_gate(self):
         self.assertTrue(self.notes, "notes.json must ship before its gate runs")

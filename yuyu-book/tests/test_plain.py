@@ -37,17 +37,14 @@ def gloss(gid, zh, en, forms_zh, forms_en, priority="core", mark=None,
     entry = {
         "term": {"zh": zh, "en": en},
         "forms": {"zh": forms_zh, "en": forms_en},
-        "plain": {"zh": "能暂停再继续交结果的函数",
-                  "en": "a function that pauses and hands out one result"},
+        "plain": {"zh": "能暂停再继续交结果的函数"},
         "analogy": dict({"zh": "像收银机，打一张撕一张"}, **(analogy or {})),
-        "why": dict({"zh": "一趟要交很多次，等它返一次就全卡住",
-                     "en": "a run hands out many results, so waiting for one "
-                           "return would stall the rest"}, **(why or {})),
+        "why": dict({"zh": "一趟要交很多次，等它返一次就全卡住"}, **(why or {})),
         "why_evidence": list(why_evidence if why_evidence is not None
-                             else ["ch02.b-495b008f", "ch02.b-140f0675"]),
+                             else ["ch02.b-495b008f", "ch02.b-950e8cc9"]),
         "priority": priority,
         "evidence": evidence if evidence is not None
-        else ["ch02.b-4fcb835b", "ch02.b-831a1dbe"]}
+        else ["ch02.b-4fcb835b", "ch02.b-950e8cc9"]}
     if mark is not None:
         entry["mark"] = mark
     if no_why:
@@ -56,31 +53,28 @@ def gloss(gid, zh, en, forms_zh, forms_en, priority="core", mark=None,
     return {gid: entry}
 
 
-def _band_evidence(zh: str, en: str) -> list[str]:
-    """Use actual stable blocks from both language files."""
-    out = []
-    for lang, rel in (("zh", zh), ("en", en)):
-        blocks = parse_blocks(read_text(REPO_ROOT / rel), "fixture", lang)
-        out.append(next(block.block_id for block in blocks if block.block_id))
-    return out
+def _band_evidence(zh: str) -> list[str]:
+    """Use an actual stable block from the Chinese manuscript."""
+    blocks = parse_blocks(read_text(REPO_ROOT / zh), "fixture", "zh")
+    return [next(block.block_id for block in blocks if block.block_id)]
 
 
 def mini_manifest(chapters=("ch02",), with_plain=True):
     ids = ["front"] + list(chapters)
-    files = {"front": ("00-前言.md", "en/00-Foreword.md")}
+    files = {"front": "00-前言.md"}
     guides = {}
     for i in ids:
-        guides[i] = {"question": {"zh": "问", "en": "q"},
-                     "deliverable": {"zh": "交付", "en": "d"},
-                     "boundary": {"zh": "边界", "en": "b"}}
+        guides[i] = {"question": {"zh": "问"},
+                     "deliverable": {"zh": "交付"},
+                     "boundary": {"zh": "边界"}}
         if with_plain:
-            guides[i]["plain"] = {"zh": "循环怎么转", "en": "how the loop turns"}
-            guides[i]["analogy"] = {"zh": "像流水线", "en": "an assembly line"}
-            zh, en = files.get(i) or (ZH_CH02, EN_CH02)
-            guides[i]["plain_evidence"] = _band_evidence(zh, en)
-    return {"front": {"id": "front", "zh": "00-前言.md", "en": "en/00-Foreword.md"},
+            guides[i]["plain"] = {"zh": "循环怎么转"}
+            guides[i]["analogy"] = {"zh": "像流水线"}
+            zh = files.get(i) or ZH_CH02
+            guides[i]["plain_evidence"] = _band_evidence(zh)
+    return {"front": {"id": "front", "zh": "00-前言.md"},
             "parts": [{"id": "p1", "units": [
-                {"id": c, "zh": ZH_CH02, "en": EN_CH02} for c in chapters]}],
+                {"id": c, "zh": ZH_CH02} for c in chapters]}],
             "appendices": [], "guides": guides}
 
 
@@ -104,8 +98,8 @@ class TermMarks(unittest.TestCase):
                         ["streaming"])
         glosses |= gloss("blocking", "阻塞", "blocking", ["阻塞"], ["block"])
         doc = ('<p>intro</p><!-- block: ch01.demo -->'
-               '<p>streaming then block</p>')
-        out, hits, _u = mark(doc, glosses, "en")
+               '<p>先讲流式，再讲阻塞</p>')
+        out, hits, _u = mark(doc, glosses, "zh")
         self.assertIn('<!-- block: ch01.demo -->', out)
         self.assertNotIn('<!-- <span', out)
         self.assertEqual([h["id"] for h in hits], ["streaming", "blocking"])
@@ -216,8 +210,8 @@ class TermMarks(unittest.TestCase):
     def test_markup_between_two_words_of_a_form_does_not_split_the_match(self):
         g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
                   ["async generator"])
-        _out, hits, _u = mark("<p>an async generator loop</p>", g, lang="en")
-        self.assertEqual([h["form"] for h in hits], ["async generator"])
+        _out, hits, _u = mark("<p>一个异步生成器循环</p>", g, lang="zh")
+        self.assertEqual([h["form"] for h in hits], ["异步生成器"])
 
     def test_popover_text_is_escaped(self):
         g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
@@ -285,10 +279,6 @@ class DualRefs(unittest.TestCase):
                      ["Agent Harness"], priority="extra", no_why=True,
                      evidence=evidence)
 
-    def test_a_block_id_can_stand_for_both_editions(self):
-        plain.validate_plain(self.real_gloss(["ch01.agent-harness"]),
-                             self.paths, self.manifest)
-
     def test_unknown_block_id_is_rejected(self):
         with self.assertRaises(BuildError) as ctx:
             plain.validate_plain(self.real_gloss(["ch01.nope"]),
@@ -296,12 +286,12 @@ class DualRefs(unittest.TestCase):
         self.assertIn("unknown block id", str(ctx.exception))
 
     def test_block_span_must_contain_the_form(self):
-        g = gloss("harness", "线束", "Agent Harness", ["Agent Harness"],
-                  ["zzz"], priority="extra", no_why=True,
+        g = gloss("harness", "线束", "Agent Harness", ["zzz"],
+                  ["Agent Harness"], priority="extra", no_why=True,
                   evidence=["ch01.agent-harness"])
         with self.assertRaises(BuildError) as ctx:
             plain.validate_plain(g, self.paths, self.manifest)
-        self.assertIn("does not contain any registered form in en",
+        self.assertIn("does not contain any registered form in zh",
                       str(ctx.exception))
 
     def test_a_band_may_point_at_a_block(self):
@@ -329,10 +319,6 @@ class SectionTiers(unittest.TestCase):
                          '<h2 id="a">甲<span class="sec-tier t-start">起步</span></h2>'
                          '<h2 id="b">乙<span class="sec-tier t-core">主干</span></h2>'
                          '<h2 id="c">丙<span class="sec-tier t-deep">进阶</span></h2>')
-
-    def test_english_uses_the_english_labels(self):
-        out = plain.stamp_tiers('<h2 id="a">One</h2>', ["core"], "en")
-        self.assertIn('t-core">Core<', out)
 
     def test_a_tier_list_that_does_not_line_up_fails_the_build(self):
         """Positional chips must not drift onto the wrong sections."""
@@ -408,10 +394,9 @@ class RegistryValidation(unittest.TestCase):
             manifest = mini_manifest()
             for unit, _kind, _part in unit_stream(manifest):
                 manifest["guides"][unit["id"]]["plain_evidence"] = ["example.prose"]
-                for lang in ("zh", "en"):
-                    path = root / unit[lang]
-                    path.parent.mkdir(parents=True, exist_ok=True)
-                    path.write_text("<!-- block: example.prose -->\nActual explanation.\n\n<!-- block: example.fenced -->\n```text\n异步生成器 async generator\n```\n", encoding="utf-8")
+                path = root / unit["zh"]
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("<!-- block: example.prose -->\nActual explanation.\n\n<!-- block: example.fenced -->\n```text\n异步生成器 async generator\n```\n", encoding="utf-8")
             g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
                       ["async generator"], evidence=["example.fenced"], no_why=True, priority="extra")
             with self.assertRaisesRegex(BuildError, "code fence"):
@@ -431,13 +416,6 @@ class RegistryValidation(unittest.TestCase):
         with self.assertRaises(BuildError) as ctx:
             plain.validate_plain(g, {}, mini_manifest())
         self.assertIn("stable block id", str(ctx.exception))
-
-    def test_core_glosses_need_both_languages(self):
-        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
-                  ["async generator"], evidence=["ch02.b-4fcb835b"])
-        with self.assertRaises(BuildError) as ctx:
-            plain.validate_plain(g, {}, mini_manifest())
-        self.assertIn("both languages", str(ctx.exception))
 
     def test_an_extra_gloss_may_be_single_language(self):
         g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
@@ -493,15 +471,6 @@ class RegistryValidation(unittest.TestCase):
                                  mini_manifest())
         self.assertIn("why.zh is", str(ctx.exception))
 
-    def test_an_english_reason_may_not_carry_chinese(self):
-        g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
-                  ["async generator"])
-        g["ag"]["why"]["en"] = "a run hands out 很多次 results"
-        with self.assertRaises(BuildError) as ctx:
-            plain.validate_plain(g, {"ch02": ["start", "core"]},
-                                 mini_manifest())
-        self.assertIn("why.en still carries Chinese", str(ctx.exception))
-
     def test_a_gloss_without_evidence_is_rejected(self):
         g = gloss("ag", "异步生成器", "async generator", ["异步生成器"],
                   ["async generator"], evidence=[])
@@ -543,23 +512,15 @@ class RegistryValidation(unittest.TestCase):
             plain.validate_plain({}, {"ch02": ["start", "core"]}, m)
         self.assertIn("ch02: plain_evidence is missing", str(ctx.exception))
 
-    def test_a_lead_band_needs_prose_on_both_sides_of_the_manuscript(self):
-        m = mini_manifest()
-        m["guides"]["ch02"]["plain_evidence"] = ["ch02.b-4fcb835b"]
-        with self.assertRaises(BuildError) as ctx:
-            plain.validate_plain({}, {"ch02": ["start", "core"]}, m)
-        self.assertIn("both languages", str(ctx.exception))
-
     def test_band_evidence_pointing_into_a_sample_block_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             manifest = mini_manifest()
             for unit, _kind, _part in unit_stream(manifest):
                 manifest["guides"][unit["id"]]["plain_evidence"] = ["example.fenced"]
-                for lang in ("zh", "en"):
-                    path = root / unit[lang]
-                    path.parent.mkdir(parents=True, exist_ok=True)
-                    path.write_text("<!-- block: example.fenced -->\n```text\nteaching sample\n```\n", encoding="utf-8")
+                path = root / unit["zh"]
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("<!-- block: example.fenced -->\n```text\nteaching sample\n```\n", encoding="utf-8")
             with self.assertRaisesRegex(BuildError, "code fence"):
                 plain.validate_plain({}, {"ch02": ["start", "core"]}, manifest, root=root)
 
@@ -639,13 +600,6 @@ class RealRegistry(unittest.TestCase):
         self.assertEqual(sum(len(v) for v in self.paths.values()),
                          sum(_real_h2(self.manifest, uid) for uid in self.paths))
 
-    def test_every_term_is_written_in_both_languages(self):
-        for gid, g in self.glosses.items():
-            for field in ("term", "forms", "plain"):
-                for lang in ("zh", "en"):
-                    val = g[field][lang]
-                    self.assertTrue(val, f"{gid}.{field}.{lang} is empty")
-
     def test_no_analogy_reuses_the_term_it_explains(self):
         for gid, g in self.glosses.items():
             if not g.get("analogy"):
@@ -659,17 +613,15 @@ class RealRegistry(unittest.TestCase):
     def test_every_core_term_tells_the_reader_why(self):
         bare = [gid for gid, g in self.glosses.items()
                 if g.get("priority") == "core"
-                and not all((g.get("why") or {}).get(lang)
-                            for lang in ("zh", "en"))]
+                and not (g.get("why") or {}).get("zh")]
         self.assertEqual(bare, [], "core terms without a reason line")
 
     def test_a_reason_is_not_the_definition_repeated(self):
         for gid, g in self.glosses.items():
-            for lang in ("zh", "en"):
-                why = (g.get("why") or {}).get(lang)
-                if why:
-                    self.assertNotEqual(why, g["plain"][lang],
-                                        f"{gid} why.{lang} repeats plain.{lang}")
+            why = (g.get("why") or {}).get("zh")
+            if why:
+                self.assertNotEqual(why, g["plain"]["zh"],
+                                    f"{gid} why.zh repeats plain.zh")
 
 
 @unittest.skipUnless((BOOK_DIR / "reading-paths.json").exists(),

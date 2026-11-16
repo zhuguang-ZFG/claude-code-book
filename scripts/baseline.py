@@ -194,7 +194,8 @@ def registry_report() -> dict:
               {"units": manifest.get("appendices") or []}]
     for group in groups:
         for unit in group.get("units") or []:
-            unit_files[unit["id"]] = {"zh": unit["zh"], "en": unit["en"]}
+            unit_files[unit["id"]] = {lang: unit[lang]
+                                      for lang in ("zh", "en") if lang in unit}
     markdown = {}
     marker_files: dict[str, set[str]] = {}
     for uid, files in unit_files.items():
