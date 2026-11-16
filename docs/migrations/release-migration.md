@@ -165,3 +165,28 @@ Omp 分册由 347 页增至 432 页、体积由 37.8 MB 增至 61.3 MB，来自�
 流水线原先把 `release-notes.json`（机器可读 JSON）直接当作 `gh release create --notes-file`，`v0.3.6` 的正文因此是 JSON，发布后用 `gh release edit --notes-file` 换成可读 Markdown。现在装配脚本自己写两份：`release-notes.json` 保留机器可读记录，`release-notes.md` 由 `release_notes_markdown()` 从 `yuyu-book/revisions.json` 的最新条目渲染成 Markdown（标题带日期，中英各一节，附 `sha256sum --check SHA256SUMS` 与迁移说明指引）；`release.yml` 用它作 `--notes-file` 并把 `*.md` 一并上传。`tests/test_release_contracts.py` 的 `ReleaseNotes` 逐条对照账本，`tests/test_ci_contracts.py` 的 `test_release_body_is_published_from_markdown_notes` 钉住 workflow 只引用 Markdown。下一次标签运行的正文才会真正走这条路径；`v0.3.6` 的正文仍是人工修正的版本。
 
 README 的 CI PDF 体积曾写为 36.4 / 24.3 MB，而发布资产实测为 34.5 / 23.5 MB；页数 520 / 559 与 `check_artifact_claims.py` 的对账口径未变。两版 README 的 PDF 体积与本机 Windows 体积已按发布与本轮干净克隆实测回填。
+
+
+## 2026-11-16 v0.3.7 装配（本机 staged，标签待发）
+
+发布目录从两册扩到整架：御舆（中英）、Omp、Pi、OpenCode、DeepSeek Harness、Hermes、
+Codex CLI、Kimi Code、提示词工程、Vibe Coding，外加《Agent Harness 十卷合订本》。
+`release.py` 的 `COMPANION_VOLUMES` 逐册构建中文 HTML/PDF，`--epub` 时再各出一份 EPUB；
+八册的 `manifest-*.json` / `sources-*.json` 与 `manifest-collected.json` 随资产一同发布。
+`release_only()` 把八册与合订本挡在 `site.zip` 之外：站点仍然只镜像 Pages 线上的御舆与 Omp。
+
+本机隔离装配（`.scratch/release-check`，`release.py --version 0.3.7 --epub`）实测：
+
+| 项 | 数值 |
+|---|---:|
+| 整次装配 | 2414 s |
+| 资产目录 | 61 项 / 603 MB |
+| `SHA256SUMS` | 316 条，逐项复核一致 |
+| `site.zip` | 26 项；`omp/yuyu-omp-zh.html` 存在，根目录无重复副本，门户 `href` 指向该路径 |
+| 合订本 PDF | 109.3 MB / 1925 页 / 1276 s（含 HTML 渲染与后处理） |
+| 合订本 EPUB | 52.0 MB / 604 图 / 2413 条导航 / 248 s |
+
+两处真实缺陷由这次装配暴露并修掉：release 站点把 Omp 放在根目录、门户 `--omp` 却指向
+`omp/`（`check_site_redirects` 直接报 `missing omp/yuyu-omp-zh.html`）；以及同一份 60 MB
+HTML 在 `site.zip` 里被复制两份。修法是先按 Pages 路径落 `site/omp/yuyu-omp-zh.html`，
+根目录 glob 跳过 `yuyu-omp-zh.html`。

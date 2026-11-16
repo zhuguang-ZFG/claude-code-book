@@ -146,15 +146,21 @@ def assemble(version: str, destination=None, *, epub=False) -> int:
             # The site mirrors the Pages deployment (御舆 + Omp only); the
             # companion volumes ship as release assets, not as site pages, so
             # site.zip keeps the size of the site rather than of the shelf.
+            # Omp is served at omp/yuyu-omp-zh.html, so its root copy is the
+            # one file the loop must skip: two 60 MB copies in one zip earn
+            # nothing.
             for path in staged.glob("*.html"):
-                if not release_only(path.name):
+                if not release_only(path.name) and path.name != "yuyu-omp-zh.html":
                     shutil.copy2(path, site / path.name)
             shutil.copy2(ROOT / "cover.png", site / "cover.png")
             shutil.copy2(ROOT / "docs/illustration-prompts.md", site / "illustration-prompts.md")
             # site.zip carries the omp page, so the portal must link it: the
             # committed docs/portal.html is the offline variant without that
-            # link, and copying it straight in would ship a page that hides
-            # the very file sitting next to it.
+            # link. Pages serves the volume at omp/yuyu-omp-zh.html, so the
+            # zip keeps that path and the --omp card points at it.
+            (site / "omp").mkdir()
+            shutil.copy2(staged / "yuyu-omp-zh.html",
+                         site / "omp" / "yuyu-omp-zh.html")
             run("site portal", [sys.executable, "scripts/build_site_portal.py",
                                 str(site / "portal.html"), "--omp"])
             shutil.copy2(site / "portal.html", site / "index.html")
