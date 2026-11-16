@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "baseline": "0.3.6",
+  "baseline": "0.3.7",
   "terms": [
     {
       "id": "ab-testing",
