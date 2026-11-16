@@ -599,8 +599,10 @@ def print_with_index(pdf, out, html_text, pmeta, browser, **kwargs):
             raise
     dest = pdf.measure(out, anchors, browser)
     folios = {anchor: dest[anchor] + 1 for anchor in dest}
-    filled = pages.fill_index_folios(out.read_text(encoding="utf-8"), folios)
-    out.write_text(filled, encoding="utf-8")
+    # The slots in `out` already carry the first numbers, so the second fill has
+    # to start from the pristine HTML: fill_index_folios matches empty slots and
+    # would report every row as missing when handed an already-inked page.
+    out.write_text(pages.fill_index_folios(html_text, folios), encoding="utf-8")
     return pdf.build_pdf(out, pmeta, browser, folios=folios, **kwargs), folios
 
 

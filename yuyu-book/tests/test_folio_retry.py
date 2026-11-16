@@ -49,7 +49,14 @@ def meta(anchors=("ch01", "ch02")):
 class FolioRetry(unittest.TestCase):
     def run_build(self, pdf, pmeta=None, html="<p>sheet</p>"):
         real_fill = app.pages.fill_index_folios
-        app.pages.fill_index_folios = lambda text, folios: text
+        self.fills: list[tuple[str, dict]] = []
+
+        def fill(text, folios):
+            self.fills.append((text, dict(folios)))
+            first = sorted(folios.values())[0] if folios else 0
+            return text.replace("</p>", f"<i>{first}</i></p>")
+
+        app.pages.fill_index_folios = fill
         self.addCleanup(setattr, app.pages, "fill_index_folios", real_fill)
         temporary = tempfile.TemporaryDirectory(prefix="folio-retry-")
         self.addCleanup(temporary.cleanup)
@@ -92,6 +99,14 @@ class FolioRetry(unittest.TestCase):
         _, folios = self.run_build(pdf, pmeta=blank)
         self.assertEqual(pdf.measures, [])
         self.assertEqual(folios, {})
+
+    def test_the_retry_refills_the_pristine_page(self):
+        """Filling an already-inked page would report every row as missing."""
+        original = "<p>sheet</p>"
+        pdf = FakePdf(drifts=1)
+        self.run_build(pdf, html=original)
+        self.assertEqual([text for text, _ in self.fills], [original, original])
+        self.assertEqual(self.fills[1][1], {"ch01": 51, "ch02": 51})
 
 
 if __name__ == "__main__":
