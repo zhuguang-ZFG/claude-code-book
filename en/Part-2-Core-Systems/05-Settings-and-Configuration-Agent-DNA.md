@@ -392,7 +392,7 @@ The main feature flags include:
 | `DAEMON` | Architecture | Background daemon | Capability for persistent background operation |
 | `BRIDGE_MODE` | Architecture | Bridge mode | Bridge for cross-process communication |
 
-From these feature flags, we can discern the evolutionary direction of Claude Code's architecture: KAIROS (persistent sessions) and DAEMON (background daemon) point to the evolution path from "on-demand invocation" to "continuous operation"; TEAMMEM (team memory) and TEMPLATES (template workflows) point to the evolution path from "personal tool" to "team infrastructure."
+These feature flags mark out where Claude Code's architecture is heading: KAIROS (persistent sessions) and DAEMON (background daemon) point at the move from "on-demand invocation" to "continuous operation"; TEAMMEM (team memory) and TEMPLATES (template workflows) point at the expansion from "personal tool" to "team infrastructure."
 
 ### 5.3.2 GrowthBook Experimentation Framework
 

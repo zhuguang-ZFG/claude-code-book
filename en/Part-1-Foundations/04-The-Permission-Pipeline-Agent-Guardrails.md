@@ -19,8 +19,6 @@ When an Agent executes tasks autonomously, it may invoke dozens of tools in a si
 <!-- block: ch04.b-8a06951f -->
 To understand the permission pipeline through a physical-world analogy: a modern office building's access control system doesn't just place a single security guard at the entrance (a single checkpoint). Instead, it sets up different levels of security checks in different areas -- the lobby only requires a card swipe, meeting rooms require reservation confirmation, and the server room requires fingerprint verification plus dual-person authorization. Each layer of security check is independent; even if an intruder slips past one layer, the next layer can still prevent unauthorized access. Claude Code's permission pipeline is precisely the embodiment of this "defense in depth" philosophy in a software system.
 
-This chapter will start from architectural design, deeply dissect each stage of the permission pipeline, help you understand its design decisions, and let you master configuration methods through hands-on exercises.
-
 ## 4.1 The Four Stages of the Permission Pipeline
 
 <!-- block: ch04.b-63e7a773 -->
@@ -616,4 +614,4 @@ for call in ("Bash(git status)", "Bash(rm -rf /)", "Bash(npm test)"):
 
 > **Three sentences to keep:** ①Permission checking is four gates in a row -- validate the input, match the rules, weigh the context, ask the user -- and any one of them can kill a call on the spot. ②Deny rules outrank everything: even in bypassPermissions mode, deny and safetyCheck still hold, because no single checkpoint is a silver bullet and the defense has to run in depth. ③To permission a project, write the deny list first, then pick a mode; for a team, settings.json carries the shared policy and settings.local.json the personal one.
 
-In Part 2 of this book, we will deeply analyze Claude Code's core subsystems, including the compression strategies of context management, the implementation details of cache-aware design, and the error recovery mechanisms of the streaming architecture. These subsystems together form the engineering infrastructure of the Agent Harness, and understanding their design will take you from "I understand the architecture" to "I can build one."
+Part 2 takes the subsystems one at a time: the compression strategies of context management, the implementation details of cache-aware design, the error recovery mechanisms of the streaming architecture. Together they form the engineering infrastructure of the Agent Harness; read them and you can go from "I understand the architecture" to "I can build one."

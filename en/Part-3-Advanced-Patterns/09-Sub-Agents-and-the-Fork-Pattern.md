@@ -259,7 +259,7 @@ The analogy borrows only the idea of splitting from one point in time. It does n
 
 Activating the Fork pattern requires three conditions: the feature gate enabled, non-Coordinator mode, and non-non-interactive mode. When Coordinator mode is active, Fork mode automatically disables because the Coordinator already has its own task delegation model.
 
-> **Cross-Reference:** Chapter 10 will discuss the mutual exclusivity of Coordinator mode and Fork mode in detail. In short, the Coordinator is a heavier orchestration pattern suited for scenarios requiring fine-grained task management; Fork is a lightweight parallel pattern suited for distributing the same context to multiple independent sub-tasks.
+> **Cross-Reference:** Chapter 10 will discuss the mutual exclusivity of Coordinator mode and Fork mode in detail. The Coordinator is a heavier orchestration pattern suited for scenarios requiring fine-grained task management; Fork is a lightweight parallel pattern suited for distributing the same context to multiple independent sub-tasks.
 
 In the routing logic of the tool's main entry, when the user omits the sub-agent type and Fork mode is on, the system triggers the Fork path.
 
