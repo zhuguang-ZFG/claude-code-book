@@ -41,7 +41,7 @@ CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。
 `collected` 把十卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
 manifest 与 sources，卷宗、卷目录和页码层级由 `build_collected()` 生成。`load_collection()`
 只做一件事——拒绝两卷共用同一个页面锚点或重复的卷 ID，否则合订本会出现两个同名页。
-合订本只出中文。`make book-collected` 与 CI 的 `collected` 任务只构建单文件 HTML（十册把全部图版内联进同一份文档，2026-11-16 实测 72 MB 级、10 卷、约 2790 个标题），PDF/EPUB 按需另出一趟：`build --product collected --lang zh --pdf --epub`，本机一次约二十分钟，产物与 HTML 落在同一 `dist/`。拉取请求阶段由构建器套件覆盖装载与锚点契约。
+合订本只出中文。`make book-collected` 与 CI 的 `collected` 任务只构建单文件 HTML（十册把全部图版内联进同一份文档，2026-11-16 实测 72.8 MB、10 卷、约 3600 个各级标题），PDF/EPUB 按需另出一趟：`build --product collected --lang zh --pdf --epub`，产物与 HTML 落在同一 `dist/`。这条命令的耗时尚无实测数据：2026-11-16 在本机跑它满 3600 秒被超时终止，未收尾，此后未重试；`dist/` 里现存的合订 PDF/EPUB 早于这天的正文改动。拉取请求阶段由构建器套件覆盖装载与锚点契约。
 
 这条路径长期卡在 `iter_doc()` 的注释扫描上：它每个分块都把文档余下部分重扫一遍，6 MB 的书要 381 秒、60 MB 的分册要 564 秒，合订本因此永远跑不完。改为记住下一个 `<!--` 的位置后，同样的 60 MB 只要 4.1 秒，全文分块逐字节不变。
 
