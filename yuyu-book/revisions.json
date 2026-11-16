@@ -8,13 +8,13 @@
         "发布目录从两册扩到十册：御舆、Omp、Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程与 Vibe Coding 各自带中文 HTML/PDF，可选 EPUB；每册的清单与来源登记表随附。",
         "Omp 分册随 Pages 的独立 job 上线（失败不挡御舆部署），门户那张卡在产物确实上传后才换成真链接。",
         "对外口径与站点入口修正：阅读入口指回本仓 Pages，去掉「施工中」「试章」，Vibe 记作 12 章加附录 A–D。",
-        "构建产物与正文重新对齐：知识卡、站点搜索索引与 ch04 视频内容包重新生成；omp 的散文预算（开门句、超长句、小节导语）纳入 check --fast。"
+        "构建产物与正文重新对齐：知识卡、站点搜索索引与 ch04 视频内容包重新生成；omp 的散文预算（开门句、超长句、小节导语）纳入 check --fast。构建器测试 605 项全绿。"
       ],
       "en": [
         "The release now carries ten volumes: Yù Yú, Omp, Pi, OpenCode, DeepSeek Harness, Hermes, Codex CLI, Kimi Code, Prompt Engineering and Vibe Coding, each with Chinese HTML/PDF and an optional EPUB; every volume brings its own manifest and sources registry.",
         "The Omp volume deploys through its own Pages job, so a failure there cannot block the main site; the portal links its card only after the file shipped.",
         "Reader-facing status and entry points now match the shelf: the reading entry points at this repository's Pages site, and Vibe is described as 12 chapters plus appendices A–D.",
-        "Generated products were rebuilt against the current text: knowledge cards, the site search index and the ch04 video content pack; the omp plain-language budget now runs inside check --fast."
+        "Generated products were rebuilt against the current text: knowledge cards, the site search index and the ch04 video content pack; the omp plain-language budget now runs inside check --fast. 605 builder tests green."
       ]
     },
     {
