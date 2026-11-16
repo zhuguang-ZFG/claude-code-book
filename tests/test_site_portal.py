@@ -35,6 +35,14 @@ class PortalReducedMotion(unittest.TestCase):
                       build_site_portal.PAGE)
         self.assertIn(f"{reader.PLATES} 幅手绘插图", build_site_portal.PAGE)
 
+    def test_the_deployed_variant_links_the_omp_volume(self):
+        """The committed portal has no omp page to point at; the Pages copy
+        gains the link only when the workflow shipped that file."""
+        live = build_site_portal.page(omp_live=True)
+        self.assertIn('href="omp/yuyu-omp-zh.html"', live)
+        self.assertNotIn("@@", live)
+        self.assertNotIn('href="omp/yuyu-omp-zh.html"', build_site_portal.PAGE)
+
 
 if __name__ == "__main__":
     unittest.main()

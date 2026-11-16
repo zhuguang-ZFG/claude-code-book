@@ -727,6 +727,11 @@ Omp 那张为什么是 `div` 而不是链接：omp 产物只在 Book CI 的 `yuy
 按仓库规则 derive-or-omit 选择省略；保留的 `@@PLATES@@` 是另一个数 42（手绘插图，来自 `build_beginner_reader.PLATES`）。
 `tests/test_site_portal.py` 3 项 OK（它把提交副本钉成与生成器一致，所以这些改动必须走脚本再生成）。
 
+> **2026-11-16 追记**：上面「站点上没有、`omp/` 还没进 HEAD」的前提已经过期。`omp/` 早在 main 上，
+> `pages.yml` 现在有独立的 `omp` job（`continue-on-error`，不挡御舆部署），产物落到 `site/omp/yuyu-omp-zh.html`；
+> 门户生成器新增 `--omp`，只在文件确实上传后把那张卡换成真链接，提交进 `docs/` 的副本仍是离线版。
+> 卡上文案改为「中文书稿已完成 / 站点待上线」，不再写「施工中」。
+
 - [x] **Step 3: SITE-LINKS 勾选**（2026-11-04）
 
 手工打开 `docs/portal.html`（file://）勾选。
