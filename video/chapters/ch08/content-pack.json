@@ -12,7 +12,7 @@
     {
       "index": 2,
       "title": "8.2 核心生命周期事件",
-      "summary": "SDK 核心类型模块的 HOOK_EVENTS 数组里共 22 个生命周期事件，下面按功能分组：工具调用、用户交互、会话管理、子代理、压缩、权限、配置变更。"
+      "summary": "SDK 核心类型模块的 HOOK_EVENTS 数组里共 22 个生命周期事件，下面按功能分组：工具调用、用户交互、会话管理、子智能体、压缩、权限、配置变更。"
     },
     {
       "index": 3,
@@ -27,7 +27,7 @@
   ],
   "takeaways": [
     "五种钩子类型：command（Shell 命令）、prompt（LLM 评估）、agent（Agentic 验证）、http（HTTP 调用）、function（运行时回调），前四种可持久化，最后一种仅在会话内存中存在。选择钩子类型的决策树：需要执行系统命令用 Command，需要智能判断用 Prompt，需要多步验证用 Agent，需要与外部系统集成用 HTTP，需要深度运行时交互用 Function。",
-    "22 个生命周期事件：覆盖工具调用、用户交互、会话管理、子代理、压缩、权限、配置变更等完整的 Agent 生命周期。每个事件都有明确的触发时机、输入结构和退出码语义。",
+    "22 个生命周期事件：覆盖工具调用、用户交互、会话管理、子智能体、压缩、权限、配置变更等完整的 Agent 生命周期。每个事件都有明确的触发时机、输入结构和退出码语义。",
     "结构化响应协议：钩子输出是 JSON，包含 decision（审批/阻止）、updatedInput（修改工具输入）、additionalContext（注入上下文）等字段。退出码与 JSON 响应共同控制钩子行为，两者应表达一致的意图。",
     "优先级排序：userSettings > projectSettings > localSettings > pluginHook > builtinHook > sessionHook，用户配置始终具有最高优先级。多个匹配的钩子按优先级依次执行，任何一个钩子的阻止决策都会生效。",
     "多层安全机制：全局禁用开关（disableAllHooks）、仅托管钩子模式（allowManagedHooksOnly）、工作区信任检查，三层安全门禁逐级过滤。这体现了纵深防御的安全设计理念。",

@@ -9299,7 +9299,7 @@
       "unit": "ch08",
       "section": "ch08-82-核心生命周期事件",
       "kind": "paragraph",
-      "text": "SDK 核心类型模块的 `HOOK_EVENTS` 数组里共 22 个生命周期事件，下面按功能分组：工具调用、用户交互、会话管理、子代理、压缩、权限、配置变更。"
+      "text": "SDK 核心类型模块的 `HOOK_EVENTS` 数组里共 22 个生命周期事件，下面按功能分组：工具调用、用户交互、会话管理、子智能体、压缩、权限、配置变更。"
     },
     {
       "lang": "zh",
@@ -9313,7 +9313,7 @@
       "unit": "ch08",
       "section": "ch08-82-核心生命周期事件",
       "kind": "fence",
-      "text": "flowchart TD\n    subgraph 会话层[\"会话层\"]\n        SessionStart[\"SessionStart\"] --> UserLoop[\"用户交互循环\"]\n        UserLoop --> SessionEnd[\"SessionEnd\"]\n    end\n\n    subgraph 用户交互层[\"用户交互层\"]\n        UserPromptSubmit[\"UserPromptSubmit\"] --> AgentProcess[\"Agent 处理\"]\n        AgentProcess --> Stop[\"Stop / StopFailure\"]\n    end\n\n    subgraph 工具调用层[\"工具调用层\"]\n        PreToolUse[\"PreToolUse\"] --> ToolExec[\"工具执行\"]\n        ToolExec --> PostToolUse[\"PostToolUse / PostToolUseFailure\"]\n    end\n\n    subgraph 子代理层[\"子代理层\"]\n        SubagentStart[\"SubagentStart\"] --> SubagentExec[\"子代理执行\"]\n        SubagentExec --> SubagentStop[\"SubagentStop\"]\n    end\n\n    subgraph 压缩层[\"压缩层\"]\n        PreCompact[\"PreCompact\"] --> CompactExec[\"压缩执行\"]\n        CompactExec --> PostCompact[\"PostCompact\"]\n    end\n\n    subgraph 其他事件[\"其他事件\"]\n        Other[\"PermissionRequest / PermissionDenied<br/>ConfigChange / CwdChanged / FileChanged<br/>Notification / Setup / Elicitation / InstructionsLoaded\"]\n    end\n\n    UserLoop --> UserPromptSubmit\n    AgentProcess --> PreToolUse\n    AgentProcess --> SubagentStart\n    AgentProcess --> PreCompact\n\n    classDef session fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,color:#1a237e\n    classDef user fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1\n    classDef tool fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#e65100\n    classDef sub fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#1b5e20\n    classDef compact fill:#fce4ec,stroke:#e91e63,stroke-width:2px,color:#880e4f\n    classDef other fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px,color:#4a148c\n    classDef process fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,color:#616161\n\n    class SessionStart,SessionEnd session\n    class UserPromptSubmit,Stop user\n    class PreToolUse,PostToolUse,PostToolUseFailure tool\n    class SubagentStart,SubagentStop sub\n    class PreCompact,PostCompact compact\n    class Other other\n    class ToolExec,AgentProcess,SubagentExec,CompactExec,UserLoop process"
+      "text": "flowchart TD\n    subgraph 会话层[\"会话层\"]\n        SessionStart[\"SessionStart\"] --> UserLoop[\"用户交互循环\"]\n        UserLoop --> SessionEnd[\"SessionEnd\"]\n    end\n\n    subgraph 用户交互层[\"用户交互层\"]\n        UserPromptSubmit[\"UserPromptSubmit\"] --> AgentProcess[\"Agent 处理\"]\n        AgentProcess --> Stop[\"Stop / StopFailure\"]\n    end\n\n    subgraph 工具调用层[\"工具调用层\"]\n        PreToolUse[\"PreToolUse\"] --> ToolExec[\"工具执行\"]\n        ToolExec --> PostToolUse[\"PostToolUse / PostToolUseFailure\"]\n    end\n\n    subgraph 子智能体层[\"子智能体层\"]\n        SubagentStart[\"SubagentStart\"] --> SubagentExec[\"子智能体执行\"]\n        SubagentExec --> SubagentStop[\"SubagentStop\"]\n    end\n\n    subgraph 压缩层[\"压缩层\"]\n        PreCompact[\"PreCompact\"] --> CompactExec[\"压缩执行\"]\n        CompactExec --> PostCompact[\"PostCompact\"]\n    end\n\n    subgraph 其他事件[\"其他事件\"]\n        Other[\"PermissionRequest / PermissionDenied<br/>ConfigChange / CwdChanged / FileChanged<br/>Notification / Setup / Elicitation / InstructionsLoaded\"]\n    end\n\n    UserLoop --> UserPromptSubmit\n    AgentProcess --> PreToolUse\n    AgentProcess --> SubagentStart\n    AgentProcess --> PreCompact\n\n    classDef session fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,color:#1a237e\n    classDef user fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1\n    classDef tool fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#e65100\n    classDef sub fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#1b5e20\n    classDef compact fill:#fce4ec,stroke:#e91e63,stroke-width:2px,color:#880e4f\n    classDef other fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px,color:#4a148c\n    classDef process fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,color:#616161\n\n    class SessionStart,SessionEnd session\n    class UserPromptSubmit,Stop user\n    class PreToolUse,PostToolUse,PostToolUseFailure tool\n    class SubagentStart,SubagentStop sub\n    class PreCompact,PostCompact compact\n    class Other other\n    class ToolExec,AgentProcess,SubagentExec,CompactExec,UserLoop process"
     },
     {
       "lang": "zh",
@@ -9705,44 +9705,44 @@
     {
       "lang": "zh",
       "unit": "ch08",
-      "section": "ch08-子代理生命周期",
+      "section": "ch08-子智能体生命周期",
       "kind": "heading",
-      "text": "子代理生命周期"
+      "text": "子智能体生命周期"
     },
     {
       "lang": "zh",
       "unit": "ch08",
-      "section": "ch08-子代理生命周期",
+      "section": "ch08-子智能体生命周期",
       "kind": "paragraph",
       "text": "**SubagentStart / SubagentStop**"
     },
     {
       "lang": "zh",
       "unit": "ch08",
-      "section": "ch08-子代理生命周期",
+      "section": "ch08-子智能体生命周期",
       "kind": "paragraph",
-      "text": "子代理（Agent 工具调用）启动和结束时触发。输入包含 `agent_id` 和 `agent_type`。SubagentStart 的 stdout 展示给子代理；SubagentStop 的退出码 2 可以让子代理继续运行。"
+      "text": "子智能体（Agent 工具调用）启动和结束时触发。输入包含 `agent_id` 和 `agent_type`。SubagentStart 的 stdout 展示给子智能体；SubagentStop 的退出码 2 可以让子智能体继续运行。"
     },
     {
       "lang": "zh",
       "unit": "ch08",
-      "section": "ch08-子代理生命周期",
+      "section": "ch08-子智能体生命周期",
       "kind": "quote",
-      "text": "**与第7章的交叉引用：** 子代理是上下文管理中的关键概念。当主 Agent 的上下文空间不足以容纳复杂任务的全部信息时，会委派子代理去处理子任务。子代理生命周期钩子让你可以监控和干预这种委派过程。"
+      "text": "**与第7章的交叉引用：** 子智能体是上下文管理中的关键概念。当主 Agent 的上下文空间不足以容纳复杂任务的全部信息时，会委派子智能体去处理子任务。子智能体生命周期钩子让你可以监控和干预这种委派过程。"
     },
     {
       "lang": "zh",
       "unit": "ch08",
-      "section": "ch08-子代理生命周期",
+      "section": "ch08-子智能体生命周期",
       "kind": "paragraph",
       "text": "典型使用场景："
     },
     {
       "lang": "zh",
       "unit": "ch08",
-      "section": "ch08-子代理生命周期",
+      "section": "ch08-子智能体生命周期",
       "kind": "list",
-      "text": "1. **子代理审计**：记录哪些子任务交给了子代理\n2. **资源限制**：在子代理启动时注入资源使用约束\n3. **结果验证**：在子代理完成后验证其输出质量\n4. **超时保护**：监控长时间运行的子代理"
+      "text": "1. **子智能体审计**：记录哪些子任务交给了子智能体\n2. **资源限制**：在子智能体启动时注入资源使用约束\n3. **结果验证**：在子智能体完成后验证其输出质量\n4. **超时保护**：监控长时间运行的子智能体"
     },
     {
       "lang": "zh",
@@ -9848,7 +9848,7 @@
       "unit": "ch08",
       "section": "ch08-其他事件",
       "kind": "table",
-      "text": "| 事件名称 | 分类 | 可阻止 | 核心用途 |\n|---------|------|-------|---------|\n| PreToolUse | 工具调用 | 是 | 拦截/修改工具输入 |\n| PostToolUse | 工具调用 | 否 | 审计/后处理工具输出 |\n| PostToolUseFailure | 工具调用 | 否 | 失败诊断/上报 |\n| UserPromptSubmit | 用户交互 | 是 | 修改/阻止用户消息 |\n| Notification | 用户交互 | 否 | 通知集成 |\n| SessionStart | 会话管理 | 否* | 环境初始化/上下文注入 |\n| SessionEnd | 会话管理 | 否 | 清理/摘要 |\n| Stop | 会话管理 | 是 | 强制继续/质量检查 |\n| StopFailure | 会话管理 | 否 | 错误上报 |\n| SubagentStart | 子代理 | 否 | 子代理监控 |\n| SubagentStop | 子代理 | 是 | 结果验证 |\n| PreCompact | 压缩 | 是 | 自定义压缩策略 |\n| PostCompact | 压缩 | 否 | 压缩质量检查 |\n| PermissionRequest | 权限 | 是 | 自动权限审批 |\n| PermissionDenied | 权限 | 否 | 替代方案建议 |\n| Setup | 初始化 | 否 | 环境准备 |\n| ConfigChange | 配置 | 是 | 配置变更审计 |\n| Elicitation | MCP 交互 | 否 | MCP 输入监控 |\n| ElicitationResult | MCP 交互 | 否 | MCP 结果监控 |\n| CwdChanged | 环境 | 否 | 目录变更通知 |\n| FileChanged | 环境 | 否 | 文件变更通知 |\n| InstructionsLoaded | 指令 | 否 | 指令加载审计 |"
+      "text": "| 事件名称 | 分类 | 可阻止 | 核心用途 |\n|---------|------|-------|---------|\n| PreToolUse | 工具调用 | 是 | 拦截/修改工具输入 |\n| PostToolUse | 工具调用 | 否 | 审计/后处理工具输出 |\n| PostToolUseFailure | 工具调用 | 否 | 失败诊断/上报 |\n| UserPromptSubmit | 用户交互 | 是 | 修改/阻止用户消息 |\n| Notification | 用户交互 | 否 | 通知集成 |\n| SessionStart | 会话管理 | 否* | 环境初始化/上下文注入 |\n| SessionEnd | 会话管理 | 否 | 清理/摘要 |\n| Stop | 会话管理 | 是 | 强制继续/质量检查 |\n| StopFailure | 会话管理 | 否 | 错误上报 |\n| SubagentStart | 子智能体 | 否 | 子智能体监控 |\n| SubagentStop | 子智能体 | 是 | 结果验证 |\n| PreCompact | 压缩 | 是 | 自定义压缩策略 |\n| PostCompact | 压缩 | 否 | 压缩质量检查 |\n| PermissionRequest | 权限 | 是 | 自动权限审批 |\n| PermissionDenied | 权限 | 否 | 替代方案建议 |\n| Setup | 初始化 | 否 | 环境准备 |\n| ConfigChange | 配置 | 是 | 配置变更审计 |\n| Elicitation | MCP 交互 | 否 | MCP 输入监控 |\n| ElicitationResult | MCP 交互 | 否 | MCP 结果监控 |\n| CwdChanged | 环境 | 否 | 目录变更通知 |\n| FileChanged | 环境 | 否 | 文件变更通知 |\n| InstructionsLoaded | 指令 | 否 | 指令加载审计 |"
     },
     {
       "lang": "zh",
@@ -10360,7 +10360,7 @@
       "unit": "ch08",
       "section": "ch08-会话钩子的特殊设计",
       "kind": "quote",
-      "text": "**性能分析：** 为什么这个优化如此重要？在一个典型的并行 Agent 场景中，假设有 10 个子代理同时注册钩子。使用 `Record` 时，每次注册都会创建新对象并触发所有监听器，总开销是 10 * 10 = 100 次监听器触发。使用 `Map` 时，`set()` 操作是原地修改，返回相同的引用，监听器不会触发。在高频钩子注册/注销场景中，这个差异会显著放大。高并发路径上，数据结构的选择是正确性问题，不该当偏好问题处理。"
+      "text": "**性能分析：** 为什么这个优化如此重要？在一个典型的并行 Agent 场景中，假设有 10 个子智能体同时注册钩子。使用 `Record` 时，每次注册都会创建新对象并触发所有监听器，总开销是 10 * 10 = 100 次监听器触发。使用 `Map` 时，`set()` 操作是原地修改，返回相同的引用，监听器不会触发。在高频钩子注册/注销场景中，这个差异会显著放大。高并发路径上，数据结构的选择是正确性问题，不该当偏好问题处理。"
     },
     {
       "lang": "zh",
@@ -10802,7 +10802,7 @@
       "unit": "ch08",
       "section": "ch08-关键要点",
       "kind": "list",
-      "text": "2. **22 个生命周期事件**：覆盖工具调用、用户交互、会话管理、子代理、压缩、权限、配置变更等完整的 Agent 生命周期。每个事件都有明确的触发时机、输入结构和退出码语义。"
+      "text": "2. **22 个生命周期事件**：覆盖工具调用、用户交互、会话管理、子智能体、压缩、权限、配置变更等完整的 Agent 生命周期。每个事件都有明确的触发时机、输入结构和退出码语义。"
     },
     {
       "lang": "zh",
