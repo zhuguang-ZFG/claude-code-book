@@ -85,16 +85,15 @@ Y-M6 Step 3 的产物。这里不收「怎么跑测试」（`CONTRIBUTING.md` �
 
 ## 5. 与既有护栏的分工（不要重复钉）
 
-`check_bilingual_parity.py` 同时由 `book.yml`、`check-book.yml` 和本地
-`ci-local-yuyu.ps1` 调用。CI 将它作为独立步骤执行，不计入 `bookctl check --fast`
-的六步。`book.yml` 的路径过滤包含该脚本，修改检查逻辑也会触发检查。
+`check_bilingual_parity.py` 曾由 `book.yml` 和本地 `ci-local-yuyu.ps1` 调用，
+随 2026-11-17 英文版下线退役：脚本已删，CI 步骤已撤。
 
 | 护栏 | 管什么 | 位置 |
 |------|--------|------|
 | `check_crossrefs.py` | 两书互链的章号/章名对不对 | `docs/yuyu-overhaul/` |
 | `check_block_markers.py` | 40 个文件的证据块标记 | 同上 |
 | `check_site_links.py` | 门户引用的发布目标存在性 + 门面文档相对链接 | 同上（Y-M5） |
-| `check_bilingual_parity.py` | 20 单元中英：文件存在 / H2 差 ≤ 阈值 / Mermaid 数相等 | 同上（M8）。**只数标题与围栏**：罗盘三字段仍由 `core.py:359–363` 管（`manifest.json` 无 `langs`，故恒校 zh+en），在这里再实现一遍只会多一个会漂的口径 |
+| ~~`check_bilingual_parity.py`~~ | （已退役）M8 中英结构对等检查，2026-11-17 随英文版下线一并移除，脚本与 `book.yml` 步骤已删 | — |
 | `check_artifact_claims.py` | README 宣称的页数/体积 | `scripts/`（按 CI/Noto 口径，本机设计上红，例外表见 `BASELINE.md`） |
 | `test_docclaims` | README / STRUCTURE / CREDITS / revisions 里每个数字重算 | `yuyu-book/tests/` |
 | `test_product_isolation` | 两产品写权限与契约互不侵犯 | 同上（Y-M6） |

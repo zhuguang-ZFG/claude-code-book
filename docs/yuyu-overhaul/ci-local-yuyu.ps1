@@ -55,8 +55,7 @@ function Step($name, $argv) {
 # 这四条都是 docs/yuyu-overhaul/TEST-CONTRACT.md 表里登记过的独立口径，
 # bookctl check --fast 的六步不覆盖它们（六步是被 README/STRUCTURE 钉住的契约，
 # 加一步要同步改宣称，所以在这里串，不动六步）。
-foreach ($guard in "check_site_links", "check_block_markers", "check_crossrefs",
-                   "check_bilingual_parity") {
+foreach ($guard in "check_site_links", "check_block_markers", "check_crossrefs") {
   Step "guard $guard" @("python", "docs/yuyu-overhaul/$guard.py")
 }
 
