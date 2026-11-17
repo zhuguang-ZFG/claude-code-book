@@ -1,17 +1,5 @@
 """Published entry points are aliases, and every local link must resolve."""
 from __future__ import annotations
-    def test_protocol_relative_external_asset_is_not_a_local_link(self):
-        page = self.site / "beginner-reader.html"
-        page.write_text(
-            '<script src="//cdn.example.com/a.js"></script>', encoding="utf-8")
-        self.assertEqual(check_site_redirects.check(self.site), [])
-
-    def test_protocol_relative_external_asset_is_not_a_local_link(self):
-        page = self.site / "beginner-reader.html"
-        page.write_text(
-            '<script src="//cdn.example.com/a.js"></script>', encoding="utf-8")
-        self.assertEqual(check_site_redirects.check(self.site), [])
-
 
 import sys
 import tempfile
@@ -37,6 +25,12 @@ class SiteEntryPoints(unittest.TestCase):
             (self.site / alias).write_bytes((self.site / target).read_bytes())
 
     def test_complete_alias_site_passes(self):
+        self.assertEqual(check_site_redirects.check(self.site), [])
+
+    def test_protocol_relative_external_asset_is_not_a_local_link(self):
+        page = self.site / "beginner-reader.html"
+        page.write_text(
+            '<script src="//cdn.example.com/a.js"></script>', encoding="utf-8")
         self.assertEqual(check_site_redirects.check(self.site), [])
 
     def test_alias_must_keep_identical_bytes(self):
