@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book import render  # noqa: E402
+from yuyu_book import app, render
 from yuyu_book.core import (REPO_ROOT, expected_ids, load_configs, load_unit,  # noqa: E402
                             unit_stream)
 
@@ -28,6 +28,11 @@ class ChineseReferences(unittest.TestCase):
 
     def test_appendix_letters_match_too(self):
         self.assertIn('href="#apxd"', link("<p>详见附录 D。</p>"))
+
+    def test_appendix_e_links_when_mapping_provides_it(self):
+        out = render.RefLinker({"apxe": "omp-apxe"}, "ch01", "zh").transform(
+            "<p>见附录 E。</p>")
+        self.assertIn('<a class="xref" href="#omp-apxe">附录 E</a>', out)
 
     def test_only_one_link_per_target_per_text_run(self):
         out = link("<p>第 4 章讲过，第 4 章还讲过。</p>")
@@ -66,6 +71,11 @@ class EnglishReferences(unittest.TestCase):
     def test_chapter_and_appendix_mentions(self):
         self.assertIn('href="#ch12"', link("<p>see Chapter 12</p>", lang="en"))
         self.assertIn('href="#apxa"', link("<p>Appendix A lists it</p>", lang="en"))
+
+    def test_appendix_e_links_when_mapping_provides_it(self):
+        out = render.RefLinker({"apxe": "omp-apxe"}, "ch01", "en").transform(
+            "<p>See Appendix E.</p>")
+        self.assertIn('<a class="xref" href="#omp-apxe">Appendix E</a>', out)
 
     def test_plurals_and_prose_without_a_number_stay_plain(self):
         for text in ("Chapters 3 and 4", "the chapter explains"):
@@ -112,6 +122,20 @@ class WholeBookCrossReferences(unittest.TestCase):
         off = render.render_unit(u, MAP, diagrams=diagrams, autolink=False)["html"]
         on = render.render_unit(u, MAP, diagrams=diagrams)["html"]
         self.assertLess(off.count('class="xref"'), on.count('class="xref"'))
+
+    def test_omp_appendix_e_alias_is_autolinked(self):
+        manifest, sources = load_configs("manifest-omp.json", "sources-omp.json")
+        parts = [{**part, "units": [u for u in part["units"]
+                                    if u["id"] == "omp-ch33"]}
+                 for part in manifest["parts"]
+                 if any(u["id"] == "omp-ch33" for u in part["units"])]
+        mini = {**manifest, "parts": parts,
+                "appendices": [a for a in manifest["appendices"]
+                               if a["id"] == "omp-apxe"]}
+        asm = app.assemble_book("zh", mini, sources, mode="source",
+                                browser=None, autolink=True,
+                                plain_layer=False, matter=False)
+        self.assertIn('href="#omp-apxe"', "\n".join(asm.body))
 
 
 if __name__ == "__main__":
