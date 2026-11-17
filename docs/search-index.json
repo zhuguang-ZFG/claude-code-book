@@ -13938,6 +13938,13 @@
       "lang": "zh",
       "unit": "ch11",
       "section": "ch11-1142-缓存优先加载策略",
+      "kind": "fence",
+      "text": "ch11-plugin-cache"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch11",
+      "section": "ch11-1142-缓存优先加载策略",
       "kind": "quote",
       "text": "**设计洞察：为什么\"收集错误而不中断\"？**  插件加载采用\"尽力而为\"策略——即使某个插件的一个组件加载失败（比如一个命令的 Markdown 格式错误），其他组件仍然可以正常加载。这避免了\"一个坏苹果毁了整桶\"的问题。错误收集到 `PluginLoadResult.errors` 里，供后续诊断和修复。"
     },
