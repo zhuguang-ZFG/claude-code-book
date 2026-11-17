@@ -885,7 +885,7 @@ stateDiagram-v2
 
 **第一层：结构化日志。** 每个关键操作都输出结构化的日志条目，包含操作类型、持续时间、输入摘要和输出摘要。Claude Code 的做法是在关键路径上埋点记录消息数量、工具结果数量、查询链 ID 和查询深度等指标。
 
-```
+```json
 {
   "event": "tool_execution",
   "tool": "read_file",

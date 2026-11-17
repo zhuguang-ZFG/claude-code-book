@@ -112,7 +112,7 @@ ch05-merge-splice
 
 合并过程走一遍完整的例子：
 
-```
+```json
 场景：一个前端团队的项目配置
 
 // ~/.claude/settings.json (userSettings - 开发者小张的个人全局设置)
@@ -230,7 +230,7 @@ flowchart TD
 
 在自动化流水线中，使用 `flagSettings` 通过 CLI 参数注入一次性配置，避免修改任何持久化的配置文件：
 
-```
+```bash
 claude --settings /path/to/ci-settings.json
 ```
 
@@ -373,7 +373,7 @@ Claude Code 的功能开关系统分为两层：**编译时**的 `feature()` 函
 
 考虑两种方案：
 
-```
+```javascript
 方案 A（运行时判断）：
 if (featureFlags.isEnabled('KAIROS')) { ... }
 
@@ -549,7 +549,7 @@ Claude Code 选择 React 18 的 `useSyncExternalStore` 而非自定义的订阅�
 
 **性能优化模式对比**
 
-```
+```javascript
 模式 A：订阅整个状态（反模式）
 const state = useAppState(s => s);
 // 任何字段变化都触发重渲染
