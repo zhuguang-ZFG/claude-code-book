@@ -77,7 +77,7 @@ graph LR
 
 从这个类型衍生出三种具体的智能体定义：
 
-- **BuiltInAgentDefinition**（内置智能体）：通过 `getSystemPrompt()` 动态生成系统提示。内置智能体的提示在编译时固定，但运行时通过函数动态构建，这样可以在不同环境（feature gate 开关状态不同）下生成不同的提示内容。
+- **BuiltInAgentDefinition**（内置智能体）：通过 `getSystemPrompt()` 动态生成系统提示。内置智能体的提示模板随代码编译固定，运行时再由 `getSystemPrompt()` 按环境（例如 feature gate 开关状态）拼出不同内容。
 - **CustomAgentDefinition**（自定义智能体）：来自用户/项目/策略设置。用户通过 Markdown 文件声明式定义，系统自动解析。
 - **PluginAgentDefinition**（插件智能体）：插件提供的智能体，带有 plugin 元数据。插件智能体可以携带额外的版本信息和依赖声明。
 
@@ -155,7 +155,7 @@ Explore Agent 是一个高速只读搜索智能体。它的定义中声明了严
 
 **第一，严格的只读约束。** 系统提示中声明了严格的禁止操作列表（不能创建文件、修改文件、运行任何改变系统状态的命令），又用 disallowedTools 把 Edit、Write 这些工具物理禁掉，不让它们出现在可调用清单里。双重锁——提示里写的是软约束，工具清单上动的是硬约束——确保了即使模型"幻觉"中想要修改文件，也会因工具不可用而无从下手。
 
-**第二，omitClaudeMd 优化。** Explore 是只读搜索智能体，不需要 commit/PR/lint 规则。CLAUDE.md 通常包含项目的编码规范、commit 消息格式、PR 模板等内容，这些对于一个只做搜索的智能体完全无用。省略 CLAUDE.md 不仅减少了 token 消耗，更重要的是减少了系统提示的噪声，让模型更聚焦于搜索任务本身。这一优化据估计每周可节省 5-15 Gtoken。
+**第二，omitClaudeMd 优化。** Explore 是只读搜索智能体，不需要 commit/PR/lint 规则。CLAUDE.md 通常包含项目的编码规范、commit 消息格式、PR 模板等内容，这些对于一个只做搜索的智能体完全无用。省略 CLAUDE.md 不仅减少了 token 消耗，更重要的是减少了系统提示的噪声，让模型更聚焦于搜索任务本身。这一优化据估计每周可节省 50 亿到 150 亿 token。
 
 > **怎么把 Explore Agent 用好**
 >

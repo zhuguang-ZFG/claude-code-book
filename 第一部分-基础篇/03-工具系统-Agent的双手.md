@@ -471,7 +471,7 @@ StreamingToolExecutor 的关键设计决策：
 ```
 Batch 1 (并发安全): [GlobTool(*.ts), GrepTool(pattern)]   -- 并行执行
 Batch 2 (非安全):   [BashTool(npm test)]                    -- 串行执行
-Batch 3 (非安全):   [FileReadTool(a.ts)]                    -- 串行执行（受 Batch 2 影响不能并入 Batch 1）
+Batch 3 (并发安全): [FileReadTool(a.ts)]                    -- 串行执行（受 Batch 2 影响不能并入 Batch 1）
 Batch 4 (非安全):   [FileEditTool(a.ts)]                    -- 串行执行
 Batch 5 (并发安全): [GlobTool(*.json)]                      -- 可并行（但只有一个工具）
 ```

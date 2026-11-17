@@ -189,7 +189,7 @@ Agent:
 
 | 场景 | 记忆类型 | 保存内容 |
 |------|---------|---------|
-| 用户表达偏好 | feedback | "用户偏好使用 Vitest 而非 Jest" + Why: 更快的测试执行 |
+| 用户表达偏好 | user | "用户偏好使用 Vitest 而非 Jest" + Why: 更快的测试执行 |
 | 用户纠正行为 | feedback | "不要修改 generated 文件夹中的代码" + Why: 它们由 protoc 自动生成 |
 | 架构决策 | project | "使用事件驱动架构而非直接调用" + Why: 服务解耦的需要 |
 | 外部系统链接 | reference | "监控告警在 PagerDuty 的 X 服务" |

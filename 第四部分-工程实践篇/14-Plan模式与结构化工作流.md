@@ -159,7 +159,7 @@ flowchart TD
 
 **Teammate 路径**：当 Agent 作为 teammate 运行且 Plan 模式是强制要求时，ExitPlanMode 不会弹出本地审批 UI，而是通过 mailbox 机制将计划发送给 team lead 审批。审批请求包含发送者、时间戳、计划文件路径、计划内容和请求 ID 等信息。
 
-> **交叉引用：** Teammate 的 mailbox 机制在第 10 章"协调器模式 -- 多智能体编排"中有详细分析。Plan 模式的 teammate 路径是分布式 Agent 协作的一个典型案例 -- 审批决策的权力委托给了 team lead，而非本地用户。
+> **交叉引用：** Teammate 的审批消息经第 10 章“协调器模式 -- 多智能体编排”的 SendMessageTool 投递给 team lead；该章分析了消息路由与排队。Plan 模式的 teammate 路径是分布式 Agent 协作的一个典型案例 -- 审批决策的权力委托给了 team lead，而非本地用户。
 
 ### 14.1.4 Plan 模式完整案例：从需求到计划到实施
 
@@ -716,7 +716,7 @@ Plan 模式里别用 SleepTool。它是只读探索，不该有等待；某个�
 1. **文件状态缓存克隆**（`cloneFileStateCache`）：子 Agent 的文件读取不影响父 Agent 的缓存，子 Agent 的中间操作因此不会污染父 Agent 的文件状态视图。例如，如果子 Agent 读取了一个文件，随后该文件发生改动，父 Agent 仍然持有修改前的缓存版本，不会因为子 Agent 的读取而刷新。
 
 <!-- block: ch14.b-44bdc4c2 -->
-2. **独立的 AbortController**：子 Agent 能单独中止，不影响父 Agent。父 Agent 因此能一次启动多个子 Agent，需要时只取消其中某个，其他子任务照常运行。
+2. **隔离的 AbortController**：子控制器链接父控制器，父中止会向下传播；子单独中止不影响父。父 Agent 因此能一次启动多个子 Agent，需要时只取消其中某个，其他子任务照常运行。
 
 3. **权限提示抑制**：后台 Agent 的 `getAppState` 包装了 `shouldAvoidPermissionPrompts: true`，避免后台操作弹出 UI 提示。这是因为后台 Agent 通常执行预先授权的任务（如 Plan 验证、会话摘要），不需要也不应该打断用户。
 
@@ -889,7 +889,7 @@ for tool in ("Read", "Write"):
 | 计划文件名字乱起，下一次找不到 | slug-based 命名 + 惰性生成：第一次真正要写时才落盘（14.2.2） |
 | 计划立了 todo，转身就忘，也没人审 | Plan-Execute-Verify：执行完有一个独立验证步骤（14.4.5） |
 | 给改配置这种小事也走完整规划 | 过度规划也是反模式：简单任务直接做（14.4.5） |
-| 定时任务起了就不删，僵尸任务一直烧钱 | 给 recurring 任务设过期时间，到点自己清（14.4.4） |
+| 定时任务起了就不删，僵尸任务一直烧钱 | 给 recurring 任务设过期时间，到点自己清（14.4.2） |
 | 主对话同步等定时任务结果（Sleep + 轮询） | 结果交给通知机制异步推，主对话不用停下来等（14.4.5） |
 | 在 Plan 模式里用 SleepTool 轮询外部状态 | 规划期应一次拿全信息；需要等，说明探索策略要改（14.5.1） |
 

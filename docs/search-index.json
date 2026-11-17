@@ -330,7 +330,7 @@
       "unit": "front",
       "section": "front-claude-code-为什么值得深入学习",
       "kind": "paragraph",
-      "text": "**规模够大。** 50 万行 TypeScript，模块化、可测试性和扩展性都在这套代码里跑过。工具类型、权限、状态管理的方案可以搬到自己的项目。"
+      "text": "**规模够大。** 51 万行 TypeScript，模块化、可测试性和扩展性都在这套代码里跑过。工具类型、权限、状态管理的方案可以搬到自己的项目。"
     },
     {
       "lang": "zh",
@@ -465,7 +465,7 @@
       "unit": "front",
       "section": "front-阅读路径建议",
       "kind": "paragraph",
-      "text": "**如果你时间有限（快速路径）：** 至少阅读第 1 章（建立心智模型）和第 2 章（理解核心循环），然后用 15 分钟浏览第 3-4 章的关键要点部分。这两章是理解后续所有内容的基础。"
+      "text": "**如果你是研究者，或时间有限、只想先看清全局（快速路径）：** 至少阅读第 1 章（建立心智模型）和第 2 章（理解核心循环），然后用 15 分钟浏览第 3-4 章的关键要点部分。这两章是理解后续所有内容的基础。"
     },
     {
       "lang": "zh",
@@ -479,7 +479,7 @@
       "unit": "front",
       "section": "front-阅读路径建议",
       "kind": "paragraph",
-      "text": "**如果你是初学者（完整路径）：** 建议按顺序阅读，每章的实战练习都值得动手完成。这些练习层层递进。第 1 章的安装诊断是第 2 章追踪工具调用流的前提，第 3 章的自定义工具练习为第 4 章的权限配置打下基础。"
+      "text": "**如果你是 AI 应用开发者（完整路径）：** 建议按顺序阅读，每章的实战练习都值得动手完成。这些练习层层递进。第 1 章的安装诊断是第 2 章追踪工具调用流的前提，第 3 章的自定义工具练习为第 4 章的权限配置打下基础。"
     },
     {
       "lang": "zh",
@@ -3826,7 +3826,7 @@
       "unit": "ch03",
       "section": "ch03-实战练习",
       "kind": "fence",
-      "text": "Batch 1 (并发安全): [GlobTool(*.ts), GrepTool(pattern)]   -- 并行执行\nBatch 2 (非安全):   [BashTool(npm test)]                    -- 串行执行\nBatch 3 (非安全):   [FileReadTool(a.ts)]                    -- 串行执行（受 Batch 2 影响不能并入 Batch 1）\nBatch 4 (非安全):   [FileEditTool(a.ts)]                    -- 串行执行\nBatch 5 (并发安全): [GlobTool(*.json)]                      -- 可并行（但只有一个工具）"
+      "text": "Batch 1 (并发安全): [GlobTool(*.ts), GrepTool(pattern)]   -- 并行执行\nBatch 2 (非安全):   [BashTool(npm test)]                    -- 串行执行\nBatch 3 (并发安全): [FileReadTool(a.ts)]                    -- 串行执行（受 Batch 2 影响不能并入 Batch 1）\nBatch 4 (非安全):   [FileEditTool(a.ts)]                    -- 串行执行\nBatch 5 (并发安全): [GlobTool(*.json)]                      -- 可并行（但只有一个工具）"
     },
     {
       "lang": "zh",
@@ -4120,7 +4120,7 @@
       "unit": "ch04",
       "section": "ch04-412-阶段二haspermissionstousetool----规则匹配",
       "kind": "paragraph",
-      "text": "七种规则来源按\"就近原则\"排优先级：会话级规则（最近设置的）优先于命令行参数，命令行参数优先于项目配置，项目配置优先于全局用户配置。越具体、越近期的规则排得越靠前，覆盖掉更一般、更早期的规则。"
+      "text": "八种规则来源按\"就近原则\"排优先级：会话级规则（最近设置的）优先于命令行参数，命令行参数优先于项目配置，项目配置优先于全局用户配置。越具体、越近期的规则排得越靠前，覆盖掉更一般、更早期的规则。"
     },
     {
       "lang": "zh",
@@ -4171,7 +4171,7 @@
       "unit": "ch04",
       "section": "ch04-413-阶段三checkpermissions----上下文评估",
       "kind": "paragraph",
-      "text": "每个工具可以实现自己的 `checkPermissions` 方法，把上下文评估做得更细。例如 Bash 工具会解析命令中的子命令、检查路径安全性、匹配前缀规则等。这一阶段的调用发生在阶段二的规则匹配之前（代码中的步骤 1c），但后面的 allow 规则可能把它覆盖掉。"
+      "text": "每个工具可以实现自己的 `checkPermissions` 方法，把上下文评估做得更细。例如 Bash 工具会解析命令中的子命令、检查路径安全性、匹配前缀规则等。它只在规则匹配没有命中任何规则时执行，返回的结果同样可以是 allow、ask、deny 或 passthrough。"
     },
     {
       "lang": "zh",
@@ -4386,7 +4386,7 @@
       "unit": "ch04",
       "section": "ch04-423-resolveonce-模式原子化的竞争解决",
       "kind": "quote",
-      "text": "**交叉引用：** ResolveOnce 模式与第 2 章的\"不可变状态流转\"原则一脉相承。两者都通过原子化的状态变更来保证并发安全性——状态要么是旧的，要么是新的，不存在\"一半新一半旧\"的中间态。"
+      "text": "**交叉引用：** ResolveOnce 模式与第 1 章的\"不可变状态流转\"原则一脉相承。两者都通过原子化的状态变更来保证并发安全性——状态要么是旧的，要么是新的，不存在\"一半新一半旧\"的中间态。"
     },
     {
       "lang": "zh",
@@ -5153,7 +5153,7 @@
       "unit": "ch04",
       "section": "ch04-关键要点总结",
       "kind": "list",
-      "text": "3. **PermissionContext 的不可变性**：每次权限更新产生新的上下文对象，确保并发安全。这与第 2 章的\"不可变状态流转\"原则和第 3 章的工具上下文管理一脉相承。"
+      "text": "3. **PermissionContext 的不可变性**：每次权限更新产生新的上下文对象，确保并发安全。这与第 1 章的\"不可变状态流转\"原则和第 3 章的工具上下文管理一脉相承。"
     },
     {
       "lang": "zh",
@@ -5486,7 +5486,7 @@
       "unit": "ch05",
       "section": "ch05-514-策略层的特殊地位",
       "kind": "paragraph",
-      "text": "与其他配置源使用深度合并不同，`policySettings` 采用了完全不同的解析逻辑。它按优先级查找第一个非空源（远程 API 设置 > MDM 设置 > managed-settings.json 文件 > HKCU 注册表），不做文件读取后的逐层合并。"
+      "text": "`policySettings` 的这层特殊性来自它的来源顺序：远程 API 设置 > MDM 设置 > managed-settings.json 文件 > HKCU 注册表。它不做文件读取后的逐层合并。"
     },
     {
       "lang": "zh",
@@ -6267,7 +6267,7 @@
       "unit": "ch05",
       "section": "ch05-543-appstateproviderreact-context-封装",
       "kind": "quote",
-      "text": "**交叉引用提示：** AppState 中的 `mcp.*` 字段与第9章（MCP 工具系统）直接相关；`toolPermissionContext` 与权限系统相关；`speculation` 状态机与推测执行架构相关。理解 AppState 的结构是理解各子系统如何协作的关键。"
+      "text": "**交叉引用提示：** AppState 中的 `mcp.*` 字段与第12章（MCP 集成与外部协议）直接相关；`toolPermissionContext` 与权限系统相关；`speculation` 状态机与推测执行架构相关。理解 AppState 的结构是理解各子系统如何协作的关键。"
     },
     {
       "lang": "zh",
@@ -6902,7 +6902,7 @@
       "unit": "ch06",
       "section": "ch06-614-记忆使用的最佳实践",
       "kind": "table",
-      "text": "| 场景 | 记忆类型 | 保存内容 |\n|------|---------|---------|\n| 用户表达偏好 | feedback | \"用户偏好使用 Vitest 而非 Jest\" + Why: 更快的测试执行 |\n| 用户纠正行为 | feedback | \"不要修改 generated 文件夹中的代码\" + Why: 它们由 protoc 自动生成 |\n| 架构决策 | project | \"使用事件驱动架构而非直接调用\" + Why: 服务解耦的需要 |\n| 外部系统链接 | reference | \"监控告警在 PagerDuty 的 X 服务\" |\n| 用户背景 | user | \"用户是全栈开发者，熟悉 TypeScript 和 Python\" |"
+      "text": "| 场景 | 记忆类型 | 保存内容 |\n|------|---------|---------|\n| 用户表达偏好 | user | \"用户偏好使用 Vitest 而非 Jest\" + Why: 更快的测试执行 |\n| 用户纠正行为 | feedback | \"不要修改 generated 文件夹中的代码\" + Why: 它们由 protoc 自动生成 |\n| 架构决策 | project | \"使用事件驱动架构而非直接调用\" + Why: 服务解耦的需要 |\n| 外部系统链接 | reference | \"监控告警在 PagerDuty 的 X 服务\" |\n| 用户背景 | user | \"用户是全栈开发者，熟悉 TypeScript 和 Python\" |"
     },
     {
       "lang": "zh",
@@ -8154,7 +8154,7 @@
       "unit": "ch07",
       "section": "ch07-72-四级压缩策略",
       "kind": "table",
-      "text": "| 常见翻车 | 正确做法 |\n|:--------:|------|\n| 等令牌用到 95% 才被动挨压缩，摘要丢了关键细节 | 用到 80% 就手动 `/compact`，附上你要保留的重点（7.5） |\n| 以为 Snip 和 MicroCompact 是一回事，混着用 | Snip 裁整条消息序列，MicroCompact 清旧工具结果正文，两回事（7.2） |\n| 压缩完立刻把之前读过的文件全重新加载回来 | 只重载当前任务要用的，否则压缩白做（7.4） |\n| 连败三次断路器拉闸了还在等它自己恢复 | 新会话或手动压缩成功才重置，拉闸期间别再硬撞（7.1） |"
+      "text": "| 常见翻车 | 正确做法 |\n|:--------:|------|\n| 等令牌用到 93% 左右才被动挨压缩，摘要丢了关键细节 | 用到 80% 就手动 `/compact`，附上你要保留的重点（7.5） |\n| 以为 Snip 和 MicroCompact 是一回事，混着用 | Snip 裁整条消息序列，MicroCompact 清旧工具结果正文，两回事（7.2） |\n| 压缩完立刻把之前读过的文件全重新加载回来 | 只重载当前任务要用的，否则压缩白做（7.4） |\n| 连败三次断路器拉闸了还在等它自己恢复 | 新会话或手动压缩成功才重置，拉闸期间别再硬撞（7.1） |"
     },
     {
       "lang": "zh",
@@ -8669,7 +8669,7 @@
       "unit": "ch07",
       "section": "ch07-策略一主动压缩优于被动压缩",
       "kind": "fence",
-      "text": "flowchart LR\n    subgraph 被动压缩[\"被动压缩（不推荐）\"]\n        direction TB\n        u1[\"用户\"] --> a1[\"Agent 对话\"]\n        a1 -->|\"95%\"| ac1[\"自动压缩\"]\n        ac1 --> r1[\"摘要<br/>（可能丢失重要细节）\"]\n    end\n\n    subgraph 主动压缩[\"主动压缩（推荐）\"]\n        direction TB\n        u2[\"用户\"] --> a2[\"Agent 对话\"]\n        a2 -->|\"70%\"| compact[\"用户输入 /compact<br/>（附带保留重点）\"]\n        compact --> r2[\"摘要<br/>（保留用户指定重点）\"]\n    end\n\n    classDef bad fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px,color:#b71c1c\n    classDef good fill:#c8e6c9,stroke:#388e3c,stroke-width:2px,color:#1b5e20\n    classDef neutral fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,color:#424242\n\n    class 被动压缩 bad\n    class 主动压缩 good"
+      "text": "flowchart LR\n    subgraph 被动压缩[\"被动压缩（不推荐）\"]\n        direction TB\n        u1[\"用户\"] --> a1[\"Agent 对话\"]\n        a1 -->|\"93%\"| ac1[\"自动压缩\"]\n        ac1 --> r1[\"摘要<br/>（可能丢失重要细节）\"]\n    end\n\n    subgraph 主动压缩[\"主动压缩（推荐）\"]\n        direction TB\n        u2[\"用户\"] --> a2[\"Agent 对话\"]\n        a2 -->|\"80%\"| compact[\"用户输入 /compact<br/>（附带保留重点）\"]\n        compact --> r2[\"摘要<br/>（保留用户指定重点）\"]\n    end\n\n    classDef bad fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px,color:#b71c1c\n    classDef good fill:#c8e6c9,stroke:#388e3c,stroke-width:2px,color:#1b5e20\n    classDef neutral fill:#f5f5f5,stroke:#9e9e9e,stroke-width:1px,color:#424242\n\n    class 被动压缩 bad\n    class 主动压缩 good"
     },
     {
       "lang": "zh",
@@ -10023,7 +10023,7 @@
       "unit": "ch08",
       "section": "ch08-additionalcontext注入额外上下文",
       "kind": "quote",
-      "text": "**与第5章的交叉引用：** `additionalContext` 的注入机制与第5章介绍的配置系统中的 `customInstructions` 类似，但有一个关键区别：`customInstructions` 是静态的、在配置加载时就确定的，而 `additionalContext` 是动态的、每次钩子执行时都可以根据当前状态生成不同的内容。这就像\"预制板\"和\"现浇混凝土\"的区别——前者标准化但不够灵活，后者灵活但需要更多的现场工作。"
+      "text": "**与第5章的交叉引用：** `additionalContext` 的注入机制与第 5 章配置系统里的静态设置类似，但有一个关键区别：配置项在加载时就确定，而 `additionalContext` 每次钩子执行时都可以根据当前状态生成不同的内容。这就像\"预制板\"和\"现浇混凝土\"的区别——前者标准化但不够灵活，后者灵活但需要更多的现场工作。"
     },
     {
       "lang": "zh",
@@ -10332,7 +10332,7 @@
       "unit": "ch08",
       "section": "ch08-紧急禁用开关",
       "kind": "paragraph",
-      "text": "`executeHooks` 函数将这些检查串联起来，形成完整的安全门禁：首先检查全局禁用开关，然后检查简单模式标志，最后检查工作区信任状态，全部通过后才正常执行钩子。"
+      "text": "`executeHooks` 函数将这些检查串联起来，形成完整的安全门禁：首先检查全局禁用开关，然后检查托管模式（`allowManagedHooksOnly`），最后检查工作区信任状态，全部通过后才正常执行钩子。"
     },
     {
       "lang": "zh",
@@ -11007,7 +11007,7 @@
       "unit": "ch09",
       "section": "ch09-baseagentdefinition-类型定义",
       "kind": "list",
-      "text": "- **BuiltInAgentDefinition**（内置智能体）：通过 `getSystemPrompt()` 动态生成系统提示。内置智能体的提示在编译时固定，但运行时通过函数动态构建，这样可以在不同环境（feature gate 开关状态不同）下生成不同的提示内容。\n- **CustomAgentDefinition**（自定义智能体）：来自用户/项目/策略设置。用户通过 Markdown 文件声明式定义，系统自动解析。\n- **PluginAgentDefinition**（插件智能体）：插件提供的智能体，带有 plugin 元数据。插件智能体可以携带额外的版本信息和依赖声明。"
+      "text": "- **BuiltInAgentDefinition**（内置智能体）：通过 `getSystemPrompt()` 动态生成系统提示。内置智能体的提示模板随代码编译固定，运行时再由 `getSystemPrompt()` 按环境（例如 feature gate 开关状态）拼出不同内容。\n- **CustomAgentDefinition**（自定义智能体）：来自用户/项目/策略设置。用户通过 Markdown 文件声明式定义，系统自动解析。\n- **PluginAgentDefinition**（插件智能体）：插件提供的智能体，带有 plugin 元数据。插件智能体可以携带额外的版本信息和依赖声明。"
     },
     {
       "lang": "zh",
@@ -11126,7 +11126,7 @@
       "unit": "ch09",
       "section": "ch09-explore-agent只读代码探索专家",
       "kind": "paragraph",
-      "text": "**第二，omitClaudeMd 优化。** Explore 是只读搜索智能体，不需要 commit/PR/lint 规则。CLAUDE.md 通常包含项目的编码规范、commit 消息格式、PR 模板等内容，这些对于一个只做搜索的智能体完全无用。省略 CLAUDE.md 不仅减少了 token 消耗，更重要的是减少了系统提示的噪声，让模型更聚焦于搜索任务本身。这一优化据估计每周可节省 5-15 Gtoken。"
+      "text": "**第二，omitClaudeMd 优化。** Explore 是只读搜索智能体，不需要 commit/PR/lint 规则。CLAUDE.md 通常包含项目的编码规范、commit 消息格式、PR 模板等内容，这些对于一个只做搜索的智能体完全无用。省略 CLAUDE.md 不仅减少了 token 消耗，更重要的是减少了系统提示的噪声，让模型更聚焦于搜索任务本身。这一优化据估计每周可节省 50 亿到 150 亿 token。"
     },
     {
       "lang": "zh",
@@ -12291,7 +12291,7 @@
       "unit": "ch10",
       "section": "ch10-internalworkertools",
       "kind": "paragraph",
-      "text": "Coordinator 模式下，工作者（Worker）的工具分配通过两个集合控制。内部工作者工具集合定义了工作者**不应该看到**的工具——它们是协调者的专属工具，包括团队创建、团队删除、消息发送和结构化输出。"
+      "text": "Coordinator 模式下，工作者（Worker）的工具分配通过两个集合控制。内部工作者工具集合定义了工作者**不应该看到**的工具——它们是协调者的专属工具，包括 Agent、TaskStop、SendMessage、结构化输出，以及团队创建、团队删除等团队管理工具。"
     },
     {
       "lang": "zh",
@@ -12536,7 +12536,7 @@
       "unit": "ch10",
       "section": "ch10-scratchpad-协作空间设计",
       "kind": "paragraph",
-      "text": "Scratchpad 的物理位置位于项目临时目录下的会话专属子目录中，路径格式为 `/tmp/claude-{uid}/{sanitized-cwd}/{sessionId}/scratchpad/`，每个会话有独立的 scratchpad 目录。"
+      "text": "Scratchpad 的物理位置位于项目临时目录下的会话专属子目录中，路径格式为 `/tmp/claude-{uid}/{sanitized-cwd}/{sessionId}/scratchpad/`，每个会话有独立的 scratchpad 目录。目录以 `0o700` 权限创建，只有当前用户能读写。"
     },
     {
       "lang": "zh",
@@ -13721,7 +13721,7 @@
       "unit": "ch11",
       "section": "ch11-1131-分层加载策略",
       "kind": "fence",
-      "text": "graph TD\n    A[\"管理策略级 (Managed)<br/>路径: {managedPath}/.claude/skills/<br/>企业标准，最高优先级\"]\n    B[\"项目级 (Project)<br/>路径: .claude/skills/<br/>项目特定技能\"]\n    C[\"用户级 (User)<br/>路径: ~/.claude/skills/<br/>个人偏好技能\"]\n    D[\"插件级 (Plugin)<br/>路径: {plugin-dir}/commands/<br/>插件提供的技能\"]\n    E[\"内置级 (Bundled)<br/>编译进二进制文件<br/>开箱即用的核心技能\"]\n\n    A -->|\"覆盖\"| B\n    B -->|\"覆盖\"| C\n    C -->|\"覆盖\"| D\n    D -->|\"覆盖\"| E\n\n    style A fill:#e74c3c,stroke:#c0392b,color:#fff\n    style B fill:#f39c12,stroke:#d68910,color:#fff\n    style C fill:#3498db,stroke:#2471a3,color:#fff\n    style D fill:#9b59b6,stroke:#7d3c98,color:#fff\n    style E fill:#bdc3c7,stroke:#7f8c8d,color:#333"
+      "text": "graph TD\n    A[\"管理策略级 (Managed)<br/>路径: {managedPath}/.claude/skills/<br/>企业标准，最高优先级\"]\n    B[\"用户级 (User)<br/>路径: ~/.claude/skills/<br/>个人偏好技能\"]\n    C[\"项目级 (Project)<br/>路径: .claude/skills/<br/>项目特定技能\"]\n    D[\"插件级 (Plugin)<br/>路径: {plugin-dir}/commands/<br/>插件提供的技能\"]\n    E[\"内置级 (Bundled)<br/>编译进二进制文件<br/>开箱即用的核心技能\"]\n\n    A -->|\"覆盖\"| B\n    B -->|\"覆盖\"| C\n    C -->|\"覆盖\"| D\n    D -->|\"覆盖\"| E\n\n    style A fill:#e74c3c,stroke:#c0392b,color:#fff\n    style B fill:#f39c12,stroke:#d68910,color:#fff\n    style C fill:#3498db,stroke:#2471a3,color:#fff\n    style D fill:#9b59b6,stroke:#7d3c98,color:#fff\n    style E fill:#bdc3c7,stroke:#7f8c8d,color:#333"
     },
     {
       "lang": "zh",
@@ -15170,13 +15170,6 @@
       "unit": "ch12",
       "section": "ch12-1223-mcp-工具的权限模型",
       "kind": "paragraph",
-      "text": "全局配置里写 `\"mcp__*\": \"allow\"` 等于一键全开：之后任何新连上的 MCP 服务器，它提供的工具都自动获准执行，包括你不了解的那些。按服务器或按工具粒度授权。"
-    },
-    {
-      "lang": "zh",
-      "unit": "ch12",
-      "section": "ch12-1223-mcp-工具的权限模型",
-      "kind": "paragraph",
       "text": "信任边界上的翻车，多半不是攻击，是图省事。下面五种最常见："
     },
     {
@@ -16183,7 +16176,7 @@
       "unit": "ch12",
       "section": "ch12-1246-bridge-权限门控",
       "kind": "quote",
-      "text": "**交叉引用：** 同一份协议在另一套 harness 里怎么接，参见 omp 分册第 20 章《MCP》；外部能力经边界进入的另一种形态，参见第 12 章《浏览器、桌面与联网》。"
+      "text": "**交叉引用：** 同一份协议在另一套 harness 里怎么接，参见 omp 分册第 20 章《MCP》；外部能力经边界进入的另一种形态，参见 omp 分册第 12 章《浏览器、桌面与联网》。"
     },
     {
       "lang": "zh",
@@ -17648,7 +17641,7 @@
       "unit": "ch13",
       "section": "ch13-练习-2追踪缓存命中率",
       "kind": "list",
-      "text": "- 命中率 > 85%：优秀\n- 命中率 60%-85%：正常\n- 命中率 < 60%：需要排查原因"
+      "text": "- 命中率 > 85%：达到 Fork 目标\n- 命中率 60%-85%：未达目标，检查 cache-safe params 是否一致\n- 命中率 < 60%：需要排查原因"
     },
     {
       "lang": "zh",
@@ -17830,7 +17823,7 @@
       "unit": "ch13",
       "section": "ch13-136-流式与性能常见翻车-正确做法",
       "kind": "table",
-      "text": "| 常见翻车 | 正确做法 |\n|---------|---------|\n| 启动时把所有工具的 schema 都构建一遍，25 个工具 × 0.1–0.3ms 白付 | 惰性评估：用到哪个工具才构建哪个 schema（13.3.3） |\n| 把 MDM 读取、keychain 预取串在 import 链后面，关键路径越拖越长 | 并行预取：I/O 与模块评估同时开跑，不等前者（13.3.1） |\n| 以为流式只影响显示，后端仍等整份响应再动手 | 流到即执行：工具调用块一出现就启动（13.2.1），结果按顺序缓冲 |\n| 让 Bash 与 Read 并行，读回来的是旧内容 | 并发安全分档：不安全工具串行执行（13.2.2），顺序排在延迟前面 |\n| 用 `> 0` 之外的写法累加 usage，增量把真实值覆盖掉 | `updateUsage` 用 `> 0` 守卫，`accumulateUsage` 跨消息累加（13.4.2） |\n| 改了一处 system prompt 就以为缓存还能命中 | 缓存求字节级一致：system prompt、tools、model、messages prefix、thinking config 一处都不能差（13.5.2） |\n| 只在 `/cost` 里看总数，说不清钱花在哪 | 分轮次记 token：输入 / 输出 / 缓存读 / 缓存建四项分开看（13.4） |\n| 一上来就做「全面性能优化」，先改代码最熟的那块 | 先量瓶颈再动手：量一次首字延迟、一次缓存命中率、一次启动关键路径 |"
+      "text": "| 常见翻车 | 正确做法 |\n|---------|---------|\n| 启动时把所有工具的 schema 都构建一遍，55 个工具 × 0.1–0.3ms 白付 | 惰性评估：用到哪个工具才构建哪个 schema（13.3.3） |\n| 把 MDM 读取、keychain 预取串在 import 链后面，关键路径越拖越长 | 并行预取：I/O 与模块评估同时开跑，不等前者（13.3.1） |\n| 以为流式只影响显示，后端仍等整份响应再动手 | 流到即执行：工具调用块一出现就启动（13.2.1），结果按顺序缓冲 |\n| 让 Bash 与 Read 并行，读回来的是旧内容 | 并发安全分档：不安全工具串行执行（13.2.2），顺序排在延迟前面 |\n| 用 `> 0` 之外的写法累加 usage，增量把真实值覆盖掉 | `updateUsage` 用 `> 0` 守卫，`accumulateUsage` 跨消息累加（13.4.2） |\n| 改了一处 system prompt 就以为缓存还能命中 | 缓存求字节级一致：system prompt、tools、model、messages prefix、thinking config 一处都不能差（13.5.2） |\n| 只在 `/cost` 里看总数，说不清钱花在哪 | 分轮次记 token：输入 / 输出 / 缓存读 / 缓存建四项分开看（13.4） |\n| 一上来就做「全面性能优化」，先改代码最熟的那块 | 先量瓶颈再动手：量一次首字延迟、一次缓存命中率、一次启动关键路径 |"
     },
     {
       "lang": "zh",
@@ -18121,7 +18114,7 @@
       "unit": "ch14",
       "section": "ch14-1413-退出-plan-模式",
       "kind": "quote",
-      "text": "**交叉引用：** Teammate 的 mailbox 机制在第 10 章\"协调器模式 -- 多智能体编排\"中有详细分析。Plan 模式的 teammate 路径是分布式 Agent 协作的一个典型案例 -- 审批决策的权力委托给了 team lead，而非本地用户。"
+      "text": "**交叉引用：** Teammate 的审批消息经第 10 章“协调器模式 -- 多智能体编排”的 SendMessageTool 投递给 team lead；该章分析了消息路由与排队。Plan 模式的 teammate 路径是分布式 Agent 协作的一个典型案例 -- 审批决策的权力委托给了 team lead，而非本地用户。"
     },
     {
       "lang": "zh",
@@ -19048,7 +19041,7 @@
       "unit": "ch14",
       "section": "ch14-1452-后台会话管理",
       "kind": "list",
-      "text": "2. **独立的 AbortController**：子 Agent 能单独中止，不影响父 Agent。父 Agent 因此能一次启动多个子 Agent，需要时只取消其中某个，其他子任务照常运行。",
+      "text": "2. **隔离的 AbortController**：子控制器链接父控制器，父中止会向下传播；子单独中止不影响父。父 Agent 因此能一次启动多个子 Agent，需要时只取消其中某个，其他子任务照常运行。",
       "block": "ch14.b-44bdc4c2"
     },
     {
@@ -19393,7 +19386,7 @@
       "unit": "ch14",
       "section": "ch14-146-结构化工作流常见翻车-正确做法",
       "kind": "table",
-      "text": "| 常见翻车 | 正确做法 |\n|---------|---------|\n| 需求听完就动手，写完才发现方向错 | 先进 Plan 模式把方案写出来，你点头再实施（14.1） |\n| 子 Agent 里调 EnterPlanMode，直接抛错 | Plan 模式只对主对话开放；子 Agent 的规格由协调者写（14.1.2） |\n| 中断一次计划就丢了，只能从头再想 | 三层恢复：直接读文件、读快照、从消息历史重建（14.2.3） |\n| 计划文件名字乱起，下一次找不到 | slug-based 命名 + 惰性生成：第一次真正要写时才落盘（14.2.2） |\n| 计划立了 todo，转身就忘，也没人审 | Plan-Execute-Verify：执行完有一个独立验证步骤（14.4.5） |\n| 给改配置这种小事也走完整规划 | 过度规划也是反模式：简单任务直接做（14.4.5） |\n| 定时任务起了就不删，僵尸任务一直烧钱 | 给 recurring 任务设过期时间，到点自己清（14.4.4） |\n| 主对话同步等定时任务结果（Sleep + 轮询） | 结果交给通知机制异步推，主对话不用停下来等（14.4.5） |\n| 在 Plan 模式里用 SleepTool 轮询外部状态 | 规划期应一次拿全信息；需要等，说明探索策略要改（14.5.1） |"
+      "text": "| 常见翻车 | 正确做法 |\n|---------|---------|\n| 需求听完就动手，写完才发现方向错 | 先进 Plan 模式把方案写出来，你点头再实施（14.1） |\n| 子 Agent 里调 EnterPlanMode，直接抛错 | Plan 模式只对主对话开放；子 Agent 的规格由协调者写（14.1.2） |\n| 中断一次计划就丢了，只能从头再想 | 三层恢复：直接读文件、读快照、从消息历史重建（14.2.3） |\n| 计划文件名字乱起，下一次找不到 | slug-based 命名 + 惰性生成：第一次真正要写时才落盘（14.2.2） |\n| 计划立了 todo，转身就忘，也没人审 | Plan-Execute-Verify：执行完有一个独立验证步骤（14.4.5） |\n| 给改配置这种小事也走完整规划 | 过度规划也是反模式：简单任务直接做（14.4.5） |\n| 定时任务起了就不删，僵尸任务一直烧钱 | 给 recurring 任务设过期时间，到点自己清（14.4.2） |\n| 主对话同步等定时任务结果（Sleep + 轮询） | 结果交给通知机制异步推，主对话不用停下来等（14.4.5） |\n| 在 Plan 模式里用 SleepTool 轮询外部状态 | 规划期应一次拿全信息；需要等，说明探索策略要改（14.5.1） |"
     },
     {
       "lang": "zh",
@@ -19874,6 +19867,13 @@
       "section": "ch15-step-3权限管线",
       "kind": "paragraph",
       "text": "Claude Code 的权限检查是一个四阶段管线，每个阶段都可以短路返回："
+    },
+    {
+      "lang": "zh",
+      "unit": "ch15",
+      "section": "ch15-step-3权限管线",
+      "kind": "quote",
+      "text": "**实现说明：** 下面的代码把 `checkPermissions` 提到规则匹配之前，是教学上的简化。真实管线里它是规则匹配之后的独立阶段（第 4 章 §4.1.3）。"
     },
     {
       "lang": "zh",
@@ -20503,7 +20503,28 @@
     {
       "lang": "zh",
       "unit": "ch15",
-      "section": "ch15-安全审计",
+      "section": "ch15-团队落地把规矩写进配置别留在群聊里",
+      "kind": "heading",
+      "text": "团队落地：把规矩写进配置，别留在群聊里"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch15",
+      "section": "ch15-团队落地把规矩写进配置别留在群聊里",
+      "kind": "paragraph",
+      "text": "一个人调好的车，交给十个人开，靠口头交代必然走样。团队接过 Harness 时，要交接的不是聊天记录里的几条经验，而是四样能随仓库走的东西。"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch15",
+      "section": "ch15-团队落地把规矩写进配置别留在群聊里",
+      "kind": "list",
+      "text": "1. **规矩写在配置里。** 企业策略设置（`policySettings`）站在优先级链顶端，能把危险命令直接锁死；项目共享设置（`projectSettings`）随仓库分发，约定模型与工具范围；个人设置留给各自的习惯（第 5 章）。三层各管什么，一开始就得说清楚，否则“我这边能跑”迟早变成扯皮。\n2. **能力放进项目。** 项目技能放在 `.claude/skills/`，随仓库走；插件在设置里用 `plugin@marketplace` 写明来源，临时试的才用 `--plugin-dir` 挂上来（第 11 章）。README 中被抄来抄去的提示词，说明缺的是一个有版本号的技能。MCP 服务器同样随项目配置分发，但外部服务器返回的内容按不可信输入对待，连接前的审批别省（第 12 章）。\n3. **决策留下证据。** 关键工具调用与权限决策交给钩子写进审计日志（第 8 章），出了问题能倒查，新人也不必翻群聊考古。没有日志，复盘只能靠当事人回忆。\n4. **成本与止损前置。** 预算上限（`maxBudgetUsd`）限制单次查询的开销；子智能体的模型选择本身是缓存键的一维，换模型就换键，省钱要在定义里做，别在会话中途临时改（第 9 章、15.4 安全审计）。"
+    },
+    {
+      "lang": "zh",
+      "unit": "ch15",
+      "section": "ch15-团队落地把规矩写进配置别留在群聊里",
       "kind": "paragraph",
       "text": "---"
     },

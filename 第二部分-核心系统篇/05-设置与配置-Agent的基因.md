@@ -202,7 +202,7 @@ flowchart TD
 
 ### 5.1.4 策略层的特殊地位
 
-与其他配置源使用深度合并不同，`policySettings` 采用了完全不同的解析逻辑。它按优先级查找第一个非空源（远程 API 设置 > MDM 设置 > managed-settings.json 文件 > HKCU 注册表），不做文件读取后的逐层合并。
+`policySettings` 的这层特殊性来自它的来源顺序：远程 API 设置 > MDM 设置 > managed-settings.json 文件 > HKCU 注册表。它不做文件读取后的逐层合并。
 
 企业管理员因此只需要在一处配置策略：系统取优先级最高的那个来源，而不是把所有来源合并起来。
 
@@ -571,7 +571,7 @@ const setState = useSetAppState();
 2. 使用 `useSetAppState()` 而非 `useAppState(s => s.setState)`——前者不订阅任何状态
 3. 避免在 selector 中创建新对象——`useAppState(s => ({ a: s.a, b: s.b }))` 每次调用都会返回新引用，导致无限重渲染。应该分别订阅或使用浅比较
 
-> **交叉引用提示：** AppState 中的 `mcp.*` 字段与第9章（MCP 工具系统）直接相关；`toolPermissionContext` 与权限系统相关；`speculation` 状态机与推测执行架构相关。理解 AppState 的结构是理解各子系统如何协作的关键。
+> **交叉引用提示：** AppState 中的 `mcp.*` 字段与第12章（MCP 集成与外部协议）直接相关；`toolPermissionContext` 与权限系统相关；`speculation` 状态机与推测执行架构相关。理解 AppState 的结构是理解各子系统如何协作的关键。
 
 ---
 
