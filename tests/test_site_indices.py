@@ -18,7 +18,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "yuyu-book"))
 
 from yuyu_book.io import load_json  # noqa: E402
-from yuyu_book.model import BookModel, Edition, Section, Unit  # noqa: E402
 from yuyu_book.paths import BOOK_DIR  # noqa: E402
 from yuyu_book.products import indices  # noqa: E402
 from yuyu_book.products.loader import load_repo_model  # noqa: E402

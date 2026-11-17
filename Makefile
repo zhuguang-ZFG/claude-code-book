@@ -44,7 +44,7 @@ doctor:
 # build itself does not. The rules live in pyproject.toml; E402/E501 are off
 # because scripts bootstrap sys.path and the prose is Chinese.
 lint:
-	$(PYTHON) -m ruff check yuyu-book scripts video tests
+	$(PYTHON) -m ruff check .
 
 check: check-fast
 

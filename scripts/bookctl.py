@@ -399,8 +399,7 @@ def build(args) -> int:
 
 
 def epub(args) -> int:
-    """Convert the editions just built, respecting Chinese-only products."""
-    chinese_only = (*ZH_PRODUCTS, *COLLECTION_PRODUCTS)
+    """Convert the edition just built to EPUB (Chinese only)."""
     langs = ["zh"]
     out_dir = Path(args.out_dir) if args.out_dir else DIST
     for lang in langs:
