@@ -69,7 +69,7 @@
 
 | 参数 | 实际行为 |
 |------|----------|
-| `--lang zh\|en\|both` | 默认 `both`，按 zh、en 顺序各装配一版 |
+| `--lang zh` | 可选值由 manifest 现有语言动态生成；英文版下线后唯一合法值是 `zh`，`en` / `both` 退出 2 |
 | `--pdf` | 在 HTML 之后追加 PDF 工序；与 `--check` 同时给出时**不生效**（`do_pdf = args.pdf and not args.check`） |
 | `--check` | 构建到临时目录 `yuyu-check-*`，只跑校验，不写 `dist/`、不出 PDF |
 | `--out-dir <dir>` | 输出目录，默认 `yuyu-book/dist` |
@@ -168,13 +168,13 @@ yuyu-book/
 
 | | `book`（御舆，默认） | `omp`（第二分册《Omp 从入门到精通：原理与实战》） |
 |---|---|---|
-| 入口 | `python scripts/bookctl.py build --lang zh\|en\|both`（`--product` 缺省即 `book`） | `python scripts/bookctl.py build --product omp --lang zh`，或 `make book-omp` / `make book-omp-pdf` |
+| 入口 | `python scripts/bookctl.py build --lang zh`（`--product` 缺省即 `book`） | `python scripts/bookctl.py build --product omp --lang zh`，或 `make book-omp` / `make book-omp-pdf` |
 | 实际命令行 | `python -m yuyu_book --lang <lang>` | `python -m yuyu_book --lang zh --manifest manifest-omp.json --sources sources-omp.json`（由 `bookctl.py` 的 `build()` 组装） |
 | 骨架 | `manifest.json`：4 部 / 15 章 / 前言 / 4 附录 = 第 2 节那张 20 单元表 | `manifest-omp.json`：7 部 / 33 章 / 前言 / 附录 A–E，`langs: ["zh"]`；单元数是 39，构建统计行会把 `N units` 打出来，不必手抄 |
 | 通俗层登记表 | 裸名 `glosses.json` / `notes.json` / `reading-paths.json` | manifest 自称 `product: "omp"`，于是 `plain.registry_names()`（`yuyu_book/plain.py:70`）改取 `-omp` 同名兄弟——写第二本不会覆写第一本 |
 | 其余登记表 | `revisions.json`、`subject-index.json` | `revisions_registry` 键指向 `revisions-omp.json`；`subject_index_registry: null` → 不排书末主题索引（`app.build_edition()` 读取该键），索引页码回填那条工序因此在 omp 这边整层不存在 |
 | 产物名 | `output_prefix` 缺省 → `yuyu-agent-harness-*`（`app.build_edition()`） | `output_prefix: "yuyu-omp"` → `yuyu-omp-zh.html` / `.pdf` |
-| 语言门禁 | `--lang en` / `both` 正常出两版 | `--lang en` 退出 2（"omp product is zh-only for now"），`both` 被悄悄降成 zh |
+| 语言门禁 | 随英文版下线，`en` / `both` 均退出 2（`invalid choice`，合法值由 manifest 动态生成，当前只有 `zh`） | `--lang en` 退出 2（"omp product is zh-only for now"），`both` 被悄悄降成 zh |
 
 三条边界值得单独说：
 

@@ -60,7 +60,7 @@ foreach ($guard in "check_site_links", "check_block_markers", "check_crossrefs")
 }
 
 Step "bookctl check --fast"  @("python", "scripts/bookctl.py", "check", "--fast")
-Step "build book both --pdf" @("python", "scripts/bookctl.py", "build", "--product", "book", "--lang", "both", "--pdf")
+Step "build book zh --pdf" @("python", "scripts/bookctl.py", "build", "--product", "book", "--lang", "zh", "--pdf")
 
 # check_artifact_claims.py 比的是 CI（Noto CJK）那套页数；本机是微软雅黑，必定报红。
 # 依据：docs/yuyu-overhaul/PDF-PAGES.md「这台机器上 check_artifact_claims.py 必定报红，且不是坏了」

@@ -142,7 +142,7 @@ Claude Code 为 Anthropic 产品，本书是独立的技术分析作品，并非
 
 ## 离线整书
 
-`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（6.4 MB）与 A4 排版的 PDF（540 页 / 34.8 MB），产物在 `yuyu-book/dist/`。PDF 页数与体积随构建机的中文字体变化；上述数字来自 CI 的 Noto CJK 排版，不代替 Windows 本机实测。构建日志会报告每份 PDF 的实际页数与体积。
+`yuyu-book/` 把 20 个单元装配成**一本可离线阅读的书**：单文件 HTML（6.4 MB）与 A4 排版的 PDF（540 页 / 30.8 MB），产物在 `yuyu-book/dist/`。PDF 页数与体积随构建机的中文字体变化；上述数字来自 CI 的 Noto CJK 排版，不代替 Windows 本机实测。构建日志会报告每份 PDF 的实际页数与体积。
 
 HTML 体积与 PDF 页数以[最近一次 Full 构建](https://github.com/zhuguang-ZFG/claude-code-book/actions/workflows/book.yml)为准。本轮英文版下线、新增八幅章内墨线图后，中文 HTML 舍入为 6.4 MB，CI 的 Noto CJK 排版为 540 页。已发布的 `v0.3.7` 标签与资产保持不变。
 
@@ -168,7 +168,7 @@ python -m pip install -r yuyu-book/requirements.txt
 python scripts/bookctl.py doctor                    # 一次列全环境缺失与修复命令
 python scripts/bookctl.py check --fast              # Fast 全套：依赖/源码装配 + 两套单测 + 内容/图语法/视频/产品幂等
 python scripts/bookctl.py build --product book --lang zh
-python scripts/bookctl.py build --product book --lang both --pdf
+python scripts/bookctl.py build --product book --lang zh --pdf
 ```
 
 `requirements.txt` 由 `uv.lock` 导出，版本精确固定；升级依赖时改 `pyproject.toml`，依次运行 `uv lock` 与 `uv export --format requirements-txt --no-hashes --no-emit-project --no-annotate > yuyu-book/requirements.txt`，不要手改。
