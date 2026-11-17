@@ -1812,7 +1812,7 @@ body.sample{--measure:44rem}
 <p><strong>可组合性</strong>：<code>yield*</code> 委托语法允许将子生成器的输出直接转发。主循环的结果经委托语法传到外层生成器，工具执行也串在同一条链上。生成器链把不同层次的代码无缝拼在一起：对话循环产出事件，工具执行也产出事件，上层 UI 只需要一个统一的 <code>for await...of</code> 循环就能消费所有层次的事件。</p>
 </li>
 </ol>
-<p>对话状态别放进全局变量，也别挂成 class 的实例属性。全局状态让并发测试无从下手，实例状态会让多个对话互相干扰。函数闭包是最安全的状态容器：天然隔离，天然不可共享。</p>
+<p>对话状态别放进全局变量，也别挂成 class 的实例属性。全局状态让并发测试无从下手，实例状态会让多个对话互相干扰；函数闭包是更安全的状态容器：天然隔离，天然不可共享。</p>
 <div class="hr-rule" aria-hidden="true"><svg class="hr-knot" viewBox="0 0 56 14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M2.4 7.2c3.6-.3 7.6-.3 11.6-.1"/><circle cx="17.2" cy="7" r="2.7"/><path d="M19.9 7c2.8-3.4 5.3-3.4 8.1 0s5.3 3.4 8.1 0"/><circle cx="38.8" cy="7" r="2.7"/><path d="M41.5 6.9c4-.2 8-.2 12.1.1"/></svg></div>
 <h2 id="ch02-24-状态转换模型">2.4 状态转换模型<span class="sec-tier t-core">主干</span></h2>
 <h3 id="ch02-state-类型与-continueterminal">State 类型与 Continue/Terminal</h3>
