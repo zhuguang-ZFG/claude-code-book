@@ -212,7 +212,7 @@ flowchart LR
 | Message Actions | 消息操作 | 在对话消息上提供的上下文操作按钮，如复制内容、重新生成回复等交互功能。由 `MESSAGE_ACTIONS` 功能标志控制 | Feature Flag | 第 12 章 |
 | Micro Compact | 微压缩 | 不触发完整压缩就能轻量缩减上下文的快速压缩策略。与 Cached Micro Compact 配合使用可维护缓存边界 | Compaction, Cached Micro Compact, Auto Compact | 第 7 章 |
 | Monitor Tool | 监控工具 | 在 Bash 工具执行后台命令时提供实时输出监控和状态追踪的能力。由 `MONITOR_TOOL` 功能标志控制 | BashTool, Tool | 第 7 章 |
-| Multi-tier Settings | 三级配置 | 设置系统的层级配置模型，包含全局（~/.claude/settings.json）、项目（.claude/settings.json）和本地（.claude/settings.local.json）三个级别，低优先级到高优先级逐层覆盖 | Permission Mode, Settings Sync | 第 5 章 |
+| Multi-tier Settings | 六层配置 | 设置系统的六层配置源模型，自低到高为 pluginSettings → userSettings → projectSettings → localSettings → flagSettings → policySettings，逐层覆盖；企业策略层采用"首个非空源胜出"而非深度合并 | Permission Mode, Settings Sync | 第 5 章 |
 
 ## N-O-P
 
@@ -220,7 +220,7 @@ flowchart LR
 | 英文原名 | 中文译名 | 简明定义 | 参见 | 章节 |
 |---|---|---|---|---|
 | Native Client Attestation | 原生客户端认证 | 启用平台原生的客户端身份验证机制。由 `NATIVE_CLIENT_ATTESTATION` 功能标志控制 | Feature Flag, Permission Pipeline | 第 3 章 |
-| Permission Mode | 权限模式 | 控制智能体自主执行级别的设置，包括 ask（逐次确认）、auto-edit（编辑自动放行）、full-auto（完全自动）等。配合 Transcript Classifier 可实现自动推断 | Auto Mode, Permission Pipeline, Always Allow | 第 4 章 |
+| Permission Mode | 权限模式 | 控制智能体自主执行级别的模式谱系：default（逐次确认）、plan（只读为主）、auto（AI 分类器自动审批）、bypassPermissions（除 deny 规则与安全检查外全部放行）；另有内部模式 bubble（子智能体权限冒泡回主智能体） | Auto Mode, Permission Pipeline, Always Allow | 第 4 章 |
 | Permission Pipeline | 权限管线 | 工具执行前的多层权限检查管道，包含分类器评估、用户确认对话框和自动放行规则的完整决策链。参见附录 A.3 的权限判定路径 | Permission Mode, Bash Classifier, Transcript Classifier | 第 4 章 |
 | Plan Mode | Plan 模式 | Ultraplan 功能提供的交互式规划界面，用户在执行前审查、修改和确认复杂任务计划。进入 Plan Mode 后仅允许使用只读工具 | EnterPlanModeTool, ExitPlanModeV2Tool, Ultraplan | 第 14 章 |
 | Power Assertion | 幂等断言 | 确保操作可以安全重复执行而不会产生副作用的代码设计原则。在工具系统设计中用于保障重试安全性 | Tool, Unattended Retry | 第 3 章 |
