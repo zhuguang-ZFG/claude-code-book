@@ -61,6 +61,21 @@ body{margin:0;background:var(--paper);color:var(--ink);
   font:400 17px/1.8 var(--serif);
   font-feature-settings:"kern";text-rendering:optimizeLegibility;
   -webkit-font-smoothing:antialiased}
+/* the ground is paper, not a flat browser field: three very soft washes keep
+   the sheet warm without becoming a grain that fights the ink. Screen only —
+   print resets `background` wholesale — and dark mode keeps the falloff but
+   drops the warm tint so the drawing stays the thing you look at. */
+@media screen{
+  body{background-attachment:fixed;background-image:
+    radial-gradient(58rem 44rem at 16% -6%,rgba(180,71,47,.04),transparent 70%),
+    radial-gradient(50rem 40rem at 94% 18%,rgba(200,164,92,.055),transparent 68%),
+    radial-gradient(62rem 50rem at 52% 106%,rgba(67,57,43,.032),transparent 72%)}
+}
+@media screen and (prefers-color-scheme:dark){
+  body:not(.force-light){background-attachment:fixed;background-image:
+    radial-gradient(58rem 44rem at 16% -6%,rgba(224,123,95,.028),transparent 70%),
+    radial-gradient(62rem 50rem at 52% 106%,rgba(0,0,0,.16),transparent 72%)}
+}
 body.lang-en{font-family:"Iowan Old Style",Palatino,Georgia,var(--serif);
   line-height:1.75;font-size:17px}
 /* book blocks: flush both edges; CJK breaks strictly, Latin hyphenates */
@@ -401,14 +416,18 @@ article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
    keep their real-unit dash rhythm and fade instead, and ink dots pop. */
 @media screen and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .ch-emblem path[pathLength],.ch-emblem circle[pathLength],
-    .kp-art path[pathLength],.kp-art circle[pathLength],
-    .pd-art path[pathLength],.pd-art circle[pathLength],
-    .cover-art path[pathLength],.cover-art circle[pathLength],
-    .ch-trace path[pathLength],.ch-trace circle[pathLength],
-    .pd-route path[pathLength],.pd-route circle[pathLength],
-    .illu-frame path[pathLength],.illu-frame circle[pathLength],
-    .itinerary path[pathLength],.itinerary circle[pathLength]{
+    /* :not([stroke-dasharray]) matters: an authored dash rhythm is a real
+       drawing decision, and `stroke-dasharray:100 100` below would overwrite
+       it on every dashed path that also carries pathLength. Those shapes get
+       ink-fade from the rule that follows instead, as intended. */
+    .ch-emblem path[pathLength]:not([stroke-dasharray]),.ch-emblem circle[pathLength]:not([stroke-dasharray]),
+    .kp-art path[pathLength]:not([stroke-dasharray]),.kp-art circle[pathLength]:not([stroke-dasharray]),
+    .pd-art path[pathLength]:not([stroke-dasharray]),.pd-art circle[pathLength]:not([stroke-dasharray]),
+    .cover-art path[pathLength]:not([stroke-dasharray]),.cover-art circle[pathLength]:not([stroke-dasharray]),
+    .ch-trace path[pathLength]:not([stroke-dasharray]),.ch-trace circle[pathLength]:not([stroke-dasharray]),
+    .pd-route path[pathLength]:not([stroke-dasharray]),.pd-route circle[pathLength]:not([stroke-dasharray]),
+    .illu-frame path[pathLength]:not([stroke-dasharray]),.illu-frame circle[pathLength]:not([stroke-dasharray]),
+    .itinerary path[pathLength]:not([stroke-dasharray]),.itinerary circle[pathLength]:not([stroke-dasharray]){
       stroke-dasharray:100 100;
       animation:ink-draw 1.2s ease-out both;
       animation-timeline:view();
@@ -663,7 +682,6 @@ hr{border:none;text-align:center;margin:1.8rem 0}
 
 /* ------- callouts ------- */
 .callout{margin:1.15rem 0;padding:.75rem 1.05rem .3rem;border-radius:var(--r-2);
-.callout:hover{box-shadow:0 2px 8px rgba(38,34,27,.07)}
   border:1px solid var(--line);border-left-width:4px;background:var(--card);
   font-size:.96rem}
 .callout .callout-tag{margin:0 0 .2rem;font-family:var(--sans);font-weight:700}
@@ -726,9 +744,8 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
   color:var(--code-fg);font-family:var(--mono);font-size:.83rem;line-height:1.68;
   background:transparent;overflow-x:auto;white-space:pre;
   scrollbar-width:thin;scrollbar-color:rgba(200,164,92,.4) transparent}
-.codehilite pre::-webkit-scrollbar{height:7px
-  ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
-  ::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}}
+.codehilite pre::-webkit-scrollbar{height:7px}
+.codehilite pre::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .codehilite pre::-webkit-scrollbar-thumb{background:rgba(200,164,92,.35);
   border-radius:999px}
 /* the ring is drawn inside because the frame clips what sticks out, and in
@@ -808,6 +825,24 @@ figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
   box-shadow:0 6px 22px -12px rgba(38,34,27,.30),
     inset 0 0 0 1px rgba(255,255,255,.55)}
 .illu-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
+/* registration ticks: the hand-drawn plates borrow the diagram frame's two
+   L-marks so an illustrated figure reads as the same series of pasted plates,
+   not a picture dropped into a box. Skipped for photo plates, whose full-bleed
+   image already has its own frame language. */
+figure.illu:not(.illu-photo) .illu-frame::before,
+figure.illu:not(.illu-photo) .illu-frame::after{content:"";position:absolute;
+  width:9px;height:9px;border:1px solid var(--bronze-2);opacity:.6;
+  pointer-events:none}
+figure.illu:not(.illu-photo) .illu-frame::before{left:6px;top:6px;
+  border-right:none;border-bottom:none}
+figure.illu:not(.illu-photo) .illu-frame::after{right:6px;bottom:6px;
+  border-left:none;border-top:none}
+@media screen and (prefers-reduced-motion: no-preference){
+  figure.illu:not(.illu-photo) .illu-frame{transition:box-shadow .3s ease}
+  figure.illu:not(.illu-photo):hover .illu-frame{
+    box-shadow:0 14px 34px -16px rgba(38,34,27,.42),
+      inset 0 0 0 1px rgba(255,255,255,.7)}
+}
 .illu-photo .illu-frame{padding:0;overflow:hidden;
   box-shadow:0 10px 26px -16px rgba(38,34,27,.34),
     inset 0 0 0 1px rgba(38,34,27,.07),

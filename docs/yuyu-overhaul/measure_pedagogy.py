@@ -65,7 +65,7 @@ def report(want: set[str]) -> int:
     for uid, lang, b, c, delta in rows:
         if not b["chars"] and not c["chars"]:
             continue
-        now_text = (ROOT / next(r for u, l, r in units() if u == uid and l == lang)
+        now_text = (ROOT / next(r for u, lng, r in units() if u == uid and lng == lang)
                     ).read_text(encoding="utf-8")
         mark = lambda rx: "Y" if rx.search(now_text) else "."  # noqa: E731
         if isinstance(delta, float) and abs(delta) > 10:

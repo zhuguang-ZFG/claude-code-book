@@ -7,6 +7,21 @@ body{margin:0;background:var(--paper);color:var(--ink);
   font:400 17px/1.8 var(--serif);
   font-feature-settings:"kern";text-rendering:optimizeLegibility;
   -webkit-font-smoothing:antialiased}
+/* the ground is paper, not a flat browser field: three very soft washes keep
+   the sheet warm without becoming a grain that fights the ink. Screen only —
+   print resets `background` wholesale — and dark mode keeps the falloff but
+   drops the warm tint so the drawing stays the thing you look at. */
+@media screen{
+  body{background-attachment:fixed;background-image:
+    radial-gradient(58rem 44rem at 16% -6%,rgba(180,71,47,.04),transparent 70%),
+    radial-gradient(50rem 40rem at 94% 18%,rgba(200,164,92,.055),transparent 68%),
+    radial-gradient(62rem 50rem at 52% 106%,rgba(67,57,43,.032),transparent 72%)}
+}
+@media screen and (prefers-color-scheme:dark){
+  body:not(.force-light){background-attachment:fixed;background-image:
+    radial-gradient(58rem 44rem at 16% -6%,rgba(224,123,95,.028),transparent 70%),
+    radial-gradient(62rem 50rem at 52% 106%,rgba(0,0,0,.16),transparent 72%)}
+}
 body.lang-en{font-family:"Iowan Old Style",Palatino,Georgia,var(--serif);
   line-height:1.75;font-size:17px}
 /* book blocks: flush both edges; CJK breaks strictly, Latin hyphenates */
@@ -347,14 +362,18 @@ article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
    keep their real-unit dash rhythm and fade instead, and ink dots pop. */
 @media screen and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .ch-emblem path[pathLength],.ch-emblem circle[pathLength],
-    .kp-art path[pathLength],.kp-art circle[pathLength],
-    .pd-art path[pathLength],.pd-art circle[pathLength],
-    .cover-art path[pathLength],.cover-art circle[pathLength],
-    .ch-trace path[pathLength],.ch-trace circle[pathLength],
-    .pd-route path[pathLength],.pd-route circle[pathLength],
-    .illu-frame path[pathLength],.illu-frame circle[pathLength],
-    .itinerary path[pathLength],.itinerary circle[pathLength]{
+    /* :not([stroke-dasharray]) matters: an authored dash rhythm is a real
+       drawing decision, and `stroke-dasharray:100 100` below would overwrite
+       it on every dashed path that also carries pathLength. Those shapes get
+       ink-fade from the rule that follows instead, as intended. */
+    .ch-emblem path[pathLength]:not([stroke-dasharray]),.ch-emblem circle[pathLength]:not([stroke-dasharray]),
+    .kp-art path[pathLength]:not([stroke-dasharray]),.kp-art circle[pathLength]:not([stroke-dasharray]),
+    .pd-art path[pathLength]:not([stroke-dasharray]),.pd-art circle[pathLength]:not([stroke-dasharray]),
+    .cover-art path[pathLength]:not([stroke-dasharray]),.cover-art circle[pathLength]:not([stroke-dasharray]),
+    .ch-trace path[pathLength]:not([stroke-dasharray]),.ch-trace circle[pathLength]:not([stroke-dasharray]),
+    .pd-route path[pathLength]:not([stroke-dasharray]),.pd-route circle[pathLength]:not([stroke-dasharray]),
+    .illu-frame path[pathLength]:not([stroke-dasharray]),.illu-frame circle[pathLength]:not([stroke-dasharray]),
+    .itinerary path[pathLength]:not([stroke-dasharray]),.itinerary circle[pathLength]:not([stroke-dasharray]){
       stroke-dasharray:100 100;
       animation:ink-draw 1.2s ease-out both;
       animation-timeline:view();

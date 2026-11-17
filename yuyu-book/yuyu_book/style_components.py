@@ -27,7 +27,6 @@ COMPONENTS_CSS = r"""/* ------- compass ------- */
 
 /* ------- callouts ------- */
 .callout{margin:1.15rem 0;padding:.75rem 1.05rem .3rem;border-radius:var(--r-2);
-.callout:hover{box-shadow:0 2px 8px rgba(38,34,27,.07)}
   border:1px solid var(--line);border-left-width:4px;background:var(--card);
   font-size:.96rem}
 .callout .callout-tag{margin:0 0 .2rem;font-family:var(--sans);font-weight:700}
@@ -90,9 +89,8 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
   color:var(--code-fg);font-family:var(--mono);font-size:.83rem;line-height:1.68;
   background:transparent;overflow-x:auto;white-space:pre;
   scrollbar-width:thin;scrollbar-color:rgba(200,164,92,.4) transparent}
-.codehilite pre::-webkit-scrollbar{height:7px
-  ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
-  ::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}}
+.codehilite pre::-webkit-scrollbar{height:7px}
+.codehilite pre::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .codehilite pre::-webkit-scrollbar-thumb{background:rgba(200,164,92,.35);
   border-radius:999px}
 /* the ring is drawn inside because the frame clips what sticks out, and in
@@ -172,6 +170,24 @@ figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
   box-shadow:0 6px 22px -12px rgba(38,34,27,.30),
     inset 0 0 0 1px rgba(255,255,255,.55)}
 .illu-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
+/* registration ticks: the hand-drawn plates borrow the diagram frame's two
+   L-marks so an illustrated figure reads as the same series of pasted plates,
+   not a picture dropped into a box. Skipped for photo plates, whose full-bleed
+   image already has its own frame language. */
+figure.illu:not(.illu-photo) .illu-frame::before,
+figure.illu:not(.illu-photo) .illu-frame::after{content:"";position:absolute;
+  width:9px;height:9px;border:1px solid var(--bronze-2);opacity:.6;
+  pointer-events:none}
+figure.illu:not(.illu-photo) .illu-frame::before{left:6px;top:6px;
+  border-right:none;border-bottom:none}
+figure.illu:not(.illu-photo) .illu-frame::after{right:6px;bottom:6px;
+  border-left:none;border-top:none}
+@media screen and (prefers-reduced-motion: no-preference){
+  figure.illu:not(.illu-photo) .illu-frame{transition:box-shadow .3s ease}
+  figure.illu:not(.illu-photo):hover .illu-frame{
+    box-shadow:0 14px 34px -16px rgba(38,34,27,.42),
+      inset 0 0 0 1px rgba(255,255,255,.7)}
+}
 .illu-photo .illu-frame{padding:0;overflow:hidden;
   box-shadow:0 10px 26px -16px rgba(38,34,27,.34),
     inset 0 0 0 1px rgba(38,34,27,.07),

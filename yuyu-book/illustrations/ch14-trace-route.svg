@@ -1,11 +1,23 @@
 <svg class="a-trace-route" viewBox="0 0 340 130" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- blueprint guide ticks over the leg not yet built -->
+<g opacity=".28" stroke-width=".9"><path d="M196 31v-9m26 5v-9m26 4v-8m26 3v-8m26 2v-7" pathLength="100"/><path d="M190 36q64-16 126-25" stroke-dasharray="2 6" pathLength="100"/></g>
+<!-- the road as drawn -->
 <path d="M16 110q40-8 74-22t80-30" stroke-width="2.6" pathLength="100"/>
-<path d="M170 58q34-16 62-28t66-20" class="march" stroke-width="2.2" stroke-dasharray="5 9" pathLength="100"/>
+<!-- pencil underlay -->
 <path d="M20 116q38-6 70-19" opacity=".35" stroke-width="1" pathLength="100"/>
-<g><path d="M304 14q2 22 0 44" stroke-width="2.6" pathLength="100"/><path d="M306 16q14-4 24 2q-8 6-1 12q-12 4-23-2z" stroke-width="2.4" pathLength="100"/><path d="M308 22q8-2 14 1" opacity=".5" stroke-width="1" pathLength="100"/></g>
-<g opacity=".85"><path d="M60 94q8-2 15 0l1 8q-7 3-15 1z" stroke-width="1.8" pathLength="100"/><path d="M104 76q8-2 15 0l1 8q-7 3-15 1z" stroke-width="1.8" pathLength="100"/><path d="M148 58q8-2 15 0l1 8q-7 3-15 1z" stroke-width="1.8" pathLength="100"/></g>
-<path d="M64 84l4-6m32-6 4-6m32-8 4-6" opacity=".45" stroke-width="1" pathLength="100"/>
+<path d="M18 114q40-7 74-21t76-29" opacity=".3" stroke-width=".9" pathLength="100"/>
+<!-- boot prints: the plan walked into reality -->
+<g opacity=".5" stroke-width="1.1"><path d="M46 99q4-3 8 0t-2 6q-5 1-7-2z" pathLength="100"/><path d="M66 91q4-3 8 0t-2 6q-5 1-7-2z" pathLength="100"/><path d="M88 82q4-3 8 0t-2 6q-5 1-7-2z" pathLength="100"/></g>
+<!-- three route markers with echo -->
+<g opacity=".88"><path d="M60 94q8-2 15 0l1 8q-7 3-15 1z" stroke-width="1.8" pathLength="100"/><path d="M104 76q8-2 15 0l1 8q-7 3-15 1z" stroke-width="1.8" pathLength="100"/><path d="M148 58q8-2 15 0l1 8q-7 3-15 1z" stroke-width="1.8" pathLength="100"/><path d="M62 91q6-2 12 0m32-18q6-2 12 0m32-18q6-2 12 0" opacity=".4" stroke-width=".9" pathLength="100"/></g>
+<!-- survey stake at the transition -->
+<g><path d="M170 60l-3-16m4 16 4-17" stroke-width="1.5" pathLength="100"/><circle cx="171" cy="41" r="3.2" stroke-width="1.3" pathLength="100"/><path d="M171 34v14m-7-7h14" stroke-width=".9" opacity=".7" pathLength="100"/></g>
+<!-- the dashed leg, still marching -->
+<path d="M170 58q34-16 62-28t66-20" class="march" stroke-width="2.2" stroke-dasharray="5 9" pathLength="100"/>
 <path d="M210 44q12-6 24-9m-22 16q10-5 20-8" opacity=".3" stroke-width=".9" pathLength="100"/>
-<circle cx="34" cy="108" r="1.6" fill="currentColor" stroke="none" opacity=".7"/>
-<circle cx="176" cy="52" r="1.6" fill="currentColor" stroke="none" opacity=".7"/>
+<!-- the flag, with flutter and a torn notch -->
+<g><path d="M304 14q2 22 0 44" stroke-width="2.6" pathLength="100"/><path d="M306 16q14-4 24 2q-8 6-1 12q-12 4-23-2z" stroke-width="2.4" pathLength="100"/><path d="M308 22q8-2 14 1" opacity=".5" stroke-width="1" pathLength="100"/><path d="M330 18q5-3 8 0m-9 7q5-2 8 1m-9 6q4-1 7 2" stroke-width="1.1" opacity=".55" pathLength="100"/><path d="M303 58l3 4 3-4" stroke-width="1.2" pathLength="100"/></g>
+<!-- roadside tufts and ink dots -->
+<g opacity=".4" stroke-width="1"><path d="M34 118q2-5 0-8m3 8q3-4 4-6m236-90q2-4 1-7m4 7q3-3 4-5" pathLength="100"/></g>
+<circle cx="34" cy="108" r="1.6" fill="currentColor" stroke="none" opacity=".7"/><circle cx="176" cy="52" r="1.6" fill="currentColor" stroke="none" opacity=".7"/><circle cx="252" cy="28" r="1.2" fill="currentColor" stroke="none" opacity=".5"/>
 </svg>

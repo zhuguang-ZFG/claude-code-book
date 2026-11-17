@@ -1,15 +1,29 @@
 <svg class="a-cost-ledger" viewBox="0 0 340 130" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-<path d="M16 14q18-2 36 0l1 30q-18 2-37 0q-2-14 0-27M16 76q18-2 36 0l1 29q-18 2-37 0q-2-14 0-26" stroke-width="2" pathLength="100"/>
+<!-- two small receipts, with perforated edges -->
+<g><path d="M16 14q18-2 36 0l1 30q-18 2-37 0q-2-14 0-27" stroke-width="2" pathLength="100"/><path d="M16 44l4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3" stroke-width="1.2" pathLength="100"/></g>
+<g><path d="M16 76q18-2 36 0l1 29q-18 2-37 0q-2-14 0-26" stroke-width="2" pathLength="100"/><path d="M16 105l4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3" stroke-width="1.2" pathLength="100"/></g>
 <path d="M24 24q9-1 19 0M24 33q7-1 14 0M24 86q9-1 19 0M24 95q7-1 14 0" stroke-width="1.2" opacity=".5" pathLength="100"/>
+<path d="M30 38q4-1 8 0m-8 62q4-1 8 0" opacity=".5" stroke-width="1" pathLength="100"/>
+<!-- the fold into one column -->
 <path d="M61 30q10 1 17 13m-7-2 7 2-1-7M61 90q10-1 17-13m-7 2 7-2-1 7" stroke-width="1.6" pathLength="100"/>
+<path d="M64 36q7 5 11 12m-12 50q7-5 11-12" opacity=".35" stroke-width=".9" pathLength="100"/>
+<!-- the stitched booklet -->
 <path d="M88 27q20-6 39 0q18-6 38-1l1 80q-21-5-39 0q-20-5-39 0q-2-38 0-76" stroke-width="2.4" pathLength="100"/>
 <path d="M127 31q-2 35 0 70" stroke-width="1.5" opacity=".65" pathLength="100"/>
+<g opacity=".7" stroke-width=".9"><path d="M92 31l3 4m32-5-3 4m-29 66 3-4m27 5-3-4" pathLength="100"/></g>
 <path d="M98 42q9-2 18 0M98 56q8-2 16 0M98 70q9-2 18 0M98 84q7-1 14 0M137 42q9-2 18 0M137 56q8-2 16 0M137 70q9-2 18 0M137 84q7-1 14 0" stroke-width="1.1" opacity=".5" pathLength="100"/>
+<!-- the push to the ledger -->
 <path d="M176 65q14-2 29 0m-8-5 8 5-8 5" stroke-width="2" pathLength="100"/>
+<path d="M178 60q12-2 24 0m-22 10q12 2 24 0" opacity=".3" stroke-width=".9" pathLength="100"/>
+<!-- the grand ledger -->
 <path d="M218 22q43-4 84 0l16 15q3 35 0 71q-50 4-100 0q-2-41 0-82" stroke-width="2.4" pathLength="100"/>
 <path d="M302 24l-1 15 14 0M268 45q-1 17 0 33" stroke-width="1.3" opacity=".65" pathLength="100"/>
 <path d="M230 49q12-2 25 0M230 62q10-1 20 0M230 75q12-2 25 0M280 49q9-1 18 0M280 62q7-1 14 0M280 75q9-1 18 0" stroke-width="1.2" opacity=".5" pathLength="100"/>
 <path d="M229 86q35-2 72 0M230 98q35-1 71 0" stroke-width="1.5" pathLength="100"/>
 <path d="M280 92q9-1 18 0" stroke-width="2.5" pathLength="100"/>
+<!-- the seal: counted and settled -->
+<circle cx="245" cy="100" r="7" stroke-width="1.2" opacity=".75" pathLength="100"/><path d="M241 100q4-4 8 0m-8 0q4 4 8 0m-4-4v8" stroke-width="1" opacity=".75" pathLength="100"/>
+<path d="M210 116q62-3 122 0" opacity=".35" stroke-width="1" pathLength="100"/>
 <path d="M12 124q158-6 316-2" stroke-width="1" opacity=".25" pathLength="100"/>
+<circle cx="196" cy="42" r="1.4" fill="currentColor" stroke="none" opacity=".6"/>
 </svg>

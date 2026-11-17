@@ -5,7 +5,6 @@ import re
 
 from .diagnostics import BuildError
 from .paths import REPO_ROOT
-from .text import HAN_RE
 
 GUIDE_FIELDS = ("question", "deliverable", "boundary")
 SOURCE_REQUIRED = ("title", "authority", "kind", "url", "snapshot",
