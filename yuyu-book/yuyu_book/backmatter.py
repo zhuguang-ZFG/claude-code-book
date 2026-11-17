@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 
 from .core import BuildError, INDEX_CN_LETTER
-from .pages import esc, src_field, ui
+from .labels import esc, ui
 
 KIND_GROUP = {
     "zh": {"github": "GitHub 仓库与发布", "docs": "官方文档", "blog": "工程博客",
@@ -16,6 +16,8 @@ KIND_GROUP = {
 
 
 def source_registry(sources: dict, lang: str, anchor: str = "sources") -> str:
+    from .pages import src_field
+
     order = ["github", "npm", "docs", "blog", "spec", "community"]
     groups: dict[str, list] = {k: [] for k in order}
     for sid, src in sources.items():

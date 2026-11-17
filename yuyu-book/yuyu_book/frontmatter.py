@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from .labels import esc, note, route_map_lead, ui
-from .pages import tier_legend
 
 def cover(manifest: dict, lang: str) -> str:
     from .art import cover_plate
@@ -76,6 +75,8 @@ def revisions_page(entries: list[dict], lang: str) -> str:
 
 
 def how_to_read(manifest: dict, lang: str, paths: dict | None = None) -> str:
+    from .pages import tier_legend
+
     # a volume may ship without curated routes (`start_reading` absent): the
     # page then opens straight on the part list instead of an empty card grid
     cards = "".join(
