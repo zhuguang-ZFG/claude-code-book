@@ -82,7 +82,7 @@ def check(site: Path) -> list[str]:
         parsed[page.resolve()] = links
         for raw in links.targets:
             target = urllib.parse.urlsplit(raw)
-            if target.scheme.lower() in SKIP_SCHEMES:
+            if target.netloc or target.scheme.lower() in SKIP_SCHEMES:
                 continue
             relative = urllib.parse.unquote(target.path)
             destination = (page.parent / relative).resolve() if relative else page.resolve()

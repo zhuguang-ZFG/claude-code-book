@@ -6,6 +6,12 @@ from __future__ import annotations
             '<script src="//cdn.example.com/a.js"></script>', encoding="utf-8")
         self.assertEqual(check_site_redirects.check(self.site), [])
 
+    def test_protocol_relative_external_asset_is_not_a_local_link(self):
+        page = self.site / "beginner-reader.html"
+        page.write_text(
+            '<script src="//cdn.example.com/a.js"></script>', encoding="utf-8")
+        self.assertEqual(check_site_redirects.check(self.site), [])
+
 
 import sys
 import tempfile
