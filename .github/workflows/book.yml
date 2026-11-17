@@ -43,6 +43,10 @@ jobs:
       - run: python -B codex/examples/check_workshop.py
       - run: python opencode/examples/pricing-lab/check_pricing.py
       - run: python scripts/bookctl.py check --fast
+      - name: Static analysis
+        run: |
+          python -m pip install ruff==0.15.21
+          python -m ruff check .
       - uses: actions/upload-artifact@v4
         if: always()
         with:
