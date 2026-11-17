@@ -32,6 +32,7 @@ ORDER = ["front", "ch01", "ch01-open-room", "ch01-five-pillars",
          "ch09", "ch09-fork-pipeline", "ch09-tool-funnel",
          "ch10", "ch10-coordinator-fork", "ch10-four-stations",
          "ch11", "ch11-skill-stairs", "ch11-paths-lantern",
+         "ch11-plugin-cache",
          "ch12", "ch12-mcp-state-dial", "ch12-bridge", "ch13",
          "ch13-concurrency-gate",
          "ch13-cost-ledger",
@@ -56,6 +57,7 @@ WIDE = {"ch03-tool-bench": 300, "ch03-tool-pipeline": 330,
         "ch04-risk-road": 330, "ch05-merge-splice": 330,
         "ch06-trailing-lantern": 330, "ch07-boundary-knot": 330,
         "ch10-four-stations": 330, "ch11-paths-lantern": 330,
+        "ch11-plugin-cache": 330,
         "ch14-trace-route": 330, "ch15-six-mileposts": 330}
 WIDE["ch02-cancel-chain"] = 360
 WIDTH = {n: (420 if n == "cover" else WIDE.get(n) or (300 if n in BIG else 120))
@@ -107,6 +109,7 @@ PLAIN = {
     "ch07-boundary-knot": "绳上打个结：压缩前的消息收成一团，不再重翻",
     "ch10-four-stations": "四格胶片：侦察、汇总、动手、验收",
     "ch11-paths-lantern": "岔道口的灯笼：走到匹配的文件，技能才点亮",
+    "ch11-plugin-cache": "插件匣：匣口压着清单，三格抽屉分装命令、智能体与钩子；书签先问缓存，命中就不必再翻磁盘",
     "ch14-trace-route": "虚线走成实线：先画好的路，一步步踩实",
     "ch15-six-mileposts": "六块里程碑：从对话循环到钩子，一步步上坡",
     "apxa": "藏宝图：源码去哪儿翻，一图定位",
@@ -191,6 +194,9 @@ PLAIN_EN = {
     "ch10-four-stations": "A filmstrip: research, synthesize, implement, verify",
     "ch11-paths-lantern": "A lantern at the fork: the skill lights up only "
                           "when your file matches its path",
+    "ch11-plugin-cache": "A plugin case: a manifest at the lip, three drawers "
+                         "for commands, agents and hooks; a bookmark asks the "
+                         "cache first, so a hit skips the disk",
     "ch14-trace-route": "Dashed route drawn solid: the planned road, "
                         "walked step by step",
     "ch15-six-mileposts": "Six milestones: from dialog loop to hooks, "

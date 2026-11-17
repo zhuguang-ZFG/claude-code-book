@@ -186,6 +186,18 @@ class ShippedCounts(Data):
              [str(plates)]),
             ("CREDITS.md", r"全书 (\d+) 张图",
              [str(plates)]),
+            # a whole-line rewrite once dropped this paragraph's opening
+            # clause while keeping its counts; --fast and check_book do not
+            # read prose, so pin the full sentence as one claim
+            ("README.md", r"整书包含封面、版本与许可页、修订史、阅读路线、"
+                          r"带页码的目录和\*\*全书线路图\*\*。线路图在目录后"
+                          r"独占一页：前言是路头的辐轮，十五章沿四段蛇形道路"
+                          r"排站，附录走虚线岔线。每章的「本章问题 / 读完交付"
+                          r" / 本章边界」罗盘与来源锚点，帮助读者先判断这一章"
+                          r"能解决什么。每版 (\d+) 张 Mermaid 图与 (\d+) 张"
+                          r"解释性手绘组成 (\d+) 张编号图版",
+             [str(plates), str(self.body_plates("zh")),
+              str(plates + self.body_plates("zh"))]),
             ("README.md", r"`yuyu-book/` 把 (\d+) 个单元装配成",
              [str(len(self.units))]),
             # the same registry is quoted by size in both READMEs

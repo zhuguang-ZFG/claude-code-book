@@ -27,7 +27,7 @@ Midjourney、Flux 等），即可在别的媒介重制同一幅图，或为未�
 ## 混合格式：大图生成墨版，小图手绘 SVG（2026-11-08 定稿）
 
 格式决定：**大图生成，小图手绘**。封面与四个篇题刻允许使用生成墨版 PNG；章徽、章末驿卒、
-20 张信息性章内图，以及第二分册的全部插图继续用动画 SVG——只有 SVG 能继承 `currentColor`、
+31 张信息性章内图，以及第二分册的全部插图继续用动画 SVG——只有 SVG 能继承 `currentColor`、
 按子形状落墨，并在深色屏幕与纸上重新上色。
 
 - 装配优先级：`cover.png`、`part-*.png` 存在时优先；其余槽位只认 SVG，小图槽位的同名 PNG 不会被采用
@@ -806,25 +806,27 @@ Core style traits: flowing ink linework with an East-Asian brush spirit; visible
 
 </details>
 
-## 手册不覆盖的另一类：30 张章内插图
+## 手册不覆盖的另一类：31 张章内插图
 
 本手册的 26 条提示词只覆盖**章徽、篇题刻、老驿卒、扉页车图**这一类——它们是靠生图提示词
-起稿、再转成手写 SVG 的。盘上另有 **30 张章内插图**（正文里跟着小节走的那种）不属于这条管线，
-它们没有中英双语提示词，也不必强行编一份，故在此登记边界，别让「56 张图 vs 26 条提示词」
+起稿、再转成手写 SVG 的。盘上另有 **31 张章内插图**（正文里跟着小节走的那种）不属于这条管线，
+它们没有中英双语提示词，也不必强行编一份，故在此登记边界，别让「57 张图 vs 26 条提示词」
 这个差额看起来像漏项：
 
 `ch01-five-pillars`、`ch01-open-room`、`ch02-turn-loop`、`ch02-cancel-chain`、`ch03-tool-bench`、`ch03-tool-pipeline`、
 `ch04-gate-steps`、`ch04-risk-road`、`ch05-trust-ladder`、`ch05-merge-splice`、`ch06-memory-funnel`、`ch06-trailing-lantern`、
 `ch07-four-levels`、`ch07-boundary-knot`、`ch08-hook-line`、`ch08-hook-decision`、`ch09-fork-pipeline`、`ch09-tool-funnel`、
 `ch10-coordinator-fork`、`ch10-four-stations`、`ch11-skill-stairs`、`ch11-paths-lantern`、
+`ch11-plugin-cache`、
 `ch12-mcp-state-dial`、`ch12-bridge`、`ch13-concurrency-gate`、`ch13-cost-ledger`、`ch14-plan-gate`、`ch14-trace-route`、
 `ch15-harness-wheel`、`ch15-six-mileposts`
 
-（26 + 30 = 56，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
+（26 + 31 = 57，正好是 `yuyu-book/illustrations/*.svg` 的盘上计数。）
 
 `ch08-hook-decision`、`ch09-tool-funnel`、`ch13-cost-ledger` 共用中英文版 SVG，图内不放说明文字：退出码与 JSON 画成两张回执，MCP 工具画成绕过筛网的插头通路，usage 画成事件小票、消息账页与总账。函数名、权限边界和处置含义由正文与画廊的双语题注解释，避免缩小后文字碰线，也避免英文页混入中文标注。
 
 - 2026-11-17 新增 8 张直绘插图，补平每章两张的密度：`ch04-risk-road`（§4.2.2，allow/ask/deny 三块界石）、`ch05-merge-splice`（§5.1.2，两股配置捻成一股绳）、`ch06-trailing-lantern`（§6.3.4，队伍末尾提灯跟随）、`ch07-boundary-knot`（§7.3，消息绳上的压缩结）、`ch10-four-stations`（协调者四阶段逐格胶片）、`ch11-paths-lantern`（§11.3.3，岔道口灯笼亮起）、`ch14-trace-route`（§14.1.1，虚线蓝图走成实线）、`ch15-six-mileposts`（§15.2，六块里程碑）。这批与 `ch01-open-room`、`ch12-bridge` 同为直绘，无独立提示词条目。
+- 2026-11-17 续画第 31 张 `ch11-plugin-cache`（§11.4.2，插件匣三格抽屉 + 缓存书签）：选点按「每图覆盖小节数」降序、章号升序落在最早的高密度缺口；第 11 章 24 小节 / 加图前 2 图，11.4 整段无图。抽屉分别以斜杠、分叉、钩形暗示 commands / agents / hooks，书签先接住来自匣子的实线，未命中才走点线去磁盘。仍是直绘 SVG，无独立提示词条目。
 
 - 首批 20 张的取舍与逐轮修订记录在 `.superpowers/sdd/2026-11-02-illustration-rollout/`
   里（`progress.md` 与 `fix-round-1-section.md`），不在本手册；要改画先读那两份。
