@@ -101,7 +101,7 @@ how_to_use:  当需要根据用户画像调整解释深度和协作方式时
 
 ```yaml
 when_to_save: 用户纠正你的做法（"不要那样"）或确认非显而易见的做法成功时
-body_structure: 规则本身 + Why: 原因 + How to apply: 适用场景
+body_structure: "规则本身 + Why: 原因 + How to apply: 适用场景"
 ```
 
 关键设计：失败（纠正）和成功（确认）都记。只保存纠正，Agent 会变得过于谨慎，偏离试过有效的方法。
@@ -120,7 +120,7 @@ body_structure: 规则本身 + Why: 原因 + How to apply: 适用场景
 
 ```yaml
 when_to_save: 了解到谁在做什么、为什么做、何时完成时
-body_structure: 事实或决策 + Why: 动机 + How to apply: 对建议的影响
+body_structure: "事实或决策 + Why: 动机 + How to apply: 对建议的影响"
 ```
 
 特别注意：相对日期必须换算成绝对日期（"周四"要写成"2026-03-05"），因为记忆是跨会话持久的，相对日期在未来的对话中会失去意义。

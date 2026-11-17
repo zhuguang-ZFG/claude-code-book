@@ -6684,7 +6684,7 @@
       "unit": "ch06",
       "section": "ch06-612-四种类型的详细解析",
       "kind": "fence",
-      "text": "when_to_save: 用户纠正你的做法（\"不要那样\"）或确认非显而易见的做法成功时\nbody_structure: 规则本身 + Why: 原因 + How to apply: 适用场景"
+      "text": "when_to_save: 用户纠正你的做法（\"不要那样\"）或确认非显而易见的做法成功时\nbody_structure: \"规则本身 + Why: 原因 + How to apply: 适用场景\""
     },
     {
       "lang": "zh",
@@ -6740,7 +6740,7 @@
       "unit": "ch06",
       "section": "ch06-612-四种类型的详细解析",
       "kind": "fence",
-      "text": "when_to_save: 了解到谁在做什么、为什么做、何时完成时\nbody_structure: 事实或决策 + Why: 动机 + How to apply: 对建议的影响"
+      "text": "when_to_save: 了解到谁在做什么、为什么做、何时完成时\nbody_structure: \"事实或决策 + Why: 动机 + How to apply: 对建议的影响\""
     },
     {
       "lang": "zh",
