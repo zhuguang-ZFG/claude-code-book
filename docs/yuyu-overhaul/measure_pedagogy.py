@@ -46,8 +46,9 @@ def units() -> list[tuple[str, str, str]]:
 
 
 def report(want: set[str]) -> int:
+    all_units = units()
     rows = []
-    for uid, lang, rel in units():
+    for uid, lang, rel in all_units:
         if want and uid not in want:
             continue
         now_p = ROOT / rel
@@ -58,16 +59,15 @@ def report(want: set[str]) -> int:
         c = dict(chars=len(now), han=len(HAN.findall(now)),
                  scene=bool(SCENE.search(now)), tables=len(TABLE.findall(now)))
         delta = "-" if not b["chars"] else round(100 * (c["chars"] - b["chars"]) / b["chars"], 1)
-        rows.append((uid, lang, b, c, delta))
+        rows.append((uid, lang, b, c, delta, now))
     print(f"{'unit':6} {'lang':4} {'chars 前→后':>16} {'Δ%':>6} "
           f"{'han 前→后':>14} {'场景':>8} {'表行 前→后':>12} {'目标':>4} {'难度':>4} {'互链':>4}")
     over = []
-    for uid, lang, b, c, delta in rows:
+    for uid, lang, b, c, delta, now in rows:
         if not b["chars"] and not c["chars"]:
             continue
-        now_text = (ROOT / next(r for u, lng, r in units() if u == uid and lng == lang)
-                    ).read_text(encoding="utf-8")
-        mark = lambda rx: "Y" if rx.search(now_text) else "."  # noqa: E731
+        def mark(rx):
+            return "Y" if rx.search(now) else "."
         if isinstance(delta, float) and abs(delta) > 10:
             over.append((uid, lang, delta))
         print(f"{uid:6} {lang:4} {b['chars']:>7}→{c['chars']:<7} {delta!s:>6} "
