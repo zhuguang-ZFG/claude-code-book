@@ -159,10 +159,10 @@ class RefLinker:
 
     def __init__(self, mapping: dict[str, str], current: str, lang: str):
         if lang == "zh":
-            self.rx = re.compile(r"第\s*(\d{1,2})\s*章|附录\s*([A-D])")
+            self.rx = re.compile(r"第\s*(\d{1,2})\s*章|附录\s*([A-E])")
         else:
             self.rx = re.compile(
-                r"\bChapter\s+(\d{1,2})\b|\bAppendix\s+([A-D])\b")
+                r"\bChapter\s+(\d{1,2})\b|\bAppendix\s+([A-E])\b")
         self.map = mapping
         self.current = current
 

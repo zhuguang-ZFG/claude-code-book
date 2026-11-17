@@ -160,7 +160,7 @@ def assemble_book(lang: str, manifest: dict, sources: dict, *,
 
     local_targets = {u.path: u.id for u in units}
     for u in units:
-        alias = re.search(r"(?:^|-)(ch\d{2}|apx[a-d])$", u.id)
+        alias = re.search(r"(?:^|-)(ch\d{2}|apx[a-e])$", u.id)
         if alias:
             mapping[alias.group(1)] = u.id
 
