@@ -27,7 +27,7 @@
 ├── docs/                    读者侧成品与改造档案：`portal.html`（站点门户，由 `scripts/build_site_portal.py` 生成）、`beginner-reader*.html`、`illustration-gallery.html`、`illustration-prompts.md`、`banner.svg` / `tagline.svg`；`COMPARE-OMP.md` 是御舆侧的两书对照入口；`YUYU-OVERHAUL-SPEC.md` 是御舆这一本的改造 SPEC，`yuyu-overhaul/` 放它的基线、日志、护栏脚本与 `TEST-CONTRACT.md` / `SHARED-TERMS.md`；另有 `baseline/`（指标基线与截图）、`migrations/`（行号→块 ID 迁移的双跑证据）、`notes/`（草稿）、`superpowers/`（计划与设计稿）、`video/`（分章素材）
 │   └── images/              star-history-light.svg / star-history-dark.svg
 ├── omp/                     第二分册《Omp 从入门到精通：原理与实战》书稿（product=omp，见 §3.6 与 omp/BUILD.md）
-├── vibe/                    第十册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文试读版）
+├── vibe/                    第十册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文单语，12 章 + 附录 A–D）
 ├── yuyu-book/               整书构建器（见下）
 └── .github/workflows/       book.yml / release.yml / pages.yml / update-star-history.yml
 ```
@@ -109,7 +109,7 @@
 | `backmatter.py` | 后置页：来源与许可、主题索引、索引页码回填、原理札记、按语集；`pages.py` 重导出 |
 | `pages.py` | 正文侧页面组件（前置页已拆到 `frontmatter.py`，后置页拆到 `backmatter.py`）。`compass()` 渲染"本章问题 / 读完交付 / 本章边界"三张卡加"来源锚点"chips；`principles_page()` 把每条 core 术语的 `why` 按章排成一页（纸面没有悬停，理由必须有另一条路走到读者眼前）；`notes_page()` 把 20 行按语按阅读顺序排成书末「按语集」，每行的章题链回正文——章末那一行只是它路过的位置，合集才是它能被检索、被读完的地方；`route_map_page()` 把全书画成一条路（前言是路头的辐轮，戴目录同一枚序号 `FRONT_NO`），图下再列一份带链接的站表——`aria-hidden` 的画里没有可达的编号，也没有链接；`part_divider()` 在篇分隔页起头放该篇题刻；`lead_band()` 放章首白话导读带；`fill_index_folios()` 把量好的页码写进主题索引每行预留的空位——按行自己链接的锚点认领而不按头词字面，空位没人填或多出一位都让构建失败；`note()` 把修订说明里的反引号排成真代码元素——这些笔记引用的是构建器自己的名字，一溜裸反引号在排好的书里读起来像笔误 |
 | `plain.py` | 通俗层：加载并校验 `glosses.json` 与 `reading-paths.json`。给正文首现术语套 `<span class="gloss">`（屏幕上悬停出白话浮窗，纸面上退回章末「新词」面板（按单元类型改称「本章新词」「开篇新词」「本附录新词」）；浮窗有两种落位——屏幕宽过「版心 + 浮窗」= 67rem 才贴着术语浮起，否则钉在视口底部作说明条，而宽表里的术语任何宽度都用说明条，因为横向滚动的容器会把画在它里面的浮窗一并裁掉），给每个单元算新词清单，给每个 H2 按位置表盖「起步 / 主干 / 进阶」tier 徽，并把 manifest 里的 `plain`/`analogy` 装配成导读带；浮窗本身是三层——白话定义、`why`（它非这样不可的理由）、`analogy`（比方），`why` 排在定义之后、比方之前。白话不许自由发挥：`validate_plain()` 要求每条证据 `file:line` 落在代码围栏之外且该行确实含登记过的表面词形，core 词条与每条导读带都要有证据；`why` 另有自己的 `why_evidence`，同样要落进正文的散文——理由不能是构建器替书稿编的；按语另有 `validate_notes()`，它读的是**该单元自己的源文件**：一条按语必须含一个已注册词形，且那个词形真的站在它那一章的正文里（术语锁），中文 ≤36 字，20 个单元一个都不能缺、也不许多出一个没主的 |
-| `art.py` | 插图装载：`illustrations/<unit-id>.svg` 是每单元一枚章徽，`illustrations/part-<id>.svg` 是每篇一幅题刻，`illustrations/cover.svg` 是扉页那幅四马古车图版。装载顺序是先查 `illustrations-omp/<id>.svg`、查不到再回落 `illustrations/<id>.svg`：两个分册的 id 不重叠（omp 的单元与篇一律带 `omp-` 前缀），一次查找不必知道当前装的是哪个产品，而驿卒 `keeper.svg` 全书仍只需一份。`_read()` 在装配前逐个把关——章徽/题刻不超过 6 KB、扉页图版另有 `PLATE_BYTES` 上限，都要带 `viewBox`、只用 `currentColor` 描线，且不得出现 `id=`、`href=`、`url(`、`<style>`、`<script>`。同一份图会被内联进单文件几十次，一个 id 就是一次重复 id；`currentColor` 则是"一张图同时管屏幕、暗色与纸面"的前提。正文插图再走一道 `mark_decorative()`：根元素自带 `aria-label`/`aria-labelledby`/`<title>` 的图保留自述（`ch02-cancel-chain.svg` 是目前唯一一份），其余补 `aria-hidden="true"`——图版的意思写在图题里，读屏不该在同一处停两遍；只有 `role` 不算名字，带 `aria-hidden="false"` 而无名的会被改写成 `true`。测试按这条规则扫全部 46 份源文件，`audit()` 对每份成品再扫一遍 |
+| `art.py` | 插图装载：`illustrations/<unit-id>.svg` 是每单元一枚章徽，`illustrations/part-<id>.svg` 是每篇一幅题刻，`illustrations/cover.svg` 是扉页那幅四马古车图版。装载顺序是先查 `illustrations-omp/<id>.svg`、查不到再回落 `illustrations/<id>.svg`：两个分册的 id 不重叠（omp 的单元与篇一律带 `omp-` 前缀），一次查找不必知道当前装的是哪个产品，而驿卒 `keeper.svg` 全书仍只需一份。`_read()` 在装配前逐个把关——章徽/题刻不超过 6 KB、扉页图版另有 `PLATE_BYTES` 上限，都要带 `viewBox`、只用 `currentColor` 描线，且不得出现 `id=`、`href=`、`url(`、`<style>`、`<script>`。同一份图会被内联进单文件几十次，一个 id 就是一次重复 id；`currentColor` 则是"一张图同时管屏幕、暗色与纸面"的前提。正文插图再走一道 `mark_decorative()`：根元素自带 `aria-label`/`aria-labelledby`/`<title>` 的图保留自述（`ch02-cancel-chain.svg` 是目前唯一一份），其余补 `aria-hidden="true"`——图版的意思写在图题里，读屏不该在同一处停两遍；只有 `role` 不算名字，带 `aria-hidden="false"` 而无名的会被改写成 `true`。测试按这条规则扫全部 57 份源文件，`audit()` 对每份成品再扫一遍 |
 | `mermaid.py` | 图版预渲染与缓存：`.cache/mermaid/` 下的 SVG 以 `sha1(配色指纹 + mermaid 版本 + 浏览器版本 + 图源)` 为键（指纹由 `_style_fingerprint()` 现算，改一个色值旧图就会失效，不会拿旧配色继续服务）；`THEME` 是全书统一的图板配色，但主题只及于作者没管过的节点——正文另有 696 条 `classDef`、192 条 `style` 自带 Material/Tailwind 色，`reink_colors()` 在渲染前按色相把它们并入 `BOOK_FAMILIES` 的七组书色（fill 决定角色，`color:` 一律换成该角色的墨色，因为映射后的底色都是浅色，作者原来写的白字会看不见），图源文件本身不改；`captions_for()` 取该图之上最近的 H2 作图题（`block.line` 就是文件行号，所以紧贴围栏的标题也算），其上什么都没有才回落为"架构示意"/"Architecture sketch"；`source_fallback()` 供 `--mermaid source` 使用。图版刻意保持 crisp 直线：mermaid 11 的顶层 `look:'handDrawn'` 实测把单张图从 16.8 KB 抬到 111 KB、最大那幅从 78 KB 抬到 1.26 MB（rough.js 每个形状多道抖动描边），320 张全换会让单文件整书涨到几十 MB，手绘气质因此由 `style.py` 的走线、车辙、道路与墨记承担 |
 | `audit.py` | 落盘前的 HTML 契约检查，见第 6 节 |
 | `style.py`、`style_css.py`、`style_*.py`、`deco.py` | `style.py` 保留页面外壳 `page()`；`style_tokens.py`、`style_screen.py`、`style_components.py`、`style_print.py` 分别保存令牌、屏幕、组件和打印规则，`style_css.py` 按固定顺序合并为内联 `CSS`。`deco.py` 保存按单元 ID 定种的走线、车辙、道路与墨记。屏幕允许宽图和宽表横向滚动，打印规则将它们收回版心；无外部字体和运行时脚本。当前仍有内部重导出，调用者迁移完成前不能宣称兼容层已清空 |
@@ -161,10 +161,10 @@ yuyu-book/
 - `yuyu-book/dist/yuyu-agent-harness-zh.html`：自包含单文件，图片走 data URI，无外链资源、无脚本。当前构建只出这一份中文 HTML。
 - `yuyu-book/dist/yuyu-agent-harness-zh.pdf`：A4，含书签树、奇偶眉标、页脚页码与带页码的目录。`v0.3.7` 的 Release 里仍有当时的英文 HTML/PDF/EPUB，不在这次删除。
 
-### 3.6 双产品：`book` 与 `omp`
+### 3.6 十卷：`book`、`omp` 与其余分册
 
-同一套构建器现在装两本书，靠的是**登记表文件名**而不是代码里的产品分支（两张登记表与产物前缀的对照在
-`yuyu-book/PRODUCTS.md`，本节只记机制与边界）：
+同一套构建器装十卷（御舆、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe），再加把这十卷订成一本的 `collected`。分册靠**登记表文件名**而不是代码里的产品分支。十卷的登记表、产物前缀和命令在
+`yuyu-book/PRODUCTS.md`。下表只展开御舆和 omp 这一对的边界；其余分册用各自的 `manifest-<product>.json`，机制相同：
 
 | | `book`（御舆，默认） | `omp`（第二分册《Omp 从入门到精通：原理与实战》） |
 |---|---|---|
@@ -174,7 +174,7 @@ yuyu-book/
 | 通俗层登记表 | 裸名 `glosses.json` / `notes.json` / `reading-paths.json` | manifest 自称 `product: "omp"`，于是 `plain.registry_names()`（`yuyu_book/plain.py:70`）改取 `-omp` 同名兄弟——写第二本不会覆写第一本 |
 | 其余登记表 | `revisions.json`、`subject-index.json` | `revisions_registry` 键指向 `revisions-omp.json`；`subject_index_registry: null` → 不排书末主题索引（`app.build_edition()` 读取该键），索引页码回填那条工序因此在 omp 这边整层不存在 |
 | 产物名 | `output_prefix` 缺省 → `yuyu-agent-harness-*`（`app.build_edition()`） | `output_prefix: "yuyu-omp"` → `yuyu-omp-zh.html` / `.pdf` |
-| 语言门禁 | 随英文版下线，`en` / `both` 均退出 2（`invalid choice`，合法值由 manifest 动态生成，当前只有 `zh`） | `--lang en` 退出 2（"omp product is zh-only for now"），`both` 被悄悄降成 zh |
+| 语言门禁 | `en` / `both` 均退出 2（argparse `invalid choice`；`--lang` 的 choices 只有 `zh`） | 与御舆相同：`en` / `both` 直接被拒，退出 2，不会把 `both` 降成中文 |
 
 三条边界值得单独说：
 
@@ -194,7 +194,7 @@ yuyu-book/
 | `scripts/draw_omp_illustrations.py` | 用 Pillow 与本机 CJK 字体重绘 omp 六张入门概念图：默认只写 `.scratch/` 预览，确认后加 `--out-dir omp/images`；单张超过构建器的 300,000 字节内嵌预算会在写盘前失败，语义边界与字体说明见 `omp/overhaul/PYTHON-ILLUSTRATIONS.md` |
 | `scripts/star_history.py` | 生成并增量维护 `docs/images/star-history-{light,dark}.svg` |
 | `tests/test_star_history.py` | 上面那个脚本的单测（`python -m unittest discover -s tests`） |
-| `.github/workflows/book.yml` | Book CI 的 `Fast` / `Full` / `Omp` / `Bootstrap` 四个 job：Fast 跑书稿契约检查与 `bookctl check --fast`；Full 在 Fast 之后跑 `check --full` 与 `scripts/check_artifact_claims.py` 并上传 HTML/PDF；Omp 独立检查第二分册（结构/交付审计 + 中文 HTML/PDF），故意不写 `needs`——omp 红不挡御舆发布；Bootstrap 在 Ubuntu/Windows 上跑 `doctor` 与源码装配 |
+| `.github/workflows/book.yml` | Book CI 八个 job：`Fast`（PR 与 main：书稿契约与 `bookctl check --fast`）；`Full`（仅 main/手动，`needs: fast`：`check --full`、产物声明与版面检查，上传御舆 HTML/PDF）；`Omp`（仅 main/手动：结构/交付审计 + 中文 HTML/PDF，不 `needs` 御舆）；`Bootstrap`（仅 main/手动，Ubuntu/Windows：`doctor` 与源码装配）；`Pi`（PR 也跑：中文 HTML/PDF/EPUB）；`Agent volume`（矩阵 opencode、deepseek、hermes、codex、prompt、kimi、vibe，PR 也跑：中文 HTML/PDF/EPUB）；`Collected edition`（仅 main/手动，150 分钟：合订本中文 HTML/PDF/EPUB）；`DeepSeek Cordis components`（PR 也跑：钉住的 Cordis 源码与示例） |
 | `.github/workflows/release.yml` | Release CI：`v*` 标签或手动触发，先跑 `check --full` 与产物声明核对，再调 `bookctl release --version <tag> --epub` 装配，`sha256sum --check` 后上传工件；标签推送时创建 GitHub Release。`v0.3.7` 已由 run 43834162260 跑过 |
 | `.github/workflows/check-book.yml` | 已删除：原内容门（`check_book.py` + `check:diagrams` + unittest）并入 `book.yml` 的 `Fast` job |
 | `.github/workflows/pages.yml` | Pages CI：main 上构建御舆中文 HTML 与导读页，并单独构建 Omp 中文 HTML（`omp` job，`continue-on-error`，失败不挡御舆）。触发路径包含 `omp/**`。装配时只有 `omp-site` 工件到了，才用 `scripts/build_site_portal.py --omp` 给门户卡加上 `omp/yuyu-omp-zh.html`。PDF 和其他分册不进这个站点。仓库里提交的 `docs/portal.html` 仍是不带链接的那一版 |

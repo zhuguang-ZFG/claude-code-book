@@ -37,6 +37,8 @@ jobs:
           fi
       - run: python scripts/bookctl.py check --full
       - run: python scripts/check_artifact_claims.py
+      # release.py prints every volume, including the collected HTML/PDF,
+      # then the collected EPUB because --epub is set. The globs below upload them.
       - name: Assemble final release
         shell: bash
         run: python scripts/release.py --version "$RELEASE_VERSION" --out-dir "$RELEASE_DESTINATION" --epub

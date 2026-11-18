@@ -132,6 +132,22 @@ class MaintenanceNotes(unittest.TestCase):
         self.assertNotIn("--lang both", builder_help)
         self.assertNotIn("--lang en", builder_help)
 
+    def test_lang_both_is_rejected_for_every_shelf_product(self):
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(ROOT / "yuyu-book")
+        for product in ("book", "omp", "collected"):
+            proc = subprocess.run(
+                [sys.executable, "scripts/bookctl.py", "build",
+                 "--product", product, "--lang", "both"],
+                cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 2, product)
+            self.assertIn("invalid choice", proc.stderr)
+        builder = subprocess.run(
+            [sys.executable, "-m", "yuyu_book", "--lang", "both"],
+            cwd=ROOT, capture_output=True, text=True, env=env)
+        self.assertEqual(builder.returncode, 2)
+        self.assertIn("invalid choice", builder.stderr)
+
     def test_existing_english_hooks_stay(self):
         pages = read(".github/workflows/pages.yml")
         book = read(".github/workflows/book.yml")

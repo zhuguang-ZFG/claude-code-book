@@ -174,12 +174,16 @@ jobs:
           if-no-files-found: error
   collected:
     name: Collected edition
-    # Ten bound volumes inline every plate, so this document is built on main
-    # and on dispatch only; pull requests still cover its loader and assembly
-    # contract through the builder suite.
+    # Ten bound volumes inline every plate. The quadratic iter_doc scan is
+    # already fixed; what remains is a measuring Chromium print, the stamped
+    # print, and PyMuPDF garbage=4. A finished local run is about 21 minutes
+    # of PDF plus 4 minutes of EPUB. An earlier attempt was killed at 3600s
+    # during that print, so this job stays off pull requests and the budget
+    # is 150 minutes, not 60. Pull requests still cover the loader and the
+    # assembly contract through the builder suite.
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
         with:
@@ -187,10 +191,32 @@ jobs:
       - uses: ./.github/actions/book-setup
         with:
           browser: 'true'
-      - name: Build the collected HTML
-        run: python scripts/bookctl.py build --product collected --lang zh
+      - name: Build the collected HTML, PDF and EPUB
+        run: python scripts/bookctl.py build --product collected --lang zh --pdf --epub
       - name: Check the collected edition exists
-        run: test -s yuyu-book/dist/yuyu-collected-zh.html
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import fitz
+          root = Path("yuyu-book/dist")
+          html = root / "yuyu-collected-zh.html"
+          pdf = root / "yuyu-collected-zh.pdf"
+          epub = root / "yuyu-collected-zh.epub"
+          for path in (html, pdf, epub):
+              if not path.is_file() or path.stat().st_size == 0:
+                  raise SystemExit(f"missing or empty: {path}")
+          doc = fitz.open(pdf)
+          try:
+              pages = doc.page_count
+          finally:
+              doc.close()
+          if pages < 1:
+              raise SystemExit("collected pdf has no pages")
+          print(f"collected html {html.stat().st_size} bytes")
+          print(f"collected pdf {pdf.stat().st_size} bytes, {pages} pages")
+          print(f"collected epub {epub.stat().st_size} bytes")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: yuyu-collected-dist
