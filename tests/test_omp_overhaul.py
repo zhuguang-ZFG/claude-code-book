@@ -602,6 +602,48 @@ class SvgPlateCraftTests(unittest.TestCase):
                 ratio, 3.0,
                 f"{name} border is only {ratio:.2f}:1 against the canvas")
 
+    def test_header_mark_is_long_drawn_orange_with_echo(self):
+        text = self.SVG.read_text(encoding="utf-8")
+        header_paths = []
+        for attrs in re.findall(r"<path\b([^>]*)>", text):
+            stroke = re.search(r'\bstroke="(#[0-9A-Fa-f]{6})"', attrs)
+            width = re.search(r'\bstroke-width="([\d.]+)"', attrs)
+            d = re.search(r'\bd="([^"]+)"', attrs)
+            if not all((stroke, width, d)):
+                continue
+            numbers = [float(v) for v in re.findall(r"-?\d+(?:\.\d+)?", d.group(1))]
+            if len(numbers) < 4 or len(numbers) % 2:
+                continue
+            xs, ys = numbers[0::2], numbers[1::2]
+            if min(xs) <= 90 and min(ys) <= 100 and max(ys) >= 60:
+                header_paths.append(
+                    (stroke.group(1), float(width.group(1)), d.group(1), attrs))
+
+        mark = [item for item in header_paths
+                if item[0].upper() == "#DB582C" and item[1] >= 6
+                and item[2].count("Q") >= 1]
+        self.assertEqual(len(mark), 1,
+                         "header mark must be one drawn orange stroke")
+        numbers = [float(v) for v in re.findall(r"-?\d+(?:\.\d+)?", mark[0][2])]
+        self.assertGreaterEqual(max(numbers[0::2]), 170,
+                                "header mark must reach at least x=170")
+        echo = [attrs for _, width, d, attrs in header_paths
+                if width < 3 and d.count("Q") >= 1
+                and re.search(r'\bopacity="(0?\.\d+|1\.0)"', attrs)
+                and 0.18 <= float(re.search(
+                    r'\bopacity="(0?\.\d+|1\.0)"', attrs).group(1)) <= 0.35]
+        self.assertTrue(echo, "header mark needs a low-opacity pencil echo")
+
+        label = re.search(
+            r'<text\b([^>]*)>安装环境</text>', text)
+        self.assertIsNotNone(label, "header label is missing")
+        x = re.search(r'\bx="([\d.]+)"', label.group(1))
+        self.assertIsNotNone(x, "header label needs x")
+        self.assertGreaterEqual(float(x.group(1)), 185,
+                                "header label is too close to the mark")
+        self.assertGreaterEqual(float(x.group(1)) - max(numbers[0::2]), 12,
+                                "header label must clear the drawn mark")
+
     def test_dependency_caption_uses_ink_not_faint_grey(self):
         text = self.SVG.read_text(encoding="utf-8")
         caption = re.search(

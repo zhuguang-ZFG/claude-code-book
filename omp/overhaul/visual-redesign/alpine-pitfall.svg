@@ -3,8 +3,9 @@
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#DB582C" stroke-width="2.2"/></marker></defs>
 <style>text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif}.ink{fill:#252923}.muted{fill:#5B6158}.accent{fill:#B0401C}.mono{font-family:Consolas,"Liberation Mono",monospace;fill:#252923}.white{fill:#FFFDF7}.line{fill:none;stroke:#252923;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.flow{fill:none;stroke:#DB582C;stroke-width:4.2;stroke-linecap:round;marker-end:url(#arrow)}.soft{fill:#F0EEE4;stroke:#5B6158;stroke-width:2.2}.card{fill:#FFFDF7;stroke:#ABB19F;stroke-width:1.5}.hi{fill:#E3EAD9;stroke:#5B6158;stroke-width:3}.warn{fill:#F7E6DC;stroke:#DB582C;stroke-width:2.8}.cmd-echo{fill:none;stroke:#252923;stroke-width:1.1;opacity:.22;stroke-linecap:round}</style>
 <rect width="1440" height="960" fill="#FAF7EF"/>
-<path d="M72 80 H112" stroke="#DB582C" stroke-width="5" stroke-linecap="round"/>
-<text x="132" y="88" class="muted" font-size="20">安装环境</text>
+<path d="M72 80 Q121 72 170 82" fill="none" stroke="#DB582C" stroke-width="6.4" stroke-linecap="round"/>
+<path d="M75 91 Q122 85 169 93" fill="none" stroke="#DB582C" stroke-width="1.8" opacity=".26" stroke-linecap="round"/>
+<text x="192" y="88" class="muted" font-size="20">安装环境</text>
 
 <text x="72" y="171" class="ink" font-size="52">Alpine 上，先补库再装。</text>
 <text x="74" y="219" class="muted" font-size="24">musl 预编译二进制动态链接 libstdc++ / libgcc。</text>
