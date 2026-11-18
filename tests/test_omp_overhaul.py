@@ -602,6 +602,34 @@ class SvgPlateCraftTests(unittest.TestCase):
                 ratio, 3.0,
                 f"{name} border is only {ratio:.2f}:1 against the canvas")
 
+    def test_connectors_have_drawn_flow_and_weight(self):
+        text = self.SVG.read_text(encoding="utf-8")
+        flows = []
+        for attrs in re.findall(r"<path\b([^>]*)>", text):
+            if 'class="flow"' not in attrs:
+                continue
+            d = re.search(r'\bd="([^"]+)"', attrs)
+            if d:
+                flows.append(d.group(1))
+        self.assertEqual(len(flows), 2, "plate needs two connector paths")
+        for d in flows:
+            self.assertGreaterEqual(d.count("Q"), 1,
+                                    "connector is still a straight line")
+        style = re.search(r"<style>(.*?)</style>", text, re.S)
+        self.assertIsNotNone(style, "SVG must carry an inline style block")
+        rule = re.search(r"\.flow\s*\{([^}]*)\}", style.group(1))
+        self.assertIsNotNone(rule, "connectors need a CSS rule")
+        width = re.search(r"\bstroke-width\s*:\s*([\d.]+)", rule.group(1))
+        self.assertIsNotNone(width, "connectors need a CSS stroke width")
+        self.assertGreaterEqual(float(width.group(1)), 3.5,
+                                "connector stroke is too light")
+        marker = re.search(r"<marker\b[^>]*>(.*?)</marker>", text, re.S)
+        self.assertIsNotNone(marker, "connectors need an arrowhead")
+        head = re.search(r'\bstroke-width="([\d.]+)"', marker.group(1))
+        self.assertIsNotNone(head, "arrowhead needs a stroke width")
+        self.assertGreaterEqual(float(head.group(1)), 1.8,
+                                "arrowhead stroke is too light")
+
 
 if __name__ == "__main__":
     unittest.main()
