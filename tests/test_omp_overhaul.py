@@ -506,5 +506,58 @@ class SvgPlateContrastTests(unittest.TestCase):
         self.assertEqual(offenders, [], "white plate labels below 4.5:1")
 
 
+class SvgPlateCraftTests(unittest.TestCase):
+    """Hand-written SVG panels must not fall back to slide-deck rectangles."""
+
+    SVG = REPO_ROOT / "omp" / "overhaul" / "visual-redesign" / "alpine-pitfall.svg"
+    PANELS = {
+        "warn": (96, 310, 456, 670),
+        "soft": (580, 310, 940, 670),
+        "hi": (1064, 310, 1364, 670),
+    }
+
+    def test_hero_panels_have_uneven_drawn_edges_and_grain(self):
+        text = self.SVG.read_text(encoding="utf-8")
+
+        weights = []
+        for name, (left, top, right, bottom) in self.PANELS.items():
+            self.assertIsNone(
+                re.search(rf'<rect\b[^>]*\bclass="{name}"', text),
+                f"{name} panel is still a machine-perfect rect")
+            path = re.search(
+                rf'<path\b[^>]*\bclass="{name}"[^>]*\bd="([^"]+)"', text)
+            self.assertIsNotNone(path, f"{name} panel has no drawn path")
+            d = path.group(1)
+            self.assertGreaterEqual(d.count("Q"), 4,
+                                    f"{name} panel has no hand-drawn corners")
+            pairs = [(float(x), float(y)) for x, y in re.findall(
+                r"(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)", d)]
+            self.assertGreaterEqual(len(pairs), 10, f"{name} path is too plain")
+            xs, ys = [x for x, _ in pairs], [y for _, y in pairs]
+            overshoot = max(left - min(xs), top - min(ys),
+                            max(xs) - right, max(ys) - bottom)
+            self.assertGreaterEqual(overshoot, 6,
+                                    f"{name} wobble is too small to see")
+            widths = []
+            for shape in re.finditer(rf'<path\b[^>]*\bclass="{name}"[^>]*>', text):
+                width = re.search(r'\bstroke-width="([\d.]+)"', shape.group(0))
+                if width:
+                    widths.append(float(width.group(1)))
+            self.assertEqual(len(widths), 1, f"{name} panel needs one stroke weight")
+            weights.append(widths[0])
+
+        hatch = re.findall(
+            r'<g\b[^>]*\bclass="panel-hatch"[^>]*\bopacity="([\d.]+)"[^>]*>(.*?)</g>',
+            text, re.S)
+        self.assertEqual(len(hatch), 3, "each panel needs pencil grain")
+        for opacity, body in hatch:
+            self.assertTrue(0.18 <= float(opacity) <= 0.3,
+                            f"grain opacity {opacity} is not visible enough")
+            self.assertGreaterEqual(body.count("<path"), 5,
+                                    "grain needs several hatch strokes")
+        self.assertEqual(len(set(weights)), 3,
+                         "panels need three distinct stroke weights")
+
+
 if __name__ == "__main__":
     unittest.main()
