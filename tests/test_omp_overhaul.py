@@ -602,6 +602,29 @@ class SvgPlateCraftTests(unittest.TestCase):
                 ratio, 3.0,
                 f"{name} border is only {ratio:.2f}:1 against the canvas")
 
+    def test_dependency_caption_uses_ink_not_faint_grey(self):
+        text = self.SVG.read_text(encoding="utf-8")
+        caption = re.search(
+            r'<text\b([^>]*)>包名以本节命令为准</text>', text)
+        self.assertIsNotNone(caption, "panel-02 dependency caption is missing")
+        attrs = caption.group(1)
+        class_attr = re.search(r'\bclass="([^"]+)"', attrs)
+        self.assertIsNotNone(class_attr, "dependency caption needs a class")
+        classes = set(class_attr.group(1).split())
+        self.assertNotIn("muted", classes,
+                         "dependency caption is still faint grey")
+        self.assertIn("ink", classes,
+                      "dependency caption should use the ink fill")
+        style = re.search(r"<style>(.*?)</style>", text, re.S)
+        self.assertIsNotNone(style, "SVG must carry an inline style block")
+        rule = re.search(
+            r"\.ink\s*\{[^}]*?fill:\s*(#[0-9A-Fa-f]{6})", style.group(1))
+        self.assertIsNotNone(rule, "dependency caption ink fill is missing")
+        ratio = contrast_ratio(rule.group(1), "#F0EEE4")
+        self.assertGreaterEqual(
+            ratio, 7.0,
+            f"dependency caption is still too faint on the soft panel: {ratio:.2f}:1")
+
     def test_connectors_have_drawn_flow_and_weight(self):
         text = self.SVG.read_text(encoding="utf-8")
         flows = []

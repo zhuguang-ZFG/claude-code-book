@@ -37,7 +37,7 @@
 <path class="cmd-echo" d="M624 447 Q616 446 618 457 L616 542 Q616 553 626 554 L894 557 Q904 557 903 547 L901 456 Q901 447 891 448 L760 445"/>
 <text x="632" y="490" class="white mono" font-size="22">apk add</text>
 <text x="632" y="535" class="white mono" font-size="22">libstdc++ libgcc</text>
-<text x="612" y="610" class="muted" font-size="20">包名以本节命令为准</text>
+<text x="612" y="610" class="ink" font-size="20">包名以本节命令为准</text>
 <path d="M974 490 Q1009 494 1044 490" class="flow"/>
 <path class="hi" d="M1088 301 Q1064 304 1054 330 L1060 650 Q1062 676 1090 680 L1350 674 Q1378 676 1376 647 L1370 330 Q1378 302 1348 304 L1210 298 Z" pathLength="100"/>
 <g class="panel-hatch" fill="none" stroke="#252923" stroke-width="1.4" opacity=".22">
