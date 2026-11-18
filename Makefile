@@ -15,7 +15,7 @@ BOOKCTL    := $(PYTHON) scripts/bookctl.py
 
 .PHONY: help doctor lint check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
 .PHONY: book-agents book-opencode-all book-deepseek-all book-hermes-all book-codex-all
-.PHONY: book-prompt-all book-kimi-all book-vibe-all book-collected package-prompt
+.PHONY: book-prompt-all book-kimi-all book-vibe-all book-collected book-collected-all package-prompt
 
 help:
 	@echo "make doctor     environment report (python/node/browser/font/deps)"
@@ -32,6 +32,8 @@ help:
 	@echo "make book-pi-all  Pi Chinese HTML + A4 PDF + EPUB"
 	@echo "make book-agents  all companion volumes: Chinese HTML + PDF + EPUB"
 	@echo "make book-vibe-all  Vibe Coding volume (HTML + PDF + EPUB)"
+	@echo "make book-collected  ten-volume Chinese HTML only"
+	@echo "make book-collected-all  ten-volume Chinese HTML + PDF + EPUB"
 	@echo "make book-codex-all  one companion volume (also opencode/deepseek/hermes/prompt/kimi/vibe)"
 	@echo "make index      rebuild subject-index.json from appendix D"
 	@echo "make clean      remove yuyu-book/dist/ (no rm -rf)"
@@ -87,10 +89,13 @@ book-prompt-all book-kimi-all book-vibe-all:
 
 # The ten-volume collected edition binds every shipped book; each volume
 # keeps its own manifest, so only the collection manifest is passed.
-# The single HTML is the default; the optional PDF pass inlines every plate
-# and takes about 20 minutes locally.
+# HTML alone is the short path. PDF is two Chromium prints plus PyMuPDF
+# (about 21 minutes locally); EPUB follows that HTML so the index folios match.
 book-collected:
 	$(BOOKCTL) build --product collected --lang zh
+
+book-collected-all:
+	$(BOOKCTL) build --product collected --lang zh --pdf --epub
 
 # Offline exercise archive for the prompt volume; the digest table inside
 # records every shipped source file.

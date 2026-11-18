@@ -166,6 +166,14 @@ class CompanionVolumes(unittest.TestCase):
                      "portal.html", "site.zip"):
             self.assertFalse(release.release_only(name), name)
 
+    def test_assemble_builds_the_collected_pdf_and_epub(self):
+        text = (ROOT / "scripts" / "release.py").read_text(encoding="utf-8")
+        self.assertIn('"collected HTML/PDF"', text)
+        self.assertIn("manifest-collected.json", text)
+        self.assertIn('"--pdf"', text)
+        self.assertIn('"collected EPUB"', text)
+        self.assertIn("yuyu-collected-zh.epub", text)
+
 
 if __name__ == "__main__":
     unittest.main()

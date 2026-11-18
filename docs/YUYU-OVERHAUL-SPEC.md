@@ -32,6 +32,7 @@ Omp M3–M8 的本地交付已补齐，记录见 `omp/overhaul/ACCEPTANCE.md`。
 3. **不伤 `make book`**：任何里程碑结束后，本地必须能：
    - `python scripts/bookctl.py build --product book --lang zh`（至少）成功；
    - 推荐全量：`make book` 或 `bookctl build --product book --lang both`；
+   - **2026-11-18 过时指引**：`--lang both` 不再是现行命令。英文版已停止维护，`scripts/bookctl.py` 与 `python -m yuyu_book` 的 `--lang` 只接受 `zh`；`both` 和 `en` 以 `invalid choice` 退出 2，不会降成中文。上面这条推荐只保留为当时的规格原文。
    - 御舆相关单测（`yuyu-book/tests/` 中钉 20 单元 / notes / plain / docclaims 的断言）不得被改成「含 omp 单元」。
 4. **语言**：本 SPEC **必须**维护中英两侧契约（与 omp「先中文」不同）；改 guides/notes/glosses 时两侧证据与字数门禁同时过。
 5. **插画契约**：章徽/题刻/扉页继续走 `art.py` 的 `currentColor` SVG 门禁；正文架构图继续 Mermaid。不把 omp 手绘 JPG 灌进御舆 `illustrations/`。概念漫画增强优先落在 `docs/illustration-gallery` / 入门分册，不破坏整书 SVG 体积上限。

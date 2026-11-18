@@ -6,7 +6,7 @@
 逐章的对照关系只有一个真源：[`omp/overhaul/CROSSREF-MAP.md`](../omp/overhaul/CROSSREF-MAP.md)（33 行，
 omp 章 → 御舆章 → 一句话同构点，并有机器校验）。本页只回答「我现在该读哪一本」，不复制那张表。
 omp 分册自己的入口在 [`omp/README.md`](../omp/README.md)（书稿清单与写作进度），产物口径在
-[`omp/BUILD.md`](../omp/BUILD.md)；双产品的机制与边界在 [`STRUCTURE.md`](../STRUCTURE.md) §3.6。
+[`omp/BUILD.md`](../omp/BUILD.md)；御舆与 omp 的机制与边界在 [`STRUCTURE.md`](../STRUCTURE.md) §3.6。
 
 ## 我该读哪一本
 
@@ -74,7 +74,7 @@ omp 分册自己的入口在 [`omp/README.md`](../omp/README.md)（书稿清单�
 | 产物 | `yuyu-agent-harness-{zh,en}.html/.pdf` | `yuyu-omp-zh.html/.pdf` |
 | 通俗层 | 102 词条（core 44 / extra 58）、20 条按语、15 章档位表 | 36 词条（core 24 / extra 12）、39 条按语、33 章档位表 |
 | 书末主题索引 | 有（`subject-index.json`） | **无**，`subject_index_registry` 显式写 `null` |
-| 章徽 / 题刻 | 20 枚 / 4 枚（`yuyu-book/illustrations/` 48 份手写 SVG） | 39 枚 / 7 枚（`yuyu-book/illustrations-omp/` 47 份手写 SVG） |
+| 章徽 / 题刻 | 20 枚 / 4 枚（`yuyu-book/illustrations/` 57 份手写 SVG） | 39 枚 / 7 枚（`yuyu-book/illustrations-omp/` 47 份手写 SVG） |
 | 门禁覆盖 | `make check`（`check --fast/--full`）验的就是它 | 构建不在 `check` 里，CI 走独立 `omp` job，不 `needs` 御舆；`check --fast` 只量它的散文预算（`check_omp_plain.py --strict`） |
 
 机制与边界见 [`STRUCTURE.md`](../STRUCTURE.md) §3.6；omp 侧构建口径与本机实测体积见
@@ -87,11 +87,11 @@ omp 分册自己的入口在 [`omp/README.md`](../omp/README.md)（书稿清单�
 （`python docs/yuyu-overhaul/check_crossrefs.py`）。注意「行数 / 引用条数 / HTML 短语出现次数」是
 四个不同口径，别互相换算——原因与复现命令列在对照地图末尾那张四行表里。
 
-## 两处已知缺口（写在这里免得被当成已存在）
+## 已知缺口（写在这里免得被当成已存在）
 
 1. 三份 SPEC 都把 `omp/FUSION-PLAN.md` 当作拍板依据引用，**该文件不在磁盘上**
    （`find . -iname "*FUSION-PLAN*"` 命中 0 条；注意别用 `*FUSION*` 去查，它会撞上 `video/**/error-diffusion.mjs`
    那类无关文件）。本页所有结论改从可量的地方取：两份 manifest、两份登记表、Makefile、workflow YAML、
    对照地图与护栏脚本的输出。
-2. omp 侧的镜像入口 `omp/COMPARE-YUYU.md`（omp SPEC 的 M6 格）**尚未落盘**，所以这里不给链接，
-   免得读者点开 404；它写好后与本文件互指即可。
+
+omp 侧的镜像入口 [`omp/COMPARE-YUYU.md`](../omp/COMPARE-YUYU.md) 已经落盘，与本文件互指。

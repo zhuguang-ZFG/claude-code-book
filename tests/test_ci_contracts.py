@@ -57,12 +57,22 @@ class BookWorkflow(unittest.TestCase):
 
         jobs = workflow["jobs"]
         self.assertNotIn("if", jobs["fast"])
-        for name in ("full", "omp", "bootstrap"):
+        for name in ("full", "omp", "bootstrap", "collected"):
             guard = jobs[name].get("if")
             self.assertIsInstance(guard, str, name)
             self.assertIn("github.event_name", guard, name)
             self.assertIn("pull_request", guard, name)
             self.assertNotIn("== 'pull_request'", guard, name)
+
+    def test_collected_ships_pdf_and_epub_off_pull_requests(self):
+        job = load("book.yml")["jobs"]["collected"]
+        self.assertEqual(job["name"], "Collected edition")
+        self.assertGreaterEqual(job["timeout-minutes"], 120)
+        commands = run_commands(job)
+        self.assertIn(
+            "build --product collected --lang zh --pdf --epub", commands)
+        self.assertIn("yuyu-collected-zh.pdf", commands)
+        self.assertIn("yuyu-collected-zh.epub", commands)
 
     def test_each_tier_runs_its_bookctl_layer(self):
         jobs = load("book.yml")["jobs"]
