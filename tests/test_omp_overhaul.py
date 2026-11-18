@@ -461,8 +461,8 @@ class SvgPlateContrastTests(unittest.TestCase):
             cards = []
             for shape in re.finditer(r"<(rect|path)\b([^>]*)>", text):
                 tag, attrs = shape.groups()
-                attribute = lambda name: re.search(
-                    rf'\b{name}="([^"]*)"', attrs)
+                def attribute(name):
+                    return re.search(rf'\b{name}="([^"]*)"', attrs)
                 fill = attribute("fill")
                 if not fill or not re.fullmatch(r"#[0-9A-Fa-f]{6}", fill.group(1)):
                     continue
