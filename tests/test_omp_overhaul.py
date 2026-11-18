@@ -419,5 +419,34 @@ class PlateContrastTests(unittest.TestCase):
             plate.text((60, 60), "先别读", 15, module.MUTED)
 
 
+class SvgPlateContrastTests(unittest.TestCase):
+    """Hand-written SVG plates share the generated plates' text contrast floor."""
+
+    SVG_DIR = REPO_ROOT / "omp" / "overhaul" / "visual-redesign"
+    # Fills that actually sit under .muted / .accent text. Saturated cards carry
+    # .white text instead and are covered by PlateContrastTests.
+    LIGHT_FILLS = frozenset("""
+        #FAF7EF #FFFDF7 #F0EEE4 #E3EAD9 #E8E5D9 #E9E7DB #EEEDE3 #F7E6DC
+    """.split())
+
+    def test_text_classes_clear_the_contrast_floor_on_every_light_fill(self):
+        offenders = []
+        for path in sorted(self.SVG_DIR.glob("*.svg")):
+            text = path.read_text(encoding="utf-8")
+            style = re.search(r"<style>(.*?)</style>", text, re.S)
+            self.assertIsNotNone(style, f"{path.name}: no style block")
+            for name in ("muted", "accent"):
+                declaration = re.search(
+                    rf"\.{name}\s*\{{[^}}]*?fill:\s*(#[0-9A-Fa-f]{{6}})",
+                    style.group(1))
+                self.assertIsNotNone(declaration, f"{path.name}: no .{name} fill")
+                for background in self.LIGHT_FILLS:
+                    ratio = contrast_ratio(declaration.group(1), background)
+                    if ratio < 4.5:
+                        offenders.append(
+                            f"{path.name}: .{name} on {background} {ratio:.2f}:1")
+        self.assertEqual(offenders, [], "SVG plate text below 4.5:1")
+
+
 if __name__ == "__main__":
     unittest.main()
