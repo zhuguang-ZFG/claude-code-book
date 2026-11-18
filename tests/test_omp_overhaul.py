@@ -561,6 +561,28 @@ class SvgPlateCraftTests(unittest.TestCase):
             self.assertGreaterEqual(body.count("<path"), 5,
                                     "grain needs several hatch strokes")
 
+    def test_command_card_is_drawn_not_a_sharp_rect(self):
+        text = self.SVG.read_text(encoding="utf-8")
+        self.assertIsNone(
+            re.search(r'<rect\b[^>]*\bfill="#B0401C"', text),
+            "command card is still a machine-perfect rect")
+        card = re.search(r'<path\b[^>]*\bclass="cmd"[^>]*\bd="([^"]+)"', text)
+        self.assertIsNotNone(card, "command card has no drawn path")
+        d = card.group(1)
+        self.assertGreaterEqual(d.count("Q"), 4,
+                                "command card has no hand-drawn corners")
+        pairs = [(float(x), float(y)) for x, y in re.findall(
+            r"(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)", d)]
+        self.assertGreaterEqual(len(pairs), 10,
+                                "command card path is too plain")
+        xs, ys = [x for x, _ in pairs], [y for _, y in pairs]
+        overshoot = max(612 - min(xs), 440 - min(ys),
+                        max(xs) - 908, max(ys) - 560)
+        self.assertGreaterEqual(overshoot, 2,
+                                "command card wobble is too small to see")
+        self.assertRegex(text, r'<path\b[^>]*\bclass="cmd-echo"',
+                         "command card needs a pencil underdrawing")
+
 
 if __name__ == "__main__":
     unittest.main()
