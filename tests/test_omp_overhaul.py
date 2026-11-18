@@ -583,6 +583,25 @@ class SvgPlateCraftTests(unittest.TestCase):
         self.assertRegex(text, r'<path\b[^>]*\bclass="cmd-echo"',
                          "command card needs a pencil underdrawing")
 
+    def test_panel_borders_clear_the_graphic_contrast_floor(self):
+        text = self.SVG.read_text(encoding="utf-8")
+        background = re.search(
+            r'<rect width="1440" height="960" fill="(#[0-9A-Fa-f]{6})"', text)
+        self.assertIsNotNone(background, "plate has no canvas fill")
+        style = re.search(r"<style>(.*?)</style>", text, re.S)
+        self.assertIsNotNone(style, "SVG must carry an inline style block")
+        css = style.group(1)
+        for name in self.PANELS:
+            rule = re.search(rf"\.{name}\s*\{{([^}}]*)\}}", css)
+            self.assertIsNotNone(rule, f"{name} panel needs a CSS class rule")
+            stroke = re.search(
+                r"\bstroke\s*:\s*(#[0-9A-Fa-f]{6})", rule.group(1))
+            self.assertIsNotNone(stroke, f"{name} panel needs a border color")
+            ratio = contrast_ratio(stroke.group(1), background.group(1))
+            self.assertGreaterEqual(
+                ratio, 3.0,
+                f"{name} border is only {ratio:.2f}:1 against the canvas")
+
 
 if __name__ == "__main__":
     unittest.main()
