@@ -1,6 +1,7 @@
 # 《Omp 从入门到精通：原理与实战》
 
-> **丛书分册（中文书稿完成，站点待上线）** · 与同仓《御舆：解码 Agent Harness》并列  
+> **丛书分册（中文书稿完成）** · 与同仓《御舆：解码 Agent Harness》并列  
+> 本仓 Pages 已挂中文 HTML：<https://zhuguang-zfg.github.io/claude-code-book/omp/yuyu-omp-zh.html>。PDF 不在 Pages 上，本地用 `make book-omp-pdf`。仓库里的 `docs/portal.html` 不带阅读链接；Pages 把 HTML 传上去之后，线上那张卡才可点。  
 > 产物前缀约定：`yuyu-omp-*`（HTML/PDF；Book CI 已有独立 `omp` job，见 [BUILD.md](BUILD.md)）  
 > **非官方**：本书与 oh-my-pi / Stencil Labs / can1357 **无隶属关系**，亦不代表 Claude / Anthropic。
 
@@ -13,8 +14,8 @@ Omp（命令 `omp`）是开源终端 AI 编程 agent，源自 [oh-my-pi](https:/
 | 对象 | Claude Code 的 Agent Harness（源码级解剖） | 开源 `omp` 的入门 → 精通教程 |
 | 章数 | 15 章 + 4 附录（构建契约冻结） | 33 章 + 附录 A–E（独立修订） |
 | 插画 | 车舆矢量 + Mermaid | **双轨**：架构图补 Mermaid；概念漫画保留 handraw 手绘 |
-| 语言（当前） | 中英 | **先只中文**；英文 `en/omp/` 延后 |
-| 构建 | `make book` / `make book-pdf` → `yuyu-agent-harness-*` | `make book-omp` → `yuyu-omp-zh.html`；`make book-omp-pdf` 多出 A4 PDF；等价命令 `python scripts/bookctl.py build --product omp --lang zh [--pdf]`，见 [BUILD.md](BUILD.md) |
+| 语言（当前） | 中文。英文整书停止新增和精修 | **只中文**，不新开英文册 |
+| 构建 | `make book` / `make book-pdf` → `yuyu-agent-harness-zh` | `make book-omp` → `yuyu-omp-zh.html`；`make book-omp-pdf` 多出 A4 PDF；等价命令 `python scripts/bookctl.py build --product omp --lang zh [--pdf]`，见 [BUILD.md](BUILD.md) |
 
 概念上可对照阅读（循环、工具、权限、记忆、MCP、Skills…），但**实现与钉版不同**：不要把御舆里的 Claude Code 数字原样当成 omp 行为。
 对照表在仓内，不在仓库外：逐章关系是 [`omp/overhaul/CROSSREF-MAP.md`](overhaul/CROSSREF-MAP.md)（33 行，可机器校验），

@@ -1,7 +1,7 @@
 [project]
 name = "yuyu-book"
 version = "0.3.6"
-description = "Build and check the bilingual offline editions of 御舆：解码 Agent Harness"
+description = "Build and check the Chinese offline edition of 御舆：解码 Agent Harness"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "CC BY-NC-SA 4.0" }

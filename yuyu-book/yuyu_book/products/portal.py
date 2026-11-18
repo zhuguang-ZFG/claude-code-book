@@ -23,7 +23,7 @@ PAGE = """<!doctype html>
 @@FAVICON@@
 <title>御舆 · 站点导航 — 解码 Agent Harness</title>
 <meta property="og:title" content="御舆 · 站点导航 — 解码 Agent Harness">
-<meta property="og:description" content="一本书、一册入门、一廊插画、一套知识卡、一页样章、一份手册——大书、双语入门分册、插画画廊、知识卡、样章与再生提示词手册，全部离线自包含。另收同仓第二分册《Omp 从入门到精通：原理与实战》（非官方）。">
+<meta property="og:description" content="一本书、一册入门、一廊插画、一套知识卡、一页样章、一份手册——大书、中文入门分册、插画画廊、知识卡、样章与再生提示词手册，全部离线自包含。另收同仓第二分册《Omp 从入门到精通：原理与实战》（非官方）。">
 <meta property="og:type" content="website">
 <meta property="og:image" content="cover.png">
 <style>

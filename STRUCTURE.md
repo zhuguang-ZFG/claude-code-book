@@ -149,7 +149,7 @@ ID 形如 `<单元 id>.<小写 slug>`，在单元内唯一。ID 绑定到具体�
 
 ```text
 yuyu-book/
-├── dist/                          yuyu-agent-harness-{zh,en}.html / .pdf
+├── dist/                          yuyu-agent-harness-zh.html / .pdf
 │                                  以及第二分册 yuyu-omp-zh.html / .pdf（见 §3.6）
 └── .cache/mermaid/                渲染好的 SVG + _harness.html 渲染壳
 ```
@@ -158,8 +158,8 @@ yuyu-book/
 
 ### 3.5 输出
 
-- `yuyu-book/dist/yuyu-agent-harness-zh.html` / `-en.html`：自包含单文件，图片走 data URI，无外链资源、无脚本。
-- `yuyu-book/dist/yuyu-agent-harness-zh.pdf` / `-en.pdf`：A4，含书签树、奇偶眉标、页脚页码与带页码的目录。
+- `yuyu-book/dist/yuyu-agent-harness-zh.html`：自包含单文件，图片走 data URI，无外链资源、无脚本。当前构建只出这一份中文 HTML。
+- `yuyu-book/dist/yuyu-agent-harness-zh.pdf`：A4，含书签树、奇偶眉标、页脚页码与带页码的目录。`v0.3.7` 的 Release 里仍有当时的英文 HTML/PDF/EPUB，不在这次删除。
 
 ### 3.6 双产品：`book` 与 `omp`
 
@@ -195,9 +195,9 @@ yuyu-book/
 | `scripts/star_history.py` | 生成并增量维护 `docs/images/star-history-{light,dark}.svg` |
 | `tests/test_star_history.py` | 上面那个脚本的单测（`python -m unittest discover -s tests`） |
 | `.github/workflows/book.yml` | Book CI 的 `Fast` / `Full` / `Omp` / `Bootstrap` 四个 job：Fast 跑书稿契约检查与 `bookctl check --fast`；Full 在 Fast 之后跑 `check --full` 与 `scripts/check_artifact_claims.py` 并上传 HTML/PDF；Omp 独立检查第二分册（结构/交付审计 + 中文 HTML/PDF），故意不写 `needs`——omp 红不挡御舆发布；Bootstrap 在 Ubuntu/Windows 上跑 `doctor` 与源码装配 |
-| `.github/workflows/release.yml` | Release CI：`v*` 标签或手动触发，先跑 `check --full` 与产物声明核对，再调 `bookctl release --version <tag> --epub` 装配，`sha256sum --check` 后上传工件；标签推送时创建 GitHub Release。当前尚未在 CI 运行过 |
+| `.github/workflows/release.yml` | Release CI：`v*` 标签或手动触发，先跑 `check --full` 与产物声明核对，再调 `bookctl release --version <tag> --epub` 装配，`sha256sum --check` 后上传工件；标签推送时创建 GitHub Release。`v0.3.7` 已由 run 43834162260 跑过 |
 | `.github/workflows/check-book.yml` | 已删除：原内容门（`check_book.py` + `check:diagrams` + unittest）并入 `book.yml` 的 `Fast` job |
-| `.github/workflows/pages.yml` | Pages CI：main 分支 push 后构建整书与导读页/图集，`Assemble the site` 把它们 `cp` 进 `site/`、再用 `scripts/build_site_portal.py` 生成首页，最后部署。它**不含** `omp/**` 触发路径，也没把 omp 塞进站点——与 book.yml 里「omp 独立 job、不挡发布」是同一条口径，见该步的注释 |
+| `.github/workflows/pages.yml` | Pages CI：main 上构建御舆中文 HTML 与导读页，并单独构建 Omp 中文 HTML（`omp` job，`continue-on-error`，失败不挡御舆）。触发路径包含 `omp/**`。装配时只有 `omp-site` 工件到了，才用 `scripts/build_site_portal.py --omp` 给门户卡加上 `omp/yuyu-omp-zh.html`。PDF 和其他分册不进这个站点。仓库里提交的 `docs/portal.html` 仍是不带链接的那一版 |
 | `.github/workflows/update-star-history.yml` | 定时刷新 Star History |
 
 ## 5. 两层契约

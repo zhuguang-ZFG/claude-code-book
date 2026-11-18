@@ -57,8 +57,8 @@ jobs:
   full:
     name: Full
     needs: fast
-    # The full bilingual audit remains a main/dispatch tier. Agent volumes
-    # below render their own PDF and EPUB on pull requests as well.
+    # Full stays a main/dispatch tier and renders the Chinese book.
+    # Agent volumes below render their own PDF and EPUB on pull requests as well.
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 45

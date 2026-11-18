@@ -38,6 +38,8 @@
 - **按需查阅：** 使用下方四篇附录定位模块、工具、功能标志和术语。
 - **网站阅读：** [在线阅读入口](https://zhuguang-zfg.github.io/claude-code-book/)；也可直接点击本仓库的章节链接。
 
+站点上能打开的是御舆中文整书、中文入门分册、插画画廊、知识卡、样章，以及 Omp 中文 HTML（`/omp/yuyu-omp-zh.html`）。PDF 不在 Pages 上。Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程、Vibe Coding 和十卷合订本可以本地构建，站点上还没有这些页面。英文整书和英文入门分册今天也不在 Pages 上。已发布的 `v0.3.7` 里仍留着当时的英文 HTML/PDF/EPUB，不删。
+
 ## 第二分册 · Omp（中文书稿完成）
 
 同仓新增开源终端 agent 教程分册《Omp 从入门到精通：原理与实战》（非官方）。书稿在 [omp/](omp/README.md)；产物前缀 `yuyu-omp-*`。写作钉 **omp/18.15.0**，本机核对见 [omp/VERIFY.md](omp/VERIFY.md)（含 18.16.0）。
@@ -158,7 +160,7 @@ PDF 另有侧边书签、页脚页码、奇偶页眉，以及带目标页码的�
 
 第一次读这一类书的工程师，可以先沿**通俗层**进入正文：每章开头是一句白话与一个比方；术语首现处的虚线可展开「是什么 / 为什么 / 像什么」浮窗。术语若只以行内代码出现，虚线就落在代码上，`AbortController` 等名字也能查。窄屏或宽表格中的浮窗钉在屏幕底部，避免被裁切；打印时则由章末术语面板与书末「原理札记」接住。44 个主干术语的原理按正文论证分章归档，小节旁的「起步 / 主干 / 进阶」徽记对应前言三条阅读路线。
 
-每章末的驿卒用一行按语回看这一段路，20 行内容存在 `yuyu-book/notes.json`，书末按阅读顺序收齐并链回原章。按语受术语锁约束：必须含有本章正文真正使用的注册词形；中文不超过 36 字，英文不超过 130 字符且不夹汉字。它不是另一份正文。
+每章末的驿卒用一行按语回看这一段路，20 行内容存在 `yuyu-book/notes.json`，书末按阅读顺序收齐并链回原章。按语受术语锁约束：必须含有本章正文真正使用的注册词形，中文不超过 36 字。当前按语只有中文。它不是另一份正文。
 
 全书另有 57 份手写线描图——扉页一幅四马古车、20 枚章徽配在章名右侧、4 幅题刻，另有 1 位驿卒与 31 幅解释图，SVG 源稿完整保留。解释图分别承担关系或状态的读图任务，例如暂停与取消的差别、权限门、记忆漏斗、Fork 四格、状态表盘、消息桥与并发闸，以及插件清单与缓存书签。除已采用墨版的两幅篇题外，这些图继续使用 `currentColor` SVG，保留暗色、减动效与打印下的同一含义。通俗层可用 `--no-plain` 整块关闭。
 
@@ -177,7 +179,7 @@ PDF 与图版渲染需要一个本机 Chromium 或 Edge（自动探测 `msedge`/
 
 ## 构建与发布
 
-`scripts/bookctl.py` 是仓库唯一的命令入口，`make` 只是它的薄包装；底层构建器也可以直接以 `python -m yuyu_book` 运行（在 `yuyu-book/` 下，或设 `PYTHONPATH=yuyu-book`）。检查分三层：**Fast**（PR 层：依赖固定、源码模式装配、两套单测、内容检查、Mermaid 语法、视频配置、产品幂等）、**Full**（主分支或手动：Fast 加渲染装配与双语 PDF）、**Release**（标签或手动：Full 加产物声明核对，再由发布装配生成校验和与发布目录）。CI 对应 `.github/workflows/book.yml` 的 `Fast` / `Full` / `Omp` / `Bootstrap` 四个 job 与 `.github/workflows/release.yml`；旧的 `check-book.yml` 已并入 `Fast`，不再单独存在。
+`scripts/bookctl.py` 是仓库唯一的命令入口，`make` 只是它的薄包装；底层构建器也可以直接以 `python -m yuyu_book` 运行（在 `yuyu-book/` 下，或设 `PYTHONPATH=yuyu-book`）。检查分三层：**Fast**（PR 层：依赖固定、源码模式装配、两套单测、内容检查、Mermaid 语法、视频配置、产品幂等）、**Full**（主分支或手动：Fast 加渲染装配与中文 PDF）、**Release**（标签或手动：Full 加产物声明核对，再由发布装配生成校验和与发布目录）。CI 对应 `.github/workflows/book.yml` 的 `Fast` / `Full` / `Omp` / `Bootstrap` 四个 job 与 `.github/workflows/release.yml`；旧的 `check-book.yml` 已并入 `Fast`，不再单独存在。
 
 发布目录由下面这条命令原子生成（版本必须等于 `yuyu-book/manifest.json` 的 `version`；`--epub` 可选）：
 
@@ -191,7 +193,7 @@ python scripts/bookctl.py release --version 0.3.7 --out-dir ../book-release --ep
 
 ## 参与修订
 
-欢迎通过 Issue 或 PR 修正技术错误、补充案例和改进表达。请提供章节、小节、建议修改和参考来源；显示问题请注明阅读平台和复现步骤。涉及双语内容时，请同步检查英文版；英文书稿不得夹带汉字，附录 D 术语表的中文译名列是唯一例外，构建器会逐行检查。
+欢迎通过 Issue 或 PR 修正技术错误、补充案例和改进表达。请提供章节、小节、建议修改和参考来源；显示问题请注明阅读平台和复现步骤。后续只维护中文。英文整书停止新增和精修：已有的英文题注、清单里的英文字段、修订史英文条目和 `v0.3.7` 里的英文资产都留着，改中文时不要顺手改英文。
 
 提交前运行 `python3 scripts/bookctl.py check --fast`；它依次跑依赖对账、源码模式装配、两套 unittest、`scripts/check_book.py`、`npm run check:diagrams`、视频配置与产品幂等检查。涉及图版或 PDF 时改用 `check --full`。Mermaid 检查需要 Node.js 22 或更高版本，先执行 `npm ci`。仓库结构与构建契约见 [STRUCTURE.md](STRUCTURE.md)，贡献流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 

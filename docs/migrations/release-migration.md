@@ -12,11 +12,11 @@
 
 | 旧入口（legacy 标签） | 当前入口 | 说明 |
 |---|---|---|
-| `python yuyu-book/build.py --lang zh\|en\|both [--pdf]` | `python scripts/bookctl.py build --product book --lang zh\|en\|both [--pdf]` | 等价；`build.py` 已删除 |
+| `python yuyu-book/build.py --lang zh\|en\|both [--pdf]` | `python scripts/bookctl.py build --product book --lang zh [--pdf]` | 旧入口能选英文；当前入口只接受中文。`build.py` 已删除 |
 | `make book` / `make book-pdf` | 同名 target，内部改调 `bookctl build` | 参数 `BOOK_LANG` 仍可用 |
 | `python yuyu-book/build.py --check` | `python scripts/bookctl.py build --check --mermaid source` | 临时装配，不写 `dist/`、不出 PDF |
 | `make check`（`build.py --check` + 两套单测 + `check_book.py` + 图语法） | `make check` / `python scripts/bookctl.py check --fast` | 现在是源码模式，不启动浏览器；另加依赖固定、视频配置与产品幂等检查 |
-| 无 | `python scripts/bookctl.py check --full` | Fast 之后加渲染装配与双语 PDF |
+| 无 | `python scripts/bookctl.py check --full` | Fast 之后加渲染装配与中文 PDF |
 | `python yuyu-book/build.py --regen-index` | `python scripts/bookctl.py build --regen-index` | 重建索引后仍继续完整构建 |
 | `make clean`（内部 `rm -rf`） | `make clean` / `python scripts/bookctl.py clean` | 跨平台删除 `yuyu-book/dist/` |
 | `python yuyu-book/build.py --manifest manifest-omp.json --sources sources-omp.json` | `python scripts/bookctl.py build --product omp --lang zh [--pdf]` | 第二分册仍只出中文 |
@@ -31,18 +31,19 @@
 ```text
 yuyu-book/dist/
 ├── yuyu-agent-harness-zh.html / .pdf
-├── yuyu-agent-harness-en.html / .pdf
 └── yuyu-omp-zh.html / .pdf
 ```
+
+当前 `bookctl build` 只接受 `--lang zh`。`v0.3.7` 的 Release 里另有当时打出来的英文 HTML/PDF/EPUB，那些资产保留。
 
 `bookctl release` 另建一个全新目录（默认 `yuyu-book/dist/release-<version>`，可用 `--out-dir` 指定）：
 
 ```text
 release-<version>/
 ├── yuyu-agent-harness-zh.html / .pdf
-├── yuyu-agent-harness-en.html / .pdf
 ├── yuyu-omp-zh.html / .pdf
-├── yuyu-agent-harness-zh.epub / -en.epub / yuyu-omp-zh.epub   # 仅 --epub
+├── yuyu-<分册>-zh.html / .pdf                         # Pi 至 Vibe、合订本
+├── *.epub                                            # 仅 --epub，且只出中文
 ├── site.zip
 ├── video-manifests/ch01..ch15/                                 # 各章内容包
 ├── video-manifest.json
@@ -53,13 +54,13 @@ release-<version>/
 └── artifact-manifest.json
 ```
 
-`site.zip` 解压后是一个离线站点：`index.html`（门户）、`book.html`（中文整书别名）、`portal.html`、入门分册、图集、知识卡、样章、双语整书 HTML/PDF、`cover.png`、`images/`、`illustration-prompts.md` 与站点索引 JSON 都在压缩包根部，沿用旧站点的文件名。`build-report.json` 记录命令、提交、工作树状态、浏览器/字体与耗时；`artifact-manifest.json` 记录依赖、锁文件与产物 SHA-256。
+`site.zip` 按当前 `release.py` 打包 Pages 会挂的中文页面：门户、中文整书、中文入门分册、图集、知识卡、样章、`omp/yuyu-omp-zh.html`，以及御舆与 Omp 的中文 PDF。其余分册不进这个压缩包。`v0.3.7` 那一份 `site.zip` 里还留着当时的英文整书和英文导读页，那是已发布资产，不是今天 Pages 的内容。`cover.png`、`images/`、`illustration-prompts.md` 与站点索引 JSON 仍在压缩包里。`build-report.json` 记录命令、提交、工作树状态、浏览器/字体与耗时；`artifact-manifest.json` 记录依赖、锁文件与产物 SHA-256。
 
 发布是原子的：所有步骤先写入同级的临时目录，全部成功后才整体改名为目标目录；任何一步失败都不会发布半成品，诊断写到 `.scratch/release-failed/`。`--version` 必须与 `yuyu-book/manifest.json` 的 `version` 完全一致，否则退出码为 2。
 
 ## 4. 链接连续性
 
-- **文件名不变**：`yuyu-agent-harness-zh.html`、`yuyu-agent-harness-en.html`、两份 PDF、`yuyu-omp-zh.html` 与旧构建相同；`book.html`、`index.html` 这两个站点别名也继续存在。指向这些路径的既有链接不需要改写。
+- **中文文件名仍在**：`yuyu-agent-harness-zh.html`、`yuyu-omp-zh.html`、`book.html`、`index.html`。英文 `yuyu-agent-harness-en.html` 还在 `v0.3.7` 的 Release 和当时的 `site.zip` 里；今天的 Pages 上这个地址是 404，当前构建也不再写出它。
 - **章级锚点不变**：`#front`、`#ch01`–`#ch15`、`#apxa`–`#apxd` 来自 manifest 的单元 `id`，不随排版或构建器变化。
 - **小节锚点由标题派生**：改标题就是改锚点。发布前应把产物里的锚点清单与上一版对照；`yuyu_book.audit` 会拒绝成品内部的坏锚点与重复 `id`。
 - **产品页链接受检**：`scripts/check_products.py` 会重新生成门户、入门分册、图集、知识卡、样章与索引两次，要求字节一致，并检查本地链接与已发布书名是否对得上；它在 Fast 与发布装配里都会运行。
