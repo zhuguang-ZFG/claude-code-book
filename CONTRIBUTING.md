@@ -160,9 +160,9 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 命中不了的标签会保持成普通引用块，不会报错——所以想真正出框，请照抄上表的标签写法。
 
-**单语同步**
+**单语维护**
 
-书稿只有一份中文正文；改动后重跑生成器即可，图数、脚注数、索引词条数对不上。英文书稿不得夹带汉字，唯一例外精确到附录 D 术语表的第二列（中文译名）；`test_manifest` 会扫描全部英文单元，定义列或正文里的残留都会按文件与行号报错。
+书稿只有一份中文正文。英文整书停止新增和精修。画廊英文题注、`glosses.json` / `claims.json` / `manifest.json` 里已有的英文字段，以及 `revisions.json` 的英文条目，都留在原地；改中文时不要补一轮英文镜像。改完中文后重跑生成器，图数、脚注数、索引词条数对不上就先修生成结果。
 
 ### 5.1 通俗层：白话注、导读带、阅读路线
 
@@ -213,7 +213,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 - `id` 是小写连字符 slug，全书唯一。
 - `kind` 取 `version` / `price` / `count` / `default` / `performance` / `flag`；`risk` 取 `high` / `normal`；`status` 取 `active` / `retired`。
-- `value` 是这条断言的最小可核对 token（`2.1.310`、`$3.00`、`55`、`72%`、`PROACTIVE`）。它必须出现在 `zh.quote` 中`en.quote` 里：只改一侧的译文，另一侧的门禁立刻失败。`quote` 必须是所在 block 的原文子串，不是改写。
+- `value` 是这条断言的最小可核对 token（`2.1.310`、`$3.00`、`55`、`72%`、`PROACTIVE`）。它必须出现在 `zh.quote` 里。御舆清单目前只有中文单元，门禁只核对中文引文。`claims.json` 里原有的 `en` 字段保留，不为中文修订去改。`quote` 必须是所在 block 的原文子串，不是改写。
 - 引用块要先在 Markdown 里落一个稳定标记（`<!-- block: ch04.release-notes -->`），再把 `unit` / `block` 写进账本。自动生成的 `b-xxxxxxxx` 在两语版本里通常不同，所以两侧的 `block` 各写各的，`id` 必须相同。
 - `source` 必须是 `sources.json` 已有的 id；`verified` 是复核日期（`YYYY-MM-DD`），`review_days` 是复查周期。
 - `status: "retired"` 表示断言已不适用：账本不再追它的正文位置，但条目保留作历史。
@@ -234,7 +234,7 @@ python -m unittest discover -s yuyu-book/tests  # 构建契约：manifest/来源
 
 判定顺序：先问「上游文档/代码能不能直接指到」。能，是事实；不能但有条证据链，是推断；为了教学压掉了真实分支，是教学简化；与上游无关、只是本书希望你怎么做，是作者建议。
 
-英文侧用同一套标签（`Inference:` / `For teaching purposes` / `Recommendation:`），与中文段落一一对应；不要只在中文里标。
+新段落用中文标签。`Inference:`、`For teaching purposes`、`Recommendation:` 是旧双语稿留下的对照，不再要求新写英文段落。
 
 ### 5.5 结构差异规则与提交来源
 

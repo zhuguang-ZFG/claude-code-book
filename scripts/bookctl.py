@@ -8,7 +8,7 @@ developer shell and Ubuntu CI cannot drift into different definitions of
     python scripts/bookctl.py doctor
     python scripts/bookctl.py check --fast
     python scripts/bookctl.py check --full
-    python scripts/bookctl.py build --product book --lang both [--pdf]
+    python scripts/bookctl.py build --product book --lang zh [--pdf]
     python scripts/bookctl.py clean
     python scripts/bookctl.py deps
 
@@ -435,7 +435,7 @@ def main(argv=None) -> int:
     group.add_argument("--fast", action="store_true",
                        help="source-mode build, tests and content checks")
     group.add_argument("--full", action="store_true",
-                       help="fast plus rendered HTML and both PDF editions")
+                       help="fast plus rendered HTML and the Chinese PDF")
 
     bl = sub.add_parser("build", help="build a product")
     bl.add_argument("--product", default="book", choices=[*BOOK_PRODUCTS, "site",

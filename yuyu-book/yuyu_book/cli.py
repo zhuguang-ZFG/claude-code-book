@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""yuyu-book: assemble the offline single-file editions of《御舆》.
+"""yuyu-book: assemble the offline single-file Chinese edition of《御舆》.
 
 Usage through the repository entry point:
-    python scripts/bookctl.py build --product book --lang both
-    python scripts/bookctl.py build --product book --lang en --pdf
+    python scripts/bookctl.py build --product book --lang zh
+    python scripts/bookctl.py build --product book --lang zh --pdf
     python scripts/bookctl.py check --fast
 """
 from __future__ import annotations
