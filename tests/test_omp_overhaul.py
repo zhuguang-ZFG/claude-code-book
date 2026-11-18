@@ -519,7 +519,6 @@ class SvgPlateCraftTests(unittest.TestCase):
     def test_hero_panels_have_uneven_drawn_edges_and_grain(self):
         text = self.SVG.read_text(encoding="utf-8")
 
-        weights = []
         for name, (left, top, right, bottom) in self.PANELS.items():
             self.assertIsNone(
                 re.search(rf'<rect\b[^>]*\bclass="{name}"', text),
@@ -538,13 +537,19 @@ class SvgPlateCraftTests(unittest.TestCase):
                             max(xs) - right, max(ys) - bottom)
             self.assertGreaterEqual(overshoot, 6,
                                     f"{name} wobble is too small to see")
-            widths = []
-            for shape in re.finditer(rf'<path\b[^>]*\bclass="{name}"[^>]*>', text):
-                width = re.search(r'\bstroke-width="([\d.]+)"', shape.group(0))
-                if width:
-                    widths.append(float(width.group(1)))
-            self.assertEqual(len(widths), 1, f"{name} panel needs one stroke weight")
-            weights.append(widths[0])
+        style = re.search(r"<style>(.*?)</style>", text, re.S)
+        self.assertIsNotNone(style, "SVG must carry an inline style block")
+        css = style.group(1)
+        widths = []
+        for name in self.PANELS:
+            rule = re.search(rf"\.{name}\s*\{{([^}}]*)\}}", css)
+            self.assertIsNotNone(rule, f"{name} panel needs a CSS class rule")
+            width = re.search(r"\bstroke-width\s*:\s*([\d.]+)", rule.group(1))
+            self.assertIsNotNone(
+                width, f"{name} panel needs an effective CSS stroke width")
+            widths.append(float(width.group(1)))
+        self.assertEqual(sorted(widths), [2.2, 2.8, 3.0],
+                         "panels need three distinct effective stroke weights")
 
         hatch = re.findall(
             r'<g\b[^>]*\bclass="panel-hatch"[^>]*\bopacity="([\d.]+)"[^>]*>(.*?)</g>',
@@ -555,8 +560,6 @@ class SvgPlateCraftTests(unittest.TestCase):
                             f"grain opacity {opacity} is not visible enough")
             self.assertGreaterEqual(body.count("<path"), 5,
                                     "grain needs several hatch strokes")
-        self.assertEqual(len(set(weights)), 3,
-                         "panels need three distinct stroke weights")
 
 
 if __name__ == "__main__":
