@@ -177,36 +177,36 @@
     {
       "path": "/book/version",
       "legacy": "0.3.5",
-      "fresh": "0.3.7",
-      "reason": "十册发布在 0.3.7 结算，manifest.json 的版本号随之推进",
-      "commit": "8934600c97"
+      "fresh": "0.3.8",
+      "reason": "版本号从基线 0.3.5 推进到当前清单 0.3.8；0.3.7 是上一版已发布标签，0.3.8 记合订本 CI 实测",
+      "commit": "4af9f3a604bd"
     },
     {
       "path": "/book/date",
       "legacy": "2026-11-02",
-      "fresh": "2026-11-16",
-      "reason": "同一次版本推进带上的发版日期",
-      "commit": "8934600c97"
+      "fresh": "2026-11-18",
+      "reason": "同一次版本推进带上的发版日期，现为 0.3.8 的 2026-11-18",
+      "commit": "4af9f3a604bd"
     },
     {
       "path": "/registries/manifest/version",
       "legacy": "0.3.5",
-      "fresh": "0.3.7",
+      "fresh": "0.3.8",
       "reason": "与 /book/version 同源，都读 manifest.json",
-      "commit": "8934600c97"
+      "commit": "4af9f3a604bd"
     },
     {
       "path": "/registries/manifest/date",
       "legacy": "2026-11-02",
-      "fresh": "2026-11-16",
+      "fresh": "2026-11-18",
       "reason": "与 /book/date 同源",
-      "commit": "8934600c97"
+      "commit": "4af9f3a604bd"
     },
     {
       "path": "/registries/revisions/entries",
-      "delta": 1,
-      "reason": "revisions.json 新增 v0.3.6 一条修订记录（断言账本与 15 段练习）",
-      "commit": "6d4e3c0475d28d2ebb7630518a2f6721c9a01620"
+      "delta": 3,
+      "reason": "revisions.json 在基线 8 条之后新增 v0.3.6、v0.3.7、v0.3.8 三条，现为 11 条",
+      "commit": "4af9f3a604bd"
     },
     {
       "path": "/registries/revisions/versions",
