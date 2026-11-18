@@ -120,7 +120,7 @@ section.front-page{break-before:page}
 .cover-seal{position:absolute;top:clamp(1.4rem,4vw,2.6rem);
   right:clamp(1.4rem,4vw,2.6rem);display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:.05rem;width:2.9rem;
-  padding:.42rem 0;background:var(--cinnabar);color:#FBF7EF;
+  padding:.42rem 0;background:var(--cinnabar);color:var(--paper);
   font-family:var(--kai);font-size:1.05rem;line-height:1.15;letter-spacing:0;
   writing-mode:vertical-rl;border-radius:var(--r-1);transform:rotate(1.8deg);
   box-shadow:inset 0 0 0 2px rgba(251,247,239,.55)}

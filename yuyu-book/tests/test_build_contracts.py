@@ -35,6 +35,11 @@ def _ratio(fg: str, bg: str) -> float:
     a, b = sorted([_luminance(fg), _luminance(bg)], reverse=True)
     return (a + 0.05) / (b + 0.05)
 
+def _resolve(value: str, tokens: dict[str, str]) -> str:
+    """Resolve a CSS declaration that may name a token to a concrete colour."""
+    var = re.fullmatch(r"var\((--[\w-]+)\)", value.strip())
+    return tokens[var.group(1)] if var else value.strip()
+
 
 LIGHT = _tokens(CSS.split("@media (prefers-color-scheme:dark)")[0])
 DARK = _tokens(re.search(r"body:not\(\.force-light\)\{(.*?)\}", CSS, re.S).group(1))
@@ -121,6 +126,21 @@ class Palette(unittest.TestCase):
                 ratio = _ratio(tokens[ink], tokens["--paper"])
                 self.assertGreaterEqual(round(ratio, 2), MIN_RATIO,
                                         f"{mode}: {ink} is {ratio:.2f} on paper")
+
+    def test_fixed_colour_text_on_accent_fills_clears_aa(self):
+        """A dark-media token override must not strand a hard-coded foreground."""
+        rule = _rule(".cover-seal")
+        text = re.search(r"(?:^|;)\s*color:\s*([^;]+)", rule)
+        fill = re.search(r"(?:^|;)\s*background:\s*(var\(--[\w-]+\)|#[0-9A-Fa-f]{6})", rule)
+        self.assertTrue(text and fill, ".cover-seal needs a colour pair to test")
+        for mode, tokens in (("light", LIGHT), ("dark", DARK)):
+            foreground = _resolve(text.group(1), tokens)
+            background = _resolve(fill.group(1), tokens)
+            ratio = _ratio(foreground, background)
+            self.assertGreaterEqual(
+                round(ratio, 2), MIN_RATIO,
+                f"{mode}: .cover-seal text is {ratio:.2f} on its fill")
+
 
     def test_diagram_families_keep_their_labels_readable(self):
         """Re-inked plates are the one place a colour pair is invented in Python
