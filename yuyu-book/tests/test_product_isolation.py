@@ -10,7 +10,7 @@ would let omp's build stamp page numbers into the book's `subject-index.json`.
 These assertions are wired to the same functions the builder calls, so a rename that
 would break isolation breaks a test first. The counts (20 / 39 units) are the ones
 `docs/YUYU-OVERHAUL-SPEC.md` pins: 御舆's contract is 1 front + 15 chapters + 4
-appendices, omp's is 1 front + 33 chapters + 5 appendices. The last class extends the
+appendices, omp's is 1 front + 33 chapters + 5 appendices. `OmpArtTray` extends the
 same reasoning to the drawing layer, because `illustrations-omp/` is searched by the
 same loader as `illustrations/`.
 """
@@ -22,7 +22,7 @@ from typing import Any, cast
 if not __package__:  # direct run: see tests/__init__.py for the real bootstrap
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book import art, plain, registry
+from yuyu_book import app, art, plain, registry
 from yuyu_book.core import expected_ids, load_configs
 
 BOOK = "manifest.json"
@@ -160,6 +160,27 @@ class OmpArtTray(unittest.TestCase):
         self.assertEqual({p["id"] for p in self.omp["parts"]}
                          & {p["id"] for p in self.book["parts"]},
                          set(), "a part id shared by both volumes")
+
+
+class OmpCrossReferences(unittest.TestCase):
+    """omp's appendix E alias is an omp contract, not a book cross-reference."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.manifest, cls.sources = load_configs(OMP, "sources-omp.json")
+
+    def test_omp_appendix_e_alias_is_autolinked(self):
+        parts = [{**part, "units": [u for u in part["units"]
+                                    if u["id"] == "omp-ch33"]}
+                 for part in self.manifest["parts"]
+                 if any(u["id"] == "omp-ch33" for u in part["units"])]
+        mini = {**self.manifest, "parts": parts,
+                "appendices": [a for a in self.manifest["appendices"]
+                               if a["id"] == "omp-apxe"]}
+        asm = app.assemble_book("zh", mini, self.sources, mode="source",
+                                browser=None, autolink=True,
+                                plain_layer=False, matter=False)
+        self.assertIn('href="#omp-apxe"', "\n".join(asm.body))
 
 
 if __name__ == "__main__":

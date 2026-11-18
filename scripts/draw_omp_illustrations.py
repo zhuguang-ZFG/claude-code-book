@@ -22,10 +22,24 @@ WHITE = "#FFFEFA"
 INK = "#29332E"
 MUTED = "#657269"
 ORANGE = "#D9562B"
+# Graphic colors stay bright for rules and fills; small labels need darker
+# tones that clear 4.5:1 on paper, white and all three pale card fills.
+ORANGE_TEXT = "#B0401C"
+MUTED_TEXT = "#5A665E"
+GREEN_TEXT = "#496858"
+BLUE_TEXT = "#45657E"
+MIN_LABEL_SIZE = 16
 PEACH = "#F8E4D8"
 GREEN = "#557767"
 SAGE = "#E3ECE2"
 BLUE = "#52728D"
+
+TEXT_TONES = {
+    ORANGE: ORANGE_TEXT,
+    MUTED: MUTED_TEXT,
+    GREEN: GREEN_TEXT,
+    BLUE: BLUE_TEXT,
+}
 SKY = "#E6EDF2"
 LINE = "#D6DACE"
 FONT_CANDIDATES = (
@@ -77,6 +91,10 @@ class Drawing:
         return ImageFont.truetype(str(self.bold if bold else self.regular), size * self.scale)
 
     def text(self, position, value, size=22, color=INK, bold=False, anchor="lt", width=None):
+        if size < MIN_LABEL_SIZE:
+            raise ValueError(
+                f"Label {value!r} is {size}px, below the {MIN_LABEL_SIZE}px floor")
+        color = TEXT_TONES.get(color, color)
         font = self.font(size, bold)
         measured = self.draw.textlength(value, font=font)
         if width is not None and measured > width * self.scale:
@@ -121,7 +139,8 @@ class Drawing:
         self.line([wings[0], end, wings[1]], color, stroke)
 
     def badge(self, center, value, color=ORANGE):
-        self.circle(center, 20, color, color)
+        fill = ORANGE_TEXT if color == ORANGE else color
+        self.circle(center, 20, fill, fill)
         self.text(center, str(value), 21, WHITE, True, "mm")
 
     def header(self, chapter, title, subtitle):
@@ -1614,13 +1633,13 @@ def unknown_repo(picture: Drawing):
     picture.text((120, 390), "主数据流：请求从哪进、存哪、谁在后台跑", 18, ORANGE, True)
     picture.box((100, 510, 250, 590), WHITE, MUTED, radius=8)
     picture.text((175, 540), "vendor/", 18, MUTED, "mm")
-    picture.text((175, 566), "先别读", 15, MUTED, anchor="mm")
+    picture.text((175, 566), "先别读", 16, MUTED, anchor="mm")
     picture.box((280, 510, 430, 590), WHITE, MUTED, radius=8)
     picture.text((355, 540), "生成物/", 18, MUTED, "mm")
-    picture.text((355, 566), "先别读", 15, MUTED, anchor="mm")
+    picture.text((355, 566), "先别读", 16, MUTED, anchor="mm")
     picture.box((460, 510, 610, 590), WHITE, MUTED, radius=8)
     picture.text((535, 540), "大 fixture", 18, MUTED, "mm")
-    picture.text((535, 566), "先别读", 15, MUTED, anchor="mm")
+    picture.text((535, 566), "先别读", 16, MUTED, anchor="mm")
     picture.circle((700, 300), 42, WHITE, INK, 5)
     picture.line([(730, 334), (770, 376)], INK, 8)
     picture.text((700, 250), "放大镜只对准枢纽", 18, MUTED, anchor="mm")
@@ -1761,7 +1780,7 @@ def bug_hunt(picture: Drawing):
         picture.box((left, 402, left + 210, 456), SAGE if keep else WHITE,
                      GREEN if keep else LINE, radius=6)
         picture.text((left + 14, 418), label, 17, GREEN if keep else MUTED)
-        picture.text((left + 196, 412), "留" if keep else "砍", 15,
+        picture.text((left + 196, 412), "留" if keep else "砍", 16,
                      GREEN if keep else MUTED, True, "rt")
     picture.arrow([(500, 490), (500, 540)], GREEN, 3)
     picture.box((180, 550, 1020, 640), SAGE, GREEN, radius=8)
@@ -2276,7 +2295,7 @@ def callchain(picture: Drawing):
         left = 56 + index * 220
         picture.box((left, 260, left + 190, 420), WHITE, INK if index % 2 == 0 else ORANGE)
         picture.text((left + 95, 296), title, 20, INK, True, "mm")
-        picture.text((left + 16, 350), detail, 15, anchor="mm", width=170)
+        picture.text((left + 16, 350), detail, 16, anchor="mm", width=170)
         if index < 4:
             picture.arrow([(left + 196, 340), (left + 212, 340)], MUTED, 3)
     picture.note((92, 450, 1108, 540), "断格自检：",
@@ -4165,10 +4184,10 @@ def out_of_scope(picture: Drawing):
         picture.box((92, top, 648, top + 112), WHITE, color, radius=12)
         picture.text((118, top + 12), title, 22, color, True, width=500)
         picture.text((118, top + 48), detail, 17, INK, width=500)
-        picture.text((118, top + 78), "当成本书会给 → " + risk, 15, MUTED, width=500)
+        picture.text((118, top + 78), "当成本书会给 → " + risk, 16, MUTED, width=500)
         picture.arrow(((664, top + 56), (716, top + 56)), color)
         picture.box((732, top, 1108, top + 112), PAPER, LINE, radius=12)
-        picture.text((756, top + 14), "去这儿拿", 15, MUTED, width=330)
+        picture.text((756, top + 14), "去这儿拿", 16, MUTED, width=330)
         picture.text((756, top + 46), where, 17, INK, width=330)
     picture.note((92, 606, 1108, 690), "划边界不是推卸：",
                  "说清不做什么，你才知道哪一页该信本书、哪一页该去翻官网。",
@@ -4232,7 +4251,7 @@ def config_pyramid(picture: Drawing):
         left = 96 + index * 168
         top = 470 - index * 52
         picture.box((left, top, left + 156, top + 96), WHITE, ORANGE if index > 3 else BLUE, radius=10)
-        picture.text((left + 78, top + 34), name, 15, INK, True, anchor="mm", width=148)
+        picture.text((left + 78, top + 34), name, 16, INK, True, anchor="mm", width=148)
         picture.text((left + 78, top + 62), str(index + 1), 22, ORANGE if index > 3 else BLUE,
                      True, anchor="mm", width=60)
     picture.line([(96, 586), (1108, 586)], LINE, 2)
@@ -4480,7 +4499,7 @@ def mcp_lifecycle(picture: Drawing):
         if index:
             picture.line([(left, 214), (left, 302)], LINE, 2)
         picture.text((left + 20, 214), name, 20, ORANGE if index % 2 == 0 else BLUE, True, width=214)
-        picture.text((left + 20, 252), detail, 15, MUTED, width=214)
+        picture.text((left + 20, 252), detail, 16, MUTED, width=214)
     picture.box((92, 344, 1108, 640), WHITE, GREEN, radius=12)
     picture.text((116, 362), "工具突然消失，按这个顺序查", 22, GREEN, True, width=600)
     checks = (("服务器进程还在吗", "进程没了就是崩了，重启比猜快。"),

@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from yuyu_book import app, render
+from yuyu_book import render
 from yuyu_book.core import (REPO_ROOT, expected_ids, load_configs, load_unit,  # noqa: E402
                             unit_stream)
 
@@ -122,20 +122,6 @@ class WholeBookCrossReferences(unittest.TestCase):
         off = render.render_unit(u, MAP, diagrams=diagrams, autolink=False)["html"]
         on = render.render_unit(u, MAP, diagrams=diagrams)["html"]
         self.assertLess(off.count('class="xref"'), on.count('class="xref"'))
-
-    def test_omp_appendix_e_alias_is_autolinked(self):
-        manifest, sources = load_configs("manifest-omp.json", "sources-omp.json")
-        parts = [{**part, "units": [u for u in part["units"]
-                                    if u["id"] == "omp-ch33"]}
-                 for part in manifest["parts"]
-                 if any(u["id"] == "omp-ch33" for u in part["units"])]
-        mini = {**manifest, "parts": parts,
-                "appendices": [a for a in manifest["appendices"]
-                               if a["id"] == "omp-apxe"]}
-        asm = app.assemble_book("zh", mini, sources, mode="source",
-                                browser=None, autolink=True,
-                                plain_layer=False, matter=False)
-        self.assertIn('href="#omp-apxe"', "\n".join(asm.body))
 
 
 if __name__ == "__main__":
