@@ -2,6 +2,17 @@
   "schema_version": 1,
   "entries": [
     {
+      "version": "0.3.8",
+      "date": "2026-11-18",
+      "zh": [
+        "main 的 Book CI 现在编合订本中文 HTML、PDF 和 EPUB，不再只出 HTML。本次 Noto CJK 实测：HTML 74587853 字节，PDF 121199378 字节、1903 页，EPUB 53270704 字节。",
+        "内部说明与现状对齐：御舆手绘 57 份，omp/COMPARE-YUYU.md 已在，构建器装十卷，--lang both 会被命令行拒绝。",
+        "英文整书停止新增和精修。已发布的 v0.3.7 英文资产保留。",
+        "构建器测试 608 项全绿。"
+      ],
+      "en": []
+    },
+    {
       "version": "0.3.7",
       "date": "2026-11-16",
       "zh": [
