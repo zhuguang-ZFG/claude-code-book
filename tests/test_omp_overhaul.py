@@ -447,6 +447,64 @@ class SvgPlateContrastTests(unittest.TestCase):
                             f"{path.name}: .{name} on {background} {ratio:.2f}:1")
         self.assertEqual(offenders, [], "SVG plate text below 4.5:1")
 
+    def test_white_labels_clear_the_contrast_floor_on_their_cards(self):
+        """White plate labels sit on ink-dark cards, not on graphic orange."""
+        offenders = []
+        for path in sorted(self.SVG_DIR.glob("*.svg")):
+            text = path.read_text(encoding="utf-8")
+            style = re.search(r"<style>(.*?)</style>", text, re.S)
+            self.assertIsNotNone(style, f"{path.name}: no style block")
+            white = re.search(
+                r"\.white\s*\{[^}]*?fill:\s*(#[0-9A-Fa-f]{6})", style.group(1))
+            self.assertIsNotNone(white, f"{path.name}: no .white fill")
+
+            cards = []
+            for shape in re.finditer(r"<(rect|path)\b([^>]*)>", text):
+                tag, attrs = shape.groups()
+                attribute = lambda name: re.search(
+                    rf'\b{name}="([^"]*)"', attrs)
+                fill = attribute("fill")
+                if not fill or not re.fullmatch(r"#[0-9A-Fa-f]{6}", fill.group(1)):
+                    continue
+                if tag == "rect":
+                    x, y = attribute("x"), attribute("y")
+                    width, height = attribute("width"), attribute("height")
+                    if not all((x, y, width, height)):
+                        continue
+                    left, top = float(x.group(1)), float(y.group(1))
+                    right = left + float(width.group(1))
+                    bottom = top + float(height.group(1))
+                else:
+                    d = attribute("d")
+                    if not d:
+                        continue
+                    numbers = [float(v) for v in re.findall(
+                        r"-?\d+(?:\.\d+)?", d.group(1))]
+                    if len(numbers) < 6 or len(numbers) % 2:
+                        continue
+                    xs, ys = numbers[0::2], numbers[1::2]
+                    left, right = min(xs), max(xs)
+                    top, bottom = min(ys), max(ys)
+                cards.append((left, top, right, bottom, fill.group(1)))
+
+            for label in re.finditer(r"<text\b([^>]*)>(.*?)</text>", text, re.S):
+                attrs, caption = label.groups()
+                if not re.search(r'class="[^"]*\bwhite\b', attrs):
+                    continue
+                point = re.search(r'\bx="([\d.]+)"\s+y="([\d.]+)"', attrs)
+                self.assertIsNotNone(point, f"{path.name}: white label without x/y")
+                x, y = map(float, point.groups())
+                behind = [fill for left, top, right, bottom, fill in cards
+                          if left <= x <= right and top <= y <= bottom]
+                self.assertTrue(behind, f"{path.name}: white label "
+                                        f"{caption.strip()[:20]!r} has no card")
+                background = min(behind, key=relative_luminance)
+                ratio = contrast_ratio(white.group(1), background)
+                if ratio < 4.5:
+                    offenders.append(
+                        f"{path.name}: white on {background} {ratio:.2f}:1")
+        self.assertEqual(offenders, [], "white plate labels below 4.5:1")
+
 
 if __name__ == "__main__":
     unittest.main()

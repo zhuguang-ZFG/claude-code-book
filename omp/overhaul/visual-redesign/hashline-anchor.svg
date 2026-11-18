@@ -20,7 +20,7 @@
 <path d="M700 510 H820" class="flow"/>
 <rect x="840" y="340" width="520" height="340" rx="14" class="soft"/>
 <text x="872" y="400" class="ink" font-size="28">补丁头写法</text>
-<rect x="872" y="440" width="456" height="90" rx="8" fill="#DB582C"/>
+<rect x="872" y="440" width="456" height="90" rx="8" fill="#B0401C"/>
 <text x="892" y="497" class="white mono" font-size="28">[src/app.ts#1A2B]</text>
 <text x="872" y="580" class="muted" font-size="22">PATH # TAG</text>
 <text x="872" y="630" class="ink" font-size="24">TAG 对不上 → 拒绝或恢复</text>

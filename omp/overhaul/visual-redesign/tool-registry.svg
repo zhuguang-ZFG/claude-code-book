@@ -22,7 +22,7 @@
 <text x="936" y="480" class="muted" font-size="20">走同一注册表</text>
 <path d="M276 720 V760" class="flow"/><path d="M680 720 V760" class="flow"/><path d="M1124 720 V760" class="flow"/>
 <path d="M276 760 H1124" stroke="#DB582C" stroke-width="3" fill="none"/>
-<rect x="420" y="780" width="600" height="50" rx="8" fill="#DB582C"/>
+<rect x="420" y="780" width="600" height="50" rx="8" fill="#B0401C"/>
 <text x="480" y="814" class="white" font-size="22">可调用集合 = 注册 ∩ 策略允许</text>
 
 <path d="M72 858 H1368" stroke="#CFD0C4"/>

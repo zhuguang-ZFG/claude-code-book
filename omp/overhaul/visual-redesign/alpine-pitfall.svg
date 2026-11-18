@@ -17,7 +17,7 @@
 <path d="M490 490 H560" class="flow"/>
 <rect x="580" y="310" width="360" height="360" rx="14" class="soft"/>
 <text x="612" y="380" class="ink" font-size="28">02 补齐依赖</text>
-<rect x="612" y="440" width="296" height="120" rx="8" fill="#DB582C"/>
+<rect x="612" y="440" width="296" height="120" rx="8" fill="#B0401C"/>
 <text x="632" y="490" class="white mono" font-size="22">apk add</text>
 <text x="632" y="535" class="white mono" font-size="22">libstdc++ libgcc</text>
 <text x="612" y="610" class="muted" font-size="20">包名以本节命令为准</text>

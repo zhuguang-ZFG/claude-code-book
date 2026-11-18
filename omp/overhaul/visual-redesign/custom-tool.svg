@@ -17,7 +17,7 @@
 <path d="M650 510 H750" class="flow"/>
 <rect x="770" y="300" width="590" height="420" rx="14" class="hi"/>
 <text x="810" y="360" class="ink" font-size="28">工具卡片 · 同一循环</text>
-<rect x="810" y="400" width="510" height="90" rx="8" fill="#DB582C"/>
+<rect x="810" y="400" width="510" height="90" rx="8" fill="#B0401C"/>
 <text x="840" y="455" class="white" font-size="24">description：说人话的场景</text>
 <rect x="810" y="520" width="510" height="70" rx="8" class="card"/>
 <text x="840" y="565" class="mono" font-size="22">name / schema / handler</text>
