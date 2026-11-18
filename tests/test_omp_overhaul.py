@@ -621,14 +621,14 @@ class SvgPlateCraftTests(unittest.TestCase):
         self.assertIsNotNone(rule, "connectors need a CSS rule")
         width = re.search(r"\bstroke-width\s*:\s*([\d.]+)", rule.group(1))
         self.assertIsNotNone(width, "connectors need a CSS stroke width")
-        self.assertGreaterEqual(float(width.group(1)), 3.5,
-                                "connector stroke is too light")
+        self.assertEqual(float(width.group(1)), 4.2,
+                         "connector stroke drifted from the tuned weight")
         marker = re.search(r"<marker\b[^>]*>(.*?)</marker>", text, re.S)
         self.assertIsNotNone(marker, "connectors need an arrowhead")
         head = re.search(r'\bstroke-width="([\d.]+)"', marker.group(1))
         self.assertIsNotNone(head, "arrowhead needs a stroke width")
-        self.assertGreaterEqual(float(head.group(1)), 1.8,
-                                "arrowhead stroke is too light")
+        self.assertEqual(float(head.group(1)), 2.2,
+                         "arrowhead stroke drifted from the tuned weight")
 
 
 if __name__ == "__main__":
