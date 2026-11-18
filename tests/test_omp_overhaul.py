@@ -8,67 +8,6 @@ import re
 import tempfile
 import unittest
 from unittest.mock import patch
-def relative_luminance(color):
-    channels = []
-    for index in (1, 3, 5):
-        value = int(color[index:index + 2], 16) / 255
-        channels.append(value / 12.92 if value <= 0.04045
-                        else ((value + 0.055) / 1.055) ** 2.4)
-    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
-
-
-def contrast_ratio(left, right):
-    lighter, darker = sorted((relative_luminance(left), relative_luminance(right)),
-                             reverse=True)
-    return (lighter + 0.05) / (darker + 0.05)
-
-
-class PlateContrastTests(unittest.TestCase):
-    """Small plate labels must not rely on the graphic orange for legibility."""
-
-    class DrawRecorder:
-        def textlength(self, value, font=None):
-            return len(value) * 16
-
-        def text(self, position, value, **kwargs):
-            self.text_fill = kwargs["fill"]
-
-        def ellipse(self, bounds, **kwargs):
-            self.ellipse_fill = kwargs["fill"]
-
-    def plate_with_recorder(self):
-        module = load_illustration_script()
-        recorder = self.DrawRecorder()
-        plate = object.__new__(module.Drawing)
-        plate.scale = 2
-        plate.font = lambda size, bold=False: None
-        plate.draw = recorder
-        return module, plate, recorder
-
-    def test_text_tones_meet_normal_text_contrast_on_every_fill(self):
-        module, plate, recorder = self.plate_with_recorder()
-        backgrounds = (module.PAPER, module.WHITE, module.PEACH,
-                       module.SAGE, module.SKY)
-        for name in ("MUTED", "GREEN", "BLUE", "ORANGE"):
-            plate.text((60, 60), "去这儿拿", 16, getattr(module, name))
-            for background in backgrounds:
-                ratio = contrast_ratio(recorder.text_fill, background)
-                self.assertGreaterEqual(
-                    ratio, 4.5,
-                    f"{name} text on {background}: {ratio:.2f}:1")
-
-    def test_badge_background_carries_white_text_readably(self):
-        module, plate, recorder = self.plate_with_recorder()
-        plate.badge((60, 60), "1")
-        ratio = contrast_ratio("#FFFEFA", recorder.ellipse_fill)
-        self.assertGreaterEqual(ratio, 4.5, f"badge text contrast {ratio:.2f}:1")
-
-    def test_label_font_size_has_a_legibility_floor(self):
-        module, plate, _ = self.plate_with_recorder()
-        with self.assertRaises(ValueError):
-            plate.text((60, 60), "先别读", 15, module.MUTED)
-
-
 
 from PIL import Image
 
@@ -417,6 +356,67 @@ class IllustrationCoverageTests(unittest.TestCase):
             if any(edge_has_ink(image, box) for box in bands):
                 offenders.append(path.stem)
         self.assertEqual(offenders, [], "plates with content on the canvas edge")
+
+
+def relative_luminance(color):
+    channels = []
+    for index in (1, 3, 5):
+        value = int(color[index:index + 2], 16) / 255
+        channels.append(value / 12.92 if value <= 0.04045
+                        else ((value + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+
+
+def contrast_ratio(left, right):
+    lighter, darker = sorted((relative_luminance(left), relative_luminance(right)),
+                             reverse=True)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+class PlateContrastTests(unittest.TestCase):
+    """Small plate labels must not rely on the graphic orange for legibility."""
+
+    class DrawRecorder:
+        def textlength(self, value, font=None):
+            return len(value) * 16
+
+        def text(self, position, value, **kwargs):
+            self.text_fill = kwargs["fill"]
+
+        def ellipse(self, bounds, **kwargs):
+            self.ellipse_fill = kwargs["fill"]
+
+    def plate_with_recorder(self):
+        module = load_illustration_script()
+        recorder = self.DrawRecorder()
+        plate = object.__new__(module.Drawing)
+        plate.scale = 2
+        plate.font = lambda size, bold=False: None
+        plate.draw = recorder
+        return module, plate, recorder
+
+    def test_text_tones_meet_normal_text_contrast_on_every_fill(self):
+        module, plate, recorder = self.plate_with_recorder()
+        backgrounds = (module.PAPER, module.WHITE, module.PEACH,
+                       module.SAGE, module.SKY)
+        for name in ("MUTED", "GREEN", "BLUE", "ORANGE"):
+            plate.text((60, 60), "去这儿拿", 16, getattr(module, name))
+            for background in backgrounds:
+                ratio = contrast_ratio(recorder.text_fill, background)
+                self.assertGreaterEqual(
+                    ratio, 4.5,
+                    f"{name} text on {background}: {ratio:.2f}:1")
+
+    def test_badge_background_carries_white_text_readably(self):
+        module, plate, recorder = self.plate_with_recorder()
+        plate.badge((60, 60), "1")
+        ratio = contrast_ratio("#FFFEFA", recorder.ellipse_fill)
+        self.assertGreaterEqual(ratio, 4.5, f"badge text contrast {ratio:.2f}:1")
+
+    def test_label_font_size_has_a_legibility_floor(self):
+        module, plate, _ = self.plate_with_recorder()
+        with self.assertRaises(ValueError):
+            plate.text((60, 60), "先别读", 15, module.MUTED)
 
 
 if __name__ == "__main__":

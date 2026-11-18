@@ -1,89 +1,5 @@
 # Omp 改造总验收
 
-## 小字标签对比度（2026-11-18）
-
-插图的强调色 `ORANGE = #D9562B` 原先同时充当图形色和文字色。它在纸色
-`#FBF7EF` 上只有 3.70:1，在白色卡片上 3.91:1；徽章底色配白字同样是
-3.91:1，都不满足小字号要求的 4.5:1。生成器里有 96 处 16–23 px 的橙色文字，
-不是一张图的局部问题。
-
-改法只动文字：新增 `ORANGE_TEXT = #B0401C`，由 `Drawing.text` 和徽章底色使用；
-线条、箭头、卡片描边仍用原 `ORANGE`，视觉识别不变。新色在纸色上 5.46:1、
-白色上 5.79:1、桃色卡片上 4.75:1，白字压在其上 5.79:1。
-
-回归门禁先于修复加入 `tests/test_omp_overhaul.py`：修复前橙色标签 3.70:1、
-徽章白字 3.91:1，两条均失败；修复后 5.46:1 / 5.79:1 通过。图版重生成 192 张，
-与未修改生成器逐字节对照后，确认只有 176 张因本次改色变化，其余 16 张不变；
-基线输出与提交中的 192 张完全一致，说明没有夹带生成器漂移。
-
-验证：`python -m unittest tests.test_omp_overhaul -v` 33 项通过；
-`python scripts/check_book.py` 0 errors；`bookctl.py check --fast` 仍报两项
-既存失败（revisions.zh 记 604 而发现 607；`test_crossrefs.py` 读取 omp manifest），
-在未改动的 HEAD 快照上同样复现，与本次改动无关。通用套件由 292 增至 294，
-增量就是新增的两条对比度断言。
-
-## 15 px 标签下限（2026-11-18，第二轮）
-
-生成器其余文字最小 16 px，只有 9 处落在 15 px。小图版缩到手机栏宽时，
-这 1 px 的差距同样被缩放，没必要为几个次要标签单独破例。
-
-`Drawing.text` 现在拒绝小于 `MIN_LABEL_SIZE = 16` 的字号，9 处调用同步升到
-16 px。回归门禁先于修复加入：修复前 `text(..., 15, ...)` 不报错，门禁失败；
-修复后抛出 `ValueError`，门禁通过。对比度测试里那处示例标签也改用合法的
-16 px，避免把字号门禁当成对比度测试的前提。
-
-与本轮直接相关的图版只有 6 张：与上一轮产物逐字节对照确认变化范围为
-`fig0-1`、`fig4-6`、`fig20-4`、`fig24-1`、`fig25-3`、`fig33-1`。
-
-验证：`python -m unittest tests.test_omp_overhaul -v` 34 项通过；
-`python scripts/check_book.py` 0 errors。`bookctl.py check --fast` 的两项
-既存失败未变，已在未改动的 HEAD 快照上复现。
-
-剩余候选：一批 SVG 来源的 JPG 依靠 `visual-redesign/` 的手工导出流程，
-缺少仓库内可复跑脚本。
-
-## 卡片底色上的文字对比度（2026-11-18，第三轮）
-
-第二轮只验证了橙色文字在纸色上的比值。复查发现同一组图形色还被当作
-卡片文字：`note(..., ORANGE, PEACH)` 有 53 处，而浅桃底比纸色更紧；
-`MUTED` / `GREEN` / `BLUE` 在桃、鼠尾草、天蓝三种卡片底色上都只有
-4.05–4.28:1，低于小字的 4.5:1。原橙色 `#B0401C` 映射已过这三类底色，
-无需改动。
-
-`Drawing.text` 现在通过模块级 `TEXT_TONES` 把三种图形色映射到更深的
-文字色：`MUTED_TEXT #5A665E`、`GREEN_TEXT #496858`、`BLUE_TEXT #45657E`。
-映射只在 `text()` 内发生，线条、描边、填充仍用原色。新值在最紧的桃底上
-分别为 4.88 / 5.02 / 5.00:1。
-
-回归先于修复加入并确认失败（`MUTED text on #F8E4D8: 4.10:1`）；遍历
-四种文字色 × 五种底色，修复后全部 ≥4.5:1。生成器全部 192 张可复现图版
-重生成，20 张 SVG 来源图版未动。
-
-验证：`python -m unittest tests.test_omp_overhaul -v` 34 项通过；
-`python scripts/check_book.py` 0 errors。
-
-剩余候选仍是 SVG 来源图版缺少仓库内可复跑导出脚本。
-
-## 套件闸口的两项既存失败（2026-11-18，第四轮）
-
-`bookctl.py check --fast` 长期报两项红，均可在未改动的 HEAD 快照上复现：
-
-1. `test_docclaims.py` 读 `revisions.json` 顶部条目的末句「构建器测试 N 项全绿」，
-   与 `unittest discover -s yuyu-book/tests` 的现数比对。快照里写 604，实盘 607。
-2. `test_product_isolation.py` 用字符串 `manifest-omp` 扫描其他 `test_*.py`；
-   `test_crossrefs.py` 的 `test_omp_appendix_e_alias_is_autolinked` 直接
-   `load_configs("manifest-omp.json", ...)`，把 omp 的契约塞进了御舆专用套件。
-
-第二项没有加白名单——那正是这道闸要防的动作。按 `docs/yuyu-overhaul/ACCEPTANCE.md`
-的既有先例，把断言原样搬进 `test_product_isolation.py` 的 `OmpCrossReferences`
-类；删掉 `test_crossrefs.py` 里不再使用的 `app` 导入。测试条数不变，仍是 607。
-随后把 `revisions.json` 顶部中英末句的 604 同步改为 607，不新增版本条目。
-
-GitNexus 当前索引落后 HEAD 8 个提交；`context`/`impact` 只作线索，结论由源码与
-`rg` 交叉确认。回归证据：搬移前两项红分别为 `'604' != '607'` 与 `['test_crossrefs.py']`；
-搬移后两项对应的单测均绿，整套 607 项通过，根套件 295 项通过。
-`python scripts/bookctl.py check --fast`：9 steps passed，两项既存失败消失。
-
 执行者：Codex。日期：2026-11-05（Asia/Shanghai；America/Adak 为 2026-11-04）。
 本轮基于 `1ec7749bdea31b96729eb307f69e12f446284b2e`，沿用已有 M1/M2 内容和插画替换，补齐收尾交付。
 
@@ -444,3 +360,87 @@ python yuyu-book/build.py --lang zh --pdf --manifest manifest-omp.json --sources
 
 构建产物位于 `.scratch/dist-b42/`，未提交生成产物。
 
+
+## 小字标签对比度（2026-11-18）
+
+插图的强调色 `ORANGE = #D9562B` 原先同时充当图形色和文字色。它在纸色
+`#FBF7EF` 上只有 3.70:1，在白色卡片上 3.91:1；徽章底色配白字同样是
+3.91:1，都不满足小字号要求的 4.5:1。生成器里有 96 处 16–23 px 的橙色文字，
+不是一张图的局部问题。
+
+改法只动文字：新增 `ORANGE_TEXT = #B0401C`，由 `Drawing.text` 和徽章底色使用；
+线条、箭头、卡片描边仍用原 `ORANGE`，视觉识别不变。新色在纸色上 5.46:1、
+白色上 5.79:1、桃色卡片上 4.75:1，白字压在其上 5.79:1。
+
+回归门禁先于修复加入 `tests/test_omp_overhaul.py`：修复前橙色标签 3.70:1、
+徽章白字 3.91:1，两条均失败；修复后 5.46:1 / 5.79:1 通过。图版重生成 192 张，
+与未修改生成器逐字节对照后，确认只有 176 张因本次改色变化，其余 16 张不变；
+基线输出与提交中的 192 张完全一致，说明没有夹带生成器漂移。
+
+验证：`python -m unittest tests.test_omp_overhaul -v` 33 项通过；
+`python scripts/check_book.py` 0 errors；`bookctl.py check --fast` 仍报两项
+既存失败（revisions.zh 记 604 而发现 607；`test_crossrefs.py` 读取 omp manifest），
+在未改动的 HEAD 快照上同样复现，与本次改动无关。通用套件由 292 增至 294，
+增量就是新增的两条对比度断言。
+
+## 15 px 标签下限（2026-11-18，第二轮）
+
+生成器其余文字最小 16 px，只有 9 处落在 15 px。小图版缩到手机栏宽时，
+这 1 px 的差距同样被缩放，没必要为几个次要标签单独破例。
+
+`Drawing.text` 现在拒绝小于 `MIN_LABEL_SIZE = 16` 的字号，9 处调用同步升到
+16 px。回归门禁先于修复加入：修复前 `text(..., 15, ...)` 不报错，门禁失败；
+修复后抛出 `ValueError`，门禁通过。对比度测试里那处示例标签也改用合法的
+16 px，避免把字号门禁当成对比度测试的前提。
+
+与本轮直接相关的图版只有 6 张：与上一轮产物逐字节对照确认变化范围为
+`fig0-1`、`fig4-6`、`fig20-4`、`fig24-1`、`fig25-3`、`fig33-1`。
+
+验证：`python -m unittest tests.test_omp_overhaul -v` 34 项通过；
+`python scripts/check_book.py` 0 errors。`bookctl.py check --fast` 的两项
+既存失败未变，已在未改动的 HEAD 快照上复现。
+
+剩余候选：一批 SVG 来源的 JPG 依靠 `visual-redesign/` 的手工导出流程，
+缺少仓库内可复跑脚本。
+
+## 卡片底色上的文字对比度（2026-11-18，第三轮）
+
+第二轮只验证了橙色文字在纸色上的比值。复查发现同一组图形色还被当作
+卡片文字：`note(..., ORANGE, PEACH)` 有 53 处，而浅桃底比纸色更紧；
+`MUTED` / `GREEN` / `BLUE` 在桃、鼠尾草、天蓝三种卡片底色上都只有
+4.05–4.28:1，低于小字的 4.5:1。原橙色 `#B0401C` 映射已过这三类底色，
+无需改动。
+
+`Drawing.text` 现在通过模块级 `TEXT_TONES` 把三种图形色映射到更深的
+文字色：`MUTED_TEXT #5A665E`、`GREEN_TEXT #496858`、`BLUE_TEXT #45657E`。
+映射只在 `text()` 内发生，线条、描边、填充仍用原色。新值在最紧的桃底上
+分别为 4.88 / 5.02 / 5.00:1。
+
+回归先于修复加入并确认失败（`MUTED text on #F8E4D8: 4.10:1`）；遍历
+四种文字色 × 五种底色，修复后全部 ≥4.5:1。生成器全部 192 张可复现图版
+重生成，20 张 SVG 来源图版未动。
+
+验证：`python -m unittest tests.test_omp_overhaul -v` 34 项通过；
+`python scripts/check_book.py` 0 errors。
+
+剩余候选仍是 SVG 来源图版缺少仓库内可复跑导出脚本。
+
+## 套件闸口的两项既存失败（2026-11-18，第四轮）
+
+`bookctl.py check --fast` 长期报两项红，均可在未改动的 HEAD 快照上复现：
+
+1. `test_docclaims.py` 读 `revisions.json` 顶部条目的末句「构建器测试 N 项全绿」，
+   与 `unittest discover -s yuyu-book/tests` 的现数比对。快照里写 604，实盘 607。
+2. `test_product_isolation.py` 用字符串 `manifest-omp` 扫描其他 `test_*.py`；
+   `test_crossrefs.py` 的 `test_omp_appendix_e_alias_is_autolinked` 直接
+   `load_configs("manifest-omp.json", ...)`，把 omp 的契约塞进了御舆专用套件。
+
+第二项没有加白名单——那正是这道闸要防的动作。按 `docs/yuyu-overhaul/ACCEPTANCE.md`
+的既有先例，把断言原样搬进 `test_product_isolation.py` 的 `OmpCrossReferences`
+类；删掉 `test_crossrefs.py` 里不再使用的 `app` 导入。测试条数不变，仍是 607。
+随后把 `revisions.json` 顶部中英末句的 604 同步改为 607，不新增版本条目。
+
+GitNexus 当前索引落后 HEAD 8 个提交；`context`/`impact` 只作线索，结论由源码与
+`rg` 交叉确认。回归证据：搬移前两项红分别为 `'604' != '607'` 与 `['test_crossrefs.py']`；
+搬移后两项对应的单测均绿，整套 607 项通过，根套件 295 项通过。
+`python scripts/bookctl.py check --fast`：9 steps passed，两项既存失败消失。
