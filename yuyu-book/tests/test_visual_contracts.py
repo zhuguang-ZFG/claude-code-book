@@ -28,6 +28,13 @@ FIXTURE = """<html><head><style>__CSS__</style></head>
 </svg></div><figcaption>plate</figcaption></figure>
 </div></article></body></html>"""
 
+TOC_FIXTURE = """<html><head><style>__CSS__</style></head>
+<body class="lang-zh __PRODUCT__"><main class="sheet">
+<section class="front-page toc" id="toc">
+<div class="toc-group"><a class="toc-part">Earlier section</a></div>
+<div class="toc-group"><a class="toc-part">Sources and permissions</a></div>
+</section></main></body></html>"""
+
 
 def _dash_parts(value):
     return tuple(float(part) for part in re.findall(r"[\d.]+", value))
@@ -114,6 +121,47 @@ class NarrowChapterContracts(unittest.TestCase):
                 })""")
                 self.assertLessEqual(sizes["emblem"], sizes["column"] + 1)
                 self.assertLessEqual(sizes["width"], 390)
+            finally:
+                browser.close()
+
+
+class CollectedTocPrintContracts(unittest.TestCase):
+    def test_only_the_omnibus_final_toc_heading_loses_print_spacing(self):
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page()
+                page.set_content(TOC_FIXTURE.replace("__CSS__", CSS)
+                                 .replace("__PRODUCT__", "collected"))
+                page.emulate_media(media="print")
+                collected = page.evaluate("""() => {
+                    const rows = [...document.querySelectorAll('.toc-part')];
+                    return rows.map(row => {
+                        const style = getComputedStyle(row);
+                        return {marginTop: style.marginTop,
+                                marginBottom: style.marginBottom,
+                                fontSize: style.fontSize,
+                                lineHeight: style.lineHeight};
+                    });
+                }""")
+                self.assertEqual(collected[1]["marginTop"], "4px")
+                self.assertEqual(collected[1]["marginBottom"], "2.4px")
+                self.assertEqual(collected[1]["fontSize"], collected[0]["fontSize"])
+                self.assertEqual(collected[1]["lineHeight"], "18.36px")
+
+                page.set_content(TOC_FIXTURE.replace("__CSS__", CSS)
+                                 .replace("__PRODUCT__", "standalone"))
+                page.emulate_media(media="print")
+                standalone = page.locator(".toc-part").last.evaluate(
+                    "element => getComputedStyle(element).marginTop")
+                self.assertEqual(standalone, "25.6px")
+
+                page.set_content(TOC_FIXTURE.replace("__CSS__", CSS)
+                                 .replace("__PRODUCT__", "collected"))
+                page.emulate_media(media="screen")
+                screen = page.locator(".toc-part").last.evaluate(
+                    "element => getComputedStyle(element).marginTop")
+                self.assertEqual(screen, "25.6px")
             finally:
                 browser.close()
 

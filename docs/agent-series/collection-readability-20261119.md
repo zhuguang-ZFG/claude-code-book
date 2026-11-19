@@ -24,26 +24,28 @@
 
 | 检查 | 实际结果 |
 | --- | --- |
-| `python scripts/bookctl.py check --fast`（与 `make check` 相同） | 9 项检查通过：通用测试 332 项、构建器测试 615 项，共 947 项；内容、Mermaid 和衍生产品检查均通过 |
+| `python scripts/bookctl.py check --fast`（Windows 上与 `make check` 相同） | 9 项检查通过：通用测试 332 项、构建器测试 616 项，共 948 项；内容、Mermaid 和衍生产物检查均通过 |
 | 十卷合集源码装配与完整 HTML 渲染 | 10 卷、246 个正文单元、333 幅图版、813 条旁注、182 处导读条、113 条编者札记；HTML 约 74.6 MB |
 | 浏览器实测 | 最终完整 HTML 在 1440 像素宽屏浅色、390 像素窄屏浅色与深色均无整页横向溢出；窄屏导读三张表的表头换行，表格宽 324 像素且无内部横向滚动 |
 | 窄屏导航 | 从导读进入 Pi 恢复小节，再通过常驻入口返回导读，均成功 |
-| PDF 导航样张 | 16 页，5 个书签、5 行目录页码（含两个卷标题）均通过检查，空白页为 0 |
-| 完整 PDF | 1,925 页、322 个书签、87 个索引页码，97,001,222 字节；全书空白页为 0，322 行目录页码（含全部十卷标题）逐行核对通过 |
-| 完整 EPUB | 52,918,787 字节、604 张图片、2,426 条导航；ZIP、XML、资源清单与阅读顺序检查通过，6,670 处内部引用无断链，无重复 ID |
+| PDF 扩展抽检 | 30 页，覆盖封面、导读、目录首末页、十卷卷首与首章、65 幅横向图版中的首/中/末幅、附录及末页；未发现裁切；目录末页现为第 22 页，附录 D 与“来源与许可”同页 |
+| EPUB 阅读器 | SumatraPDF 成功打开本地 EPUB，分页控件显示 2,382 个重排页；未逐页通读 |
+| 完整 PDF | 1,924 页、322 个书签、87 个索引页码，97,182,780 字节；全书空白页为 0，322 行目录页码及书签目标全部核对通过 |
+| 完整 EPUB | 52,918,403 字节、604 张图片、2,426 条导航；6,670 处内部引用无断链、无重复 ID；EPUBCheck 5.4.0：0 fatal、0 error、0 warning、0 info |
 
 完整 HTML、PDF 和 EPUB 的复建命令：
 
 ```powershell
 $env:PYTHONIOENCODING = 'utf-8'
 $env:PYTHONUTF8 = '1'
-python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out-dir .scratch/collection-complete-20261119
+$env:PLAYWRIGHT_NODEJS_PATH = 'C:\Program Files\nodejs\node.exe'
+python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out-dir .scratch/collection-improved-20261119
 ```
 
-完整产物位于 `.scratch/collection-complete-20261119/`，文件名为 `yuyu-collected-zh.html`、`yuyu-collected-zh.pdf` 和 `yuyu-collected-zh.epub`；同目录保存 `SHA256SUMS`、构建报告与完整产物验证记录。此前的 16 页样张仍在 `.scratch/collection-readability/navigation-print-sample.pdf`。这些本地产物不随源码提交。
+完整产物位于 `.scratch/collection-improved-20261119/`，文件名为 `yuyu-collected-zh.html`、`yuyu-collected-zh.pdf` 和 `yuyu-collected-zh.epub`；同目录保存构建报告与最终验证记录。本地构建产物与 30 页 PDF 联系表不随源码提交。
 
-本次完整构建退出码为 0，耗时约 32.6 分钟。环境为 Windows 11、Edge 157.0.4341.60、微软雅黑；索引回填引起分页变化后，构建器重新测量并完成第二次打印，最终页码一致。EPUB 使用同一份已回填索引的 HTML，包内来源摘要与 HTML 的 SHA-256 相符。
+本次完整构建退出码为 0，耗时约 37.7 分钟。环境为 Windows 11、Edge 157.0.4341.60、微软雅黑；目录末尾“来源与许可”调整后与附录 D 合页，合订本从 1,925 页降至 1,924 页。PDF 保持 322 个有效书签，87 个索引页码回填后页码稳定；EPUB 使用同一份 HTML，内部链接检查无断链。
 
-抽看完整 PDF 的导读、目录末页和卷七卷首，内容可读。目录末页只有一条“来源与许可”入口，仍有压缩分页的空间；它不属于空白页，也不影响跳转。EPUB 已检查文件结构和链接，尚未在不同电子书阅读器上逐一试读，也未运行独立 EPUBCheck。
+抽检 30 页 PDF 联系表，覆盖十卷卷首与首章、三幅横向图版和书末附录；页面清晰，未发现裁切，末尾目录内容完整。EPUBCheck 5.4.0 全项通过；SumatraPDF 成功打开本地 EPUB 并显示重排页数。
 
 历史成品的页数与摘要仍只对应此前构建。本轮排版验证不扩展五组恢复实验的覆盖范围，不代表真实模型任务、登录授权或平台投递已经验证。

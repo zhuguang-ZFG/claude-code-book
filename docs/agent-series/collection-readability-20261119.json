@@ -10,15 +10,16 @@
     "playwright": "1.61.0",
     "pymupdf": "1.28.0",
     "PYTHONUTF8": "1",
-    "PYTHONIOENCODING": "utf-8"
+    "PYTHONIOENCODING": "utf-8",
+    "playwright_nodejs_path": "C:\\Program Files\\nodejs\\node.exe"
   },
   "required_check": {
     "command": "python scripts/bookctl.py check --fast",
     "exit_code": 0,
     "steps_passed": 9,
     "general_tests": 332,
-    "builder_tests": 615,
-    "total_tests": 947
+    "builder_tests": 616,
+    "total_tests": 948
   },
   "html_build": {
     "command": "python scripts/bookctl.py build --product collected --lang zh --out-dir .scratch/collection-readability",
@@ -31,7 +32,7 @@
     "keeper_notes": 113
   },
   "layout": {
-    "source": "Final complete ten-volume HTML; screen navigation and previously verified print excerpt",
+    "source": "Final complete ten-volume HTML; responsive navigation and expanded 30-page PDF visual sample",
     "screens": [
       {
         "scheme": "light",
@@ -129,7 +130,57 @@
       "blank_pages": 0
     },
     "guide_tables_fit_without_horizontal_scroll_at_390px": true,
-    "final_html_viewport_check": true
+    "final_html_viewport_check": true,
+    "expanded_pdf_sample": {
+      "pages": 30,
+      "page_numbers": [
+        1,
+        3,
+        4,
+        22,
+        23,
+        33,
+        527,
+        536,
+        954,
+        959,
+        1130,
+        1134,
+        1277,
+        1282,
+        1405,
+        1410,
+        1535,
+        1540,
+        1677,
+        1681,
+        1757,
+        1762,
+        1849,
+        1853,
+        36,
+        644,
+        1798,
+        436,
+        1922,
+        1924
+      ],
+      "coverage": [
+        "cover",
+        "reading guide",
+        "first and last contents pages",
+        "ten volume dividers and first chapters",
+        "first, middle and last landscape plates",
+        "appendix",
+        "near-end source register",
+        "last page"
+      ],
+      "landscape_plate_count": 65,
+      "last_contents_page": 22,
+      "appendix_d_and_sources_permissions_share_page": true,
+      "contact_sheet": ".scratch/collection-improved-20261119/qa-contact-sheet.png",
+      "blank_pages": 0
+    }
   },
   "sources": [
     {
@@ -273,20 +324,49 @@
       "path": ".scratch/collection-readability/final-guide-390-dark.png",
       "bytes": 115997,
       "sha256": "ce92f0e574496387a9d594b1cc23722f9136ffbd7974824c5365ef2a8d4ac32a"
+    },
+    {
+      "path": ".scratch/collection-improved-20261119/yuyu-collected-zh.html",
+      "bytes": 74617064,
+      "sha256": "caa09c8014aa7d2479922fdb33a8a596f96cd4d9ffb59a352ed85f81d1dc6f33"
+    },
+    {
+      "path": ".scratch/collection-improved-20261119/yuyu-collected-zh.pdf",
+      "bytes": 97182780,
+      "sha256": "90fd296d6d97b49c04cfe256fb5c8a1a91e808f95f668072d7c1d9bd76fa5496"
+    },
+    {
+      "path": ".scratch/collection-improved-20261119/yuyu-collected-zh.epub",
+      "bytes": 52918403,
+      "sha256": "3088db6ee5ec0150eb6605000d28cb2aa5ca90446f7eab9004dac4f0e1b540b4"
+    },
+    {
+      "path": ".scratch/collection-improved-20261119/verification.json",
+      "bytes": 2206,
+      "sha256": "2f64b79086d2ae6d1a16c827ec963c0066f2aef267dbf97016fc3b4b2976123e"
+    },
+    {
+      "path": ".scratch/collection-improved-20261119/qa-contact-sheet.png",
+      "bytes": 633095,
+      "sha256": "20f4913f5dbaabf82572cc20225dc6f18b4cabfb70a0ecd34da584b312b8da32"
+    },
+    {
+      "path": ".scratch/collection-improved-20261119/qa-sample-manifest.json",
+      "bytes": 23387,
+      "sha256": "dfa1bfeb7090b7fef1b68b8a4be2c3773bac3b9cb78fb22961df686a0e65503e"
     }
   ],
-  "artifact_availability": "Local scratch files; not shipped in the source repository",
+  "artifact_availability": "Builds and PDF contact sheet are local scratch artifacts; not shipped in the source repository.",
   "limits": [
     "PDF page counts depend on installed fonts; these results use Windows Microsoft YaHei.",
-    "The full PDF was scanned for blank pages; its contents page numbers and bookmarks were checked. Visual review sampled pages 3, 23 and 1536.",
-    "EPUB ZIP, XML, OPF, spine, resources, source hash and internal references were checked; EPUBCheck and device-specific reading applications were not exercised.",
+    "EPUBCheck 5.4.0 passed. SumatraPDF opened the final EPUB and reported 2,382 reflow pages; no separate e-reader device was tested.",
     "The recovery experiment scopes and product version baselines remain as recorded in each volume.",
     "No real-model requests, login authorization or platform delivery were performed."
   ],
   "full_build": {
-    "command": "python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out-dir .scratch/collection-complete-20261119",
+    "command": "python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out-dir .scratch/collection-improved-20261119",
     "exit_code": 0,
-    "elapsed_seconds": 1953.64,
+    "elapsed_seconds": 2261.846,
     "browser": "157.0.4341.60",
     "font": {
       "path": "C:\\Windows\\Fonts\\msyh.ttc",
@@ -296,23 +376,23 @@
     "pdf_index_folios": 87,
     "epub_rasterized_svg": 502,
     "pdf_validation": {
-      "pages": 1925,
+      "pages": 1924,
       "bookmarks": 322,
       "bookmark_destinations_valid": true,
       "contents_rows_with_verified_printed_page_numbers": 322,
       "volume_title_page_numbers_verified": 10,
       "guide_page": 3,
       "volume_pages": {
-        "vol1": 24,
-        "vol2": 528,
-        "vol3": 955,
-        "vol4": 1131,
-        "vol5": 1278,
-        "vol6": 1406,
-        "vol7": 1536,
-        "vol8": 1678,
-        "vol9": 1758,
-        "vol10": 1850
+        "vol1": 23,
+        "vol2": 527,
+        "vol3": 954,
+        "vol4": 1130,
+        "vol5": 1277,
+        "vol6": 1405,
+        "vol7": 1535,
+        "vol8": 1677,
+        "vol9": 1757,
+        "vol10": 1849
       },
       "blank_pages": 0,
       "blank_page_check": "Full-page scan completed by pdf.build_pdf before saving the final artifact"
@@ -331,16 +411,65 @@
       "source_html_sha256_matches": true,
       "external_image_resources": 0,
       "scripts": 0,
-      "scope": "ZIP, XML, OPF, spine, resources and link integrity; no EPUBCheck or device-reader certification"
+      "scope": "ZIP, XML, OPF, spine, resources and link integrity; EPUBCheck 5.4.0 passed; local opening confirmed in SumatraPDF."
+    },
+    "epubcheck": {
+      "version": "5.4.0",
+      "exit_code": 0,
+      "fatal": 0,
+      "errors": 0,
+      "warnings": 0,
+      "infos": 0
+    },
+    "reader_validation": {
+      "application": "SumatraPDF",
+      "opened_local_epub": true,
+      "reported_reflow_pages": 2382,
+      "scope": "The local EPUB opened and exposed its pagination control; no full-book visual read-through."
     },
     "visual_sample_pages": [
+      1,
       3,
+      4,
+      22,
       23,
-      1536
+      33,
+      527,
+      536,
+      954,
+      959,
+      1130,
+      1134,
+      1277,
+      1282,
+      1405,
+      1410,
+      1535,
+      1540,
+      1677,
+      1681,
+      1757,
+      1762,
+      1849,
+      1853,
+      36,
+      644,
+      1798,
+      436,
+      1922,
+      1924
     ],
     "visual_observations": [
-      "Guide and volume-seven opening are readable.",
-      "The last contents page contains only one sources-and-license entry; further pagination compaction remains possible."
-    ]
+      "The final contents page is page 22 and contains Appendix D plus the sources-and-permissions link.",
+      "The contents link moved onto the preceding page; the complete PDF decreased from 1925 to 1924 pages.",
+      "All 322 contents folios and bookmarks resolve; the full-book scan found zero blank pages.",
+      "The 30-page sample spans all ten volumes, the first/middle/last of 65 landscape plates, and the end matter."
+    ],
+    "source_commit": "62339a898bc0a05531e2f6ad5a331014445f96c3",
+    "source_worktree_changes": [
+      "yuyu-book/tests/test_visual_contracts.py",
+      "yuyu-book/yuyu_book/style_print.py"
+    ],
+    "playwright_nodejs_path": "C:\\Program Files\\nodejs\\node.exe"
   }
 }
