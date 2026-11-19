@@ -7,8 +7,14 @@ specs. Rendering is exercised by the collected CI job.
 from __future__ import annotations
 
 import sys
+import copy
+import io
+import re
+import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -58,6 +64,23 @@ class CollectedEdition(unittest.TestCase):
     def test_a_collection_without_volumes_is_refused(self):
         with self.assertRaisesRegex(BuildError, "declares no volumes"):
             load_collection({"volumes": []})
+
+    def test_a_volume_door_cannot_claim_another_units_anchor(self):
+        with self.assertRaisesRegex(BuildError, "appears in both"):
+            load_collection({"volumes": [volume("kimi-front", "manifest-kimi.json",
+                                               "sources-kimi.json")]})
+
+    def test_a_guide_cannot_claim_a_volume_anchor(self):
+        spec = copy.deepcopy(self.spec)
+        spec["guide"] = {"id": "vol1", "zh": "合集导读.md"}
+        with self.assertRaisesRegex(BuildError, "appears in both"):
+            load_collection(spec)
+
+    def test_a_guide_cannot_replace_the_contents(self):
+        spec = copy.deepcopy(self.spec)
+        spec["guide"] = {"id": "toc", "zh": "合集导读.md"}
+        with self.assertRaisesRegex(BuildError, "is reserved"):
+            load_collection(spec)
 
     def test_the_same_two_volumes_bind_cleanly_when_nothing_collides(self):
         volumes = load_collection({"volumes": [
@@ -140,6 +163,73 @@ class VolumeStamp(unittest.TestCase):
         from yuyu_book.app import _stamp_volume
         self.assertEqual(_stamp_volume(["<p>前言没有眉标</p>"], "卷一"),
                          ["<p>前言没有眉标</p>"])
+
+
+class CollectionNavigation(unittest.TestCase):
+    """Exercise real Markdown assembly; capture only the expensive PDF pass."""
+
+    @classmethod
+    def setUpClass(cls):
+        from yuyu_book import app
+        from yuyu_book.core import REPO_ROOT
+
+        scratch = REPO_ROOT / ".scratch"
+        scratch.mkdir(exist_ok=True)
+        temporary = tempfile.TemporaryDirectory(prefix="collection-test-", dir=scratch)
+        cls.addClassCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        guide = root / "guide.md"
+        guide.write_text(
+            "# 合集导读\n\n"
+            "[恢复会话](../../kimi/ch07.md#76-会话从列表里消失后怎样找回再分叉)\n\n"
+            "[构造任务](../../prompt/ch01.md)\n", encoding="utf-8")
+        spec = copy.deepcopy(registry.load("manifest-collected.json"))
+        spec["volumes"] = [v for v in spec["volumes"] if v["id"] in ("vol7", "vol8", "vol9")]
+        spec["guide"] = {"id": "collection-guide",
+                         "zh": guide.relative_to(REPO_ROOT).as_posix()}
+        volumes = load_collection(spec)
+        pdf_path = root / "captured.pdf"
+        pdf_path.write_bytes(b"PDF pass captured by test")
+        original_load = app.load_unit
+
+        def with_cross_volume_link(*args, **kwargs):
+            unit = original_load(*args, **kwargs)
+            if unit.id == "kimi-front":
+                unit.md += "\n\n[跨册任务](../prompt/ch01.md)\n"
+            return unit
+
+        with redirect_stdout(io.StringIO()), \
+                patch.object(app, "load_unit", side_effect=with_cross_volume_link), \
+                patch.object(app, "print_with_index", return_value=(pdf_path, {})) as printer, \
+                patch("yuyu_book.pdf.sheet_count", return_value=1):
+            output = app.build_collected(
+                "zh", spec, volumes, mode="source", browser=None, autolink=True,
+                out_dir=root, do_pdf=True, edge=None, plain_layer=False)
+        cls.html = output.read_text(encoding="utf-8")
+        cls.print_manifest = printer.call_args.args[3]
+
+    def test_guide_and_cross_volume_chapter_links_stay_offline(self):
+        self.assertIn('href="#prompt-ch01">跨册任务</a>', self.html)
+        self.assertIn('href="#prompt-ch01">构造任务</a>', self.html)
+        self.assertIn('href="#kimi-ch07-76-会话从列表里消失后怎样找回再分叉"',
+                      self.html)
+
+    def test_every_printed_contents_row_gets_a_folio_including_volume_doors(self):
+        toc = re.search(r'<section class="front-page toc".*?</section>',
+                        self.html, re.S).group()
+        slots = re.findall(r'data-ref="([^"]+)"', toc)
+        self.assertEqual(list(self.print_manifest.toc_rows), slots)
+        self.assertTrue({"collection-guide", "vol8", "vol9"}.issubset(slots))
+
+    def test_guide_and_volume_sources_are_bookmarked_and_reachable(self):
+        anchors = {entry.anchor for entry in self.print_manifest.outline}
+        self.assertTrue({"collection-guide", "vol7-subject-index", "vol8-sources"}
+                        .issubset(anchors))
+        self.assertNotIn("vol9-sources", anchors)
+        rail = re.search(r'<nav class="rail".*?</nav>', self.html, re.S).group()
+        for anchor in ("collection-guide", "vol7-subject-index", "vol8", "vol9", "vol8-sources"):
+            self.assertIn(f'href="#{anchor}"', rail)
+        self.assertIn('class="collection-jumps no-print"', self.html)
 
 
 if __name__ == "__main__":

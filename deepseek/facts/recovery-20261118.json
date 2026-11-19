@@ -1,0 +1,50 @@
+{
+  "baseline": "0.2.2-rc.1",
+  "baseline_commit": "fcc0ad462172522aaf5c93a7b2e01f6b9f0b0159",
+  "coverage": [
+    "Real JSONL backend mounted in Cordis",
+    "Read-only torn tail inspection",
+    "Write-handle repair and explicit flush",
+    "Reopen after plugin disposal"
+  ],
+  "limitations": [
+    "npm release artifact of the pinned version",
+    "compression=none",
+    "Torn write simulated by appending bytes",
+    "No OS crash or model integration"
+  ],
+  "started_at_utc": "2026-11-18T15:48:12.005148+00:00",
+  "platform": "Windows",
+  "python": "3.13.14",
+  "node": "v24.14.0",
+  "model_requests": 0,
+  "runs": [
+    {
+      "command": [
+        "node",
+        "deepseek/examples/check-session-recovery.mjs",
+        ".scratch/recovery-labs/deep"
+      ],
+      "exit_code": 0,
+      "stdout": [
+        "JSONL: read preserved the torn tail; write repaired it; remount returned seq 0,1"
+      ],
+      "stderr": []
+    }
+  ],
+  "sha256": {
+    "deepseek/examples/check-session-recovery.mjs": {
+      "value": "bf0a3f40473029b52150782d4726b848f221ff267095ed4de2d7815b9138c0fe",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/deep/node_modules/@deepseek-ai/dsh-session-persistence-jsonl/lib/index.js": {
+      "value": "69efef5f84dddf947032bc1425067878fa610416c8885acde2ded9b01230c9b7",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/deep/package-lock.json": {
+      "value": "f839f582208c4271945cf61a63cd22b84ab79894f7ec29347cc90d24d1267f5a",
+      "encoding": "CRLF normalized to LF"
+    }
+  },
+  "passed": true
+}

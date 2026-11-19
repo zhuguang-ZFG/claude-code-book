@@ -223,3 +223,19 @@ Pi 1.5.0、pi-purge 0.2.1（提交 `ffafeb940339d59fc6af4a05dc754019cef3a1ac`）
 接入后的 Fast 八步全部通过：通用测试 224 项、构建器测试 556 项，包含流程图标签在屏幕与打印样式下的浏览器回归。最终 Pi 本地 PDF 仍为 174 页、41 个书签，体积 9,331,867 字节。图示、命令表和失败恢复段落已在 PDF 中打开抽查。
 
 EPUB 视觉抽查另外发现 SVG 内联样式被提前删除，导致节点与连线变成黑块；已将清理移到光栅化之后，新增像素检查并重跑通用测试 225 项通过。修正后的 Pi EPUB 为 1,305,873 字节，EPUBCheck 0 错误、0 警告，并已打开确认三种模式图的文字与连线可读。四个版本的 EPUB 均使用修正后的导出器重建。
+
+## 2026-11-18 离线故障恢复复核
+
+会话与扩展的原始输出、固定包文件摘要见[2026-11-18 记录](facts/recovery-20261118.json)。
+
+Windows，Node.js 24.14.0／Python 3.13.14。本次运行使用 Pi 1.5.0 的 SessionManager 与原有 Git 状态扩展驱动。案例见第 12.8 节。
+
+```powershell
+node pi/examples/check-session-recovery.mjs $piPackage
+node pi/examples/check-git-status.mjs $piPackage
+```
+
+- [x] 原 ID 与叶节点一致，损坏头被拒绝且原字节保留，恢复后检查点挂在原消息下。
+- [x] Git 扩展的六项离线断言通过，包括非仓库错误与已中止请求。
+
+`$piPackage` 为 `@earendil-works/pi-coding-agent` 1.5.0 的包目录。第一条命令还运行了固定包的扩展加载器，核对无效工厂被拒绝以及修复后的工具名。第二条用驱动接收注册，通过 Pi 的 exec 实现调用 Git。

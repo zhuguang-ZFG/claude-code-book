@@ -36,6 +36,7 @@
 - **初次阅读：** 从[前言](00-前言.md)开始，再读 01 → 02 → 04 → 15。
 - **动手构建：** 先读基础篇与工程实践篇，增加记忆和扩展能力时查阅第二、三部分。
 - **按需查阅：** 使用下方四篇附录定位模块、工具、功能标志和术语。
+- **跨册阅读：** 打开[合集导读](合集导读.md)，按任务选卷，或直接查会话恢复、沙箱失败、定时任务与 MCP 冲突案例。
 - **网站阅读：** [在线阅读入口](https://zhuguang-zfg.github.io/claude-code-book/)；也可直接点击本仓库的章节链接。
 
 站点上能打开的是御舆中文整书、中文入门分册、插画画廊、知识卡、样章，以及 Omp 中文 HTML（`/omp/yuyu-omp-zh.html`）。PDF 不在 Pages 上。Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程、Vibe Coding 和十卷合订本可以本地构建，站点上还没有这些页面。英文整书和英文入门分册今天也不在 Pages 上。已发布的 `v0.3.7` 里仍留着当时的英文 HTML/PDF/EPUB，不删。
@@ -79,7 +80,11 @@ make book-pi-epub   # 再加 EPUB
 
 新增 [Vibe Coding：把想法做成能跑的软件](vibe/README.md)，12 章加附录 A–D，走中文独立构建入口 `make book-vibe-all`（HTML/PDF/EPUB）。全书用一份旧书市集 CSV 走完任务卡、样例、迭代、报错、风险边界、验收与交接；示例程序只用 Python 3.12 标准库。GitHub 资源入口固定在附录 B 的提交上。
 
-十册另可合订为《Agent Harness 十卷合订本》：`manifest-collected.json` 逐卷引用各册的清单与来源，`make book-collected` 出中文单文件 HTML。需要打印或离线阅读时，可用 `python scripts/bookctl.py build --product collected --lang zh --pdf` 生成中文 PDF，再用 `python scripts/build_epub.py --html yuyu-book/dist/yuyu-collected-zh.html --output yuyu-book/dist/yuyu-collected-zh.epub --lang zh` 从同一 HTML 生成 EPUB。合订本不合并各册的索引与页码，只新增卷宗与卷级目录。2026-11-16 本机实测：PDF 1925 页、109.3 MB、321 书签、0 空白页（1925 页逐页扫描，310 秒）；EPUB 52.0 MB、2,413 条导航。
+十册可合订为《Agent Harness 十卷合订本》。[合集导读](合集导读.md)按任务提供阅读路线、十卷入口和七项故障速查，并说明每项实验的验证范围。各卷保留自己的章节号和主题索引，PDF 按整本连续编页；引用时请带上卷号。HTML 中已收录的跨册章节直接在书内跳转，实验脚本与独立记录仍从仓库取得。
+
+`manifest-collected.json` 逐卷引用各册清单与来源。`make book-collected` 构建中文单文件 HTML；`make book-collected-all` 构建 HTML、PDF 和 EPUB。Windows 没有 make 时，运行 `python scripts/bookctl.py build --product collected --lang zh --pdf --epub`。当前改稿的检查范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。
+
+2026-11-19 已按当前书稿重建完整合集（Windows／微软雅黑）：PDF 1,925 页、97.0 MB、322 个书签、0 空白页；EPUB 52.9 MB、2,426 条导航。全部 322 行 PDF 目录页码核对通过，EPUB 的 6,670 处内部引用无断链。本地产物位于 `.scratch/collection-complete-20261119/`，摘要与检查范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。
 
 ## 阅读说明
 

@@ -1,5 +1,7 @@
 # Codex CLI 原创示例
 
+故障注入与恢复实验见正文第 8.10 节。运行命令、版本与本机观察结果见[本册验证记录](../VERIFY.md#2026-11-18-离线故障恢复复核)。
+
 固定版本：codex-cli 0.167.0，源码提交 `086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a`。示例围绕一份运费边界错误，连接项目说明、技能/插件、规则、Hook、exec 日志与 app-server 消息。
 
 ## 规则与真实 CLI 检查
@@ -16,7 +18,14 @@ python codex/examples/check-local-cli.py --binary PATH_TO_CODEX_EXE
 npm.cmd install --prefix .scratch/codex-cli --ignore-scripts @openai/codex@0.167.0
 ```
 
-安装命令需要网络，本轮没有重新验证首次安装。程序摘要是本机测量值，见 [facts](../facts/local-cli-20261110.json)，不冒充官方签名。
+安装命令需要网络。以下位置对应 Windows x64 平台包；先核对原生程序的版本，再传给检查脚本：
+
+```powershell
+$codexBinary = (Resolve-Path ".scratch/codex-cli/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe").Path
+& $codexBinary --version
+```
+
+本次恢复实验使用独立目录中的 0.167.0 程序。程序摘要是本机测量值，见 [2026-11-18 记录](../facts/recovery-20261118.json)，不冒充官方签名。
 
 驱动先核对版本，再运行六种规则输入、一项错误规则正例，以及一项静态协议生成，共八项。`git push` 等命令只作为策略检查器的输入 token，没有实际执行 Git 操作。schema 生成写入临时目录，不启动 app-server 会话。
 
@@ -36,7 +45,20 @@ codex.cmd execpolicy check --rules codex/examples/review.rules --pretty git stat
 
 ## 未覆盖
 
-OS 沙箱执行、真实模型、账号认证、实际审批界面、由 Codex 宿主发现/信任/触发 Hook、MCP 连接、会话恢复和其他平台均未验证。下面直接运行处理器的结果，不替代宿主生命周期实验。
+真实模型、账号认证、实际审批界面、沙箱的文件与网络边界、由 Codex 宿主发现/信任/触发 Hook、宿主 MCP 连接、会话恢复和其他平台均未验证。下节已实跑 Windows 沙箱初始化失败与恢复；直接运行 Hook 和 MCP 处理器的结果仍不替代宿主生命周期实验。
+
+## Windows 故障注入与恢复
+
+先按上文准备 `$codexBinary`，再从书籍仓库根目录运行：
+
+```powershell
+python -m pip install -r codex/examples/requirements.txt
+python -B codex/examples/check_windows_recovery.py $codexBinary
+```
+
+驱动在临时配置目录制造 `.sandbox` 路径冲突，再用相同命令验证恢复；同时检查审批消息、Hook 输入和 MCP 入口。MCP 使用同一仓库的 `kimi/examples/review-plugin/rules_server.py`，复制练习时需要一并保留该文件。Python 不要加 `-O`，以免禁用断言。
+
+本机直接运行通过；由 Python 批量记录器嵌套启动时，另一次在恢复阶段返回 `CreateRestrictedToken failed: 87`。该差异与未覆盖范围均保存在验证记录中。
 
 ## 运费、Hook 和 JSONL 离线练习
 

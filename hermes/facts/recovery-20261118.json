@@ -1,0 +1,71 @@
+{
+  "baseline": "v0.23.0",
+  "baseline_commit": "2bd378ed1b8d6bf2192cb26e0a55ff3091e6bd19",
+  "coverage": [
+    "SQLite backup and restore with pinned upstream schema",
+    "Cron argparse parser",
+    "Extracted upstream pause_job and resume_job functions"
+  ],
+  "limitations": [
+    "Full SessionDB was not imported",
+    "Cron storage and clock are fixture adapters",
+    "No scheduler execution or platform delivery"
+  ],
+  "started_at_utc": "2026-11-18T15:48:12.005347+00:00",
+  "platform": "Windows",
+  "python": "3.13.14",
+  "node": "v24.14.0",
+  "model_requests": 0,
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "hermes/examples/check_recovery.py",
+        ".scratch/recovery-labs/hermes-src"
+      ],
+      "exit_code": 0,
+      "stdout": [
+        "SQLite: read-only missing DB refused; restored aurora with 1 message; integrity_check=ok",
+        "CLI parser: cron list --all; cron resume inventory",
+        "cron: paused reason retained; resumed recurring job retained its overdue slot"
+      ],
+      "stderr": []
+    }
+  ],
+  "sha256": {
+    "hermes/examples/check_recovery.py": {
+      "value": "5c5aef9c25f6d2357d43f69de71b90928b2227985868bc5703f315b41983e0e0",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/hermes_state_common.py": {
+      "value": "1e089e97c9440647a91e0c559d9a7691c61290cc72a0c337ccfcd1c39d97b1b7",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/hermes_state_keys.py": {
+      "value": "46a44bcc9a82552c606fc0eaec275aac76bfe3c5523d7793218377d15cccc676",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/cron/jobs.py": {
+      "value": "210d1dd6bd9d82cde2d12fec698d5a7d84a58a96c7618ac06eb2381e7f362c22",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/hermes_cli/subcommands/cron.py": {
+      "value": "9c0e5c49f1073370e0907ab885a571a7780a2b76a8e9a6679e62bad8e0cb9c06",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/hermes_cli/subcommands/_shared.py": {
+      "value": "70a6324a28ff308386a805a60503fb4e3cfe8023f63efe6a33d647e18dedb2ec",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/hermes_cli/__init__.py": {
+      "value": "6a4ab05b8621ec1cd66a5abbe30fa32ed5bddddea95903036da01f0af1af94ce",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/hermes-src/hermes_cli/subcommands/__init__.py": {
+      "value": "8c662d789ba4cb59276dae9875a3578364a2bb4cad00e1746699a1ddf324d5f7",
+      "encoding": "CRLF normalized to LF"
+    }
+  },
+  "passed": true
+}

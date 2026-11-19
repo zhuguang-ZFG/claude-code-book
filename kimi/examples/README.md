@@ -1,5 +1,7 @@
 # 澄明库存：从离线案例到 Kimi 审查插件
 
+故障注入与恢复实验见正文第 7.6、13.7 节。运行命令、版本与本机观察结果见[本册验证记录](../VERIFY.md#2026-11-18-离线故障恢复复核)。
+
 以下前三条命令在书籍仓库根目录运行，只需 Python 标准库：
 
 ```powershell
@@ -19,6 +21,8 @@ python -m unittest discover -s kimi/examples -p "test_*.py" -v
 - `configure_mcp.py`：在练习副本创建项目 MCP 配置；已有配置时拒绝覆盖。
 - `probe_cli.py`：真实 CLI 参数与 ACP 握手，不调用模型。
 - `verify_source.mjs`：编译并调用固定上游解析器与 Hook 执行器。
+- `check_session_recovery.py`：用真实 2.5.2 程序恢复合成会话，再创建分叉。
+- `check-mcp-conflict.mjs`：用固定源码的合并函数观察同名服务覆盖与改名恢复。
 
 ## 跟做
 
@@ -33,3 +37,22 @@ python -m unittest discover -s kimi/examples -p "test_*.py" -v
 真实 CLI 检查：`python kimi/examples/probe_cli.py --output .scratch/kimi-cli-proof.json`。不在 PATH 时加 `--binary`。该脚本仅创建隔离临时数据，不导入用户会话。
 
 源码组件复现命令、依赖与验证范围见[附录 C](../appendix-c.md)。12 项上游组件结果覆盖清单优先级、路径诊断、Agent 字段与 Hook 结果解释；不代表交互安装或完整 Agent 宿主已经测试。
+
+## 会话恢复与 MCP 冲突
+
+会话实验需要 Windows 上的 2.5.2 原生程序和 Python 标准库。先按[第 1 章](../ch01.md)定位程序并核对版本，把下列路径换成其绝对路径；不要加 `-O`，以免禁用断言：
+
+```powershell
+python -B kimi/examples/check_session_recovery.py PATH_TO_KIMI_EXE
+```
+
+源码实验使用 Node.js 24.14.0，无需 npm 依赖。可将固定源码准备到忽略的目录；前两步需要网络和 Git，后两步在本地执行：
+
+```powershell
+git clone --no-checkout https://github.com/MoonshotAI/kimi-code.git .scratch/kimi-source
+git -C .scratch/kimi-source fetch origin 1c142a007c10e881602690def96057c23a2baa12
+git -C .scratch/kimi-source checkout --detach 1c142a007c10e881602690def96057c23a2baa12
+node kimi/examples/check-mcp-conflict.mjs .scratch/kimi-source
+```
+
+本机记录中的 `.scratch/recovery-labs/kimi.exe` 和 `kimi-src` 分别是程序与源码的保存位置，不是仓库自带文件。两个驱动都使用合成数据；会话实验不发送提示，MCP 实验只检查配置合并。

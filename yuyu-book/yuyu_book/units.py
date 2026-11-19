@@ -12,6 +12,7 @@ from .text import FENCE_RE
 
 ZH_PATTERNS = [
     (re.compile(r"^#\s*前言\s*$"), "front", ("", "前言")),
+    (re.compile(r"^#\s*合集导读\s*$"), "front", ("", "合集导读")),
     (re.compile(r"^#\s*第\s*(\d{1,2})\s*章\s*[：:]?\s*(.+)$"), "num", None),
     (re.compile(r"^#\s*附录\s*([A-E])\s*[：:]?\s*(.+)$"), "apx", None),
 ]

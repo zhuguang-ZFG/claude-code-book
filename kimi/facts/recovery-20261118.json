@@ -1,0 +1,64 @@
+{
+  "baseline": "2.5.2",
+  "baseline_commit": "1c142a007c10e881602690def96057c23a2baa12",
+  "coverage": [
+    "Native CLI session listing and fork on synthetic data",
+    "Parent transcript retained and child provenance checked",
+    "Pinned loadMcpServersDetailed function with Git blob identity check"
+  ],
+  "limitations": [
+    "MCP path discovery and JSON reading use fixture adapters",
+    "No interactive session continuation, MCP connection or model request"
+  ],
+  "started_at_utc": "2026-11-18T15:48:12.005754+00:00",
+  "platform": "Windows",
+  "python": "3.13.14",
+  "node": "v24.14.0",
+  "model_requests": 0,
+  "runs": [
+    {
+      "command": [
+        "python",
+        "kimi/examples/check_session_recovery.py",
+        ".scratch/recovery-labs/kimi.exe"
+      ],
+      "exit_code": 0,
+      "stdout": [
+        "Kimi 2.5.2: missing parent restored; fork has its own ID and inherits book-marker"
+      ],
+      "stderr": []
+    },
+    {
+      "command": [
+        "node",
+        "--disable-warning=ExperimentalWarning",
+        "kimi/examples/check-mcp-conflict.mjs",
+        ".scratch/recovery-labs/kimi-src"
+      ],
+      "exit_code": 0,
+      "stdout": [
+        "Kimi MCP: project shadowed rules; renaming kept both commands and their origins"
+      ],
+      "stderr": []
+    }
+  ],
+  "sha256": {
+    "kimi/examples/check_session_recovery.py": {
+      "value": "9abd2ecb2357a51c59c187b76aa060014528e89e8a616cea11d7becacf6a1a99",
+      "encoding": "CRLF normalized to LF"
+    },
+    "kimi/examples/check-mcp-conflict.mjs": {
+      "value": "523c64381a50803e7a80101425e09a9d0b7ac092ac819551f2f4cf20e57d95cb",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/kimi-src/packages/agent-core-v2/src/app/mcpConfig/configLoader.ts": {
+      "value": "ed30b684f8592466b6d485b5048156012bab8ae1b355cda572a1acdb03f35fc3",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/kimi.exe": {
+      "value": "167275798e172bf109ac80b95e41a605f14983454025f121f295856598f4cd38",
+      "encoding": "raw bytes"
+    }
+  },
+  "passed": true
+}

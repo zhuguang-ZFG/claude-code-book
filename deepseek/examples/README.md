@@ -1,6 +1,8 @@
 # Cordis 组件实验与连续审查实例
 
-这些原创示例直接加载 DeepSeek Harness 提交 `fcc0ad462172522aaf5c93a7b2e01f6b9f0b0159` 中的 Cordis TypeScript 源码。`review-observer.mjs` 用七项基础场景解释依赖、资源清理和 waterfall；`review-lab.mjs` 把同一套机制组合成文本审查服务，再用十三项场景检查正常调用和失败路径。它们不需要模型凭据。
+故障注入与恢复实验见正文第 17.11 节。运行命令、版本与本机观察结果见[本册验证记录](../VERIFY.md#2026-11-18-离线故障恢复复核)。
+
+下面两组 Cordis 组件示例直接加载 DeepSeek Harness 提交 `fcc0ad462172522aaf5c93a7b2e01f6b9f0b0159` 中的 Cordis TypeScript 源码。`review-observer.mjs` 用七项基础场景解释依赖、资源清理和 waterfall；`review-lab.mjs` 把同一套机制组合成文本审查服务，再用十三项场景检查正常调用和失败路径。它们不需要模型凭据。
 
 运行环境需要 Node.js 24.9.0 或更新版本、npm、Python 3 和能访问 GitHub 的 `gh`。本次使用 Windows、Node.js 24.14.0、tsx 4.23.13。所有命令在书仓根目录执行：
 
@@ -34,6 +36,17 @@ node --import ./.scratch/deepseek-runtime/node_modules/tsx/dist/loader.mjs deeps
 两组实验都使用 Node 原生断言。只有退出码为 0 且汇总 `passed:true` 才算通过；初始化失败场景可能打印预期错误诊断。`--trace` 额外输出首个正常场景的七条业务事件，输入 `TODO\n校对` 得到两行、七个 code point、`todo:true`。
 
 `createReviewLab(cordis)` 接收调用方的 Cordis 导出，返回 ReviewJournal、ReviewTools、reviewPlugin 和 policy。ReviewTools 是本书业务服务，并非官方 dsh-tools；ReviewJournal 仅在内存保存记录，并非 Session 存储。完整 dsh 宿主、Agent、模型、Web、持久化与平台沙箱没有参与这些实验。
+
+## JSONL 会话恢复
+
+[第 17.11 节](../ch17.md)的新增实验使用 `0.2.2-rc.1` 发布包，准备方式独立于上述 TypeScript 组件实验：
+
+```powershell
+npm.cmd install --prefix .scratch/dsh-resume --ignore-scripts @deepseek-ai/dsh-session-persistence-jsonl@0.2.2-rc.1
+node deepseek/examples/check-session-recovery.mjs .scratch/dsh-resume
+```
+
+安装需要网络；准备完成后，实验可在本地离线运行，数据写入临时目录。驱动把真实 JSONL 插件挂在 Cordis 上，写入并 flush 一条事件，再注入半行记录，检查只读查看保留现场、续写修复和重新挂载后的事件序号。日志不压缩；故障由字节追加模拟，没有启动完整应用或模型。
 
 ## 本地包入口
 

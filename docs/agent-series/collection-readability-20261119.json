@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "recorded_date": "2026-11-19",
+  "scope": "Collection navigation and readability; full HTML, PDF and EPUB rebuilt and verified",
+  "git_head": "2660b097fbd1f3cb71d4d652b2c074c7a91076df",
+  "working_tree_changes_included": true,
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.14",
+    "playwright": "1.61.0",
+    "pymupdf": "1.28.0",
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "required_check": {
+    "command": "python scripts/bookctl.py check --fast",
+    "exit_code": 0,
+    "steps_passed": 9,
+    "general_tests": 332,
+    "builder_tests": 615,
+    "total_tests": 947
+  },
+  "html_build": {
+    "command": "python scripts/bookctl.py build --product collected --lang zh --out-dir .scratch/collection-readability",
+    "exit_code": 0,
+    "volumes": 10,
+    "units": 246,
+    "plates": 333,
+    "glosses": 813,
+    "lead_bands": 182,
+    "keeper_notes": 113
+  },
+  "layout": {
+    "source": "Final complete ten-volume HTML; screen navigation and previously verified print excerpt",
+    "screens": [
+      {
+        "scheme": "light",
+        "viewport": 1440,
+        "width": 1440,
+        "nav": "none",
+        "tables": [
+          {
+            "left": 444,
+            "right": 1276,
+            "width": 830,
+            "scroll": 830,
+            "headerWhiteSpace": "nowrap"
+          },
+          {
+            "left": 444,
+            "right": 1276,
+            "width": 830,
+            "scroll": 830,
+            "headerWhiteSpace": "nowrap"
+          },
+          {
+            "left": 444,
+            "right": 1276,
+            "width": 830,
+            "scroll": 830,
+            "headerWhiteSpace": "nowrap"
+          }
+        ]
+      },
+      {
+        "scheme": "light",
+        "viewport": 390,
+        "width": 390,
+        "nav": "flex",
+        "tables": [
+          {
+            "left": 32,
+            "right": 358,
+            "width": 324,
+            "scroll": 324,
+            "headerWhiteSpace": "normal"
+          },
+          {
+            "left": 32,
+            "right": 358,
+            "width": 324,
+            "scroll": 324,
+            "headerWhiteSpace": "normal"
+          },
+          {
+            "left": 32,
+            "right": 358,
+            "width": 324,
+            "scroll": 324,
+            "headerWhiteSpace": "normal"
+          }
+        ]
+      },
+      {
+        "scheme": "dark",
+        "viewport": 390,
+        "width": 390,
+        "nav": "flex",
+        "tables": [
+          {
+            "left": 32,
+            "right": 358,
+            "width": 324,
+            "scroll": 324,
+            "headerWhiteSpace": "normal"
+          },
+          {
+            "left": 32,
+            "right": 358,
+            "width": 324,
+            "scroll": 324,
+            "headerWhiteSpace": "normal"
+          },
+          {
+            "left": 32,
+            "right": 358,
+            "width": 324,
+            "scroll": 324,
+            "headerWhiteSpace": "normal"
+          }
+        ]
+      }
+    ],
+    "mobile_jump_and_return": true,
+    "print_sample": {
+      "pages": 16,
+      "bookmarks": 5,
+      "toc_rows_stamped": 5,
+      "blank_pages": 0
+    },
+    "guide_tables_fit_without_horizontal_scroll_at_390px": true,
+    "final_html_viewport_check": true
+  },
+  "sources": [
+    {
+      "path": "合集导读.md",
+      "bytes": 7106,
+      "sha256": "3c66da833a8597b0816bfa8ba16331dcf432897af15c7159e2c8775b35b4bd91"
+    },
+    {
+      "path": "yuyu-book/manifest-collected.json",
+      "bytes": 5541,
+      "sha256": "b99dcbc299f7f26da86e9dedcaaa0d073025b843c1a3806923fc0a175aacf3b3"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/app.py",
+      "bytes": 37928,
+      "sha256": "5e9b96f97478223cffbd9fb238f5ef788bf34259476d94944812ec7dbf3a8283"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/collected.py",
+      "bytes": 3859,
+      "sha256": "8549ccccab291ab9ef2a80a652fd56a27b8f6fe974c514dcc23c6faf853f2ca0"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/style_screen.py",
+      "bytes": 38205,
+      "sha256": "ac593ef8b7244bb2020ce1bc3e9698e4af013e58a756d3b5d2f00f487ff94444"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/labels.py",
+      "bytes": 8885,
+      "sha256": "20624ddee7e008da165026cd8c455f17e05d41c5bd33aa5d88aa89882ff17e52"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/units.py",
+      "bytes": 10908,
+      "sha256": "e344873eb090febb363cc3b860a8f7fd14f1db0c640414dde9260d0885b8fc01"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": ".scratch/collection-readability/yuyu-collected-zh.html",
+      "bytes": 74615395,
+      "sha256": "1f31c494bbcc29717620a4eb3d1676e4c8667ff79593d37b2187765161993a0e"
+    },
+    {
+      "path": ".scratch/collection-readability/navigation-print-sample.pdf",
+      "bytes": 2118483,
+      "sha256": "12bb3afc29d1d1115462817252331c2c2d918143659ef12de1c5158e58d4a7f3"
+    },
+    {
+      "path": ".scratch/collection-readability/layout-report.json",
+      "bytes": 2151,
+      "sha256": "c096ea51575959c0d9a96325f0753539b3b50b8714f9ee11388720a34d07a589"
+    },
+    {
+      "path": ".scratch/collection-readability/check-fast.log",
+      "bytes": 4844,
+      "sha256": "fc4ecd8444eab84fbc83e4e844aacd6f5ce08d0c670588a35649d0dc32c407f0"
+    },
+    {
+      "path": ".scratch/collection-readability/check_layout.py",
+      "bytes": 4977,
+      "sha256": "f22f00c231637241f414cf4b41217880a201cd7b2f29c47c2a6e4c26cfab0c35"
+    },
+    {
+      "path": ".scratch/collection-readability/guide-1440-light.png",
+      "bytes": 331032,
+      "sha256": "2821f64842ac38d579268e059efbf35189aa3aa09eeb435193cb960631f6dd48"
+    },
+    {
+      "path": ".scratch/collection-readability/guide-390-light.png",
+      "bytes": 152162,
+      "sha256": "34c56720e16d853bcdd19a6e8a903a0043f7c29c5fdb3cf3ba5a182cc7f18053"
+    },
+    {
+      "path": ".scratch/collection-readability/guide-390-dark.png",
+      "bytes": 115997,
+      "sha256": "ce92f0e574496387a9d594b1cc23722f9136ffbd7974824c5365ef2a8d4ac32a"
+    },
+    {
+      "path": ".scratch/collection-readability/guide-failures-mobile.png",
+      "bytes": 134424,
+      "sha256": "106db96c6b5d1f915df431b703189b66f3f9f2b740b0bdd9b65cbdefebcc6ca6"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/yuyu-collected-zh.html",
+      "bytes": 74616654,
+      "sha256": "5b73daac9cad79d06ee00b24ff35aaa3d735a84fe8512d0f759007cbd3845765"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/yuyu-collected-zh.pdf",
+      "bytes": 97001222,
+      "sha256": "f0d4673caf74d714ed59c38950730f671678edce94140e9a4fa9509e1b835b93"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/yuyu-collected-zh.epub",
+      "bytes": 52918787,
+      "sha256": "23a3067ab797af42bc9970ad1076565fd966446e802eaff000effcd0e8d24507"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/verification.json",
+      "bytes": 1804,
+      "sha256": "61d9a84751f2a227501aace092a3d434e6a7d96e4edcbc1326443bb0bfcc01fb"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/build-report.json",
+      "bytes": 823,
+      "sha256": "d79443cd95dd1127202586e21152b19cae7b13adfd0444f99a5caed887edccb1"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/artifact-manifest.json",
+      "bytes": 9753,
+      "sha256": "d3b75a6e51567db64850dbaf9494e7be518bfb9be2050089628babbaaded9621"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/full-build.log",
+      "bytes": 983,
+      "sha256": "c2e02df67068cbbbf690c7f2e280ad792bfb7fc72115600e70ddab32574812e6"
+    },
+    {
+      "path": ".scratch/collection-complete-20261119/SHA256SUMS",
+      "bytes": 269,
+      "sha256": "6fe22617e6229d1140082e3be09717867d7fc2f0977dc5e3ba635bc84a0b9116"
+    },
+    {
+      "path": ".scratch/collection-readability/check_full_artifacts.py",
+      "bytes": 7551,
+      "sha256": "edce0d21493a4a408d2916f943264ad3973ccac0239751783f8ccaeb7bfa064c"
+    },
+    {
+      "path": ".scratch/collection-readability/final-guide-1440-light.png",
+      "bytes": 331032,
+      "sha256": "2821f64842ac38d579268e059efbf35189aa3aa09eeb435193cb960631f6dd48"
+    },
+    {
+      "path": ".scratch/collection-readability/final-guide-390-light.png",
+      "bytes": 152162,
+      "sha256": "34c56720e16d853bcdd19a6e8a903a0043f7c29c5fdb3cf3ba5a182cc7f18053"
+    },
+    {
+      "path": ".scratch/collection-readability/final-guide-390-dark.png",
+      "bytes": 115997,
+      "sha256": "ce92f0e574496387a9d594b1cc23722f9136ffbd7974824c5365ef2a8d4ac32a"
+    }
+  ],
+  "artifact_availability": "Local scratch files; not shipped in the source repository",
+  "limits": [
+    "PDF page counts depend on installed fonts; these results use Windows Microsoft YaHei.",
+    "The full PDF was scanned for blank pages; its contents page numbers and bookmarks were checked. Visual review sampled pages 3, 23 and 1536.",
+    "EPUB ZIP, XML, OPF, spine, resources, source hash and internal references were checked; EPUBCheck and device-specific reading applications were not exercised.",
+    "The recovery experiment scopes and product version baselines remain as recorded in each volume.",
+    "No real-model requests, login authorization or platform delivery were performed."
+  ],
+  "full_build": {
+    "command": "python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out-dir .scratch/collection-complete-20261119",
+    "exit_code": 0,
+    "elapsed_seconds": 1953.64,
+    "browser": "157.0.4341.60",
+    "font": {
+      "path": "C:\\Windows\\Fonts\\msyh.ttc",
+      "sha256": "d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f"
+    },
+    "index_measurement_retry": true,
+    "pdf_index_folios": 87,
+    "epub_rasterized_svg": 502,
+    "pdf_validation": {
+      "pages": 1925,
+      "bookmarks": 322,
+      "bookmark_destinations_valid": true,
+      "contents_rows_with_verified_printed_page_numbers": 322,
+      "volume_title_page_numbers_verified": 10,
+      "guide_page": 3,
+      "volume_pages": {
+        "vol1": 24,
+        "vol2": 528,
+        "vol3": 955,
+        "vol4": 1131,
+        "vol5": 1278,
+        "vol6": 1406,
+        "vol7": 1536,
+        "vol8": 1678,
+        "vol9": 1758,
+        "vol10": 1850
+      },
+      "blank_pages": 0,
+      "blank_page_check": "Full-page scan completed by pdf.build_pdf before saving the final artifact"
+    },
+    "epub_validation": {
+      "zip_crc_valid": true,
+      "xml_documents_valid": 4,
+      "manifest_items": 607,
+      "images": 604,
+      "bundled_image_references": 716,
+      "navigation_entries": 2426,
+      "checked_internal_links": 6670,
+      "broken_internal_links": 0,
+      "duplicate_ids": 0,
+      "guide_and_ten_volumes_present": true,
+      "source_html_sha256_matches": true,
+      "external_image_resources": 0,
+      "scripts": 0,
+      "scope": "ZIP, XML, OPF, spine, resources and link integrity; no EPUBCheck or device-reader certification"
+    },
+    "visual_sample_pages": [
+      3,
+      23,
+      1536
+    ],
+    "visual_observations": [
+      "Guide and volume-seven opening are readable.",
+      "The last contents page contains only one sources-and-license entry; further pagination compaction remains possible."
+    ]
+  }
+}

@@ -138,7 +138,8 @@ def assemble_book(lang: str, manifest: dict, sources: dict, *,
                   notes: dict | None = None,
                   plain_layer: bool = True,
                   matter: bool = True,
-                  key: str = "") -> Assembly:
+                  key: str = "",
+                  collection_targets: dict[str, str] | None = None) -> Assembly:
     """Render one manifest into body fragments.
 
     ``matter=False`` drops the cover, imprint, revisions, how-to-read, contents
@@ -158,7 +159,8 @@ def assemble_book(lang: str, manifest: dict, sources: dict, *,
         u.part = part  # type: ignore[attr-defined]
         units.append(u)
 
-    local_targets = {u.path: u.id for u in units}
+    local_targets = dict(collection_targets or {})
+    local_targets.update({u.path: u.id for u in units})
     for u in units:
         alias = re.search(r"(?:^|-)(ch\d{2}|apx[a-e])$", u.id)
         if alias:
@@ -422,7 +424,7 @@ def _stamp_volume(body: list[str], vol_no: str) -> list[str]:
     """Put the bound volume in front of every unit's eyebrow.
 
     Each volume restarts its own part numbers and chapter numbers, so in the
-    omnibus "第一部分 基础篇 · 第 1 章" appears nine times. The eyebrow is the
+    omnibus "第一部分 基础篇 · 第 1 章" can appear in several volumes. The eyebrow is the
     only running label the reader passes on every page, which makes it the one
     place where the volume has to be named.
     """
@@ -439,6 +441,9 @@ def build_collected(lang: str, spec: dict, volumes, *,
     Each volume keeps its own front matter, part dividers, apparatus and
     numbering; the collection adds the volume level and one contents page that
     opens on volumes rather than chapters."""
+    from .collected import local_targets
+
+    targets = local_targets(spec, volumes, lang)
     body: list[str] = []
     body.append(pages.cover(spec, lang))
     body.append(pages.imprint(spec, lang))
@@ -455,12 +460,26 @@ def build_collected(lang: str, spec: dict, volumes, *,
     n_diagrams = 0
     svgs = 0
     front_anchor = ""
+    guide_def = spec.get("guide")
+    if guide_def:
+        guide = load_unit(guide_def, "front", lang, REPO_ROOT)
+        guide_payload = render.render_unit(
+            guide, {}, diagrams={}, autolink=False, local_targets=targets)
+        body.append(_article(guide_payload, {}, {}, lang, show_lead=False))
+        units_all.append(guide)
+        payloads_all.append(guide_payload)
+        toc_entries.append({"kind": "row", "anchor": guide.id, "no": "",
+                            "title": guide.title})
+        outline.append((1, guide.title, guide.id))
+        rail.append(f'<a class="rail-map" href="#{guide.id}">'
+                    f'{pages.esc(guide.title)}</a>')
     for n, vol in enumerate(volumes, 1):
         asm = assemble_book(lang, vol.manifest, vol.sources, mode=mode,
                             browser=browser, autolink=autolink,
                             glosses=vol.glosses, paths=vol.paths,
                             notes=vol.notes, plain_layer=plain_layer,
-                            matter=False, key=vol.id + "-")
+                            matter=False, key=vol.id + "-",
+                            collection_targets=targets)
         if not front_anchor:
             front_anchor = vol.manifest["front"]["id"]
         for row in vol.manifest["parts"]:
@@ -484,18 +503,17 @@ def build_collected(lang: str, spec: dict, volumes, *,
         rail.append(f'<details class="rail-vol"{" open" if n == 1 else ""}>')
         rail.append(f'<summary class="rail-part">'
                     f'{pages.esc(vol.label(lang))}</summary>')
-        skip = {vol.id + name for name in
-                ("principles", "keeper-notes", "sources", "subject-index")}
+        rail.append(f'<a href="#{vol.id}">{pages.ui("volume_start", lang)}</a>')
+        # Keep each volume's sources and index reachable in every navigation
+        # surface, with the same prefixed anchors as its body.
         for entry in asm.toc_entries:
-            if entry.get("anchor") in skip:
-                continue
             toc_entries.append(entry)
             if entry["kind"] in ("part", "row"):
-                rail.append(f'<a href="#{entry["anchor"]}">'
-                            f'{pages.esc(entry["title"])}</a>')
+                cls = ' class="rail-part"' if entry["kind"] == "part" else ""
+                label = " · ".join(x for x in (entry.get("no"), entry["title"]) if x)
+                rail.append(f'<a{cls} href="#{entry["anchor"]}">'
+                            f'{pages.esc(label)}</a>')
         for level, label, anchor in asm.outline:
-            if anchor in skip:
-                continue
             outline.append((level + 1, label, anchor))
             head_labels.append((anchor, f'{vol.no[lang]} · {label}'))
 
@@ -523,7 +541,12 @@ def build_collected(lang: str, spec: dict, volumes, *,
                 f'{pages.esc(spec["title"][lang])} · v'
                 f'{pages.esc(spec["version"])} · {len(volumes)} 卷 · '
                 f'{len(units_all)} units · {n_diagrams} {foot}</footer>')
-    body.insert(2, pages.toc_html(toc_entries, lang))
+    body.insert(3 if guide_def else 2, pages.toc_html(toc_entries, lang))
+    if guide_def:
+        body.insert(0, '<nav class="collection-jumps no-print" '
+                    f'aria-label="{pages.ui("collection_navigation", lang)}">'
+                    f'<a href="#{guide.id}">{pages.esc(guide.title)}</a>'
+                    f'<a href="#toc">{pages.ui("toc", lang)}</a></nav>')
 
     body_html = render.soften_long_names("\n".join(body))
     html_text = page(lang, f'{spec["title"][lang]} — {spec["author"]}',
@@ -556,7 +579,7 @@ def build_collected(lang: str, spec: dict, volumes, *,
         pmeta = PrintManifest(
             outline=tuple(OutlineEntry(*entry) for entry in outline),
             toc_rows=tuple(e["anchor"] for e in toc_entries
-                           if e["kind"] in ("row", "part")),
+                           if e["kind"] in ("row", "part", "volume")),
             index_rows=tuple(IndexRow(term, anchor)
                              for term, anchor in index_rows),
             toc_title=pages.ui("toc", lang),

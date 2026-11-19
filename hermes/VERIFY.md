@@ -55,3 +55,18 @@ v0.2.0 已在本机重建：PDF 128 页、29 个书签；EPUBCheck 5.4.0 零错�
 ## 0.2.2 跟做路线与索引
 
 正文补清执行目录、实例状态和首次阅读入口；原有代码与实验范围保持。新版 PDF 为 130 页，EPUBCheck 5.4.0 零错误、零警告。索引完成窄屏、深色和打印布局检查；本地文件摘要见[当前记录](../docs/agent-series/local-publication-20261110-reader-path.json)，前述构建记录为历史版本。
+
+## 2026-11-18 离线故障恢复复核
+
+SQLite、命令行解析和 Cron 函数的原始输出与输入摘要见[2026-11-18 记录](facts/recovery-20261118.json)。
+
+Windows，Node.js 24.14.0／Python 3.13.14。本次运行使用 Hermes v0.23.0 固定源码的 SQLite 建表语句、Cron 命令行解析器和暂停／恢复函数。案例见第 3.11、11.11 节。
+
+```powershell
+python -B hermes/examples/check_recovery.py ../hermes-agent-reference
+```
+
+- [x] 缺少数据库时只读打开失败，恢复快照后找到 `aurora` 的一条原消息，完整性检查为 `ok`。
+- [x] 固定版解析器接受 `cron list --all` 与 `cron resume inventory`。暂停原因可读，恢复周期任务后保留已过的计划时刻。
+
+参数指向附录 A 的检出目录。实验用真实 SQLite 和固定时钟，任务读写由临时 JSON 适配。完整 SessionDB 续聊、调度器执行和平台投递仍待单独验证。

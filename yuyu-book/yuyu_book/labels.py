@@ -13,6 +13,8 @@ _LABELS = {
     "revisions": {"zh": "版本与修订", "en": "Revision history"},
     "how": {"zh": "阅读路线", "en": "How to read"},
     "toc": {"zh": "目录", "en": "Contents"},
+    "volume_start": {"zh": "卷首导读", "en": "Volume overview"},
+    "collection_navigation": {"zh": "合集导航", "en": "Collection navigation"},
     "volume_count": {"zh": "{parts} 篇 · {chapters} 章",
                      "en": "{parts} parts · {chapters} chapters"},
     "author": {"zh": "著", "en": "Author"},

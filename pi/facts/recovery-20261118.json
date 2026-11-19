@@ -1,0 +1,82 @@
+{
+  "baseline": "1.5.0",
+  "baseline_commit": "f9a26365568127461c47a07a37dcb42c140a3ac5",
+  "coverage": [
+    "SessionManager reopen and continueRecent",
+    "extension loader rejection and recovery",
+    "Git status tool error, cancellation and output checks"
+  ],
+  "limitations": [
+    "Synthetic session input",
+    "No TUI session selection or model requests"
+  ],
+  "started_at_utc": "2026-11-18T15:48:12.004579+00:00",
+  "platform": "Windows",
+  "python": "3.13.14",
+  "node": "v24.14.0",
+  "model_requests": 0,
+  "runs": [
+    {
+      "command": [
+        "node",
+        "pi/examples/check-session-recovery.mjs",
+        ".scratch/recovery-labs/pi/node_modules/@earendil-works/pi-coding-agent"
+      ],
+      "exit_code": 0,
+      "stdout": [
+        "Pi 1.5.0: continued same session; invalid header rejected; restored 2 linked entries",
+        "Pi loader: rejected invalid factory; restored extension registered book_git_status"
+      ],
+      "stderr": []
+    },
+    {
+      "command": [
+        "node",
+        "pi/examples/check-git-status.mjs",
+        ".scratch/recovery-labs/pi/node_modules/@earendil-works/pi-coding-agent"
+      ],
+      "exit_code": 0,
+      "stdout": [
+        "ok 1 - clean tracked files have an explicitly limited description",
+        "ok 2 - untracked files are not called tracked modifications",
+        "ok 3 - modified tracked files reach model-facing content",
+        "ok 4 - non-repository errors reject instead of returning clean status",
+        "ok 5 - pre-aborted execution rejects",
+        "ok 6 - large status output is marked as truncated",
+        "PASS: 6 offline tool checks"
+      ],
+      "stderr": []
+    }
+  ],
+  "sha256": {
+    "pi/examples/check-session-recovery.mjs": {
+      "value": "3a0bf9ddbd9e75ee7b03c1f259d0784965e01e5e34db5e7e7a205983f9172d86",
+      "encoding": "CRLF normalized to LF"
+    },
+    "pi/examples/check-git-status.mjs": {
+      "value": "793546874ac2008c73b7176527ccaaf4ac85cc783db7b3525a424019db60216e",
+      "encoding": "CRLF normalized to LF"
+    },
+    "pi/examples/git-status.ts": {
+      "value": "1b49c24196a0cfa4c4d7a8243381600c031df64b32760337ebe14a51451d5558",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/pi/node_modules/@earendil-works/pi-coding-agent/dist/core/session-manager.js": {
+      "value": "7e24f1c857c9f0e7be6485e9be12ba528fad9eea3423abf2c96fc27585a88b61",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/pi/node_modules/@earendil-works/pi-coding-agent/dist/core/extensions/loader.js": {
+      "value": "82ca38a32024bdb2fbbe96120b8cfcdd67de037f5764018d42cf8ca7172cf104",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/pi/node_modules/@earendil-works/pi-coding-agent/dist/core/exec.js": {
+      "value": "b9858de5bf26a6fcf90039218f831de3ebf8bfdf4fc027d3c56be190fb0ae1e7",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/pi/package-lock.json": {
+      "value": "b66dda78a458d74e2ca771fd1aef4c2616b6063a6e88f0dfe0b0e71d3d4da258",
+      "encoding": "CRLF normalized to LF"
+    }
+  },
+  "passed": true
+}

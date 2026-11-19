@@ -36,3 +36,19 @@
 - 第 16 章 UTF-8 保存方式已在 PowerShell 5.1 实测，保留中文与退出码，见 [记录](facts/powershell-utf8.json)。
 
 产物摘要、书稿摘要与版面检查见 [publication-2026-11-10.json](facts/publication-2026-11-10.json)。本次为本地验收，未将远程 GitHub Actions 标为通过。
+
+## 2026-11-18 离线故障恢复复核
+
+会话恢复、分叉与配置冲突的原始输出、程序和源码摘要见[2026-11-18 记录](facts/recovery-20261118.json)。
+
+Windows，Node.js 24.14.0／Python 3.13.14。本次运行使用 Kimi Code CLI 2.5.2 及固定提交的 MCP 配置合并函数。案例见第 7.6、13.7 节。
+
+```powershell
+python kimi/examples/check_session_recovery.py .scratch/recovery-labs/kimi.exe
+node kimi/examples/check-mcp-conflict.mjs .scratch/recovery-labs/kimi-src
+```
+
+- [x] 元数据缺失时列表不含父 ID。恢复后按 ID 分叉，子会话带原消息标记和父来源，父日志逐字节不变。
+- [x] 同名声明选中项目层，重命名后两个服务的命令与来源均可区分。函数源码经 Git blob 身份校验，配置读取与路径解析由适配器提供。
+
+前一条参数是 2.5.2 发布程序，后一条参数是本册固定提交的源码目录。会话试验使用合成输入与真实 CLI，MCP 试验检查配置合并。

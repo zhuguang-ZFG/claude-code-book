@@ -94,5 +94,29 @@ class InkedPlateContracts(unittest.TestCase):
         self.assertEqual(values["solid"]["animation"], "none")
 
 
+class NarrowChapterContracts(unittest.TestCase):
+    def test_long_heading_keeps_the_emblem_inside_the_mobile_column(self):
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page(viewport={"width": 390, "height": 844})
+                page.set_content('<html><head><style>' + CSS + '</style></head>'
+                                 '<body class="lang-zh collected"><main class="sheet">'
+                                 '<article class="chapter"><header class="chapter-head">'
+                                 '<div class="ch-head-row"><span class="ch-seal">01</span>'
+                                 '<h1>AbortController 与取消</h1>'
+                                 '<span class="ch-emblem"></span></div></header>'
+                                 '</article></main></body></html>')
+                sizes = page.evaluate("""() => ({
+                    column: document.querySelector('article').getBoundingClientRect().right,
+                    emblem: document.querySelector('.ch-emblem').getBoundingClientRect().right,
+                    width: document.documentElement.scrollWidth
+                })""")
+                self.assertLessEqual(sizes["emblem"], sizes["column"] + 1)
+                self.assertLessEqual(sizes["width"], 390)
+            finally:
+                browser.close()
+
+
 if __name__ == "__main__":
     unittest.main()

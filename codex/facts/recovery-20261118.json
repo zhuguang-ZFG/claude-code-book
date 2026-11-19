@@ -1,0 +1,78 @@
+{
+  "baseline": "0.167.0",
+  "baseline_commit": "086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a",
+  "coverage": [
+    "Native Windows sandbox initialization failure 183 and successful retry",
+    "Real execpolicy prompt decision",
+    "CLI-generated approval and setup schemas",
+    "Direct Hook subprocess",
+    "CLI MCP configuration and direct stdio transport"
+  ],
+  "limitations": [
+    "Approval responses are schema fixtures",
+    "No interactive approval UI",
+    "No host-triggered Hook or model-driven MCP invocation"
+  ],
+  "recorded_at_utc": "2026-11-18T15:49:43.123601+00:00",
+  "platform": "Windows",
+  "python": "3.13.14",
+  "model_requests": 0,
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "codex/examples/check_windows_recovery.py",
+        ".scratch/recovery-labs/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe"
+      ],
+      "launch": "direct PowerShell invocation",
+      "exit_code": 0,
+      "stdout": [
+        "sandbox: setup path collision (183); same command after recovery printed BOOK_READY",
+        "approval: setup notifications and accept/decline replies validated against CLI schemas",
+        "hook: invalid input returned 1 on stderr; valid input returned structured JSON",
+        "mcp: configuration readable in both cases; corrected stdio command listed get_rule"
+      ],
+      "stderr": []
+    }
+  ],
+  "additional_observation": {
+    "launch": "Python batch recorder launched the example as another subprocess",
+    "phase": "sandbox launch after restoring the .sandbox directory",
+    "exit_code": 1,
+    "error": "CreateRestrictedToken failed: 87",
+    "recheck": "Two direct PowerShell invocations of the same driver passed",
+    "root_cause": "undetermined"
+  },
+  "sha256": {
+    "codex/examples/check_windows_recovery.py": {
+      "value": "acb65d9092cd76efa08aa2a733b07e1a09764b4e4196d9dc38cd92da56f85a66",
+      "encoding": "CRLF normalized to LF"
+    },
+    "codex/examples/hook_guard.py": {
+      "value": "02c479576b89732e95272bf8ef64ad6559933758f42af05a738bdfcf6a8049be",
+      "encoding": "CRLF normalized to LF"
+    },
+    "codex/examples/review.rules": {
+      "value": "392861f82bc9c70c78d49aac6fc1b4a23a9940bfbece2eedf01d574f44aa890b",
+      "encoding": "CRLF normalized to LF"
+    },
+    "codex/examples/fixtures/hook-read.json": {
+      "value": "ce8ff73f3439d70f87293480dc8770910ea4981dac7cc74673b441e67955db05",
+      "encoding": "CRLF normalized to LF"
+    },
+    "codex/examples/fixtures/app-server-requests.json": {
+      "value": "fa037b94994c75369097b3d9bf715a9f4a779feb2081ab065603c17f1946a423",
+      "encoding": "CRLF normalized to LF"
+    },
+    "kimi/examples/review-plugin/rules_server.py": {
+      "value": "704a8309f6814e4078fcaabfa0ef13c6daca679df22cdf19dbdc2af5ca0f1cb9",
+      "encoding": "CRLF normalized to LF"
+    },
+    ".scratch/recovery-labs/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe": {
+      "value": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70",
+      "encoding": "raw bytes"
+    }
+  },
+  "passed": true
+}

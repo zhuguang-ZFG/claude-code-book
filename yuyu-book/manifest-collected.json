@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "product": "collected",
-  "version": "0.1.0",
-  "date": "2026-11-15",
+  "version": "0.1.1",
+  "date": "2026-11-19",
   "author": "LinTsinghua",
   "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
   "license": {
@@ -25,6 +25,13 @@
     "zh"
   ],
   "output_prefix": "yuyu-collected",
+  "notice": {
+    "zh": "本合集为独立编写的技术读物，与所讨论产品及其维护者无隶属关系。各卷分别保留产品版本、来源和实验范围；书稿版本号不表示工具已经升级。上游文档、组件实验、CLI 实跑与完整模型任务的证据应分别阅读。书籍许可不覆盖第三方源码与素材。"
+  },
+  "guide": {
+    "id": "collection-guide",
+    "zh": "合集导读.md"
+  },
   "revisions_registry": "",
   "subject_index_registry": "",
   "volumes": [
@@ -39,7 +46,7 @@
       "manifest": "manifest.json",
       "sources": "sources.json",
       "reading": {
-        "zh": "总纲：工具、权限、上下文、钩子、协作、MCP、成本这几件事在这里第一次定义，其余八卷按各自的实现回答同一批问题。"
+        "zh": "先理解对话循环、工具、权限与上下文。其余各卷围绕具体实现或实践任务展开，遇到共通问题时可回本卷查阅。"
       }
     },
     {
@@ -53,7 +60,7 @@
       "manifest": "manifest-omp.json",
       "sources": "sources-omp.json",
       "reading": {
-        "zh": "自带模型层入门（第 2 章）：token、上下文窗口、推理档位；先补这台机器，再回卷一看构件。"
+        "zh": "第 2 章先解释 token、上下文窗口、工具调用和推理强度，再把这些概念放回 Omp 的配置与运行过程。"
       }
     },
     {
@@ -67,7 +74,7 @@
       "manifest": "manifest-pi.json",
       "sources": "sources-pi.json",
       "reading": {
-        "zh": "入口是「砍掉了什么」：同一层边界在极简实现里还剩几条，适合与卷一逐节对照。"
+        "zh": "从核心循环与扩展接口理解 Pi 的取舍。第 12.8 节可先复跑会话恢复与扩展加载，再读源码。"
       }
     },
     {
@@ -81,7 +88,7 @@
       "manifest": "manifest-opencode.json",
       "sources": "sources-opencode.json",
       "reading": {
-        "zh": "沿一次任务追到客户端、服务、工具、权限与插件生命周期；与卷二对照，能分出配置项和实际请求的差别。"
+        "zh": "沿一次任务追踪客户端、服务、工具、权限与插件。先确认项目身份和配置来源，再检查实际请求。"
       }
     },
     {
@@ -95,7 +102,7 @@
       "manifest": "manifest-deepseek.json",
       "sources": "sources-deepseek.json",
       "reading": {
-        "zh": "插件化运行时：读代码之前先做 Cordis 的依赖等待、失败与清理实验，再按生命周期顺序看实现。"
+        "zh": "先做 Cordis 的依赖等待、失败与清理实验，再读插件生命周期。第 17.11 节补上持久化日志的恢复。"
       }
     },
     {
@@ -109,7 +116,7 @@
       "manifest": "manifest-hermes.json",
       "sources": "sources-hermes.json",
       "reading": {
-        "zh": "记忆、技能与持续任务：卷一第 6 章的长期记忆，在这里变成可操作的资料库、修订与恢复流程。"
+        "zh": "从记忆组件走到资料库、技能和持续任务。第 3.11、11.11 节分别检查数据库恢复与任务暂停状态。"
       }
     },
     {
@@ -123,7 +130,7 @@
       "manifest": "manifest-codex.json",
       "sources": "sources-codex.json",
       "reading": {
-        "zh": "执行边界最严的一卷：审批、沙箱、JSONL；读完回卷一第 4 章的权限管线对一遍。"
+        "zh": "分清规则、审批、沙箱与执行记录各管什么。第 8.10 节从 Windows 沙箱启动错误追到 Hook 和 MCP 进程。"
       }
     },
     {
@@ -137,7 +144,7 @@
       "manifest": "manifest-kimi.json",
       "sources": "sources-kimi.json",
       "reading": {
-        "zh": "把 Skill、自定义 Agent、Hook、MCP、ACP 拼成一条交付流水；与卷七的失败恢复并读，两种实现互相印证。"
+        "zh": "用库存审查项目连接 Skill、自定义 Agent、Hook、MCP 与 ACP；再用会话分叉和配置冲突案例检查恢复结果。"
       }
     },
     {
@@ -151,7 +158,7 @@
       "manifest": "manifest-prompt.json",
       "sources": "sources-prompt.json",
       "reading": {
-        "zh": "提示词与任务构造：卷一没有这一域，当补章读；练习在青禾工作坊里做。"
+        "zh": "在青禾工作坊中练习任务要求、材料、示例与验收。准备让工具动手前，可以先用本卷把交付条件写清楚。"
       }
     },
     {
@@ -165,7 +172,7 @@
       "manifest": "manifest-vibe.json",
       "sources": "sources-vibe.json",
       "reading": {
-        "zh": "从一句话到可验收原型：卷九把任务写清楚，这卷把它跑成能交接的软件。"
+        "zh": "用旧书市集案例完成原型、检查、回退和交接。先读卷九明确任务，再逐步增加可运行的功能。"
       }
     }
   ]

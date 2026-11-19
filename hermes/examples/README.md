@@ -1,5 +1,7 @@
 # Hermes 书中实验
 
+故障注入与恢复实验见正文第 3.11、11.11 节。运行命令、版本与本机观察结果见[本册验证记录](../VERIFY.md#2026-11-18-离线故障恢复复核)。
+
 这些示例不需要模型凭据，也不向外发送请求。`check_memory_components.py` 运行固定版本的真实组件；`book-inventory` 是本书原创插件，离线测试不启动 Hermes 宿主。
 
 ## 记忆组件
@@ -13,6 +15,18 @@ python hermes/examples/check_memory_components.py --upstream ../hermes-agent-ref
 本次采用 `--without-yaml`，技能元数据只验证上游的简单降级解析。装齐上游依赖后可去掉该选项，单独验证正常 YAML 路径。脚本绕过完整包初始化，并为 `tools.memory_tool` 提供目录与锁入口；目标校验函数从原源码提取后原样执行。详情见[验证记录](../VERIFY.md)和[附录 C](../appendix-c.md)。
 
 输出写入本仓库 `.scratch/agent-series/hermes-memory-*`。不要把这个临时 profile 改成日常账户数据目录。报告给出上游文件哈希、测试预算、解释器与逐项结果。
+
+## 会话快照与定时任务恢复
+
+沿用上文的固定源码目录，使用 Python 标准库运行：
+
+```powershell
+python -B hermes/examples/check_recovery.py ../hermes-agent-reference
+```
+
+最后一个参数替换为实际检出目录。驱动先核对被测文件的 Git blob，再用上游建表 SQL 创建临时 SQLite 数据库，检查移走文件、只读拒绝和快照恢复。随后导入真实 Cron 参数解析器，提取固定源码的暂停／恢复函数执行；任务存储与时钟使用实验适配器。不要给 Python 加 `-O`，以免禁用断言。
+
+这项实验覆盖存储、参数和任务状态，不运行完整 SessionDB、调度器或平台投递。逐项结果见[验证记录](../VERIFY.md#2026-11-18-离线故障恢复复核)。
 
 ## 资料清单插件
 

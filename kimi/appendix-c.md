@@ -11,8 +11,10 @@
 | 原创组件 | Hook 子进程、MCP stdio 往返与库存性质检查 | `examples/test_workshop.py` |
 | 上游组件 | 编译固定解析器和 Hook 执行器，运行 12 个场景 | `facts/source-probes.json` |
 | 发布 CLI | 2.5.2 参数核对、ACP initialize、未知方法错误 | `facts/cli-2.5.2.json` |
+| 发布 CLI | 找回合成父会话，再分叉并核对两份日志 | 第 7.6 节、`examples/check_session_recovery.py` |
+| 源码组件 | 项目同名服务覆盖用户声明，改名后两者都能定位 | 第 13.7 节、`examples/check-mcp-conflict.mjs` |
 
-上游组件实验读取原始 TypeScript 文件，由 esbuild 编译后调用，没有用手写解析器替代。Hook 实验使用本地进程适配器启动子进程，验证执行器对结果的解释。
+此前的十二项上游组件实验读取原始 TypeScript 文件，由 esbuild 编译后调用，没有用手写解析器替代。Hook 实验使用本地进程适配器启动子进程，验证执行器对结果的解释。新增 MCP 冲突实验由 Node 去除类型标注后执行固定源码中的合并函数，路径与读取入口使用实验适配器。
 
 本机组件探针运行于 Node `24.14.0`，编译器为 esbuild `0.28.2`。上游完整工程要求 Node 至少 `24.15.0`，因此本结果仅代表这几个选定组件的独立实验，不作为完整工程受支持环境的证明。
 

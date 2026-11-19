@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 from . import plain
 from .config import load_configs
-from .core import BuildError
+from .core import BuildError, unit_stream
 
 
 @dataclass
@@ -52,16 +52,24 @@ def load_collection(spec: dict) -> list[Volume]:
     if not volumes:
         raise BuildError("collected: the manifest declares no volumes")
     seen_volumes: set[str] = set()
-    seen_anchors: dict[str, str] = {}
+    seen_anchors: dict[str, str] = {
+        anchor: "collection" for anchor in ("cover", "imprint", "toc")}
+    guide = spec.get("guide")
+    if guide:
+        if guide["id"] in seen_anchors:
+            raise BuildError(f"collected: guide id {guide['id']!r} is reserved")
+        seen_anchors[guide["id"]] = "collection guide"
     for volume in volumes:
         if volume.id in seen_volumes:
             raise BuildError(f"collected: duplicate volume id {volume.id!r}")
         seen_volumes.add(volume.id)
         manifest = volume.manifest
-        anchors = [manifest["front"]["id"]]
+        anchors = [volume.id, manifest["front"]["id"]]
         anchors += [u["id"] for part in manifest["parts"] for u in part["units"]]
         anchors += [p["id"] for p in manifest["parts"]]
         anchors += [a["id"] for a in manifest["appendices"]]
+        anchors += [volume.id + "-" + name for name in
+                    ("sources", "subject-index", "principles", "keeper-notes")]
         for anchor in anchors:
             other = seen_anchors.get(anchor)
             if other is not None:
@@ -70,3 +78,13 @@ def load_collection(spec: dict) -> list[Volume]:
                     f"and {volume.id!r} — two volumes would share a page")
             seen_anchors[anchor] = volume.id
     return volumes
+
+
+def local_targets(spec: dict, volumes: list[Volume], lang: str) -> dict[str, str]:
+    """All bound chapters are local, including links from another volume."""
+    targets = {unit[lang]: unit["id"] for volume in volumes
+               for unit, _kind, _part in unit_stream(volume.manifest)}
+    guide = spec.get("guide")
+    if guide:
+        targets[guide[lang]] = guide["id"]
+    return targets

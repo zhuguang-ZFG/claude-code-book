@@ -30,7 +30,7 @@
 
 ## 未验证
 
-首次在线安装、真实认证与模型请求、由 Codex 完成完整修复任务、审批 UI/自动审查、平台沙箱文件和网络边界、由宿主发现/信任/触发及取消 Hook、MCP、resume/fork、跨平台行为。直接运行原创 Hook 脚本与静态消息校验不替代这些宿主实验。
+截至 2026-11-10，未验证首次在线安装、真实认证与模型请求、由 Codex 完成完整修复任务、审批 UI/自动审查、平台沙箱文件和网络边界、由宿主发现/信任/触发及取消 Hook、MCP、resume/fork、跨平台行为。2026-11-18 新增的沙箱初始化与 MCP 进程实验见文末；直接运行原创处理器与静态消息校验不替代宿主实验。
 
 ## 书稿与构建
 
@@ -57,3 +57,19 @@ v0.2.0 已在本机重建：PDF 147 页、30 个书签；EPUBCheck 5.4.0 零错�
 ## 0.2.2 跟做路线与索引
 
 正文补清执行目录、实例状态和首次阅读入口；原有代码与实验范围保持。新版 PDF 为 146 页，EPUBCheck 5.4.0 零错误、零警告。索引完成窄屏、深色和打印布局检查；本地文件摘要见[当前记录](../docs/agent-series/local-publication-20261110-reader-path.json)，前述构建记录为历史版本。
+
+## 2026-11-18 离线故障恢复复核
+
+原生程序、输入文件摘要和逐项输出见[2026-11-18 记录](facts/recovery-20261118.json)。批量记录器嵌套启动实验时另观察到 `CreateRestrictedToken failed: 87`，随后两次直接运行通过。错误发生在恢复后的令牌创建阶段，原因尚未确定。
+
+Windows，Node.js 24.14.0／Python 3.13.14。本次运行使用 Codex CLI 0.167.0 Windows 原生程序、随书 Hook 以及本地 MCP 处理器。案例见第 8.10 节。
+
+```powershell
+python -B codex/examples/check_windows_recovery.py $codexBinary
+```
+
+- [x] 同名文件占用 `.sandbox` 导致错误 183，子进程没有输出。保留文件并腾出位置后，原命令返回 0 并输出 `BOOK_READY`。
+- [x] 真实 `execpolicy check` 对练习中的发布命令返回 `prompt`。固定版 CLI 导出的 schema 接受失败与成功的 setup 通知、同一审批请求的 `decline` 与 `accept` 应答样例。
+- [x] Hook 错误走 stderr 与退出码 1。MCP 错误入口能保存配置但无法启动，更正入口后通过 stdio 列出 `get_rule`。
+
+`$codexBinary` 的准备方法和跨目录示例依赖见 [examples/README.md](examples/README.md)。沙箱是实际启动，审批是协议样例，Hook 和 MCP 进程由驱动直接调用。

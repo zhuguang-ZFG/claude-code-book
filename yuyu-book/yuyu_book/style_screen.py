@@ -75,6 +75,17 @@ nav.rail details.rail-vol>summary.rail-part::before{content:"▸";
   flex:0 0 auto;color:var(--bronze);font-size:.7rem}
 nav.rail details.rail-vol[open]>summary.rail-part::before{content:"▾"}
 nav.rail details.rail-vol>a{padding-left:.95rem}
+.collection-jumps{position:sticky;top:0;z-index:20;display:flex;gap:1.4rem;
+  padding:.55rem 0;background:var(--paper);border-bottom:1px solid var(--line);
+  font-family:var(--sans);font-size:.85rem}
+.collection-jumps a{color:var(--bronze-3);text-underline-offset:.2em}
+@media screen and (max-width:1359px){
+  .collected [id]{scroll-margin-top:3.5rem}
+}
+@media screen and (max-width:44rem){
+  #collection-guide th{white-space:normal}
+}
+@media (min-width:1360px){.collection-jumps{display:none}}
 nav.rail a{display:block;color:var(--ink-2);text-decoration:none;
   padding:.16rem .5rem;border-left:2px solid transparent;line-height:1.5}
 nav.rail a:hover{color:var(--cinnabar);border-left-color:var(--cinnabar);
@@ -340,7 +351,7 @@ article h1{font-size:1.85rem;margin:.15rem 0 1.05rem;line-height:1.4}
   font-family:Georgia,var(--sans);font-weight:700;font-size:1.32rem;
   letter-spacing:.02em;font-variant-numeric:tabular-nums;
   box-shadow:inset 0 0 0 1px rgba(180,71,47,.16)}
-.ch-head-row h1{margin-bottom:1.05rem}
+.ch-head-row h1{margin-bottom:1.05rem;min-width:0}
 .appendix .ch-seal{border-color:var(--cinnabar);color:var(--cinnabar)}
 /* the unit emblem: drawn with currentColor so it re-inks itself in dark mode
    and on paper, and floats into the head row rather than eating a block of
