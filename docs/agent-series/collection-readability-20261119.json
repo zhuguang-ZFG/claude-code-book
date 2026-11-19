@@ -337,8 +337,8 @@
     },
     {
       "path": ".scratch/collection-improved-20261119/yuyu-collected-zh.epub",
-      "bytes": 52918403,
-      "sha256": "3088db6ee5ec0150eb6605000d28cb2aa5ca90446f7eab9004dac4f0e1b540b4"
+      "bytes": 52921213,
+      "sha256": "d201e0a241f4a504435b96be5293577fc980bdb645bb4e7a13951dc216a7e9ae"
     },
     {
       "path": ".scratch/collection-improved-20261119/verification.json",
@@ -359,7 +359,7 @@
   "artifact_availability": "Builds and PDF contact sheet are local scratch artifacts; not shipped in the source repository.",
   "limits": [
     "PDF page counts depend on installed fonts; these results use Windows Microsoft YaHei.",
-    "EPUBCheck 5.4.0 passed. SumatraPDF opened the final EPUB and reported 2,382 reflow pages; no separate e-reader device was tested.",
+    "EPUBCheck 5.4.0 and SumatraPDF checks passed for the full-build EPUB before the navigation update. The follow-up EPUB passed ZIP/XML/anchor checks; EPUBCheck and reader checks were not repeated.",
     "The recovery experiment scopes and product version baselines remain as recorded in each volume.",
     "No real-model requests, login authorization or platform delivery were performed."
   ],
@@ -471,5 +471,33 @@
       "yuyu-book/yuyu_book/style_print.py"
     ],
     "playwright_nodejs_path": "C:\\Program Files\\nodejs\\node.exe"
+  },
+  "follow_up_epub_build": {
+    "command": "python scripts/build_epub.py --html .scratch/collection-improved-20261119/yuyu-collected-zh.html --output .scratch/collection-improved-20261119/yuyu-collected-zh.epub --lang zh",
+    "exit_code": 0,
+    "source_html_sha256": "caa09c8014aa7d2479922fdb33a8a596f96cd4d9ffb59a352ed85f81d1dc6f33",
+    "output": {
+      "path": ".scratch/collection-improved-20261119/yuyu-collected-zh.epub",
+      "bytes": 52921213,
+      "sha256": "d201e0a241f4a504435b96be5293577fc980bdb645bb4e7a13951dc216a7e9ae",
+      "images": 605,
+      "rasterized_svg": 502,
+      "navigation_entries": 2426,
+      "top_level_navigation_entries": 325,
+      "nested_navigation_entries": 2101
+    },
+    "validation": {
+      "zip_crc_valid": true,
+      "manifest_items": 608,
+      "content_fragment_links_checked": 3526,
+      "broken_content_fragment_links": 0,
+      "navigation_links_checked": 2426,
+      "broken_navigation_links": 0,
+      "duplicate_content_ids": 0,
+      "external_image_resources": 0,
+      "scripts": 0,
+      "epubcheck": "not rerun after navigation update",
+      "reader_validation": "not rerun after navigation update"
+    }
   }
 }
