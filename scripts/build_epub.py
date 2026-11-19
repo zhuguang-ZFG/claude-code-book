@@ -106,6 +106,47 @@ def _document(title: str, lang: str, body: ET.Element) -> bytes:
     return ET.tostring(root, encoding="utf-8", xml_declaration=True)
 
 
+def _navigation(body: ET.Element, lang: str, ids: set[str]) -> tuple[ET.Element, list[str]]:
+    nav_body = ET.Element(f"{{{XHTML}}}body")
+    nav = ET.SubElement(nav_body, f"{{{XHTML}}}nav", {f"{{{EPUB}}}type": "toc", "id": "toc"})
+    ET.SubElement(nav, f"{{{XHTML}}}h1").text = "目录" if lang.startswith("zh") else "Contents"
+    listing = ET.SubElement(nav, f"{{{XHTML}}}ol")
+    headings = []
+    parent_item = None
+    child_listing = None
+    for element in body.iter():
+        if element.tag not in (f"{{{XHTML}}}h1", f"{{{XHTML}}}h2"):
+            continue
+        is_chapter = element.tag == f"{{{XHTML}}}h1"
+        if is_chapter:
+            parent_item = None
+            child_listing = None
+        anchor = element.get("id")
+        if not anchor:
+            anchor = f"epub-heading-{len(headings) + 1}"
+            while anchor in ids:
+                anchor += "-x"
+            element.set("id", anchor)
+            ids.add(anchor)
+        label = "".join(element.itertext()).strip()
+        if not label:
+            continue
+        headings.append(anchor)
+        item = ET.Element(f"{{{XHTML}}}li")
+        ET.SubElement(item, f"{{{XHTML}}}a", {"href": "content.xhtml#" + anchor}).text = label
+        if is_chapter:
+            listing.append(item)
+            parent_item = item
+            child_listing = None
+        elif parent_item is not None:
+            if child_listing is None:
+                child_listing = ET.SubElement(parent_item, f"{{{XHTML}}}ol")
+            child_listing.append(item)
+        else:
+            listing.append(item)
+    return nav_body, headings
+
+
 def build(html: Path, output: Path, lang: str, browser: str | None = None) -> dict:
     if not html.is_file():
         raise BuildError(f"EPUB: missing HTML edition {html}")
@@ -163,25 +204,7 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
         href = element.get("href", "")
         if href.startswith("#") and urllib.parse.unquote(href[1:]) not in ids:
             raise BuildError(f"EPUB: dangling internal link {href}")
-    nav_body = ET.Element(f"{{{XHTML}}}body")
-    nav = ET.SubElement(nav_body, f"{{{XHTML}}}nav", {f"{{{EPUB}}}type": "toc", "id": "toc"})
-    ET.SubElement(nav, f"{{{XHTML}}}h1").text = "目录" if lang.startswith("zh") else "Contents"
-    listing = ET.SubElement(nav, f"{{{XHTML}}}ol")
-    headings = []
-    for element in parser.root.iter():
-        if element.tag in (f"{{{XHTML}}}h1", f"{{{XHTML}}}h2"):
-            anchor = element.get("id")
-            if not anchor:
-                anchor = f"epub-heading-{len(headings) + 1}"
-                while anchor in ids:
-                    anchor += "-x"
-                element.set("id", anchor)
-                ids.add(anchor)
-            text = "".join(element.itertext()).strip()
-            if text:
-                headings.append(anchor)
-                item = ET.SubElement(listing, f"{{{XHTML}}}li")
-                ET.SubElement(item, f"{{{XHTML}}}a", {"href": "content.xhtml#" + anchor}).text = text
+    nav_body, headings = _navigation(parser.root, lang, ids)
     digest = hashlib.sha256(html.read_bytes()).hexdigest()
     package = ET.Element(f"{{{OPF}}}package", {"version": "3.0", "unique-identifier": "book-id"})
     metadata = ET.SubElement(package, f"{{{OPF}}}metadata")
