@@ -96,4 +96,11 @@ python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out
 | 浏览器实测（拆包后逐文档打开） | 章、卷首、卷尾、封面、总目录、来源页、附录共 9 类页面在浅色与深色下均无整页横向溢出；所有 `pre` 均带底色；章徽与札记小图混合模式按配色生效 |
 | 角像素取样（`PIL`） | 札记小图四角在浅色下为 `(243,234,216)`、深色下为 `(34,34,28)`，与所在面板底色一致 |
 
-产物为 `yuyu-book/dist/yuyu-collected-zh.epub`，53,398,211 字节、SHA-256 `00da50c9f75fea3b17e7db56f02cd52104e79502062946213a7bb3dc5da35156`。`dist/` 不入库，摘要只对应本次本机构建。EPUBCheck 本轮未重跑：本机没有 5.4.0 jar，样式表改动不新增元素、属性或引用，包结构沿用上一轮已通过校验的同一套生成逻辑，这一点未取得本轮证据。阅读器逐页翻检仍未做，浏览器渲染不等同于 Kindle、Apple Books 或 Thorium 的排版结果。
+最终一次全套构建（`python scripts/bookctl.py build --product collected --lang zh --pdf --epub`，2,309 秒）产出：HTML 74,617,064 字节；PDF 97,182,780 字节、1,924 页、322 书签、87 个索引页码行；EPUB 53,398,066 字节、604 图、2,426 条导航、326 个文档。`dist/` 不入库，摘要只对应本次本机构建。
+
+| 产物 | SHA-256 |
+| --- | --- |
+| `yuyu-book/dist/yuyu-collected-zh.pdf` | `71cfca612775b3b45dfcc8def57c91f4a8ad214caa820eb53bc11345b2b631e4` |
+| `yuyu-book/dist/yuyu-collected-zh.epub` | `8bbac4d9d2d9f0c3ab900057bf75719f609113dca818401e9f6b66af53a4a3b5` |
+
+EPUBCheck 5.4.0（`.scratch/collection-readability/epubcheck-5.4.0/epubcheck-5.4.0/epubcheck.jar`，OpenJDK 17）复验最终 EPUB：0 fatal / 0 error / 0 warning / 0 info。PDF 侧用 PyMuPDF 抽检：书签首条「合集导读」在第 3 页、末条「来源与许可」在第 1,922 页；抽样页面文字可提取，字体为嵌入的 STKaiti / Microsoft YaHei；正文页渲染确认图版、图号、图题与页脚页码均在版心内，无裁切。此前版本的本节误记「本机没有 5.4.0 jar」，实际原因是检查命令 `ls … && java -version` 在 `ls` 失败处短路，`java` 从未真正执行；jar 与 JDK 一直可用，已用独立命令复验并更正。阅读器逐页翻检仍未做，浏览器渲染不等同于 Kindle、Apple Books 或 Thorium 的排版结果。
