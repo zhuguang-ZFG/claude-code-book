@@ -103,4 +103,6 @@ python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out
 | `yuyu-book/dist/yuyu-collected-zh.pdf` | `71cfca612775b3b45dfcc8def57c91f4a8ad214caa820eb53bc11345b2b631e4` |
 | `yuyu-book/dist/yuyu-collected-zh.epub` | `8bbac4d9d2d9f0c3ab900057bf75719f609113dca818401e9f6b66af53a4a3b5` |
 
-EPUBCheck 5.4.0（`.scratch/collection-readability/epubcheck-5.4.0/epubcheck-5.4.0/epubcheck.jar`，OpenJDK 17）复验最终 EPUB：0 fatal / 0 error / 0 warning / 0 info。PDF 侧用 PyMuPDF 抽检：书签首条「合集导读」在第 3 页、末条「来源与许可」在第 1,922 页；抽样页面文字可提取，字体为嵌入的 STKaiti / Microsoft YaHei；正文页渲染确认图版、图号、图题与页脚页码均在版心内，无裁切。此前版本的本节误记「本机没有 5.4.0 jar」，实际原因是检查命令 `ls … && java -version` 在 `ls` 失败处短路，`java` 从未真正执行；jar 与 JDK 一直可用，已用独立命令复验并更正。阅读器逐页翻检仍未做，浏览器渲染不等同于 Kindle、Apple Books 或 Thorium 的排版结果。
+EPUBCheck 5.4.0（`.scratch/collection-readability/epubcheck-5.4.0/epubcheck-5.4.0/epubcheck.jar`，OpenJDK 17）复验最终 EPUB：0 fatal / 0 error / 0 warning / 0 info。
+
+PDF 侧做了几何与像素级审计（`.scratch/pdf_audit.py`，非目视）：1,924 页全量扫描 0 空页、0 文本越出纸面、0 乱码、0 章末孤行标题；322 条书签逐条归一化比对并直读目标页，全部落在对应章节开篇（首条「合集导读」第 3 页、末条「来源与许可」第 1,922 页）。初扫报出的右缘越界 62 处、重叠 1,238 处、左缘 103 处经墨迹核查均为伪影：右缘 300 dpi 实测墨迹止于 546.8pt（栏缘 547.1pt）；重叠是全角标点压缩、`fi`/`fl` 连字与代码箭头，连通域分析最差两处仅 ≤0.3pt 发丝接触；左缘是悬挂式 `◆` 列表标记。字体为全量去重检查（272 个 xref）：12 个嵌入子集、259 个 Type3（内嵌绘图程序字体）、Helvetica 为页码数字的 base-14 设计。上句此前写的「正文页渲染确认……无裁切」是过头话——本会话模型无法读取图像，结论来自文字抽取、坐标几何与像素采样，未做人工逐页目视。此前版本的本节还误记「本机没有 5.4.0 jar」，实际原因是检查命令 `ls … && java -version` 在 `ls` 失败处短路，`java` 从未真正执行；jar 与 JDK 一直可用，已用独立命令复验并更正。阅读器逐页翻检仍未做，浏览器渲染不等同于 Kindle、Apple Books 或 Thorium 的排版结果。
