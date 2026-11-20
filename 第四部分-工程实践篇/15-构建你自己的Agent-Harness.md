@@ -849,8 +849,8 @@ flowchart TD
 stateDiagram-v2
     [*] --> Closed : 正常运行
 
-    Closed --> Closed : 操作成功<br/>重置 consecutiveFailures
-    Closed --> Open : 连续失败 >= 3 次
+    Closed --> Closed : 操作成功
+    Closed --> Open : 连败 >= 3 次
 
     Open --> Fallback : 切换到 fallback 模型<br/>清理状态后重试
 

@@ -96,11 +96,11 @@ Claude Code 引入了断路器（Circuit Breaker）机制：当连续失败次�
 stateDiagram-v2
     [*] --> CLOSED: 系统启动
 
-    CLOSED --> CLOSED: 压缩成功<br/>（计数器重置为 0）
+    CLOSED --> CLOSED: 压缩成功
 
     CLOSED --> HALF_OPEN: 压缩失败<br/>（计数器递增）
 
-    HALF_OPEN --> CLOSED: 压缩成功<br/>（计数器重置为 0）
+    HALF_OPEN --> CLOSED: 压缩成功
 
     HALF_OPEN --> OPEN: 连续失败 >= 3 次<br/>（熔断，不再尝试）
 
