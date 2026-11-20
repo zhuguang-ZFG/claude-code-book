@@ -86,6 +86,8 @@ make book-pi-epub   # 再加 EPUB
 
 2026-11-19 已按当前书稿重建完整合集（Windows／微软雅黑）：PDF 1,925 页、97.0 MB、322 个书签、0 空白页；EPUB 52.9 MB、2,426 条导航。全部 322 行 PDF 目录页码核对通过，EPUB 的 6,670 处内部引用无断链。本地产物位于 `.scratch/collection-complete-20261119/`，摘要与检查范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。
 
+2026-11-20 EPUB 改为按篇拆文档，向参考书的结构看齐：正文不再是单个 6 MB 的 `content.xhtml`，合订本拆成 326 个 XHTML 文档，最大的正文一篇 190 KB（`ch15`）；每篇文档带自己的标题，封面图以 `cover-image` 声明，屏幕专用的合集跳转栏不再进入离线版。当次产物 53.4 MB，EPUBCheck 5.4.0 报 0 fatal / 0 error / 0 warning；5,950 处内部引用（同文档 953、跨文档 4,997）与 1,043 处图片/样式引用全部可解析。同一趟 HTML 为 74.6 MB、246 个正文单元、333 幅图版。构建器契约见 `tests/test_epub_splitting.py`。
+
 ## 阅读说明
 
 阅读时需区分源码可确认的行为、架构推演和教学示例。功能标志与工具可用性取决于构建和运行时配置；数量和耗时示例不代表当前发行版承诺。

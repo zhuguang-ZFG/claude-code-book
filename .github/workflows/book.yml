@@ -178,10 +178,8 @@ jobs:
     # already fixed; what remains is a measuring Chromium print, the stamped
     # print, and PyMuPDF garbage=4. A finished local run is about 21 minutes
     # of PDF plus 4 minutes of EPUB. An earlier attempt was killed at 3600s
-    # during that print, so this job stays off pull requests and the budget
-    # is 150 minutes, not 60. Pull requests still cover the loader and the
-    # assembly contract through the builder suite.
-    if: github.event_name != 'pull_request'
+    # during that print, so pull requests build HTML+EPUB without the costly
+    # PDF. Every event still runs EPUBCheck against the exact generated EPUB.
     runs-on: ubuntu-latest
     timeout-minutes: 150
     steps:
@@ -192,35 +190,68 @@ jobs:
         with:
           browser: 'true'
       - name: Build the collected HTML, PDF and EPUB
+        if: github.event_name != 'pull_request'
         run: python scripts/bookctl.py build --product collected --lang zh --pdf --epub
+      - name: Build the collected HTML and EPUB for pull requests
+        if: github.event_name == 'pull_request'
+        run: python scripts/bookctl.py build --product collected --lang zh --epub
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install pinned EPUBCheck 5.4.0
+        shell: bash
+        run: |
+          mkdir -p .scratch/epubcheck
+          curl --fail --location --retry 3 \
+            https://github.com/w3c/epubcheck/releases/download/v5.4.0/epubcheck-5.4.0.zip \
+            --output .scratch/epubcheck/epubcheck.zip
+          echo '33350c61038e71dfb3d45a76aed04bf5481e6d5500cb780f6e98db8bbd15a28c  .scratch/epubcheck/epubcheck.zip' \
+            | sha256sum --check --status
+          unzip -q .scratch/epubcheck/epubcheck.zip -d .scratch/epubcheck
+          test -s .scratch/epubcheck/epubcheck-5.4.0/epubcheck.jar
+      - name: Validate the collected EPUB archive and package
+        run: >-
+          python scripts/check_epub.py
+          --epubcheck-jar .scratch/epubcheck/epubcheck-5.4.0/epubcheck.jar
+          yuyu-book/dist/yuyu-collected-zh.epub
       - name: Check the collected edition exists
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+          import os
           import fitz
           root = Path("yuyu-book/dist")
           html = root / "yuyu-collected-zh.html"
           pdf = root / "yuyu-collected-zh.pdf"
           epub = root / "yuyu-collected-zh.epub"
-          for path in (html, pdf, epub):
+          for path in (html, epub):
               if not path.is_file() or path.stat().st_size == 0:
                   raise SystemExit(f"missing or empty: {path}")
-          doc = fitz.open(pdf)
-          try:
-              pages = doc.page_count
-          finally:
-              doc.close()
-          if pages < 1:
-              raise SystemExit("collected pdf has no pages")
           print(f"collected html {html.stat().st_size} bytes")
-          print(f"collected pdf {pdf.stat().st_size} bytes, {pages} pages")
+          if pdf.is_file():
+              doc = fitz.open(pdf)
+              try:
+                  pages = doc.page_count
+              finally:
+                  doc.close()
+              if pages < 1:
+                  raise SystemExit("collected pdf has no pages")
+              print(f"collected pdf {pdf.stat().st_size} bytes, {pages} pages")
+          elif os.environ.get("GITHUB_EVENT_NAME") != "pull_request":
+              raise SystemExit("collected pdf is missing outside pull requests")
+          else:
+              print("collected pdf skipped on pull requests")
           print(f"collected epub {epub.stat().st_size} bytes")
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: yuyu-collected-dist
-          path: yuyu-book/dist/yuyu-collected-zh.*
+          path: |
+            yuyu-book/dist/yuyu-collected-zh.html
+            yuyu-book/dist/yuyu-collected-zh.pdf
+            yuyu-book/dist/yuyu-collected-zh.epub
           if-no-files-found: error
   deepseek-components:
     name: DeepSeek Cordis components

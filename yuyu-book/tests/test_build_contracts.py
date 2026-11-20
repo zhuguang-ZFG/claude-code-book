@@ -794,12 +794,21 @@ class Deliverables(unittest.TestCase):
                               if line.strip().startswith("with:"))
             with_indent = len(block[with_index]) - len(block[with_index].lstrip())
             keys = set()
+            block_scalar = None
             for line in block[with_index + 1:]:
                 if not line.strip():
                     continue
-                if len(line) - len(line.lstrip()) <= with_indent:
+                indent = len(line) - len(line.lstrip())
+                if indent <= with_indent:
                     break
-                keys.add(line.strip().split(":", 1)[0])
+                if block_scalar is not None and indent > block_scalar:
+                    # Continuation of a ``path: |`` literal, not a key.
+                    continue
+                block_scalar = None
+                key, _, value = line.strip().partition(":")
+                keys.add(key)
+                if value.strip()[:1] in ("|", ">"):
+                    block_scalar = indent
             self.assertLessEqual(keys, {"name", "path", "if-no-files-found",
                                         "retention-days", "compression-level",
                                         "overwrite", "include-hidden-files"})

@@ -50,3 +50,26 @@ python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out
 抽检 30 页 PDF 联系表，覆盖十卷卷首与首章、三幅横向图版和书末附录；页面清晰，未发现裁切，末尾目录内容完整。EPUBCheck 5.4.0 与 SumatraPDF 的结果对应导航调整前的全量构建版本；后续重建版仅完成上表记录的结构与链接检查。
 
 历史成品的页数与摘要仍只对应此前构建。本轮排版验证不扩展五组恢复实验的覆盖范围，不代表真实模型任务、登录授权或平台投递已经验证。
+
+## 2026-11-20 补充：离线 EPUB 按篇拆文档
+
+上表「导航更新后的 EPUB」一行只做过结构检查，没重跑 EPUBCheck。本轮补齐，并把离线版的结构对齐到参考书的做法（每章一个 XHTML 文档）：
+
+- 正文不再是单个 `content.xhtml`。按文章（章、卷首、篇分隔、来源页、页脚）拆成独立文档，合订本 326 个文档，最大的正文一篇 190 KB（`ch15`，导航文件 `nav.xhtml` 321 KB）；拆分前的单文档为 6.0 MB。
+- 每篇文档的 `<title>` 取自篇内首个 h1/h2，阅读器目录和状态栏显示章节名，不再一律显示书名。
+- 封面图在 OPF 里以 `properties="cover-image"` 声明，供阅读器缩略图使用；EPUB 3 推荐此写法，未加已弃用的 `<meta name="cover">`（加它会触发 EPUBCheck 警告）。
+- 屏幕专用的 `no-print` 合集跳转栏不再进入离线版；清理后只剩空壳的块不生成文档。书名去掉「— 作者」后缀。
+
+验证（2026-11-20，Windows 11）：
+
+| 检查 | 实际结果 |
+| --- | --- |
+| `python scripts/bookctl.py build --product collected --lang zh --epub --out-dir .scratch/epub-split2` | 退出 0；HTML 74.6 MB、246 个正文单元、333 幅图版；EPUB 53,396,104 字节、604 图、502 张栅格化 SVG、2,426 条导航、326 个文档、封面项 `image-0` |
+| EPUBCheck 5.4.0（`scripts/check_epub.py`，expanded 模式） | 0 fatal / 0 error / 0 warning / 0 info |
+| 内部引用审计（同文档片段 + 跨文档 + nav + 目录） | 5,950 处链接（同文档 953、跨文档 4,997），0 断链；1,043 处图片与样式引用全部存在；327 个 XHTML（含 nav）无空文档 |
+| `python -m unittest discover -s tests` | 345 项通过 |
+| `python -m unittest discover -s yuyu-book/tests` | 616 项通过 |
+
+拆分、跨文档链接与封面声明由 `tests/test_epub_splitting.py` 钉住；把该文件放到拆分前的单文档构建器上，fixture 初始化即报 `dangling internal link #toc`、`Ran 0 tests`——旧构建器不通过这套测试，但各条断言并未逐条在旧构建器上执行过，这是套件级失败，不是逐用例失败。同一文件里的「未知锚点中止构建」用例守的是原有的死链检查，不构成拆分回归的证据。EPUBCheck 用本机 5.4.0 版（`.scratch/collection-readability/epubcheck-5.4.0/`），与 CI 下载的发布包同版本。阅读器逐页翻检未做，`EPUBCheck` 与链接审计只说明包结构与引用合法。
+
+上述产物为 `.scratch/epub-split2/yuyu-collected-zh.epub`，53,396,104 字节、SHA-256 `92a53120492797452a338377f3ad82191b35f65652fd7fc5392570d6f65c03a9`，同目录的 `artifact-manifest.json` 由同一次构建写出并记录同一组数值。这个 SHA 不是构建指纹：`dcterms:modified` 取自输入 HTML 的修改时间，内容相同的两次构建会给出不同摘要。

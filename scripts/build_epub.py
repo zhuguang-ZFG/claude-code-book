@@ -133,7 +133,7 @@ def _navigation(body: ET.Element, lang: str, ids: set[str]) -> tuple[ET.Element,
             continue
         headings.append(anchor)
         item = ET.Element(f"{{{XHTML}}}li")
-        ET.SubElement(item, f"{{{XHTML}}}a", {"href": "content.xhtml#" + anchor}).text = label
+        ET.SubElement(item, f"{{{XHTML}}}a", {"href": "#" + anchor}).text = label
         if is_chapter:
             listing.append(item)
             parent_item = item
@@ -145,6 +145,79 @@ def _navigation(body: ET.Element, lang: str, ids: set[str]) -> tuple[ET.Element,
         else:
             listing.append(item)
     return nav_body, headings
+
+
+DOC_STEM = re.compile(r"[a-z0-9][a-z0-9-]*")
+HEADINGS = (f"{{{XHTML}}}h1", f"{{{XHTML}}}h2")
+
+
+def _has_content(block: ET.Element) -> bool:
+    """A stripped jump bar leaves an empty wrapper; it is not a document."""
+    if any(element.tag == f"{{{XHTML}}}img" for element in block.iter()):
+        return True
+    return bool("".join(block.itertext()).strip())
+
+
+def _blocks(body: ET.Element) -> list[ET.Element]:
+    """Reading-order blocks: one per article, one per front or back page.
+
+    A volume wrapper only groups its children for the online edition; the
+    offline book flattens it so every article becomes its own document, the
+    way the reference EPUBs ship one XHTML file per chapter."""
+    blocks = []
+    for child in body:
+        if child.tag == f"{{{XHTML}}}section" and any(
+                grand.tag == f"{{{XHTML}}}article" for grand in child):
+            blocks.extend(grand for grand in child if _has_content(grand))
+        elif _has_content(child):
+            blocks.append(child)
+    return blocks
+
+
+def _documents(body: ET.Element) -> list[tuple[str, ET.Element]]:
+    """Name every block after its anchor, or by position when it has none."""
+    documents: list[tuple[str, ET.Element]] = []
+    taken: set[str] = set()
+    for index, block in enumerate(_blocks(body), 1):
+        stem = block.get("id", "")
+        if not DOC_STEM.fullmatch(stem) or stem in taken:
+            stem = f"part-{index:03d}"
+        taken.add(stem)
+        documents.append((stem, block))
+    return documents
+
+
+def _anchor_owner(documents: list[tuple[str, ET.Element]]) -> dict[str, str]:
+    owner: dict[str, str] = {}
+    for stem, block in documents:
+        for element in block.iter():
+            anchor = element.get("id")
+            if not anchor:
+                continue
+            if anchor in owner:
+                raise BuildError(f"EPUB: duplicate anchor {anchor}")
+            owner[anchor] = stem
+    return owner
+
+
+def _relink(element: ET.Element, stem: str, owner: dict[str, str]) -> None:
+    href = element.get("href", "")
+    if not href.startswith("#"):
+        return
+    anchor = urllib.parse.unquote(href[1:])
+    target = owner.get(anchor)
+    if target is None:
+        raise BuildError(f"EPUB: dangling internal link {href}")
+    element.set("href", href if target == stem else f"{target}.xhtml{href}")
+
+
+def _document_title(block: ET.Element, fallback: str) -> str:
+    for element in block.iter():
+        if element.tag in HEADINGS:
+            label = "".join(element.itertext()).strip()
+            if label:
+                return label
+    return fallback
 
 
 def build(html: Path, output: Path, lang: str, browser: str | None = None) -> dict:
@@ -168,7 +241,7 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
             page.evaluate("""() => {
                 // Mermaid keeps its paint rules inside the SVG. Preserve those
                 // until rasterization; removing them here turns nodes/edges black.
-                document.querySelectorAll('script,main button,main input,main svg[aria-hidden="true"],main .fig-hint,main .page-ref').forEach(e=>e.remove());
+                document.querySelectorAll('script,main button,main input,main svg[aria-hidden="true"],main .fig-hint,main .page-ref,main .no-print').forEach(e=>e.remove());
                 document.querySelectorAll('main svg').forEach((e,i)=>e.dataset.epubSvg=String(i));
             }""")
             svg_count = page.locator("main svg").count()
@@ -199,6 +272,9 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
             launched.close()
     parser = XHTMLBody(resources, html.parent)
     parser.feed(markup)
+    suffix = f" — {author}" if author else ""
+    if suffix and title.endswith(suffix):
+        title = title[:-len(suffix)]
     ids = {element.get("id") for element in parser.root.iter() if element.get("id")}
     for element in parser.root.iter():
         href = element.get("href", "")
@@ -207,6 +283,21 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
     nav_body, headings = _navigation(parser.root, lang, ids)
     digest = hashlib.sha256(html.read_bytes()).hexdigest()
     package = ET.Element(f"{{{OPF}}}package", {"version": "3.0", "unique-identifier": "book-id"})
+    documents = _documents(parser.root)
+    if not documents:
+        raise BuildError("EPUB: the edition has no content blocks")
+    owner = _anchor_owner(documents)
+    for stem, block in documents:
+        for element in block.iter():
+            _relink(element, stem, owner)
+    for element in nav_body.iter():
+        _relink(element, "", owner)
+    cover_name = ""
+    for stem, block in documents:
+        if block.get("id") == "cover":
+            cover_name = next((element.get("src", "") for element in block.iter()
+                               if element.tag == f"{{{XHTML}}}img"), "")
+            break
     metadata = ET.SubElement(package, f"{{{OPF}}}metadata")
     ET.SubElement(metadata, f"{{{DC}}}identifier", {"id": "book-id"}).text = "urn:sha256:" + digest
     ET.SubElement(metadata, f"{{{DC}}}title").text = title
@@ -216,15 +307,27 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
     modified = datetime.fromtimestamp(html.stat().st_mtime, timezone.utc)
     ET.SubElement(metadata, f"{{{OPF}}}meta", {"property": "dcterms:modified"}).text = modified.strftime("%Y-%m-%dT%H:%M:%SZ")
     manifest = ET.SubElement(package, f"{{{OPF}}}manifest")
-    for key, href, mime, props in (("content", "content.xhtml", "application/xhtml+xml", ""), ("nav", "nav.xhtml", "application/xhtml+xml", "nav"), ("css", "book.css", "text/css", "")):
+    for stem, _block in documents:
+        ET.SubElement(manifest, f"{{{OPF}}}item",
+                      {"id": stem, "href": stem + ".xhtml",
+                       "media-type": "application/xhtml+xml"})
+    for key, href, mime, props in (("nav", "nav.xhtml", "application/xhtml+xml", "nav"), ("css", "book.css", "text/css", "")):
         attrs = {"id": key, "href": href, "media-type": mime}
         if props:
             attrs["properties"] = props
         ET.SubElement(manifest, f"{{{OPF}}}item", attrs)
+    cover_id = ""
     for index, (name, (mime, _blob)) in enumerate(resources.items()):
-        ET.SubElement(manifest, f"{{{OPF}}}item", {"id": f"image-{index}", "href": name, "media-type": mime})
+        attrs = {"id": f"image-{index}", "href": name, "media-type": mime}
+        if name == cover_name:
+            attrs["properties"] = "cover-image"
+            cover_id = attrs["id"]
+        ET.SubElement(manifest, f"{{{OPF}}}item", attrs)
+    # EPUB 3 declares the library thumbnail through cover-image; the legacy
+    # meta name="cover" is deprecated and draws EPUBCheck warnings.
     spine = ET.SubElement(package, f"{{{OPF}}}spine")
-    ET.SubElement(spine, f"{{{OPF}}}itemref", {"idref": "content"})
+    for stem, _block in documents:
+        ET.SubElement(spine, f"{{{OPF}}}itemref", {"idref": stem})
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="yuyu-epub-", dir=output.parent) as temporary:
         staged = Path(temporary) / output.name
@@ -232,13 +335,17 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
             archive.writestr("mimetype", "application/epub+zip", compress_type=zipfile.ZIP_STORED)
             archive.writestr("META-INF/container.xml", '<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="EPUB/package.opf" media-type="application/oebps-package+xml"/></rootfiles></container>')
             archive.writestr("EPUB/package.opf", ET.tostring(package, encoding="utf-8", xml_declaration=True))
-            archive.writestr("EPUB/content.xhtml", _document(title, lang, parser.root))
+            for stem, block in documents:
+                document_body = ET.Element(f"{{{XHTML}}}body")
+                document_body.append(block)
+                archive.writestr(f"EPUB/{stem}.xhtml", _document(
+                    _document_title(block, title), lang, document_body))
             archive.writestr("EPUB/nav.xhtml", _document(title, lang, nav_body))
             archive.writestr("EPUB/book.css", CSS)
             for name, (_mime, blob) in resources.items():
                 archive.writestr("EPUB/" + name, blob)
         staged.replace(output)
-    return {"output": str(output), "source_sha256": digest, "sha256": hashlib.sha256(output.read_bytes()).hexdigest(), "images": len(resources), "rasterized_svg": svg_count, "navigation_entries": len(headings), "bytes": output.stat().st_size}
+    return {"output": str(output), "source_sha256": digest, "sha256": hashlib.sha256(output.read_bytes()).hexdigest(), "images": len(resources), "rasterized_svg": svg_count, "navigation_entries": len(headings), "documents": len(documents), "cover_image": cover_id, "bytes": output.stat().st_size}
 
 
 def main(argv=None) -> int:

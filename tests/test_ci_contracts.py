@@ -6,6 +6,7 @@ formatting changes cannot silently move a job back onto every pull request.
 """
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
 
@@ -48,7 +49,7 @@ class BookWorkflow(unittest.TestCase):
         self.assertTrue(jobs["bootstrap"]["name"].startswith("Bootstrap"))
         self.assertEqual(jobs["full"].get("needs"), "fast")
 
-    def test_pull_requests_pay_only_for_the_fast_layer(self):
+    def test_pull_requests_skip_the_rendered_pdf_but_validate_the_epub(self):
         workflow = load("book.yml")
         trigger = triggers(workflow)
         self.assertTrue(trigger["pull_request"]["paths"])
@@ -57,12 +58,52 @@ class BookWorkflow(unittest.TestCase):
 
         jobs = workflow["jobs"]
         self.assertNotIn("if", jobs["fast"])
-        for name in ("full", "omp", "bootstrap", "collected"):
+        for name in ("full", "omp", "bootstrap"):
             guard = jobs[name].get("if")
             self.assertIsInstance(guard, str, name)
             self.assertIn("github.event_name", guard, name)
             self.assertIn("pull_request", guard, name)
             self.assertNotIn("== 'pull_request'", guard, name)
+
+        # The collected job runs on every event so EPUBCheck gates pull
+        # requests; only the expensive PDF keeps a non-PR guard.
+        collected = jobs["collected"]
+        self.assertNotIn("if", collected)
+
+        def guarded(needle: str) -> str | None:
+            matches = [step for step in collected["steps"]
+                       if needle in str(step.get("run", ""))]
+            self.assertEqual(len(matches), 1, needle)
+            return matches[0].get("if")
+
+        self.assertEqual(
+            guarded("--product collected --lang zh --pdf --epub"),
+            "github.event_name != 'pull_request'")
+        self.assertEqual(
+            guarded("--product collected --lang zh --epub"),
+            "github.event_name == 'pull_request'")
+        self.assertIsNone(guarded("scripts/check_epub.py"))
+
+    def test_epubcheck_install_and_validation_agree_on_the_jar_path(self):
+        """The release zip unpacks to ``epubcheck-5.4.0/``, not to the root.
+
+        A jar path that does not match the extraction layout fails the
+        install step before EPUBCheck ever runs, so both steps must name the
+        same versioned path."""
+        job = load("book.yml")["jobs"]["collected"]
+        runs = {step.get("name"): str(step.get("run", ""))
+                for step in job["steps"]}
+        install = runs["Install pinned EPUBCheck 5.4.0"]
+        validate = runs["Validate the collected EPUB archive and package"]
+        self.assertIn("epubcheck/releases/download/v5.4.0/", install)
+        tested = re.search(r"test -s (\S*epubcheck\.jar)", install)
+        used = re.search(r"--epubcheck-jar (\S*epubcheck\.jar)", validate)
+        self.assertIsNotNone(tested, install)
+        self.assertIsNotNone(used, validate)
+        self.assertEqual(tested.group(1), used.group(1))
+        self.assertTrue(
+            tested.group(1).startswith(".scratch/epubcheck/epubcheck-5.4.0/"),
+            tested.group(1))
 
     def test_collected_ships_pdf_and_epub_off_pull_requests(self):
         job = load("book.yml")["jobs"]["collected"]

@@ -41,7 +41,11 @@ class EpubPaint(unittest.TestCase):
                 # color. If fill:none or the node fill is lost, it becomes black.
                 x, y = int(image.width * .5), int(image.height * .65)
                 self.assertEqual(image.getpixel((x, y)), (228, 235, 242))
-                content = archive.read("EPUB/content.xhtml").decode("utf-8")
+                content = "".join(
+                    archive.read(name).decode("utf-8")
+                    for name in archive.namelist()
+                    if name.endswith(".xhtml") and not name.endswith("nav.xhtml"))
+                self.assertIn("Styled diagram", content)
                 self.assertNotIn("<style", content)
                 self.assertNotIn(".node{", content)
 
