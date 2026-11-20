@@ -73,3 +73,27 @@ python scripts/bookctl.py build --product collected --lang zh --pdf --epub --out
 拆分、跨文档链接与封面声明由 `tests/test_epub_splitting.py` 钉住；把该文件放到拆分前的单文档构建器上，fixture 初始化即报 `dangling internal link #toc`、`Ran 0 tests`——旧构建器不通过这套测试，但各条断言并未逐条在旧构建器上执行过，这是套件级失败，不是逐用例失败。同一文件里的「未知锚点中止构建」用例守的是原有的死链检查，不构成拆分回归的证据。EPUBCheck 用本机 5.4.0 版（`.scratch/collection-readability/epubcheck-5.4.0/`），与 CI 下载的发布包同版本。阅读器逐页翻检未做，`EPUBCheck` 与链接审计只说明包结构与引用合法。
 
 上述产物为 `.scratch/epub-split2/yuyu-collected-zh.epub`，53,396,104 字节、SHA-256 `92a53120492797452a338377f3ad82191b35f65652fd7fc5392570d6f65c03a9`，同目录的 `artifact-manifest.json` 由同一次构建写出并记录同一组数值。这个 SHA 不是构建指纹：`dcterms:modified` 取自输入 HTML 的修改时间，内容相同的两次构建会给出不同摘要。
+
+## 2026-11-20 补充：离线版排版
+
+拆分后的每篇文档只带默认样式，章首、导读条、卡片、代码和表格全部退化成素文本。本轮把网页版的设计语言移植到离线样式表（`scripts/build_epub.py` 的 `CSS`），仍是单一 `book.css`，无脚本、无外链、无 CSS 变量，老阅读器不认识的新属性会自动降级。
+
+- 章首：卷/章眉标小字距，章号作浅色底纹大字，标题下加分隔线。
+- 导读条「一句话讲明白」改为着色面板加朱红左边线；「本章问题 / 读完交付 / 本章边界」三张卡片按类配色，来源锚点收成圆角小签，不再两端拉伸。
+- 小节后的阶段标签（起步 / 主干 / 进阶）做成圆角色块；提示框按 info / tip / warning / concept 分色。
+- 代码块统一深色底，配 Pygments 词法配色：关键字、字符串、数字、注释、标签各有颜色，与网页版同色值。
+- 图版加纸白边框；图题居中，图号用褐色加粗。表头着色，`hr` 装饰线统一。
+- 章末过渡块加上分隔线，编者札记与「本章新词」变成浅色面板；卷首、卷尾分隔页、封面、总目录、来源页各自成套样式。
+- 插图是白底不透明 PNG，章徽和札记小图用混合模式（浅色 `multiply`、深色 `screen` + `invert`）直接融进纸面，不再出现白色方块。
+- 深色模式逐条覆盖新配色，不依赖 CSS 变量。
+
+验证（2026-11-20，Windows 11，Chromium 620 像素宽）：
+
+| 检查 | 实际结果 |
+| --- | --- |
+| `python scripts/bookctl.py build --product collected --lang zh --epub` | 退出 0；EPUB 53,398,211 字节、604 图、2,426 条导航、326 个文档 |
+| `python -m unittest tests.test_epub_check tests.test_epub_splitting tests.test_epub_navigation tests.test_epub_paint tests.test_ci_contracts` | 25 项通过 |
+| 浏览器实测（拆包后逐文档打开） | 章、卷首、卷尾、封面、总目录、来源页、附录共 9 类页面在浅色与深色下均无整页横向溢出；所有 `pre` 均带底色；章徽与札记小图混合模式按配色生效 |
+| 角像素取样（`PIL`） | 札记小图四角在浅色下为 `(243,234,216)`、深色下为 `(34,34,28)`，与所在面板底色一致 |
+
+产物为 `yuyu-book/dist/yuyu-collected-zh.epub`，53,398,211 字节、SHA-256 `00da50c9f75fea3b17e7db56f02cd52104e79502062946213a7bb3dc5da35156`。`dist/` 不入库，摘要只对应本次本机构建。EPUBCheck 本轮未重跑：本机没有 5.4.0 jar，样式表改动不新增元素、属性或引用，包结构沿用上一轮已通过校验的同一套生成逻辑，这一点未取得本轮证据。阅读器逐页翻检仍未做，浏览器渲染不等同于 Kindle、Apple Books 或 Thorium 的排版结果。

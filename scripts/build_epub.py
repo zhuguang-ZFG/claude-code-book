@@ -34,7 +34,165 @@ DC = "http://purl.org/dc/elements/1.1/"
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 BLOCK = {"article", "section", "main", "aside", "header", "footer", "figure", "figcaption", "div", "p", "pre", "blockquote", "ul", "ol", "li", "dl", "dt", "dd", "table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption", "colgroup", "h1", "h2", "h3", "h4", "h5", "h6", "nav", "hr", "br", "img", "a", "span", "strong", "em", "b", "i", "s", "small", "sub", "sup", "code", "kbd", "samp", "var", "abbr", "cite", "time", "mark", "q", "wbr"}
 ATTR = {"id", "class", "href", "src", "alt", "title", "colspan", "rowspan", "scope", "start", "value", "datetime", "lang", "dir"}
-CSS = """html{color:#26221B;background:#FBF7EF}body{font-family:serif;line-height:1.65;margin:1em}h1,h2,h3,h4{line-height:1.35;break-after:avoid}article,section.part-divider{break-before:page}p{orphans:2;widows:2}img{max-width:100%;height:auto;object-fit:contain}figure{margin:1em 0;break-inside:avoid}figcaption{font-size:.85em;color:#5C5448}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8em}code{font-family:monospace;overflow-wrap:anywhere}table{border-collapse:collapse;max-width:100%;font-size:.8em}td,th{border:1px solid #D2C4A6;padding:.35em;overflow-wrap:anywhere}a{color:#B4472F}blockquote{border-inline-start:2px solid #D2C4A6;margin-inline:0;padding-inline-start:1em}.rail,.page-ref,.fig-hint,.gloss-pop,.tier-chip,.t-ruts{display:none}.sheet{width:auto;max-width:100%;min-width:0;margin:0;padding:0}svg{max-width:100%}@media(prefers-color-scheme:dark){html{color:#E9E4D8;background:#1E1D18}a{color:#E07B5F}}"""
+CSS = """
+/* yuyu collected reader edition — light first, dark overrides last */
+html{color:#26221B;background:#FBF7EF}
+body{font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","SimSun",Georgia,"Times New Roman",serif;line-height:1.7;margin:1em}
+h1,h2,h3,h4{line-height:1.35;break-after:avoid}
+h1{font-size:1.45em;margin:.2em 0 .6em}
+h2{font-size:1.26em;margin:1.9em 0 .6em}
+h3{font-size:1.12em;margin:1.5em 0 .5em}
+h4{font-size:1em;margin:1.3em 0 .5em}
+p{orphans:2;widows:2;margin:0 0 .6em;text-align:justify}
+li{margin:.25em 0}
+hr{border:none;border-top:1px solid #E3D8C1;margin:1.5em 0}
+article,section.part-divider{break-before:page}
+img{max-width:100%;height:auto;object-fit:contain}
+figure{margin:1.5em 0;break-inside:avoid}
+figcaption{font-size:.85em;color:#5C5448;text-align:center;margin-top:.5em}
+.fig-no{color:#8A7D68;font-weight:700}
+.diagram-frame,.illu-frame{background:#FFFDF8;border:1px solid #E3D8C1;border-radius:6px;padding:.6em}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8em;line-height:1.6;margin:0;padding:.9em 1em;background:#211E19;color:#EDE6D6;border-radius:6px}
+code{font-family:"JetBrains Mono","Cascadia Code","SF Mono",Consolas,Menlo,monospace;overflow-wrap:anywhere}
+.codehilite{margin:1.2em 0;border:1px solid #3A352C;border-radius:6px;overflow:hidden;background:#211E19}
+table{border-collapse:collapse;max-width:100%;font-size:.8em;margin:1.2em 0}
+td,th{border:1px solid #D2C4A6;padding:.4em .55em;overflow-wrap:anywhere}
+th{background:#F3EAD8}
+a{color:#B4472F}
+blockquote{border-inline-start:2px solid #D2C4A6;margin-inline:0;padding-inline-start:1em}
+/* chapter opener */
+.chapter-head{margin:0 0 1.6em;padding:1.1em 0 1em;border-bottom:2px solid #E3D8C1}
+.eyebrow{font-size:.8em;letter-spacing:.12em;color:#675F4F;margin:0 0 .7em}
+.vol-tag{color:#B4472F;font-weight:700}
+.ch-seal{display:block;font-size:2.3em;font-weight:700;line-height:1;color:#E3D8C1;margin:.05em 0 .1em}
+.ch-title{margin:.1em 0 .2em}
+.ch-emblem{display:block;margin:.3em 0 .8em;text-align:center}
+.ch-emblem img{width:4em;height:4em;object-fit:contain;mix-blend-mode:multiply}
+.kp-art img{mix-blend-mode:multiply}
+/* one-line summary */
+.lead-band{margin:1.3em 0;padding:.85em 1em .95em;background:#F3EAD8;border-left:4px solid #B4472F;border-radius:0 6px 6px 0}
+.lb-tag{margin:0 0 .35em;font-weight:700;color:#B4472F;font-size:.9em;letter-spacing:.06em}
+.lb-plain{margin:0}
+.lb-analogy{margin:.4em 0 0;color:#5C5448;font-size:.95em}
+.lb-a-tag{font-weight:700}
+/* chapter compass */
+.compass{margin:1.3em 0}
+.compass-card{margin:.8em 0;padding:.7em .95em;background:#FFFDF8;border:1px solid #E3D8C1;border-left:4px solid #4E6E5D;border-radius:6px}
+.compass-card.question{border-left-color:#B4472F}
+.compass-card.boundary{border-left-color:#675F4F}
+.compass-card p{margin:0}
+.cc-tag{margin:0 0 .3em;font-size:.85em;font-weight:700;letter-spacing:.08em;color:#4E6E5D}
+.compass-card.question .cc-tag{color:#B4472F}
+.compass-card.boundary .cc-tag{color:#675F4F}
+.cc-src{margin:.8em 0 0;font-size:.85em;color:#675F4F;text-align:left}
+.source-chip{display:inline-block;margin:.2em .4em .2em 0;padding:.05em .6em;border:1px solid #D2C4A6;border-radius:999px;background:#F3EAD8;color:#5A5040;text-decoration:none}
+/* section tier chips */
+.sec-tier{display:inline-block;margin-left:.45em;padding:.1em .6em;border-radius:999px;font-size:.68em;font-weight:700;letter-spacing:.08em;vertical-align:.2em;color:#FBF7EF;background:#8A7D68}
+.t-start{background:#4E6E5D}
+.t-core{background:#B4472F}
+.t-deep{background:#675F4F}
+/* callouts */
+.callout{margin:1.2em 0;padding:.7em 1em .5em;background:#F3EAD8;border:1px solid #E3D8C1;border-left:4px solid #8A7D68;border-radius:6px}
+.callout p{margin:0 0 .5em}
+.callout-tag{font-weight:700;color:#43392B}
+.callout-info{border-left-color:#43392B}
+.callout-tip{border-left-color:#4E6E5D}
+.callout-tip .callout-tag{color:#4E6E5D}
+.callout-warning{border-left-color:#B4472F}
+.callout-warning .callout-tag{color:#B4472F}
+.callout-concept{border-left-color:#4C7093}
+.callout-concept .callout-tag{color:#4C7093}
+/* chapter end */
+.ch-close{margin-top:2.2em;padding-top:1.2em;border-top:1px solid #E3D8C1}
+.keeper{margin:1.1em 0;padding:.1em 1em .4em;background:#F3EAD8;border-radius:6px}
+.keeper-note{margin:0;color:#5C5448;border-inline-start:2px solid #8A7D68;padding-inline-start:.9em}
+/* back-of-chapter asides */
+.chapter-notes,.new-terms{margin:1.8em 0;padding:0 .95em .4em;background:#F3EAD8;border-radius:6px}
+.chapter-notes h4,.new-terms h4{margin:.8em 0 .4em;font-size:.85em;letter-spacing:.1em;color:#8A7D68}
+.chapter-notes ol,.new-terms ul{margin:.2em 0 .6em}
+.nt-term{font-weight:700}
+/* ornaments */
+.hr-rule{height:1px;border:none;background:#E3D8C1;margin:2em auto;width:60%}
+/* part and volume dividers */
+section.part-divider{padding-top:2.5em}
+.pd-no{font-size:.85em;letter-spacing:.4em;color:#B4472F;font-weight:700;margin:0 0 .6em}
+.pd-title{font-size:1.7em;margin:.2em 0 .4em}
+.pd-count{color:#675F4F;margin:.2em 0 1em}
+.cover-rule{height:2px;border:none;background:#D2C4A6;margin:1.6em 0;width:33%}
+.pd-motto,.pd-goal{color:#5C5448}
+.pd-motto{font-style:italic}
+.pd-list{margin:1em 0}
+/* front matter */
+.front-page{padding-top:1.5em}
+.cover{text-align:center;padding-top:2.5em}
+.cover .book-title{font-size:2em;margin:.4em 0 .3em}
+.cover-art img{max-width:88%}
+.cover-kicker{letter-spacing:.3em;color:#675F4F}
+.book-sub,.book-epi{color:#5C5448}
+.cover-seal{display:inline-block;margin:1em 0;color:#B4472F}
+.cover-foot{margin-top:1.2em;color:#675F4F}
+/* volume toc and sources */
+.toc-vol{display:block;font-weight:700;margin:1.2em 0 .4em}
+.tp-no{color:#B4472F;margin-inline-end:.5em}
+.toc-row{display:block;margin:.5em 0;text-decoration:none}
+.toc-n{font-weight:700;margin-inline-end:.5em}
+.toc-part{display:block;font-weight:700;margin:.9em 0 .3em}
+.reg-no{font-weight:700;color:#B4472F;margin-inline-end:.5em}
+.reg-meta{color:#675F4F;font-size:.9em}
+/* pygments — dark ground in both schemes */
+.codehilite .c,.codehilite .cm,.codehilite .c1,.codehilite .cs{color:#93886F;font-style:italic}
+.codehilite .k,.codehilite .kd,.codehilite .kn,.codehilite .kt{color:#D8B26A;font-weight:600}
+.codehilite .nf,.codehilite .nc,.codehilite .fm{color:#E2C08D}
+.codehilite .s,.codehilite .s1,.codehilite .s2,.codehilite .sb,.codehilite .sd{color:#A9C46C}
+.codehilite .m,.codehilite .mi,.codehilite .mf,.codehilite .mh{color:#DFA878}
+.codehilite .nt,.codehilite .tag{color:#8FB2D4}
+.codehilite .na,.codehilite .attr{color:#C8A45C}
+.codehilite .o,.codehilite .ow{color:#BDB4A2}
+.codehilite .err{color:#E07B5F}
+/* web-only furniture stays hidden */
+.rail,.page-ref,.fig-hint,.gloss-pop,.tier-chip,.t-ruts{display:none}
+.sheet{width:auto;max-width:100%;min-width:0;margin:0;padding:0}
+svg{max-width:100%}
+@media(prefers-color-scheme:dark){
+html{color:#E9E4D8;background:#1E1D18}
+a{color:#E07B5F}
+hr{border-top-color:#37342A}
+figcaption,.lb-analogy,.pd-motto,.pd-goal,.book-sub,.book-epi,.cc-src,.keeper-note{color:#BDB4A2}
+.eyebrow,.cover-kicker,.cover-foot,.reg-meta,.pd-count{color:#A59C8A}
+td,th{border-color:#4A4536}
+th{background:#22221C}
+blockquote{border-inline-start-color:#4A4536}
+.diagram-frame,.illu-frame,.compass-card{background:#1E1D18;border-color:#37342A}
+.lead-band,.chapter-notes,.new-terms,.keeper,.callout{background:#22221C;border-color:#37342A}
+.callout{border-left-color:#A89E8C}
+.callout-tag,.toc-n,.source-chip{color:#E2DBCB}
+.source-chip{border-color:#4A4536;background:#22221C}
+.callout-info{border-left-color:#CFC6B4}
+.callout-tip{border-left-color:#9DBFA9}
+.callout-tip .callout-tag{color:#9DBFA9}
+.callout-warning{border-left-color:#E07B5F}
+.callout-warning .callout-tag{color:#E07B5F}
+.callout-concept{border-left-color:#8FB2D4}
+.callout-concept .callout-tag{color:#8FB2D4}
+.lb-tag,.vol-tag,.pd-no,.tp-no,.cover-seal,.reg-no{color:#E07B5F}
+.compass-card{border-left-color:#9DBFA9}
+.compass-card.question{border-left-color:#E07B5F}
+.compass-card.boundary{border-left-color:#BDB4A2}
+.cc-tag{color:#9DBFA9}
+.compass-card.question .cc-tag{color:#E07B5F}
+.compass-card.boundary .cc-tag{color:#BDB4A2}
+.sec-tier{background:#A89E8C;color:#1E1D18}
+.t-start{background:#9DBFA9}
+.t-core{background:#E07B5F}
+.t-deep{background:#BDB4A2}
+.fig-no,.chapter-notes h4,.new-terms h4{color:#A89E8C}
+.ch-seal{color:#4A4536}
+.ch-emblem img,.kp-art img{mix-blend-mode:screen;filter:invert(1)}
+.chapter-head,.ch-close{border-color:#37342A}
+.hr-rule,.cover-rule{background:#4A4536}
+.keeper-note{border-inline-start-color:#A89E8C}
+}
+"""
 
 
 def _text(parent, value: str) -> None:
