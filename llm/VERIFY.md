@@ -17,9 +17,9 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 597 109 | 17 个单元、31 张正文手绘图、106 条引用链接、17 枚章徽、10 幅篇题 |
-| `yuyu-llm-zh.pdf` | 7 136 130 | 123 页、28 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 223 948 | 162 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 603 856 | 17 个单元、31 张正文手绘图、106 条引用链接、17 枚章徽、10 幅篇题 |
+| `yuyu-llm-zh.pdf` | 7 233 657 | 125 页、28 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 226 665 | 162 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
@@ -36,7 +36,7 @@ CHECK OK
 | 命令 | 结果 |
 | --- | --- |
 | `python -m unittest discover -s yuyu-book/tests` | 628 项通过 |
-| `python -m unittest discover -s tests` | 413 项通过 |
+| `python -m unittest discover -s tests` | 423 项通过 |
 | `python scripts/bookctl.py check --fast` | 通过（内容检查、两套测试） |
 | `python scripts/bookctl.py build --product llm --lang zh --check` | `CHECK OK` |
 
@@ -47,7 +47,7 @@ CHECK OK
 
 ## 示例脚本实测输出
 
-十五个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
+十七个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -57,6 +57,8 @@ python llm/examples/transformer_demo.py
 python llm/examples/sampling_demo.py
 python llm/examples/context_budget.py
 python llm/examples/scaling_demo.py
+python llm/examples/train_demo.py
+python llm/examples/embedding_train_demo.py
 python llm/examples/sft_demo.py
 python llm/examples/alignment_demo.py
 python llm/examples/serving_demo.py
@@ -82,6 +84,8 @@ python llm/examples/multimodal_demo.py
 - `cot_demo.py`：假设单条样本正确率 0.60，1 / 3 / 5 / 9 / 15 条多数投票的模拟准确率为 60.7% / 66.0% / 69.4% / 75.2% / 79.5%；每题 token 从 400 涨到 6 000。按每百万输出 token 0.60 美元，直接回答 / CoT 一次 / CoT 五次 / CoT 十五次的每道正确题成本为 $0.000133 / $0.000369 / $0.001561 / $0.004053。
 - `eval_demo.py`：200 题上 82.0% 与 86.0% 的 Wilson 区间为 [76.1%, 86.7%] 与 [80.5%, 90.1%]，两者重叠；20 条测试题在训练中见过，把 80.0% 的干净准确率抬到 82.0%；回答 80 题、对 72 题时覆盖率 80.0%、回答内准确率 90.0%、整体 72.0%、错答率 8.0%；教师/学生每道正确题成本约 $0.0071 / $0.0015。
 - `multimodal_demo.py`：6×4 玩具图按 2×2 切成 6 个 patch，经 4×3 投影得到 6 个 3 维图像 token，位置按行主序展平；1920×1080 截图按 patch 16 直切为 8 160 token，缩到最长边 1568 后直切 5 488、像素计价 1 844；4032×3024 照片直切 47 628；2480×3508 A4 扫描直切 34 100；同一截图低档（768）442 token、高档（1568）1 844 token，差约四倍。
+- `train_demo.py`：7 440 参数字符级 Transformer（435 字节语料、vocab 54、d_model 24、一层因果注意力 + FFN），手写前向与反向、SGD lr=0.6 训练 240 步约 6 秒；梯度检查 8 个抽检参数解析梯度 vs 中心差分最大偏差 7.31e-06；loss 从 3.99（=ln 54）降至训练后同窗口 1.12（step 60/120/180/240 为 3.87/1.85/2.56/1.33，batch=1 的正常抖动）；贪心采样从“青禾工作坊”续写出语料的重复句式。
+- `embedding_train_demo.py`：12 词、16 维 skip-gram 负采样，36 句三主题语料训练 30 轮约 1 秒；训练前“退款”近邻为随机取向（换货 +0.39、配送 +0.32），训练后为售后 +0.99、换货 +0.99、退货 +0.98，12 个词 top-3 全部落回自己主题组；开发中 sigmoid 在点积增大后真实溢出，已改为分段稳定版并把 log(sigmoid) 换成 softplus。
 
 ## 未实测范围
 

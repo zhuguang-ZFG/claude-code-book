@@ -12,6 +12,12 @@
       "commit": "1acefe89412b20245db5a22d2a02001e547dc602",
       "license": "MIT",
       "scope": "第 1 章：BPE 训练、编码与解码的教学对照"
+    },
+    {
+      "repo": "karpathy/nanoGPT",
+      "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+      "license": "MIT",
+      "scope": "第 7 章：train_demo 是同一训练循环的手写缩小版（前向/反向/SGD）；只引结构与流程，不复制其代码"
     }
   ]
 }

@@ -65,10 +65,12 @@ GitHub 中文/英文 LLM 教学仓格局（星数为 2026-11 实测）：
 
 ## 落地状态（2026-11-21）
 
-- 已建 `llm/`：前言、第 1–16 章、`README.md`、`VERIFY.md` 与 `examples/` 十五个纯标准库脚本。
+- 已建 `llm/`：前言、第 1–16 章、`README.md`、`VERIFY.md` 与 `examples/` 十七个纯标准库脚本。
+- 深度增强（2026-11-21 第三轮）：`train_demo.py` 手写反向传播真训练 7 440 参数字符级 Transformer，梯度检查 max diff 7.31e-06、loss 从 3.99 降至 1.12，第 7 章 6ND 的“反向 4”从记账变成实证；`embedding_train_demo.py` 用 skip-gram 负采样真训出 12/12 主题聚类（训练前随机近邻、训练后组内 0.99），第 2 章的相似度几何从手设升级为“从语料学出来”；第 5 章补 softmax/sigmoid 数值稳定深潜（溢出在开发中真实发生过），第 4 章补 RoPE 复数视角；nanoGPT 钉 commit 进来源登记表。规划里“训练一个 nano-GPT”的承诺以手写缩小版兑现。
+- 知识点补全（2026-11-21 第二轮）：MoE 专家与路由机制（第 4 章）、长上下文扩展三法 PI/NTK/YaRN（第 4 章）、MLA 潜在注意力（第 3 章）、投机解码的命中条件与模型路由/级联（第 10 章）、约束解码（第 12 章）、LLM-as-judge 及位置与自偏好偏差（第 14 章）、视觉提示注入与视频帧预算（第 15 章）；术语表同步新增 13 条，七篇引用进 `sources-llm.json`。有意不收：音频模态（按范围决策只做图像）、扩散生成模型（非 Agent 输入通道）、分布式多机训练（超出单机教学定位）。
 - 已注册独立产品 `llm`：`yuyu-book/manifest-llm.json`、`sources-llm.json`、`registry.py` 白名单、`scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 的 `book-llm*`、CI 矩阵与 EPUB 流程。
 - 产物前缀 `yuyu-llm`，当前只有中文版（`langs: ["zh"]`），不启用通俗层（`plain_optional: true`）；现已编入合订本卷二，并进入发布脚本的 `COMPANION_VOLUMES`。
-- 实测：HTML 597 109 字节，PDF 123 页 / 7.1 MB（本机微软雅黑），EPUB 223 948 字节；构建器测试 628 项、仓库测试 413 项全部通过。详见 `llm/VERIFY.md`。
+- 实测：HTML 603 856 字节，PDF 125 页 / 7.2 MB（本机微软雅黑），EPUB 226 665 字节；构建器测试 628 项、仓库测试 423 项全部通过。详见 `llm/VERIFY.md`。
 - 插图：`illustrations-agents/` 下 17 枚章徽、10 幅篇题、31 张正文手绘图与 1 张独立封面，全部通过墨线 SVG 硬契约。
 - 知识点补全（2026-11-21 第二轮）：MoE 专家与路由机制（第 4 章）、长上下文扩展三法 PI/NTK/YaRN（第 4 章）、MLA 潜在注意力（第 3 章）、投机解码的命中条件与模型路由/级联（第 10 章）、约束解码（第 12 章）、LLM-as-judge 及位置与自偏好偏差（第 14 章）、视觉提示注入与视频帧预算（第 15 章）；术语表同步新增 13 条，七篇引用进 `sources-llm.json`。有意不收：音频模态（按范围决策只做图像）、扩散生成模型（非 Agent 输入通道）、分布式多机训练（超出单机教学定位）。
 - 未做：英文版 `en/llm/`；真实 tokenizer 跨模型计数、真实预训练/微调/对齐实验、长上下文质量实验、GPU 吞吐压测、真实多模态模型识读、真实 LLM-as-judge 偏差实测。正文中未把未测内容写成结论。

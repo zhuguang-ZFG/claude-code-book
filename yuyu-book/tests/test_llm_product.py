@@ -121,7 +121,8 @@ class LlmProduct(unittest.TestCase):
         readme = (REPO_ROOT / "llm/README.md").read_text(encoding="utf-8")
         for name in ("bpe_demo.py", "embedding_demo.py", "attention_demo.py",
                      "transformer_demo.py", "sampling_demo.py",
-                     "context_budget.py", "scaling_demo.py", "sft_demo.py",
+                     "context_budget.py", "scaling_demo.py", "train_demo.py",
+                     "embedding_train_demo.py", "sft_demo.py",
                      "alignment_demo.py", "serving_demo.py", "rag_demo.py",
                      "toolcall_demo.py", "cot_demo.py", "eval_demo.py",
                      "multimodal_demo.py"):

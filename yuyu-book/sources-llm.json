@@ -26,6 +26,19 @@
       "commit": "1acefe89412b20245db5a22d2a02001e547dc602"
     }
   },
+  "nanogpt": {
+    "title": "karpathy/nanoGPT",
+    "authority": "上游仓库与教学讲义",
+    "kind": "github",
+    "url": "https://github.com/karpathy/nanoGPT/tree/3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+    "snapshot": "固定到完整提交 3adf61e154c3fe3fca428ad6bc3818b27a3b8291，2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "MIT",
+    "scope": "第 7 章：train_demo.py 是同一训练循环（前向、反向、更新）的手写缩小版；只引用其流程结构，本章代码为自写。",
+    "pinned": {
+      "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291"
+    }
+  },
   "utf8-rfc": {
     "title": "RFC 3629: UTF-8, a transformation format of ISO 10646",
     "authority": "IETF",

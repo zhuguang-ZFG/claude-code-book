@@ -697,5 +697,104 @@ class MultimodalExample(unittest.TestCase):
         self.assertIn("high (max edge 1568)", output)
 
 
+class TrainExample(unittest.TestCase):
+    def setUp(self):
+        self.module = load("train_demo")
+
+    def _trained(self, seed: int):
+        import random
+        model = self.module.Tiny(len(self.module.VOCAB), random.Random(seed))
+        history = self.module.train(model, random.Random(seed))
+        return model, history
+
+    def test_backprop_matches_numeric_gradients(self):
+        import random
+        model = self.module.Tiny(len(self.module.VOCAB), random.Random(1))
+        probe = self.module.IDS[:self.module.N_CTX]
+        targets = self.module.IDS[1:self.module.N_CTX + 1]
+        worst = self.module.gradcheck(model, probe, targets, random.Random(2))
+        self.assertLess(worst, 1e-4)
+
+    def test_the_loss_actually_drops(self):
+        model, history = self._trained(self.module.SEED)
+        first = history[0][1]
+        final = model.loss(self.module.IDS[:self.module.N_CTX],
+                           self.module.IDS[1:self.module.N_CTX + 1])
+        self.assertGreater(first, 3.0)      # ~ln(vocab) at the start
+        self.assertLess(final, 2.0)        # learned the corpus patterns
+        for _step, loss in history[1:]:
+            self.assertLess(loss, first)
+
+    def test_training_is_reproducible(self):
+        _first_model, first = self._trained(self.module.SEED)
+        _second_model, second = self._trained(self.module.SEED)
+        self.assertEqual(first, second)
+
+    def test_generate_keeps_the_prompt_and_the_vocab(self):
+        model, _history = self._trained(self.module.SEED)
+        sample = self.module.generate(model, "青禾工作坊", 8)
+        self.assertTrue(sample.startswith("青禾工作坊"))
+        self.assertEqual(len(sample), len("青禾工作坊") + 8)
+        for ch in sample:
+            self.assertIn(ch, self.module.VOCAB)
+
+    def test_command_prints_the_training_curve(self):
+        output = run("train_demo")
+        self.assertIn("gradcheck", output)
+        self.assertIn("loss before training", output)
+        self.assertIn("step 240", output)
+        self.assertIn("loss after training", output)
+        self.assertIn("greedy sample", output)
+
+
+class EmbeddingTrainExample(unittest.TestCase):
+    def setUp(self):
+        self.module = load("embedding_train_demo")
+
+    def test_sigmoid_and_softplus_survive_extreme_scores(self):
+        module = self.module
+        self.assertEqual(module.sigmoid(1000.0), 1.0)
+        self.assertEqual(module.sigmoid(-1000.0), 0.0)
+        self.assertAlmostEqual(module.softplus(1000.0), 1000.0)
+        self.assertEqual(module.softplus(-1000.0), 0.0)
+
+    def test_pairs_stay_inside_the_window(self):
+        module = self.module
+        ids = list(range(8))
+        found = module.pairs(ids)
+        # positions 0 and 7 keep 2 neighbours, 1 and 6 keep 3, the rest 4
+        self.assertEqual(len(found), 2 + 3 + 4 * 4 + 3 + 2)
+        for center, context in found:
+            self.assertNotEqual(center, context)
+            self.assertIn(abs(center - context), (1, 2))
+
+    def test_training_groups_words_by_topic(self):
+        import random
+        vec, _initial, _history = self.module.train(
+            random.Random(self.module.SEED))
+        hits = 0
+        for index, word in enumerate(self.module.VOCAB):
+            scored = [(self.module.cosine(vec[index], vec[j]),
+                       self.module.VOCAB[j])
+                      for j in range(len(vec)) if j != index]
+            scored.sort(reverse=True)
+            topics = {self.module.TOPIC[other] for _s, other in scored[:3]}
+            hits += self.module.TOPIC[word] in topics
+        self.assertEqual(hits, len(self.module.VOCAB))
+
+    def test_training_is_reproducible(self):
+        import random
+        _v1, _i1, h1 = self.module.train(random.Random(self.module.SEED))
+        _v2, _i2, h2 = self.module.train(random.Random(self.module.SEED))
+        self.assertEqual(h1, h2)
+
+    def test_command_prints_before_and_after_neighbours(self):
+        output = run("embedding_train_demo")
+        self.assertIn("pair loss", output)
+        self.assertIn("own topic: 12/12", output)
+        self.assertIn("before:", output)
+        self.assertIn("after :", output)
+
+
 if __name__ == "__main__":
     unittest.main()

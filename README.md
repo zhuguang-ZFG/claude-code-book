@@ -84,7 +84,7 @@ make book-pi-epub   # 再加 EPUB
 
 `manifest-collected.json` 逐卷引用各册清单与来源。`make book-collected` 构建中文单文件 HTML；`make book-collected-all` 构建 HTML、PDF 和 EPUB。Windows 没有 make 时，运行 `python scripts/bookctl.py build --product collected --lang zh --pdf --epub`。当前改稿的检查范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。
 
-2026-11-19 的完整合集产物只包含当时的十卷，不代表当前十一卷版；历史 PDF/EPUB 核对数据与范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。当前十一卷版（LLM 卷十六章）已完整重建：PDF 2 043 页、351 个书签，EPUB 52.2 MB、EPUBCheck 5.4.0 零错误零警告。
+2026-11-19 的完整合集产物只包含当时的十卷，不代表当前十一卷版；历史 PDF/EPUB 核对数据与范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。当前十一卷版（LLM 卷十六章 + 真训练增强）已完整重建：PDF 2 045 页、351 个书签，EPUB 52.2 MB、EPUBCheck 5.4.0 零错误零警告。
 
 2026-11-20 EPUB 改为按篇拆文档，向参考书的结构看齐：正文不再是单个 6 MB 的 `content.xhtml`，合订本拆成 326 个 XHTML 文档，最大的正文一篇 190 KB（`ch15`）；每篇文档带自己的标题，封面图以 `cover-image` 声明，屏幕专用的合集跳转栏不再进入离线版。当次产物 53.4 MB，EPUBCheck 5.4.0 报 0 fatal / 0 error / 0 warning；5,950 处内部引用（同文档 953、跨文档 4,997）与 1,043 处图片/样式引用全部可解析。同一趟 HTML 为 74.6 MB、246 个正文单元、333 幅图版。构建器契约见 `tests/test_epub_splitting.py`。
 
