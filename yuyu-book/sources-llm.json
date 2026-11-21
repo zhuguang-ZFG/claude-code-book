@@ -156,6 +156,45 @@
       "accessed": "2026-11-21"
     }
   },
+  "word2vec": {
+    "title": "Efficient Estimation of Word Representations in Vector Space",
+    "authority": "arXiv 预印本（ICLR 2013 workshop）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1301.3781",
+    "snapshot": "arXiv:1301.3781，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：词向量的早期训练目标，以及“语义相近的 token 向量方向接近”这一直觉的来源。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "sentence-bert": {
+    "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+    "authority": "arXiv 预印本（EMNLP 2019）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1908.10084",
+    "snapshot": "arXiv:1908.10084，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：句子级编码与余弦相似度检索的常见做法；不引用其 benchmark 数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "hnsw": {
+    "title": "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1603.09320",
+    "snapshot": "arXiv:1603.09320，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：近似最近邻索引的权衡，用来说明精确扫描之外的工程选择；不引用其性能数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

@@ -20,9 +20,9 @@ from yuyu_book import plain
 from yuyu_book.core import REPO_ROOT, expected_ids, load_configs, load_unit, unit_stream
 
 
-PREVIEW_IDS = ["llm-front", "llm-ch01", "llm-ch03", "llm-ch04", "llm-ch05",
-               "llm-ch06"]
-PREVIEW_CHAPTERS = {1, 3, 4, 5, 6}
+PREVIEW_IDS = ["llm-front", "llm-ch01", "llm-ch02", "llm-ch03",
+               "llm-ch04", "llm-ch05", "llm-ch06"]
+PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6}
 PLANNED_CHAPTERS = set(range(1, 16))
 
 
@@ -97,11 +97,13 @@ class LlmProduct(unittest.TestCase):
 
     def test_examples_and_readme_are_part_of_the_preview(self):
         readme = (REPO_ROOT / "llm/README.md").read_text(encoding="utf-8")
-        for name in ("bpe_demo.py", "attention_demo.py", "transformer_demo.py",
-                     "sampling_demo.py", "context_budget.py"):
+        for name in ("bpe_demo.py", "embedding_demo.py", "attention_demo.py",
+                     "transformer_demo.py", "sampling_demo.py",
+                     "context_budget.py"):
             self.assertTrue((REPO_ROOT / "llm/examples" / name).is_file(), name)
             self.assertIn(name, readme)
-        for chapter in ("ch01.md", "ch03.md", "ch04.md", "ch05.md", "ch06.md"):
+        for chapter in ("ch01.md", "ch02.md", "ch03.md", "ch04.md", "ch05.md",
+                        "ch06.md"):
             self.assertIn(chapter, readme)
 
 

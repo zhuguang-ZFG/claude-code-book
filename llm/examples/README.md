@@ -1,10 +1,11 @@
 # 示例说明
 
-五个脚本都只依赖 Python 3.12+ 标准库，不需要 GPU、模型文件、API key 或网络。
+六个脚本都只依赖 Python 3.12+ 标准库，不需要 GPU、模型文件、API key 或网络。
 
 | 脚本 | 用途 | 主要输出 |
 | --- | --- | --- |
 | `bpe_demo.py` | 在极小语料上训练 byte-level BPE，编码与解码样本 | 合并规则、字符/字节/token 对照表、round-trip 检查 |
+| `embedding_demo.py` | 手设向量的余弦相似度与 top-k 检索 | 点积/余弦排序差异、近邻表、参数与扫描成本 |
 | `attention_demo.py` | 对三个手设向量计算单头/双头因果注意力 | 权重矩阵、输出向量、Q/K/V/O 参数与 KV cache |
 | `transformer_demo.py` | 走一遍 pre-norm block，算 Norm、残差、RoPE 与参数账 | 归一化结果、残差流模长、参数表、RoPE 点积 |
 | `sampling_demo.py` | 对合成的下一个 token 分布应用温度、top-k、top-p | 概率表、保留候选数、固定 seed 的抽样结果 |
@@ -14,6 +15,7 @@
 
 ```bash
 python llm/examples/bpe_demo.py
+python llm/examples/embedding_demo.py
 python llm/examples/attention_demo.py
 python llm/examples/transformer_demo.py
 python llm/examples/sampling_demo.py
@@ -25,10 +27,11 @@ python llm/examples/context_budget.py
 ## 限制
 
 - BPE 示例省略了生产 tokenizer 的预切分、特殊 token 和词表压缩，计数只用于说明机制；
+- embedding 示例的向量是手设的三维玩具，不代表任何训练好的编码器；
 - 注意力示例的输入向量与投影矩阵都是手设的，只演示算术，不代表任何训练好的模型；
 - Transformer 示例只走前向算术，不包含反向传播、损失函数与优化器；
 - 采样示例使用手工设定的 logits，不代表任何模型的真实分布；
 - 预算示例中的层数、KV 头数、精度和价格都是可替换的输入，不是厂商规格或报价；
-- 五个脚本不测量真实延迟、吞吐或显存占用。
+- 六个脚本不测量真实延迟、吞吐或显存占用。
 
-测试位于仓库根目录的 `tests/test_llm_examples.py`，会检查 round-trip、因果遮罩、归一化、参数公式、固定 seed 和预算公式。
+测试位于仓库根目录的 `tests/test_llm_examples.py`，会检查 round-trip、余弦与 top-k、因果遮罩、归一化、参数公式、固定 seed 和预算公式。

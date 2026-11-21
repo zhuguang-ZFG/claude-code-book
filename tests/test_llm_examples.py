@@ -55,6 +55,49 @@ class BpeExample(unittest.TestCase):
         self.assertIn("🙂", output)
 
 
+class EmbeddingExample(unittest.TestCase):
+    def setUp(self):
+        self.embedding = load("embedding_demo")
+
+    def test_cosine_handles_direction_and_zero_vectors(self):
+        module = self.embedding
+        self.assertAlmostEqual(module.cosine([1.0, 0.0], [2.0, 0.0]), 1.0)
+        self.assertAlmostEqual(module.cosine([1.0, 0.0], [0.0, 1.0]), 0.0)
+        self.assertAlmostEqual(module.cosine([1.0, 0.0], [-1.0, 0.0]), -1.0)
+        with self.assertRaises(ValueError):
+            module.cosine([0.0, 0.0], [1.0, 0.0])
+
+    def test_dot_and_cosine_can_disagree_on_ranking(self):
+        module = self.embedding
+        query = [3.0, 0.0]
+        short, long = [1.0, 0.0], [2.0, 2.0]
+        self.assertGreater(module.dot(query, long), module.dot(query, short))
+        self.assertGreater(module.cosine(query, short),
+                           module.cosine(query, long))
+
+    def test_top_k_excludes_the_query_and_sorts_by_cosine(self):
+        module = self.embedding
+        rows = module.top_k(module.VECTORS["退款"], module.VECTORS, 3)
+        names = [row[0] for row in rows]
+        self.assertNotIn("退款", names)
+        self.assertEqual(names[0], "不退款")
+        scores = [row[1] for row in rows]
+        self.assertEqual(scores, sorted(scores, reverse=True))
+
+    def test_negation_is_nearly_parallel_in_the_toy_space(self):
+        module = self.embedding
+        self.assertAlmostEqual(
+            module.cosine(module.VECTORS["退款"], module.VECTORS["不退款"]),
+            0.9997, places=4)
+
+    def test_command_prints_costs_and_the_negation_warning(self):
+        output = run("embedding_demo")
+        self.assertIn("dot ranks B first; cosine ranks A first", output)
+        self.assertIn("cosine(退款, 不退款) = 0.9997", output)
+        self.assertIn("131,072,000 params", output)
+        self.assertIn("1.5 GiB", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")
