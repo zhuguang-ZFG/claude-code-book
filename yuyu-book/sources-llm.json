@@ -417,6 +417,45 @@
       "accessed": "2026-11-21"
     }
   },
+  "hallucination-survey": {
+    "title": "Survey of Hallucination in Natural Language Generation",
+    "authority": "arXiv 预印本（ACM Computing Surveys）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2202.03629",
+    "snapshot": "arXiv:2202.03629，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 14 章：幻觉的来源与分类，用来说明事实、引用、工具与格式错误的区别。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "helm": {
+    "title": "Holistic Evaluation of Language Models",
+    "authority": "arXiv 预印本（TMLR 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2211.09110",
+    "snapshot": "arXiv:2211.09110，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 14 章：多场景、多指标的整体评测思路，用来说明单一准确率的局限。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "distillation": {
+    "title": "Distilling the Knowledge in a Neural Network",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1503.02531",
+    "snapshot": "arXiv:1503.02531，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 14 章：用软标签把教师模型知识迁移到学生模型的经典做法。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

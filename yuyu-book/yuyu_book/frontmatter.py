@@ -196,7 +196,7 @@ def volume_divider(volume: dict, lang: str, idx: int,
             f'</div></section>')
 
 
-_ROMAN = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ"]
+_ROMAN = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"]
 
 
 def toc_html(entries: list[dict], lang: str) -> str:

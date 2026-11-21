@@ -23,8 +23,8 @@ from yuyu_book.core import REPO_ROOT, expected_ids, load_configs, load_unit, uni
 PREVIEW_IDS = ["llm-front", "llm-ch01", "llm-ch02", "llm-ch03",
                "llm-ch04", "llm-ch05", "llm-ch06", "llm-ch07",
                "llm-ch08", "llm-ch09", "llm-ch10", "llm-ch11",
-               "llm-ch12", "llm-ch13"]
-PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
+               "llm-ch12", "llm-ch13", "llm-ch14", "llm-ch15"]
+PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 PLANNED_CHAPTERS = set(range(1, 16))
 
 
@@ -103,13 +103,23 @@ class LlmProduct(unittest.TestCase):
                      "transformer_demo.py", "sampling_demo.py",
                      "context_budget.py", "scaling_demo.py", "sft_demo.py",
                      "alignment_demo.py", "serving_demo.py", "rag_demo.py",
-                     "toolcall_demo.py", "cot_demo.py"):
+                     "toolcall_demo.py", "cot_demo.py", "eval_demo.py"):
             self.assertTrue((REPO_ROOT / "llm/examples" / name).is_file(), name)
             self.assertIn(name, readme)
         for chapter in ("ch01.md", "ch02.md", "ch03.md", "ch04.md", "ch05.md",
                         "ch06.md", "ch07.md", "ch08.md", "ch09.md",
-                        "ch10.md", "ch11.md", "ch12.md", "ch13.md"):
+                        "ch10.md", "ch11.md", "ch12.md", "ch13.md",
+                        "ch14.md", "ch15.md"):
             self.assertIn(chapter, readme)
+
+    def test_glossary_has_at_least_eighty_terms_and_preview_links(self):
+        glossary = (REPO_ROOT / "llm/ch15.md").read_text(encoding="utf-8")
+        rows = re.findall(r"^\| [^|]+ \| [^|]+ \| \[\d+\]\(ch\d{2}\.md\) \|",
+                          glossary, flags=re.M)
+        self.assertGreaterEqual(len(rows), 80, "the glossary shrank below 80 terms")
+        linked = {int(value) for value in re.findall(r"ch(\d{2})\.md", glossary)}
+        self.assertLessEqual(linked, PREVIEW_CHAPTERS,
+                             "the glossary links to an unwritten chapter")
 
 
 if __name__ == "__main__":

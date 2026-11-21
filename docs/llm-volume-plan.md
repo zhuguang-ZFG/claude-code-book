@@ -1,6 +1,6 @@
 # LLM 卷规划：写给 Agent 工程师的大模型原理与实战
 
-日期：2026-11-20。状态：0.1.0 中文试读版已落地（第 1–13 章），其余章节待补。
+日期：2026-11-20。状态：0.1.0 中文版已完稿（第 1–15 章），英文版与真实实验待后续。
 
 ## 为什么写、为什么不复刻现有赛道
 
@@ -49,25 +49,25 @@ GitHub 中文/英文 LLM 教学仓格局（星数为 2026-11 实测）：
 
 - 每个技术断言钉版本：rasbt/LLMs-from-scratch、datawhalechina/happy-llm、karpathy/nanoGPT、MCP 规范等一律 full SHA 或 tag，进 `yuyu-book/sources-llm.json`。
 - 不嵌入第三方资产；代码示例自写或 MIT 许可并注明。
-- 中英同步：`llm/`（zh）与 `en/llm/` 同步成稿，遵守 H1 格式、全角标点、中西文空格等仓库规范。0.1.0 试读版先出中文，英文版待正文定稿后同步，不把未翻译的章节挂进 manifest。
+- 中英同步：`llm/`（zh）与 `en/llm/` 同步成稿，遵守 H1 格式、全角标点、中西文空格等仓库规范。0.1.0 中文版先出中文，英文版待后续同步，不把未翻译的章节挂进 manifest。
 
 ## 流水线复用与注册顺序
 
 1. 章节源文件落 `llm/` 与 `en/llm/`。
-2. 新增 `yuyu-book/manifest-llm.json`（试读版按篇分组、无附录、`plain_optional`），`sources-llm.json` 同前缀；`notes-llm.json` / `glosses-llm.json` 等通俗层文件留空，不登记未启用层。
-3. `scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 与 CI 的 `agent-volumes` 矩阵纳入 `llm`；门户与合订本暂不收录试读版，等章节齐了再议。
+2. 新增 `yuyu-book/manifest-llm.json`（中文版按篇分组、无附录、`plain_optional`），`sources-llm.json` 同前缀；`notes-llm.json` / `glosses-llm.json` 等通俗层文件留空，不登记未启用层。
+3. `scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 与 CI 的 `agent-volumes` 矩阵纳入 `llm`；门户与合订本暂不收录该分册，等英文版与合订决策再议。
 4. `make check` 全绿后出第一册 HTML；合订本收录决策另议。
 
 ## 写作顺序
 
-第 1、5、6 章先行（agent 工程师最高频痛点：token、采样、上下文），第 3、4 章已补注意力与 Transformer，第 2 章已补 embedding，第 8、9 章已补 SFT/LoRA 与对齐，第 7 章已补预训练算力账，第 10 章已补推理与部署，第 11 章已补 RAG，第 12 章已补工具调用与 MCP，第 13 章已补思维链与测试时计算；最后 14，第 15 章总表收官。
+第 1、5、6 章先行（agent 工程师最高频痛点：token、采样、上下文），第 3、4 章已补注意力与 Transformer，第 2 章已补 embedding，第 8、9 章已补 SFT/LoRA 与对齐，第 7 章已补预训练算力账，第 10 章已补推理与部署，第 11 章已补 RAG，第 12 章已补工具调用与 MCP，第 13 章已补思维链与测试时计算，第 14 章已补评测与蒸馏，第 15 章总表收官。十五章均已落地。
 
 ## 落地状态（2026-11-21）
 
-- 已建 `llm/`：前言、第 1–13 章、`README.md`、`VERIFY.md` 与 `examples/` 十三个纯标准库脚本。
+- 已建 `llm/`：前言、第 1–15 章、`README.md`、`VERIFY.md` 与 `examples/` 十四个纯标准库脚本。
 - 已注册独立产品 `llm`：`yuyu-book/manifest-llm.json`、`sources-llm.json`、`registry.py` 白名单、`scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 的 `book-llm*`、CI 矩阵与 EPUB 流程。
 - 产物前缀 `yuyu-llm`，当前只有中文版（`langs: ["zh"]`），不启用通俗层（`plain_optional: true`），暂不进入合订本与发布脚本的 `COMPANION_VOLUMES`。
-- 实测：HTML 494 420 字节，PDF 92 页 / 5.1 MB（本机微软雅黑），EPUB 252 955 字节；构建器测试 624 项、仓库测试 402 项全部通过。详见 `llm/VERIFY.md`。
-- 插图：`illustrations-agents/` 下 14 枚章徽、8 幅篇题与 1 张独立封面，全部通过墨线 SVG 硬契约。
-- 未做：第 14–15 章；英文版 `en/llm/`；真实 tokenizer 跨模型计数、真实预训练/微调/对齐实验、长上下文质量实验、GPU 吞吐压测。正文中未把未测内容写成结论。
+- 实测：HTML 522 099 字节，PDF 108 页 / 6.1 MB（本机微软雅黑），EPUB 204 700 字节；构建器测试 625 项、仓库测试 406 项全部通过。详见 `llm/VERIFY.md`。
+- 插图：`illustrations-agents/` 下 16 枚章徽、9 幅篇题、15 张正文手绘图与 1 张独立封面，全部通过墨线 SVG 硬契约。
+- 未做：英文版 `en/llm/`；真实 tokenizer 跨模型计数、真实预训练/微调/对齐实验、长上下文质量实验、GPU 吞吐压测。正文中未把未测内容写成结论。
 

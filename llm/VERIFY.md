@@ -1,6 +1,6 @@
 # 构建与测试实测记录
 
-本文件记录 **0.1.0 中文试读版**（第 1–13 章）在本机的实际构建结果。日期：2026-11-21。
+本文件记录 **0.1.0 中文版**（第 1–15 章）在本机的实际构建结果。日期：2026-11-21。
 
 ## 环境
 
@@ -17,37 +17,37 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 494 420 | 14 个单元、3 张图版、46 条引用链接、14 枚章徽、8 幅篇题 |
-| `yuyu-llm-zh.pdf` | 5 122 698 | 92 页、23 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 252 955 | 134 条导航、29 个文档、26 张图片（含 26 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 522 099 | 16 个单元、15 张正文手绘图、83 条引用链接、16 枚章徽、9 幅篇题 |
+| `yuyu-llm-zh.pdf` | 6 098 717 | 108 页、26 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 204 700 | 153 条导航、32 个文档、26 张图片（含 26 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
 ```text
-yuyu-llm-zh.html: 0.5 MB, 14 units, 3 plates, 46 cited links,
-0 glosses, 0 lead bands, 0 tier chips, 14 emblems, 8 headpieces, 0 keeper notes
+yuyu-llm-zh.html: 0.5 MB, 16 units, 15 plates, 83 cited links,
+0 glosses, 0 lead bands, 0 tier chips, 16 emblems, 9 headpieces, 0 keeper notes
 CHECK OK
 ```
 
-插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：14 枚单元章徽、8 幅篇题、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
+插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：16 枚单元章徽、9 幅篇题、15 张正文手绘图、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
 
 ## 测试
 
 | 命令 | 结果 |
 | --- | --- |
-| `python -m unittest discover -s yuyu-book/tests` | 624 项通过 |
-| `python -m unittest discover -s tests` | 402 项通过 |
+| `python -m unittest discover -s yuyu-book/tests` | 625 项通过 |
+| `python -m unittest discover -s tests` | 406 项通过 |
 | `python scripts/bookctl.py check --fast` | 通过（内容检查、两套测试） |
 | `python scripts/bookctl.py build --product llm --lang zh --check` | `CHECK OK` |
 
 新增测试：
 
-- `tests/test_llm_examples.py`：加载十三个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回、工具 schema 校验与 MCP 消息、自洽投票，并实际执行脚本。
+- `tests/test_llm_examples.py`：加载十四个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回、工具 schema 校验与 MCP 消息、自洽投票、Wilson 区间与评测口径，并实际执行脚本。
 - `yuyu-book/tests/test_llm_product.py`：检查产品注册、前缀、单语、`plain_optional`、章节与磁盘文件一致、卷规划仍是 15 章、GitHub 来源为完整 SHA 且与 `llm/facts/source-lock.json` 一致。
 
 ## 示例脚本实测输出
 
-十三个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
+十四个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -63,6 +63,7 @@ python llm/examples/serving_demo.py
 python llm/examples/rag_demo.py
 python llm/examples/toolcall_demo.py
 python llm/examples/cot_demo.py
+python llm/examples/eval_demo.py
 ```
 
 - `bpe_demo.py`：7 行语料训练 32 条合并规则，词表 288；五个样本全部 round-trip 成功。`青禾工作坊` 为 5 字符 / 15 字节 / 8 toy tokens；`🙂` 为 1 字符 / 4 字节 / 4 toy tokens。
@@ -78,6 +79,7 @@ python llm/examples/cot_demo.py
 - `rag_demo.py`：6 份文档切成 13 块，按版本过滤后剩 12 块；块大小 10 会把“原路退回”切断，20 不会。BM25 第一是 `refund-faq#0`，向量第一是 `refund-policy#0`，RRF 第一是 `refund-policy#0`，玩具重排第一是 `refund-policy#2`（到账时间 1–3 个工作日）。
 - `toolcall_demo.py`：两个工具的 schema 分别为 181 / 241 字符；第一次调用把 `order_id` 传成整数，返回 `validation failed: order_id must be a string`；第二次传字符串成功，返回“退款处理中，预计 1–3 个工作日到账”。MCP 消息包含 `initialize` / `tools/list` / `tools/call`，协议版本 `2026-07-28`。
 - `cot_demo.py`：假设单条样本正确率 0.60，1 / 3 / 5 / 9 / 15 条多数投票的模拟准确率为 60.7% / 66.0% / 69.4% / 75.2% / 79.5%；每题 token 从 400 涨到 6 000。按每百万输出 token 0.60 美元，直接回答 / CoT 一次 / CoT 五次 / CoT 十五次的每道正确题成本为 $0.000133 / $0.000369 / $0.001561 / $0.004053。
+- `eval_demo.py`：200 题上 82.0% 与 86.0% 的 Wilson 区间为 [76.1%, 86.7%] 与 [80.5%, 90.1%]，两者重叠；20 条测试题在训练中见过，把 80.0% 的干净准确率抬到 82.0%；回答 80 题、对 72 题时覆盖率 80.0%、回答内准确率 90.0%、整体 72.0%、错答率 8.0%；教师/学生每道正确题成本约 $0.0071 / $0.0015。
 
 ## 未实测范围
 
@@ -91,6 +93,7 @@ python llm/examples/cot_demo.py
 - 真实 RAG 检索质量（第 11 章的语料、向量与重排权重都是手设的）；
 - 真实 MCP 服务器、权限、传输与幂等（第 12 章只演示协议形状）；
 - 真实模型的自洽投票收益（第 13 章用独立错误假设模拟）；
+- 真实评测集的置信区间、污染检查与蒸馏效果（第 14 章的计数与价格是手设的）；
 - 真实 SFT / LoRA / QLoRA 训练实验（第 8 章只有手设概率与矩阵）；
 - 真实偏好对齐实验与奖励模型训练（第 9 章只有手设分数与 log 概率）；
 - 训练好的模型里注意力头实际学到了什么（本书示例的权重是手设的）；
@@ -99,4 +102,4 @@ python llm/examples/cot_demo.py
 - GPU 显存占用、吞吐、延迟与并发压测；
 - 真实价格与账单核对（脚本中的价格是输入参数，不是报价）。
 
-这些缺口不影响试读版的可运行性，但不能把本章的示意数字当作生产容量规划。
+这些缺口不影响正文的可运行性，但不能把本章的示意数字当作生产容量规划。

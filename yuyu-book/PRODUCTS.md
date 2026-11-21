@@ -12,7 +12,7 @@
 | `prompt` | 《提示词工程：从提问到 Agent 协作》 | `manifest-prompt.json` | `yuyu-prompt-*` | 同上（`make book-prompt-all`），随书练习包另见下 |
 | `kimi` | 《Kimi Code：从插件到审查助手》 | `manifest-kimi.json` | `yuyu-kimi-*` | 同上（`make book-kimi-all`） |
 | `vibe` | 《Vibe Coding：把想法做成能跑的软件》 | `manifest-vibe.json` | `yuyu-vibe-*` | `build --product vibe --lang zh --pdf --epub`（`make book-vibe-all`） |
-| `llm` | 《大模型：写给 Agent 工程师的原理与实战》（试读版） | `manifest-llm.json` | `yuyu-llm-*` | `build --product llm --lang zh --pdf --epub`（`make book-llm-all`） |
+| `llm` | 《大模型：写给 Agent 工程师的原理与实战》（中文版） | `manifest-llm.json` | `yuyu-llm-*` | `build --product llm --lang zh --pdf --epub`（`make book-llm-all`） |
 | `collected` | 《Agent Harness 十卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`，仅 HTML）；HTML/PDF/EPUB 用 `make book-collected-all` |
 
 御舆、omp、pi 各有一套通俗层登记表：`plain.registry_names()` 按 manifest 的 `product` 字段
@@ -26,8 +26,8 @@ omp 用 `-omp` 后缀，pi 用 `-pi` 后缀（`glosses-pi.json` / `notes-pi.json
 
 六本 Agent 分册共用 `manifest-<product>.json` / `sources-<product>.json`，各有前言、十八章和
 附录 A–D（23 个单元），中文单语，产物前缀 `yuyu-<product>`，由 `make book-agents` 一次编完，
-CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩阵里另有 `llm` 试读版：
-它只有前言加第 1–13 章（14 个单元），不套用这里的十八章程式，契约由
+CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩阵里另有 `llm` 中文版：
+它只有前言加第 1–15 章（16 个单元），不套用这里的十八章程式，契约由
 `yuyu-book/tests/test_llm_product.py` 单独校验。
 
 - `opencode`、`deepseek`、`hermes`、`codex` 带完整通俗层：guides、reading-paths、
@@ -46,13 +46,13 @@ CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩
 guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/` 目录。构建走
 `make book-vibe-all`（HTML/PDF/EPUB），版本 0.2.0，证据见 `vibe/VERIFY.md`。
 
-## LLM 分册（试读版）
+## LLM 分册（中文版）
 
-`llm` 是模型原理分册的 0.1.0 试读版，中文单语，前言加第 1–13 章（14 个单元），
-声明 `plain_optional`，不带 guides、索引、修订页与附录。十三个示例在 `llm/examples/`，
+`llm` 是模型原理分册的 0.1.0 中文版，中文单语，前言加第 1–15 章（16 个单元），
+声明 `plain_optional`，不带 guides、索引、修订页与附录。十四个示例在 `llm/examples/`，
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。插图在 `illustrations-agents/` 的 `llm-*`、
-`part-llm-p*` 与 `cover-llm.svg`，走同一套墨线契约。构建走 `make book-llm-all`，
+`part-llm-p*` 与 `cover-llm.svg`，含 15 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
 版本与实测数据见 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本版暂不进入合订本，
 也不加入 `scripts/release.py` 的 `COMPANION_VOLUMES`；CI 的 `agent-volumes` 矩阵会照常构建三件套。
 

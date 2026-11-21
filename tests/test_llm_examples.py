@@ -404,6 +404,53 @@ class CotExample(unittest.TestCase):
         self.assertIn("independent errors", output)
 
 
+class EvalExample(unittest.TestCase):
+    def setUp(self):
+        self.eval = load("eval_demo")
+
+    def test_wilson_interval_contains_the_point_estimate(self):
+        module = self.eval
+        low, high = module.wilson(164, 200)
+        self.assertLess(low, 0.82)
+        self.assertGreater(high, 0.82)
+        self.assertAlmostEqual(low, 0.7606, places=3)
+        self.assertAlmostEqual(high, 0.8674, places=3)
+        low_b, high_b = module.wilson(172, 200)
+        self.assertLessEqual(max(low, low_b), min(high, high_b))
+
+    def test_contamination_and_abstention_counts(self):
+        module = self.eval
+        result = module.contamination(144, 180, 20, 20)
+        self.assertAlmostEqual(result["clean"], 0.80)
+        self.assertAlmostEqual(result["reported"], 0.82)
+        self.assertAlmostEqual(result["inflation"], 0.02)
+        result = module.abstention(80, 72, 100)
+        self.assertAlmostEqual(result["coverage"], 0.80)
+        self.assertAlmostEqual(result["answered_precision"], 0.90)
+        self.assertAlmostEqual(result["overall"], 0.72)
+        self.assertAlmostEqual(result["wrong_rate"], 0.08)
+
+    def test_cost_per_correct_and_invalid_inputs(self):
+        module = self.eval
+        self.assertAlmostEqual(module.cost_per_correct(0.006, 0.85),
+                               0.0070588, places=6)
+        self.assertAlmostEqual(module.cost_per_correct(0.0012, 0.78),
+                               0.0015385, places=6)
+        with self.assertRaises(ValueError):
+            module.cost_per_correct(0.006, 0)
+        with self.assertRaises(ValueError):
+            module.wilson(201, 200)
+
+    def test_command_prints_intervals_and_cost(self):
+        output = run("eval_demo")
+        self.assertIn("[76.1%, 86.7%]", output)
+        self.assertIn("[80.5%, 90.1%]", output)
+        self.assertIn("clean accuracy:    80.0%", output)
+        self.assertIn("coverage:           80.0%", output)
+        self.assertIn("$0.0071", output)
+        self.assertIn("$0.0015", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")
