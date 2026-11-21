@@ -152,6 +152,62 @@ class SftExample(unittest.TestCase):
         self.assertIn("4.0 MiB", output)
 
 
+class AlignmentExample(unittest.TestCase):
+    def setUp(self):
+        self.alignment = load("alignment_demo")
+
+    def test_bradley_terry_loss_follows_the_margin(self):
+        module = self.alignment
+        loss, margin = module.bt_loss(2.0, 1.0)
+        self.assertAlmostEqual(margin, 1.0)
+        self.assertAlmostEqual(loss, 0.313, places=3)
+        loss, margin = module.bt_loss(1.2, 1.2)
+        self.assertAlmostEqual(margin, 0.0)
+        self.assertAlmostEqual(loss, 0.693, places=3)
+        loss, margin = module.bt_loss(-1.0, -0.5)
+        self.assertAlmostEqual(margin, -0.5)
+        self.assertAlmostEqual(loss, 0.974, places=3)
+
+    def test_toy_pairs_have_one_win_and_a_high_mean_loss(self):
+        module = self.alignment
+        losses, correct = [], 0
+        for _label, chosen, rejected in module.PAIRS:
+            loss, margin = module.bt_loss(chosen, rejected)
+            losses.append(loss)
+            correct += int(margin > 0)
+        self.assertEqual(correct, 1)
+        self.assertAlmostEqual(sum(losses) / len(losses), 0.681, places=3)
+
+    def test_dpo_terms_and_beta_scale_the_margin(self):
+        module = self.alignment
+        chosen, rejected, gap = module.dpo_terms(-0.2, -0.5, -0.6, -0.4)
+        self.assertAlmostEqual(chosen, 0.3)
+        self.assertAlmostEqual(rejected, -0.2)
+        self.assertAlmostEqual(gap, 0.5)
+        loss, margin = module.dpo_loss(-0.2, -0.5, -0.6, -0.4, 0.1)
+        self.assertAlmostEqual(margin, 0.05)
+        self.assertAlmostEqual(loss, 0.668, places=3)
+        loss, margin = module.dpo_loss(-0.2, -0.5, -0.6, -0.4, 1.0)
+        self.assertAlmostEqual(margin, 0.5)
+        self.assertAlmostEqual(loss, 0.474, places=3)
+
+    def test_reversed_preference_has_a_higher_loss_and_beta_must_be_positive(self):
+        module = self.alignment
+        loss, margin = module.dpo_loss(-0.4, -0.5, -0.2, -0.6, 1.0)
+        self.assertAlmostEqual(margin, -0.3)
+        self.assertAlmostEqual(loss, 0.854, places=3)
+        with self.assertRaises(ValueError):
+            module.dpo_loss(-0.2, -0.5, -0.6, -0.4, 0)
+
+    def test_command_prints_both_losses_and_the_log_two_check(self):
+        output = run("alignment_demo")
+        self.assertIn("pairwise accuracy (margin > 0): 1/4", output)
+        self.assertIn("mean loss: 0.681", output)
+        self.assertIn("0.474", output)
+        self.assertIn("0.854", output)
+        self.assertIn("-log(sigmoid(0)) = 0.693", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")

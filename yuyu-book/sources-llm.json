@@ -234,6 +234,45 @@
       "accessed": "2026-11-21"
     }
   },
+  "dpo": {
+    "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+    "authority": "arXiv 预印本（NeurIPS 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2305.18290",
+    "snapshot": "arXiv:2305.18290，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：直接用偏好对优化策略的 DPO 损失与参考模型约束；不引用其 benchmark 数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "preference-rl": {
+    "title": "Deep reinforcement learning from human preferences",
+    "authority": "arXiv 预印本（NeurIPS 2017）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1706.03741",
+    "snapshot": "arXiv:1706.03741，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：用成对比较学习奖励的早期框架，作为 Bradley-Terry 偏好损失的背景。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "reward-overopt": {
+    "title": "Scaling Laws for Reward Model Overoptimization",
+    "authority": "arXiv 预印本（ICML 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2210.10760",
+    "snapshot": "arXiv:2210.10760，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：奖励黑客与代理指标过优化的现象；只讲问题框架，不引用具体曲线与系数。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",
