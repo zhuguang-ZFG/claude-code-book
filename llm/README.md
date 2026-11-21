@@ -59,7 +59,7 @@ python llm/examples/eval_demo.py
 ## 状态
 
 - 正文：第 1–15 章已齐；英文版待后续同步。
-- 插图：16 枚单元章徽、9 幅篇题、28 张正文手绘图与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
+- 插图：16 枚单元章徽、9 幅篇题、29 张正文手绘图与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
 - 构建与测试：`make check`、`python -m unittest tests.test_llm_examples yuyu-book.tests.test_llm_product -v`。
 - 实测记录与未测范围见 [`VERIFY.md`](VERIFY.md)。
 - 来源与许可见 [`yuyu-book/sources-llm.json`](../yuyu-book/sources-llm.json) 和 [`facts/source-lock.json`](facts/source-lock.json)。

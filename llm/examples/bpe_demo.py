@@ -8,6 +8,7 @@ its counts demonstrate the mechanism, not any vendor's token count.
 from __future__ import annotations
 
 from collections import Counter
+import sys
 
 BASE = 256
 CORPUS = [
@@ -85,6 +86,11 @@ def show(token: int, vocab: dict[int, bytes]) -> str:
 
 
 def main() -> int:
+    # Redirected output on Windows inherits the locale code page (GBK), which
+    # cannot encode the 🙂 sample. Keep the documented command reproducible
+    # without extra shell setup; an interactive UTF-8 console is a no-op.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     rules, vocab = train(CORPUS, 32)
     print(f"corpus: {len(CORPUS)} lines, {len(CORPUS)} UTF-8 sequences")
     print(f"merges learned: {len(rules)}; vocabulary: {BASE + len(rules)}")

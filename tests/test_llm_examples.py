@@ -54,6 +54,14 @@ class BpeExample(unittest.TestCase):
         self.assertIn("青禾工作坊", output)
         self.assertIn("🙂", output)
 
+    def test_command_survives_a_gbk_locale(self):
+        # The documented command must work when Windows inherits code page 936.
+        env = {**os.environ, "PYTHONIOENCODING": "gbk"}
+        completed = subprocess.run(
+            [sys.executable, str(EXAMPLES / "bpe_demo.py")],
+            cwd=ROOT, env=env, check=True, capture_output=True)
+        self.assertIn("🙂", completed.stdout.decode("utf-8"))
+
 
 class EmbeddingExample(unittest.TestCase):
     def setUp(self):
