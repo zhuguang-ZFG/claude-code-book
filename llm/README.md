@@ -11,6 +11,7 @@
 - [第 4 章：一层一层读懂模型卡](ch04.md)
 - [第 5 章：同一个提示，为什么每次答案不同](ch05.md)
 - [第 6 章：上下文窗口不是免费的抽屉](ch06.md)
+- [第 7 章：预训练：一笔算力账](ch07.md)
 - [第 8 章：SFT 与 LoRA：把通用模型改成你的助手](ch08.md)
 - [第 9 章：对齐：模型为什么“听话”](ch09.md)
 
@@ -28,7 +29,7 @@ python scripts/bookctl.py build --product llm --lang zh --pdf --epub
 
 ## 示例
 
-`llm/examples/` 下八个脚本只用 Python 标准库：
+`llm/examples/` 下九个脚本只用 Python 标准库：
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -37,15 +38,17 @@ python llm/examples/attention_demo.py
 python llm/examples/transformer_demo.py
 python llm/examples/sampling_demo.py
 python llm/examples/context_budget.py
+python llm/examples/scaling_demo.py
 python llm/examples/sft_demo.py
 python llm/examples/alignment_demo.py
 ```
 
-它们分别演示 byte-level BPE、embedding 与余弦检索、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算、SFT 损失掩码与 LoRA 参数账、奖励模型与 DPO 损失。输出是教学数据，不是厂商 benchmark。
+它们分别演示 byte-level BPE、embedding 与余弦检索、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算、预训练算力分配、SFT 损失掩码与 LoRA 参数账、奖励模型与 DPO 损失。输出是教学数据，不是厂商 benchmark。
 
 ## 状态
 
-- 正文：第 1–6、8–9 章已写；第 7、10–15 章按规划补齐。
+- 正文：第 1–9 章已写；第 10–15 章按规划补齐。
+- 插图：10 枚单元章徽、5 幅篇题与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
 - 构建与测试：`make check`、`python -m unittest tests.test_llm_examples yuyu-book.tests.test_llm_product -v`。
 - 实测记录与未测范围见 [`VERIFY.md`](VERIFY.md)。
 - 来源与许可见 [`yuyu-book/sources-llm.json`](../yuyu-book/sources-llm.json) 和 [`facts/source-lock.json`](facts/source-lock.json)。

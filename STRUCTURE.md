@@ -28,7 +28,7 @@
 │   └── images/              star-history-light.svg / star-history-dark.svg
 ├── omp/                     第二分册《Omp 从入门到精通：原理与实战》书稿（product=omp，见 §3.6 与 omp/BUILD.md）
 ├── vibe/                    第十册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文单语，12 章 + 附录 A–D）
-├── llm/                     模型原理分册 0.1.0 试读版（product=llm，中文单语，前言 + 第 1–6、8–9 章，见 llm/README.md）
+├── llm/                     模型原理分册 0.1.0 试读版（product=llm，中文单语，前言 + 第 1–9 章，见 llm/README.md）
 ├── yuyu-book/               整书构建器（见下）
 └── .github/workflows/       book.yml / release.yml / pages.yml / update-star-history.yml
 ```

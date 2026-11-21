@@ -273,6 +273,32 @@
       "accessed": "2026-11-21"
     }
   },
+  "kaplan-scaling": {
+    "title": "Scaling Laws for Neural Language Models",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2001.08361",
+    "snapshot": "arXiv:2001.08361，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 7 章：损失随参数量、数据量与训练算力变化的幂律框架；不引用具体拟合系数。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "chinchilla": {
+    "title": "Training Compute-Optimal Large Language Models",
+    "authority": "arXiv 预印本（NeurIPS 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2203.15556",
+    "snapshot": "arXiv:2203.15556，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 7 章：固定训练算力下参数量与 token 数应同比例增长的结论，以及“20 token/参数”经验比例的来源背景。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

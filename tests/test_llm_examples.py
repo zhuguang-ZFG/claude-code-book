@@ -208,6 +208,37 @@ class AlignmentExample(unittest.TestCase):
         self.assertIn("-log(sigmoid(0)) = 0.693", output)
 
 
+class ScalingExample(unittest.TestCase):
+    def setUp(self):
+        self.scaling = load("scaling_demo")
+
+    def test_training_flops_follows_six_nd(self):
+        module = self.scaling
+        self.assertEqual(module.training_flops(7e9, 300e9), 1.26e22)
+        self.assertEqual(module.training_flops(7e9, 1e9), 4.2e19)
+
+    def test_chinchilla_allocation_balances_parameters_and_tokens(self):
+        module = self.scaling
+        params, tokens = module.allocation(1e22)
+        self.assertAlmostEqual(params, 9.1287e9, places=-6)
+        self.assertAlmostEqual(tokens, 1.8257e11, places=-8)
+        self.assertAlmostEqual(tokens / params, 20.0)
+
+    def test_gpu_days_and_inference_flops(self):
+        module = self.scaling
+        self.assertAlmostEqual(module.gpu_days(1e22), 289.35, places=1)
+        self.assertEqual(module.inference_flops(7e9, 1e6), 1.4e16)
+        self.assertEqual(module.size(112e9), "104.3 GiB")
+
+    def test_command_prints_the_compute_table_and_inference_cost(self):
+        output = run("scaling_demo")
+        self.assertIn("9.1B", output)
+        self.assertIn("1.00e+22", output)
+        self.assertIn("2,431", output)
+        self.assertIn("14 GFLOP per token", output)
+        self.assertIn("35 GPU-seconds", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")
