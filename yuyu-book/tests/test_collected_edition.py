@@ -47,6 +47,27 @@ class CollectedEdition(unittest.TestCase):
                 self.assertTrue(loaded.glosses or loaded.paths or loaded.notes
                                 or loaded.manifest.get("plain_optional"), loaded.id)
 
+    def test_every_shipped_chinese_product_is_bound_into_the_collection(self):
+        registered = set()
+        for path in sorted(registry.BOOK_DIR.glob("manifest-*.json")):
+            manifest = registry.load(path.name)
+            product = manifest.get("product")
+            if (product not in (None, "collected")
+                    and "zh" in manifest.get("langs", [])):
+                registered.add(product)
+        registered.add("book")
+        included = {loaded.manifest.get("product") or "book" for loaded in
+                    load_collection(self.spec)}
+        self.assertEqual(registered, included,
+                         f"unbound products: {sorted(registered - included)}; "
+                         f"unknown collection entries: {sorted(included - registered)}")
+
+    def test_collection_volume_numbers_are_contiguous_and_match_order(self):
+        numbers = [raw["no"]["zh"] for raw in self.spec["volumes"]]
+        expected = [f"卷{number}" for number in (
+            "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一")]
+        self.assertEqual(numbers, expected)
+
     def test_two_volumes_may_not_share_one_page_anchor(self):
         with self.assertRaisesRegex(BuildError, "appears in both"):
             load_collection({"volumes": [volume("vol1", "manifest-prompt.json",
@@ -184,7 +205,7 @@ class CollectionNavigation(unittest.TestCase):
             "[恢复会话](../../kimi/ch07.md#76-会话从列表里消失后怎样找回再分叉)\n\n"
             "[构造任务](../../prompt/ch01.md)\n", encoding="utf-8")
         spec = copy.deepcopy(registry.load("manifest-collected.json"))
-        spec["volumes"] = [v for v in spec["volumes"] if v["id"] in ("vol7", "vol8", "vol9")]
+        spec["volumes"] = [v for v in spec["volumes"] if v["id"] in ("vol8", "vol9", "vol10")]
         spec["guide"] = {"id": "collection-guide",
                          "zh": guide.relative_to(REPO_ROOT).as_posix()}
         volumes = load_collection(spec)
@@ -223,11 +244,11 @@ class CollectionNavigation(unittest.TestCase):
 
     def test_guide_and_volume_sources_are_bookmarked_and_reachable(self):
         anchors = {entry.anchor for entry in self.print_manifest.outline}
-        self.assertTrue({"collection-guide", "vol7-subject-index", "vol8-sources"}
+        self.assertTrue({"collection-guide", "vol8-subject-index", "vol9-sources"}
                         .issubset(anchors))
-        self.assertNotIn("vol9-sources", anchors)
+        self.assertNotIn("vol10-sources", anchors)
         rail = re.search(r'<nav class="rail".*?</nav>', self.html, re.S).group()
-        for anchor in ("collection-guide", "vol7-subject-index", "vol8", "vol9", "vol8-sources"):
+        for anchor in ("collection-guide", "vol8-subject-index", "vol9", "vol10", "vol9-sources"):
             self.assertIn(f'href="#{anchor}"', rail)
         self.assertIn('class="collection-jumps no-print"', self.html)
 

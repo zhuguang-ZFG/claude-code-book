@@ -156,10 +156,18 @@ class CompanionVolumes(unittest.TestCase):
             for name in (f"manifest-{product}.json", f"sources-{product}.json"):
                 self.assertTrue((ROOT / "yuyu-book" / name).is_file(), name)
 
+    def test_llm_is_a_release_companion_and_a_collected_volume(self):
+        collection = json.loads((ROOT / "yuyu-book/manifest-collected.json")
+                                .read_text(encoding="utf-8"))
+        self.assertIn("llm", release.COMPANION_VOLUMES)
+        self.assertIn("manifest-llm.json",
+                      [volume["manifest"] for volume in collection["volumes"]])
+
     def test_the_site_zip_keeps_the_shelf_out(self):
         """Volumes ship as release assets; site.zip mirrors the two volumes the
         Pages site actually serves, so it must not balloon to shelf size."""
         for name in ("yuyu-vibe-zh.html", "yuyu-pi-zh.pdf", "yuyu-kimi-zh.epub",
+                     "yuyu-llm-zh.pdf",
                      "yuyu-collected-zh.pdf"):
             self.assertTrue(release.release_only(name), name)
         for name in ("yuyu-agent-harness-zh.html", "yuyu-omp-zh.html",

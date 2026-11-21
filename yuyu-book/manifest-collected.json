@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "product": "collected",
-  "version": "0.1.1",
-  "date": "2026-11-19",
+  "version": "0.2.0",
+  "date": "2026-11-21",
   "author": "LinTsinghua",
   "repository": "https://github.com/zhuguang-ZFG/claude-code-book",
   "license": {
@@ -10,16 +10,16 @@
     "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
   },
   "title": {
-    "zh": "Agent Harness 十卷合订本"
+    "zh": "Agent Harness 十一卷合订本"
   },
   "subtitle": {
-    "zh": "御舆 · 六部 Harness 读本 · Kimi · 提示词工程 · Vibe Coding"
+    "zh": "御舆 · 大模型原理 · 六部 Harness 读本 · Kimi · 提示词工程 · Vibe Coding"
   },
   "epigraph": {
     "zh": "一器而工聚焉者，车为多。——《周礼·考工记》"
   },
   "kicker": {
-    "zh": "合订本 · 卷一至卷十"
+    "zh": "合订本 · 卷一至卷十一"
   },
   "langs": [
     "zh"
@@ -55,6 +55,20 @@
         "zh": "卷二"
       },
       "title": {
+        "zh": "大模型：写给 Agent 工程师的原理与实战"
+      },
+      "manifest": "manifest-llm.json",
+      "sources": "sources-llm.json",
+      "reading": {
+        "zh": "从 token、向量与注意力开始，逐步理解训练、推理、RAG 和评测；读工具分册时可回本卷核对模型侧概念。"
+      }
+    },
+    {
+      "id": "vol3",
+      "no": {
+        "zh": "卷三"
+      },
+      "title": {
         "zh": "Omp 从入门到精通：原理与实战"
       },
       "manifest": "manifest-omp.json",
@@ -64,9 +78,9 @@
       }
     },
     {
-      "id": "vol3",
+      "id": "vol4",
       "no": {
-        "zh": "卷三"
+        "zh": "卷四"
       },
       "title": {
         "zh": "Pi Agent：从原理到实战"
@@ -78,9 +92,9 @@
       }
     },
     {
-      "id": "vol4",
+      "id": "vol5",
       "no": {
-        "zh": "卷四"
+        "zh": "卷五"
       },
       "title": {
         "zh": "OpenCode：从原理到实战"
@@ -92,9 +106,9 @@
       }
     },
     {
-      "id": "vol5",
+      "id": "vol6",
       "no": {
-        "zh": "卷五"
+        "zh": "卷六"
       },
       "title": {
         "zh": "DeepSeek Harness：插件化运行时"
@@ -106,9 +120,9 @@
       }
     },
     {
-      "id": "vol6",
+      "id": "vol7",
       "no": {
-        "zh": "卷六"
+        "zh": "卷七"
       },
       "title": {
         "zh": "Hermes Agent：记忆、技能与持续任务"
@@ -120,9 +134,9 @@
       }
     },
     {
-      "id": "vol7",
+      "id": "vol8",
       "no": {
-        "zh": "卷七"
+        "zh": "卷八"
       },
       "title": {
         "zh": "Codex CLI：执行边界与工程实践"
@@ -134,9 +148,9 @@
       }
     },
     {
-      "id": "vol8",
+      "id": "vol9",
       "no": {
-        "zh": "卷八"
+        "zh": "卷九"
       },
       "title": {
         "zh": "Kimi Code：从插件到审查助手"
@@ -148,9 +162,9 @@
       }
     },
     {
-      "id": "vol9",
+      "id": "vol10",
       "no": {
-        "zh": "卷九"
+        "zh": "卷十"
       },
       "title": {
         "zh": "提示词工程：从提问到 Agent 协作"
@@ -162,9 +176,9 @@
       }
     },
     {
-      "id": "vol10",
+      "id": "vol11",
       "no": {
-        "zh": "卷十"
+        "zh": "卷十一"
       },
       "title": {
         "zh": "Vibe Coding：把想法做成能跑的软件"

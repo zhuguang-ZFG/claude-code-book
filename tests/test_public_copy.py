@@ -47,7 +47,7 @@ class ReadingEntry(unittest.TestCase):
         self.assertEqual(chapters, 12)
         self.assertEqual(
             appendix_ids, ["vibe-apxa", "vibe-apxb", "vibe-apxc", "vibe-apxd"])
-        start = read("README.md").index("## 第十册")
+        start = read("README.md").index("## 第十一册")
         end = read("README.md").index("## 阅读说明")
         section = read("README.md")[start:end]
         self.assertIn("12 章加附录 A–D", section)

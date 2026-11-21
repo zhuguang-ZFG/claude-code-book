@@ -27,8 +27,8 @@
 ├── docs/                    读者侧成品与改造档案：`portal.html`（站点门户，由 `scripts/build_site_portal.py` 生成）、`beginner-reader*.html`、`illustration-gallery.html`、`illustration-prompts.md`、`banner.svg` / `tagline.svg`；`COMPARE-OMP.md` 是御舆侧的两书对照入口；`YUYU-OVERHAUL-SPEC.md` 是御舆这一本的改造 SPEC，`yuyu-overhaul/` 放它的基线、日志、护栏脚本与 `TEST-CONTRACT.md` / `SHARED-TERMS.md`；另有 `baseline/`（指标基线与截图）、`migrations/`（行号→块 ID 迁移的双跑证据）、`notes/`（草稿）、`superpowers/`（计划与设计稿）、`video/`（分章素材）
 │   └── images/              star-history-light.svg / star-history-dark.svg
 ├── omp/                     第二分册《Omp 从入门到精通：原理与实战》书稿（product=omp，见 §3.6 与 omp/BUILD.md）
-├── vibe/                    第十册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文单语，12 章 + 附录 A–D）
-├── llm/                     模型原理分册 0.1.0 中文版（product=llm，中文单语，前言 + 第 1–15 章，见 llm/README.md）
+├── vibe/                    第十一册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文单语，12 章 + 附录 A–D）
+├── llm/                     模型原理分册 0.1.0 中文版（product=llm，中文单语，前言 + 第 1–16 章，见 llm/README.md）
 ├── yuyu-book/               整书构建器（见下）
 └── .github/workflows/       book.yml / release.yml / pages.yml / update-star-history.yml
 ```
@@ -162,9 +162,9 @@ yuyu-book/
 - `yuyu-book/dist/yuyu-agent-harness-zh.html`：自包含单文件，图片走 data URI，无外链资源、无脚本。当前构建只出这一份中文 HTML。
 - `yuyu-book/dist/yuyu-agent-harness-zh.pdf`：A4，含书签树、奇偶眉标、页脚页码与带页码的目录。`v0.3.7` 的 Release 里仍有当时的英文 HTML/PDF/EPUB，不在这次删除。
 
-### 3.6 十卷：`book`、`omp` 与其余分册
+### 3.6 十一卷：`book`、`omp` 与其余分册
 
-同一套构建器装十卷合订本（御舆、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe），再加把这十卷订成一本的 `collected`；另有一册不进合订本的 `llm` 中文版。分册靠**登记表文件名**而不是代码里的产品分支。全部产品的登记表、产物前缀和命令在
+同一套构建器装十一卷合订本（御舆、大模型、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe），并将这十一卷订成 `collected`。分册靠**登记表文件名**而不是代码里的产品分支。全部产品的登记表、产物前缀和命令在
 `yuyu-book/PRODUCTS.md`。下表只展开御舆和 omp 这一对的边界；其余分册用各自的 `manifest-<product>.json`，机制相同：
 
 | | `book`（御舆，默认） | `omp`（第二分册《Omp 从入门到精通：原理与实战》） |

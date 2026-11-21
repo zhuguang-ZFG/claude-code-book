@@ -32,9 +32,9 @@ help:
 	@echo "make book-pi-all  Pi Chinese HTML + A4 PDF + EPUB"
 	@echo "make book-agents  all companion volumes: Chinese HTML + PDF + EPUB"
 	@echo "make book-vibe-all  Vibe Coding volume (HTML + PDF + EPUB)"
-	@echo "make book-llm-all  LLM volume preview (HTML + PDF + EPUB)"
-	@echo "make book-collected  ten-volume Chinese HTML only"
-	@echo "make book-collected-all  ten-volume Chinese HTML + PDF + EPUB"
+	@echo "make book-llm-all  LLM volume (HTML + PDF + EPUB)"
+	@echo "make book-collected  eleven-volume Chinese HTML only"
+	@echo "make book-collected-all  eleven-volume Chinese HTML + PDF + EPUB"
 	@echo "make book-codex-all  one companion volume (also opencode/deepseek/hermes/prompt/kimi/vibe)"
 	@echo "make index      rebuild subject-index.json from appendix D"
 	@echo "make clean      remove yuyu-book/dist/ (no rm -rf)"
@@ -97,11 +97,11 @@ book-llm-pdf:
 book-llm-epub:
 	$(BOOKCTL) build --product llm --lang zh --epub
 
-# The ten-volume collected edition binds every shipped book; each volume
+# The eleven-volume collected edition binds every shipped book; each volume
 # keeps its own manifest, so only the collection manifest is passed.
 # HTML alone is the short path. PDF is two Chromium prints plus PyMuPDF
 # (about 21 minutes locally); EPUB follows that HTML so the index folios match.
-book-collected:
+
 	$(BOOKCTL) build --product collected --lang zh
 
 book-collected-all:

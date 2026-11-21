@@ -645,5 +645,57 @@ class ContextExample(unittest.TestCase):
         self.assertIn("OVER BUDGET", completed.stdout)
 
 
+class MultimodalExample(unittest.TestCase):
+    def setUp(self):
+        self.multimodal = load("multimodal_demo")
+
+    def test_a_6x4_image_cuts_into_six_row_major_patches(self):
+        module = self.multimodal
+        blocks = module.patches(module.IMAGE, module.PATCH)
+        self.assertEqual(len(blocks), 6)
+        self.assertEqual(blocks[0][0], (0, 0))
+        self.assertEqual(blocks[5][0], (1, 2))
+        self.assertEqual(blocks[0][1], [10, 12, 11, 13])
+        self.assertEqual(blocks[4][1], [40, 41, 42, 44])
+
+    def test_projection_maps_each_patch_to_three_dims(self):
+        module = self.multimodal
+        token = module.project([10, 12, 11, 13])
+        self.assertEqual(len(token), 3)
+        self.assertAlmostEqual(token[0], 10 * 0.5 + 12 * 0.2 - 11 * 0.1,
+                               places=9)
+        bright = module.project([40, 41, 42, 44])
+        dim = module.project([5, 4, 5, 6])
+        self.assertGreater(max(bright), max(dim))
+
+    def test_resolution_decides_the_budget_and_scaling_shrinks_it(self):
+        module = self.multimodal
+        self.assertEqual(module.direct_tokens(1920, 1080), 8160)
+        self.assertEqual(module.direct_tokens(4032, 3024), 47628)
+        scaled = module.resized(1920, 1080, 1568)
+        self.assertEqual(scaled, (1568, 882))
+        self.assertEqual(module.direct_tokens(*scaled), 5488)
+        self.assertEqual(module.pixel_priced(*scaled), 1844)
+        self.assertEqual(module.resized(2480, 3508, 1568), (1109, 1568))
+        self.assertEqual(module.pixel_priced(1109, 1568), 2319)
+
+    def test_detail_levels_differ_by_about_four_times(self):
+        module = self.multimodal
+        low = module.pixel_priced(*module.resized(1920, 1080, 768))
+        high = module.pixel_priced(*module.resized(1920, 1080, 1568))
+        self.assertEqual(low, 442)
+        self.assertEqual(high, 1844)
+        self.assertGreater(high / low, 4)
+
+    def test_command_prints_patches_and_the_budget_table(self):
+        output = run("multimodal_demo")
+        self.assertIn("patches: 6 (row-major, 3 per row)", output)
+        self.assertIn("8160", output)
+        self.assertIn("47628", output)
+        self.assertIn("1844", output)
+        self.assertIn("low  (max edge 768)", output)
+        self.assertIn("high (max edge 1568)", output)
+
+
 if __name__ == "__main__":
     unittest.main()

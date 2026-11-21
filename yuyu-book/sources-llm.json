@@ -481,5 +481,174 @@
     "pinned": {
       "accessed": "2026-11-21"
     }
+  },
+  "vit-paper": {
+    "title": "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale",
+    "authority": "arXiv 预印本（ICLR 2021）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2010.11929",
+    "snapshot": "arXiv:2010.11929，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 15 章：把图像切成 patch、线性投影成 token、用 Transformer 编码的视觉路线；只引用其切块与编码机制，不引用分类性能数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "clip-paper": {
+    "title": "Learning Transferable Visual Models From Natural Language Supervision",
+    "authority": "arXiv 预印本（ICML 2021）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2103.00020",
+    "snapshot": "arXiv:2103.00020，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 15 章：图文对的对比预训练目标，以及图像编码器与文本编码器共享一个几何的思路。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "flamingo-paper": {
+    "title": "Flamingo: a Visual Language Model for Few-Shot Learning",
+    "authority": "arXiv 预印本（NeurIPS 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2204.14198",
+    "snapshot": "arXiv:2204.14198，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 15 章：图文交错语料上的多模态预训练；只引用其交错建模的动机，不引用少样本性能数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "llava-paper": {
+    "title": "Visual Instruction Tuning",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2304.08485",
+    "snapshot": "arXiv:2304.08485，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 15 章：冻结视觉塔与语言模型、只训练轻量投影层的经济对齐路径。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "blip2-paper": {
+    "title": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models",
+    "authority": "arXiv 预印本（ICML 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2301.12597",
+    "snapshot": "arXiv:2301.12597，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 15 章：用一组可学查询 token 压缩视觉特征的 Q-Former 连接器；只引用其连接结构。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "pope-paper": {
+    "title": "Evaluating Object Hallucination in Large Vision-Language Models",
+    "authority": "arXiv 预印本（EMNLP 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2305.10355",
+    "snapshot": "arXiv:2305.10355，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 15 章：视觉语言模型描述图中不存在对象的现象与其评测方法；只引用问题定义，不引用具体模型得分。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "pi-paper": {
+    "title": "Extending Context Window of Large Language Models via Positional Interpolation",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2306.15595",
+    "snapshot": "arXiv:2306.15595，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：位置插值把位置坐标除以缩放因子、压回训练过的旋转范围的做法。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "yarn-paper": {
+    "title": "YaRN: Efficient Context Window Extension of Large Language Models",
+    "authority": "arXiv 预印本（ICLR 2024）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2309.00071",
+    "snapshot": "arXiv:2309.00071，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：按频段分开处理的 RoPE 缩放，以及 NTK-aware 缩放的频谱视角。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "moe-paper": {
+    "title": "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer",
+    "authority": "arXiv 预印本（ICLR 2017）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1701.06538",
+    "snapshot": "arXiv:1701.06538，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：按条件激活参数的 MoE 起点，以及负载均衡的动机；不引用其容量数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "deepseek-v2-paper": {
+    "title": "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2405.04434",
+    "snapshot": "arXiv:2405.04434，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 3 章：MLA 把 KV 压成低维潜在向量的注意力变体；只引用其结构动机。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "guided-generation": {
+    "title": "Efficient Guided Generation for Large Language Models",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2307.09909",
+    "snapshot": "arXiv:2307.09909，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 12 章：按语法在采样前屏蔽不合法 token 的约束解码机制；只引用其方法框架。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "mt-bench-judge": {
+    "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+    "authority": "arXiv 预印本（NeurIPS 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2306.05685",
+    "snapshot": "arXiv:2306.05685，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 14 章：LLM-as-judge 的用法与位置偏差等系统性问题；不引用具体模型的 judge 得分。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "self-preference-paper": {
+    "title": "LLM Evaluators Recognize and Favor Their Own Generations",
+    "authority": "arXiv 预印本（NeurIPS 2024）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2403.18841",
+    "snapshot": "arXiv:2403.18841，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 14 章：judge 偏爱与自己风格相近输出的自偏好证据；只引用现象定义。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
   }
 }

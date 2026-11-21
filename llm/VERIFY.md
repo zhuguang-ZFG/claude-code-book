@@ -1,6 +1,6 @@
 # 构建与测试实测记录
 
-本文件记录 **0.1.0 中文版**（第 1–15 章）在本机的实际构建结果。日期：2026-11-21。
+本文件记录 **0.1.0 中文版**（第 1–16 章）在本机的实际构建结果。日期：2026-11-21。
 
 ## 环境
 
@@ -17,37 +17,37 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 544 162 | 16 个单元、29 张正文手绘图、80 条引用链接、16 枚章徽、9 幅篇题 |
-| `yuyu-llm-zh.pdf` | 6 572 131 | 113 页、26 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 204 896 | 153 条导航、32 个文档、26 张图片（含 26 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 597 109 | 17 个单元、31 张正文手绘图、106 条引用链接、17 枚章徽、10 幅篇题 |
+| `yuyu-llm-zh.pdf` | 7 136 130 | 123 页、28 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 223 948 | 162 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
 ```text
-yuyu-llm-zh.html: 0.5 MB, 16 units, 29 plates, 80 cited links,
-0 glosses, 0 lead bands, 0 tier chips, 16 emblems, 9 headpieces, 0 keeper notes
+yuyu-llm-zh.html: 0.6 MB, 17 units, 31 plates, 106 cited links,
+0 glosses, 0 lead bands, 0 tier chips, 17 emblems, 10 headpieces, 0 keeper notes
 CHECK OK
 ```
 
-插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：16 枚单元章徽、9 幅篇题、29 张正文手绘图、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
+插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：17 枚单元章徽、10 幅篇题、31 张正文手绘图、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
 
 ## 测试
 
 | 命令 | 结果 |
 | --- | --- |
-| `python -m unittest discover -s yuyu-book/tests` | 625 项通过 |
-| `python -m unittest discover -s tests` | 407 项通过 |
+| `python -m unittest discover -s yuyu-book/tests` | 628 项通过 |
+| `python -m unittest discover -s tests` | 413 项通过 |
 | `python scripts/bookctl.py check --fast` | 通过（内容检查、两套测试） |
 | `python scripts/bookctl.py build --product llm --lang zh --check` | `CHECK OK` |
 
 新增测试：
 
-- `tests/test_llm_examples.py`：加载十四个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回、工具 schema 校验与 MCP 消息、自洽投票、Wilson 区间与评测口径，并实际执行脚本。
-- `yuyu-book/tests/test_llm_product.py`：检查产品注册、前缀、单语、`plain_optional`、章节与磁盘文件一致、卷规划仍是 15 章、GitHub 来源为完整 SHA 且与 `llm/facts/source-lock.json` 一致。
+- `tests/test_llm_examples.py`：加载十五个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回、工具 schema 校验与 MCP 消息、自洽投票、Wilson 区间与评测口径、patch 切块与图像 token 预算，并实际执行脚本。
+- `yuyu-book/tests/test_llm_product.py`：检查产品注册、前缀、单语、`plain_optional`、章节与磁盘文件一致、卷规划仍是 16 章、RoPE 图的旋转几何与 q/k 端点约定、GitHub 来源为完整 SHA 且与 `llm/facts/source-lock.json` 一致。
 
 ## 示例脚本实测输出
 
-十四个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
+十五个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -64,6 +64,7 @@ python llm/examples/rag_demo.py
 python llm/examples/toolcall_demo.py
 python llm/examples/cot_demo.py
 python llm/examples/eval_demo.py
+python llm/examples/multimodal_demo.py
 ```
 
 - `bpe_demo.py`：7 行语料训练 32 条合并规则，词表 288；五个样本全部 round-trip 成功。`青禾工作坊` 为 5 字符 / 15 字节 / 8 toy tokens；`🙂` 为 1 字符 / 4 字节 / 4 toy tokens。
@@ -80,6 +81,7 @@ python llm/examples/eval_demo.py
 - `toolcall_demo.py`：两个工具的 schema 分别为 181 / 241 字符；第一次调用把 `order_id` 传成整数，返回 `validation failed: order_id must be a string`；第二次传字符串成功，返回“退款处理中，预计 1–3 个工作日到账”。MCP 消息包含 `initialize` / `tools/list` / `tools/call`，协议版本 `2026-07-28`。
 - `cot_demo.py`：假设单条样本正确率 0.60，1 / 3 / 5 / 9 / 15 条多数投票的模拟准确率为 60.7% / 66.0% / 69.4% / 75.2% / 79.5%；每题 token 从 400 涨到 6 000。按每百万输出 token 0.60 美元，直接回答 / CoT 一次 / CoT 五次 / CoT 十五次的每道正确题成本为 $0.000133 / $0.000369 / $0.001561 / $0.004053。
 - `eval_demo.py`：200 题上 82.0% 与 86.0% 的 Wilson 区间为 [76.1%, 86.7%] 与 [80.5%, 90.1%]，两者重叠；20 条测试题在训练中见过，把 80.0% 的干净准确率抬到 82.0%；回答 80 题、对 72 题时覆盖率 80.0%、回答内准确率 90.0%、整体 72.0%、错答率 8.0%；教师/学生每道正确题成本约 $0.0071 / $0.0015。
+- `multimodal_demo.py`：6×4 玩具图按 2×2 切成 6 个 patch，经 4×3 投影得到 6 个 3 维图像 token，位置按行主序展平；1920×1080 截图按 patch 16 直切为 8 160 token，缩到最长边 1568 后直切 5 488、像素计价 1 844；4032×3024 照片直切 47 628；2480×3508 A4 扫描直切 34 100；同一截图低档（768）442 token、高档（1568）1 844 token，差约四倍。
 
 ## 未实测范围
 
@@ -94,6 +96,8 @@ python llm/examples/eval_demo.py
 - 真实 MCP 服务器、权限、传输与幂等（第 12 章只演示协议形状）；
 - 真实模型的自洽投票收益（第 13 章用独立错误假设模拟）；
 - 真实评测集的置信区间、污染检查与蒸馏效果（第 14 章的计数与价格是手设的）；
+- 真实多模态模型的识读对比与视觉幻觉率（第 15 章的 patch、投影与预算公式是手设玩具，未在真实 VLM 上验证）；
+- 真实 LLM-as-judge 的偏差实测（第 14 章的位置偏差与自偏好只引论文证据，未在自己的 judge 管线上复测）；
 - 真实 SFT / LoRA / QLoRA 训练实验（第 8 章只有手设概率与矩阵）；
 - 真实偏好对齐实验与奖励模型训练（第 9 章只有手设分数与 log 概率）；
 - 训练好的模型里注意力头实际学到了什么（本书示例的权重是手设的）；

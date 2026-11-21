@@ -8,6 +8,7 @@ source the volume cites.
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 import unittest
@@ -23,9 +24,10 @@ from yuyu_book.core import REPO_ROOT, expected_ids, load_configs, load_unit, uni
 PREVIEW_IDS = ["llm-front", "llm-ch01", "llm-ch02", "llm-ch03",
                "llm-ch04", "llm-ch05", "llm-ch06", "llm-ch07",
                "llm-ch08", "llm-ch09", "llm-ch10", "llm-ch11",
-               "llm-ch12", "llm-ch13", "llm-ch14", "llm-ch15"]
-PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
-PLANNED_CHAPTERS = set(range(1, 16))
+               "llm-ch12", "llm-ch13", "llm-ch14", "llm-ch15",
+               "llm-ch16"]
+PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
+PLANNED_CHAPTERS = set(range(1, 17))
 
 
 class LlmProduct(unittest.TestCase):
@@ -63,21 +65,39 @@ class LlmProduct(unittest.TestCase):
                        for path in (REPO_ROOT / "llm").glob(pattern)}
         self.assertEqual(registered, manuscripts)
 
+    def test_rope_plate_compares_original_and_rotated_qk_vectors(self):
+        plate = (REPO_ROOT / "yuyu-book/illustrations-agents/"
+                 "llm-ch04-rope-rotation.svg").read_text(encoding="utf-8")
+        self.assertIn('stroke-dasharray="5 5" opacity=".45"', plate)
+        self.assertIn("M560 120L621 85M560 120L584 54", plate)
+        self.assertIn("M560 120L628 138M560 120L623 90", plate)
+        self.assertEqual(plate.count('fill="currentColor"'), 3,
+                         "q stays filled in both states and on the faint ghost vectors")
+        q_before = math.degrees(math.atan2(35, 61))
+        k_before = math.degrees(math.atan2(66, 24))
+        q_after = math.degrees(math.atan2(-18, 68))
+        k_after = math.degrees(math.atan2(30, 63))
+        q_rotation = (q_after - q_before + 180) % 360 - 180
+        k_rotation = (k_after - k_before + 180) % 360 - 180
+        self.assertAlmostEqual(q_rotation, -45, delta=1)
+        self.assertAlmostEqual(k_rotation, -45, delta=1)
+
     def test_written_chapters_are_the_planned_preview(self):
         numbers = {int(uid.rsplit("ch", 1)[1])
                    for uid in expected_ids(self.manifest)
                    if "ch" in uid and uid.startswith("llm-ch")}
         self.assertEqual(numbers, PREVIEW_CHAPTERS)
         self.assertLessEqual(numbers, PLANNED_CHAPTERS)
-        self.assertEqual(len(PLANNED_CHAPTERS), 15)
+        self.assertEqual(len(PLANNED_CHAPTERS), 16)
 
-    def test_volume_plan_keeps_fifteen_chapters_and_names_the_preview(self):
+    def test_volume_plan_keeps_sixteen_chapters_and_names_the_preview(self):
         plan = (REPO_ROOT / "docs/llm-volume-plan.md").read_text(encoding="utf-8")
-        section = plan.split("## 章节骨架（15 章）", 1)[1].split("\n## ", 1)[0]
+        section = plan.split("## 章节骨架（16 章）", 1)[1].split("\n## ", 1)[0]
         numbered = re.findall(r"^\d+\.\s+\*\*", section, flags=re.M)
-        self.assertEqual(len(numbered), 15)
+        self.assertEqual(len(numbered), 16)
         self.assertIn("第 1、5、6 章先行", plan)
         self.assertIn("llm/", plan)
+        self.assertIn("多模态", plan)
 
     def test_github_sources_are_full_sha_and_match_the_volume_lock(self):
         locked = {entry["repo"]: entry for entry in self.lock["repositories"]}
@@ -103,17 +123,18 @@ class LlmProduct(unittest.TestCase):
                      "transformer_demo.py", "sampling_demo.py",
                      "context_budget.py", "scaling_demo.py", "sft_demo.py",
                      "alignment_demo.py", "serving_demo.py", "rag_demo.py",
-                     "toolcall_demo.py", "cot_demo.py", "eval_demo.py"):
+                     "toolcall_demo.py", "cot_demo.py", "eval_demo.py",
+                     "multimodal_demo.py"):
             self.assertTrue((REPO_ROOT / "llm/examples" / name).is_file(), name)
             self.assertIn(name, readme)
         for chapter in ("ch01.md", "ch02.md", "ch03.md", "ch04.md", "ch05.md",
                         "ch06.md", "ch07.md", "ch08.md", "ch09.md",
                         "ch10.md", "ch11.md", "ch12.md", "ch13.md",
-                        "ch14.md", "ch15.md"):
+                        "ch14.md", "ch15.md", "ch16.md"):
             self.assertIn(chapter, readme)
 
     def test_glossary_has_at_least_eighty_terms_and_preview_links(self):
-        glossary = (REPO_ROOT / "llm/ch15.md").read_text(encoding="utf-8")
+        glossary = (REPO_ROOT / "llm/ch16.md").read_text(encoding="utf-8")
         rows = re.findall(r"^\| [^|]+ \| [^|]+ \| \[\d+\]\(ch\d{2}\.md\) \|",
                           glossary, flags=re.M)
         self.assertGreaterEqual(len(rows), 80, "the glossary shrank below 80 terms")

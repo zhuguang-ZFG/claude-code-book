@@ -13,7 +13,7 @@
 | `kimi` | 《Kimi Code：从插件到审查助手》 | `manifest-kimi.json` | `yuyu-kimi-*` | 同上（`make book-kimi-all`） |
 | `vibe` | 《Vibe Coding：把想法做成能跑的软件》 | `manifest-vibe.json` | `yuyu-vibe-*` | `build --product vibe --lang zh --pdf --epub`（`make book-vibe-all`） |
 | `llm` | 《大模型：写给 Agent 工程师的原理与实战》（中文版） | `manifest-llm.json` | `yuyu-llm-*` | `build --product llm --lang zh --pdf --epub`（`make book-llm-all`） |
-| `collected` | 《Agent Harness 十卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`，仅 HTML）；HTML/PDF/EPUB 用 `make book-collected-all` |
+| `collected` | 《Agent Harness 十一卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`，仅 HTML）；HTML/PDF/EPUB 用 `make book-collected-all` |
 
 御舆、omp、pi 各有一套通俗层登记表：`plain.registry_names()` 按 manifest 的 `product` 字段
 取同名兄弟文件——御舆用裸名（`glosses.json` / `notes.json` / `reading-paths.json`），
@@ -27,7 +27,7 @@ omp 用 `-omp` 后缀，pi 用 `-pi` 后缀（`glosses-pi.json` / `notes-pi.json
 六本 Agent 分册共用 `manifest-<product>.json` / `sources-<product>.json`，各有前言、十八章和
 附录 A–D（23 个单元），中文单语，产物前缀 `yuyu-<product>`，由 `make book-agents` 一次编完，
 CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩阵里另有 `llm` 中文版：
-它只有前言加第 1–15 章（16 个单元），不套用这里的十八章程式，契约由
+它只有前言加第 1–16 章（17 个单元），不套用这里的十八章程式，契约由
 `yuyu-book/tests/test_llm_product.py` 单独校验。
 
 - `opencode`、`deepseek`、`hermes`、`codex` 带完整通俗层：guides、reading-paths、
@@ -42,26 +42,28 @@ CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩
 
 ## Vibe 分册
 
-`vibe` 是第十册，中文单语，12 章加附录 A–D，声明 `plain_optional`，没有 `-vibe` 的
+`vibe` 是第十一册，中文单语，12 章加附录 A–D，声明 `plain_optional`，没有 `-vibe` 的
 guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/` 目录。构建走
 `make book-vibe-all`（HTML/PDF/EPUB），版本 0.2.0，证据见 `vibe/VERIFY.md`。
 
 ## LLM 分册（中文版）
 
-`llm` 是模型原理分册的 0.1.0 中文版，中文单语，前言加第 1–15 章（16 个单元），
-声明 `plain_optional`，不带 guides、索引、修订页与附录。十四个示例在 `llm/examples/`，
+`llm` 是模型原理分册的 0.1.0 中文版，中文单语，前言加第 1–16 章（17 个单元），
+声明 `plain_optional`，不带 guides、索引、修订页与附录。十五个示例在 `llm/examples/`，
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。插图在 `illustrations-agents/` 的 `llm-*`、
-`part-llm-p*` 与 `cover-llm.svg`，含 29 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
-版本与实测数据见 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本版暂不进入合订本，
-也不加入 `scripts/release.py` 的 `COMPANION_VOLUMES`；CI 的 `agent-volumes` 矩阵会照常构建三件套。
+`part-llm-p*` 与 `cover-llm.svg`，含 31 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
+版本与实测数据见 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本卷已编入十一卷合订本（卷二），
+并加入 `scripts/release.py` 的 `COMPANION_VOLUMES`；CI 的 `agent-volumes` 矩阵会照常构建三件套。
 
 ## 合订本
 
-`collected` 把十卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
+`collected` 把十一卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
 manifest 与 sources，卷宗、卷目录和页码层级由 `build_collected()` 生成。`load_collection()`
 只做一件事——拒绝两卷共用同一个页面锚点或重复的卷 ID，否则合订本会出现两个同名页。
-合订本只出中文。`make book-collected` 只构建单文件 HTML（十册把全部图版内联进同一份文档，2026-11-16 实测 72.8 MB、10 卷、约 3600 个各级标题，耗时 37.6 秒）。HTML/PDF/EPUB 同一趟：`build --product collected --lang zh --pdf --epub`（`make book-collected-all`），三件套落在同一 `dist/`。2026-11-16 本机实测整册：PDF 21 分 16 秒、109.3 MB、**1925 页**；EPUB 4 分 8 秒、52.0 MB、604 图 / 2413 条导航。其中 Chromium 打印 331.7 秒、PyMuPDF `garbage=4 + deflate` 保存 49.4 秒，余下是 HTML 渲染与页眉页脚后处理。这一册带主题索引，PDF 先印一趟量页码、再印一趟盖号；页码把索引挤到下一页时 `print_with_index()` 还会再量再印一次。此前「跑满 3600 秒」是这条打印被超时掐断，不是构建卡死；`iter_doc()` 的重复扫描已经改掉。Book CI 的 `collected` 任务超时 150 分钟：pull request 上只编 HTML 与 EPUB，并对生成的 EPUB 跑 EPUBCheck 5.4.0；整册 PDF 与三件套上传仍只在 main push 与 `workflow_dispatch`。发布装配 `release.py` 用同一条构建把三件套打进发布目录，`release.yml` 的 `*.pdf` / `*.epub` 会带上它们。
+合订本只出中文。`make book-collected` 构建单文件 HTML；十一册的图版内联到同一文档。HTML/PDF/EPUB 同一趟：`build --product collected --lang zh --pdf --epub`（`make book-collected-all`），三件套落在同一 `dist/`。本机旧版数据（2026-11-16，只有十卷）为 PDF 1,925 页、109.3 MB，EPUB 52.0 MB；这些数字不代表当前十一卷版。合订本带主题索引，PDF 先印一趟量页码、再印一趟盖号；页码把索引挤到下一页时 `print_with_index()` 还会再量再印一次。`iter_doc()` 的重复扫描已修复。Book CI 的 `collected` 任务超时 150 分钟：pull request 上构建 HTML、EPUB 并运行 EPUBCheck 5.4.0；整册 PDF 与三件套上传仍只在 main push 与 `workflow_dispatch`。发布装配 `release.py` 会构建独立分册及合订本，并把三件套打进发布目录。
+
+2026-11-21 纳入中文版大模型原理卷（十六章版，含第 15 章多模态）后，本机实测：HTML 75.1 MB、11 卷、263 个正文单元、364 幅图版；PDF 100.2 MB、2 043 页、351 个书签；EPUB 52.2 MB、631 张图片、2 583 条导航、355 个文档，EPUBCheck 5.4.0 零错误零警告。旧版阅读抽检记录见 `docs/agent-series/collection-readability-20261119.md`，其页数、体积与页码核对仍只适用于当时的十卷版。
 
 2026-11-20 起离线 EPUB 按篇拆文档：合订本 326 个 XHTML 文档，每篇带自己的标题，封面以 `cover-image` 声明，屏幕专用的合集跳转栏不再进入离线版。当次产物 53.4 MB，EPUBCheck 5.4.0 零错误零警告；5,950 处内部引用（同文档 953、跨文档 4,997）与 1,043 处图片/样式引用全部可解析。上面 2026-11-16 的耗时与「604 图 / 2413 条导航」对应拆分前的单文档版本；导航条数在 11-19 加入合集导读后为 2,426。
 
