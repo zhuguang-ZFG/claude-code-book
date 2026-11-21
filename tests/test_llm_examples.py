@@ -55,6 +55,67 @@ class BpeExample(unittest.TestCase):
         self.assertIn("🙂", output)
 
 
+class AttentionExample(unittest.TestCase):
+    def setUp(self):
+        self.attention = load("attention_demo")
+
+    def test_causal_rows_never_read_the_future(self):
+        module = self.attention
+        q = module.project(module.X, module.IDENTITY)
+        k = module.project(module.X, module.IDENTITY)
+        v = module.project(module.X, module.IDENTITY)
+        _outputs, rows = module.attention(q, k, v, causal=True)
+        for i, weights in enumerate(rows):
+            self.assertAlmostEqual(sum(weights), 1.0)
+            for j, weight in enumerate(weights):
+                if j > i:
+                    self.assertEqual(weight, 0.0, (i, j))
+                else:
+                    self.assertGreater(weight, 0.0, (i, j))
+
+    def test_without_the_mask_the_first_row_changes(self):
+        module = self.attention
+        q = module.project(module.X, module.IDENTITY)
+        k = module.project(module.X, module.IDENTITY)
+        v = module.project(module.X, module.IDENTITY)
+        causal, _ = module.attention(q, k, v, causal=True)
+        future, rows = module.attention(q, k, v, causal=False)
+        self.assertGreater(rows[0][1], 0.0)
+        self.assertNotAlmostEqual(causal[0][0], future[0][0], places=3)
+
+    def test_head_concat_keeps_one_value_per_head(self):
+        module = self.attention
+        concat = []
+        for _name, wq, wk, wv in module.HEADS:
+            out, _rows = module.attention(module.project(module.X, wq),
+                                          module.project(module.X, wk),
+                                          module.project(module.X, wv),
+                                          causal=True)
+            concat.append(out[0][0])
+        self.assertEqual(len(concat), len(module.HEADS))
+
+    def test_parameter_counts_and_kv_cache_are_exact(self):
+        module = self.attention
+        self.assertEqual(module.attention_params(4096, 32, 32)["total"],
+                         67_108_864)
+        self.assertEqual(module.attention_params(4096, 32, 8)["total"],
+                         41_943_040)
+        self.assertEqual(module.attention_params(4096, 32, 1)["total"],
+                         34_603_008)
+        self.assertEqual(module.kv_bytes_per_token(32, 32, 128), 524_288)
+        self.assertEqual(module.kv_bytes_per_token(32, 8, 128), 131_072)
+        self.assertEqual(module.kv_bytes_per_token(32, 1, 128), 16_384)
+
+    def test_command_prints_weights_heads_and_params(self):
+        output = run("attention_demo")
+        self.assertIn("causal attention weights", output)
+        self.assertIn("0.465", output)
+        self.assertIn("0.535", output)
+        self.assertIn("head 维度 0", output)
+        self.assertIn("41,943,040", output)
+        self.assertIn("16,384 B", output)
+
+
 class SamplingExample(unittest.TestCase):
     def setUp(self):
         self.sampling = load("sampling_demo")

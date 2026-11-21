@@ -27,7 +27,7 @@ omp 用 `-omp` 后缀，pi 用 `-pi` 后缀（`glosses-pi.json` / `notes-pi.json
 六本 Agent 分册共用 `manifest-<product>.json` / `sources-<product>.json`，各有前言、十八章和
 附录 A–D（23 个单元），中文单语，产物前缀 `yuyu-<product>`，由 `make book-agents` 一次编完，
 CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩阵里另有 `llm` 试读版：
-它只有前言加第 1、5、6 章（4 个单元），不套用这里的十八章程式，契约由
+它只有前言加第 1、3、5、6 章（5 个单元），不套用这里的十八章程式，契约由
 `yuyu-book/tests/test_llm_product.py` 单独校验。
 
 - `opencode`、`deepseek`、`hermes`、`codex` 带完整通俗层：guides、reading-paths、
@@ -48,8 +48,8 @@ guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/`
 
 ## LLM 分册（试读版）
 
-`llm` 是模型原理分册的 0.1.0 试读版，中文单语，前言加第 1、5、6 章（4 个单元），
-声明 `plain_optional`，不带 guides、索引、修订页与附录。三个示例在 `llm/examples/`，
+`llm` 是模型原理分册的 0.1.0 试读版，中文单语，前言加第 1、3、5、6 章（5 个单元），
+声明 `plain_optional`，不带 guides、索引、修订页与附录。四个示例在 `llm/examples/`，
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。构建走 `make book-llm-all`，版本与实测数据见
 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本版暂不进入合订本，也不加入

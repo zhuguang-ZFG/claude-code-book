@@ -65,6 +65,45 @@
       "accessed": "2026-11-21"
     }
   },
+  "gqa": {
+    "title": "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints",
+    "authority": "arXiv 预印本（EMNLP 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2305.13245",
+    "snapshot": "arXiv:2305.13245，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 3 章：分组查询注意力（GQA）减少 KV 头数的做法，以及它与多头注意力在参数和 KV cache 上的差别。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "mqa": {
+    "title": "Fast Transformer Decoding: One Write-Head is All You Need",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1911.02150",
+    "snapshot": "arXiv:1911.02150，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 3 章：多查询注意力（MQA）把 KV 头数降到 1 的动机，以及 decode 阶段的显存带宽问题。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "flashattention": {
+    "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+    "authority": "arXiv 预印本（NeurIPS 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2205.14135",
+    "snapshot": "arXiv:2205.14135，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 3 章：通过分块与重计算避免物化完整注意力矩阵，说明显存读写与算术量的区别；不引用其性能数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

@@ -63,15 +63,19 @@
         "zh": "第二篇"
       },
       "title": {
-        "zh": "一次生成与一笔预算"
+        "zh": "从注意力到预算"
       },
       "motto": {
-        "zh": "采样决定选哪个，窗口决定放多少。"
+        "zh": "先看模型怎样读，再看它怎样选、要付多少。"
       },
       "goal": {
-        "zh": "理解温度、top-k/top-p、seed、上下文成本与 KV cache，能给 Agent 设置可校验的采样和预算。"
+        "zh": "理解注意力怎样混合位置、温度与 top-p 怎样选 token、上下文和 KV cache 各要付多少代价。"
       },
       "units": [
+        {
+          "id": "llm-ch03",
+          "zh": "llm/ch03.md"
+        },
         {
           "id": "llm-ch05",
           "zh": "llm/ch05.md"
