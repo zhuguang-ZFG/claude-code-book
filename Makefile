@@ -15,7 +15,7 @@ BOOKCTL    := $(PYTHON) scripts/bookctl.py
 
 .PHONY: help doctor lint check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
 .PHONY: book-agents book-opencode-all book-deepseek-all book-hermes-all book-codex-all
-.PHONY: book-prompt-all book-kimi-all book-vibe-all book-collected book-collected-all package-prompt
+.PHONY: book-prompt-all book-kimi-all book-vibe-all book-llm book-llm-pdf book-llm-epub book-llm-all book-collected book-collected-all package-prompt
 
 help:
 	@echo "make doctor     environment report (python/node/browser/font/deps)"
@@ -32,6 +32,7 @@ help:
 	@echo "make book-pi-all  Pi Chinese HTML + A4 PDF + EPUB"
 	@echo "make book-agents  all companion volumes: Chinese HTML + PDF + EPUB"
 	@echo "make book-vibe-all  Vibe Coding volume (HTML + PDF + EPUB)"
+	@echo "make book-llm-all  LLM volume preview (HTML + PDF + EPUB)"
 	@echo "make book-collected  ten-volume Chinese HTML only"
 	@echo "make book-collected-all  ten-volume Chinese HTML + PDF + EPUB"
 	@echo "make book-codex-all  one companion volume (also opencode/deepseek/hermes/prompt/kimi/vibe)"
@@ -81,11 +82,20 @@ book-pi-all:
 	$(BOOKCTL) build --product pi --lang zh --pdf --epub
 
 book-agents: book-opencode-all book-deepseek-all book-hermes-all book-codex-all \
-            book-prompt-all book-kimi-all book-vibe-all
+            book-prompt-all book-kimi-all book-vibe-all book-llm-all
 
 book-opencode-all book-deepseek-all book-hermes-all book-codex-all \
-book-prompt-all book-kimi-all book-vibe-all:
+book-prompt-all book-kimi-all book-vibe-all book-llm-all:
 	$(BOOKCTL) build --product $(patsubst book-%-all,%,$@) --lang zh --pdf --epub
+
+book-llm:
+	$(BOOKCTL) build --product llm --lang zh
+
+book-llm-pdf:
+	$(BOOKCTL) build --product llm --lang zh --pdf
+
+book-llm-epub:
+	$(BOOKCTL) build --product llm --lang zh --epub
 
 # The ten-volume collected edition binds every shipped book; each volume
 # keeps its own manifest, so only the collection manifest is passed.

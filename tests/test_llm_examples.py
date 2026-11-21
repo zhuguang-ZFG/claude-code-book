@@ -1,0 +1,131 @@
+"""The LLM volume's examples must run with the standard library alone."""
+from __future__ import annotations
+
+import importlib.util
+import os
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+EXAMPLES = ROOT / "llm" / "examples"
+
+
+def load(name: str):
+    spec = importlib.util.spec_from_file_location(f"llm_{name}", EXAMPLES / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+def run(name: str) -> str:
+    env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+    completed = subprocess.run(
+        [sys.executable, str(EXAMPLES / f"{name}.py")],
+        cwd=ROOT, env=env, check=True, capture_output=True, text=True,
+        encoding="utf-8")
+    return completed.stdout
+
+
+class BpeExample(unittest.TestCase):
+    def setUp(self):
+        self.bpe = load("bpe_demo")
+
+    def test_every_sample_round_trips_through_bytes_and_ids(self):
+        rules, vocab = self.bpe.train(self.bpe.CORPUS, 32)
+        self.assertEqual(len(rules), 32)
+        for text in [*self.bpe.SAMPLES, "", "生僻字：龘", "a b\tc\n"]:
+            ids = self.bpe.encode(text, rules)
+            self.assertEqual(self.bpe.decode(ids, vocab), text)
+            self.assertLessEqual(len(ids), len(text.encode("utf-8")))
+
+    def test_training_is_reproducible(self):
+        first = self.bpe.train(self.bpe.CORPUS, 16)
+        second = self.bpe.train(self.bpe.CORPUS, 16)
+        self.assertEqual(first[0], second[0])
+        self.assertEqual(first[1], second[1])
+
+    def test_command_prints_the_three_counts_and_round_trip(self):
+        output = run("bpe_demo")
+        self.assertIn("round-trip OK", output)
+        self.assertIn("merges learned: 32", output)
+        self.assertIn("青禾工作坊", output)
+        self.assertIn("🙂", output)
+
+
+class SamplingExample(unittest.TestCase):
+    def setUp(self):
+        self.sampling = load("sampling_demo")
+
+    def test_softmax_is_a_distribution_and_temperature_sharpens_it(self):
+        cold = self.sampling.softmax(self.sampling.LOGITS, 0.2)
+        hot = self.sampling.softmax(self.sampling.LOGITS, 1.0)
+        for dist in (cold, hot):
+            self.assertAlmostEqual(sum(dist.values()), 1.0)
+            self.assertTrue(all(value >= 0 for value in dist.values()))
+        self.assertGreater(max(cold.values()), max(hot.values()))
+
+    def test_filters_keep_a_renormalized_subset(self):
+        dist = self.sampling.softmax(self.sampling.LOGITS, 1.0)
+        for filtered in (self.sampling.top_k(dist, 3),
+                         self.sampling.top_p(dist, 0.9)):
+            self.assertLessEqual(len(filtered), len(dist))
+            self.assertAlmostEqual(sum(filtered.values()), 1.0)
+            self.assertTrue(set(filtered).issubset(dist))
+
+    def test_top_p_keeps_at_least_one_token_and_rejects_bad_inputs(self):
+        dist = self.sampling.softmax(self.sampling.LOGITS, 1.0)
+        self.assertEqual(len(self.sampling.top_p(dist, 0.0001)), 1)
+        with self.assertRaises(ValueError):
+            self.sampling.softmax(self.sampling.LOGITS, 0)
+        with self.assertRaises(ValueError):
+            self.sampling.top_p(dist, 0)
+        with self.assertRaises(ValueError):
+            self.sampling.top_k(dist, 0)
+
+    def test_same_seed_and_order_repeat(self):
+        import random
+        dist = self.sampling.top_p(self.sampling.softmax(self.sampling.LOGITS, 0.2), 0.9)
+        first = [self.sampling.sample(dist, random.Random(11)) for _ in range(8)]
+        second = [self.sampling.sample(dist, random.Random(11)) for _ in range(8)]
+        self.assertEqual(first, second)
+
+    def test_command_prints_both_temperatures(self):
+        output = run("sampling_demo")
+        self.assertIn("temperature=0.2", output)
+        self.assertIn("temperature=1.0", output)
+        self.assertIn("same seed", output)
+
+
+class ContextExample(unittest.TestCase):
+    def setUp(self):
+        self.context = load("context_budget")
+
+    def test_kv_cache_is_linear_and_attention_pairs_are_quadratic(self):
+        per_token = self.context.kv_bytes_per_token(32, 8, 128, 2)
+        self.assertEqual(per_token, 131_072)
+        self.assertEqual(per_token * 32_768, 4 * 1024 ** 3)
+        self.assertEqual(self.context.attention_pairs(4_096), 8_390_656)
+        self.assertEqual(self.context.attention_pairs(32_768),
+                         536_887_296)
+
+    def test_default_budget_leaves_room_and_prints_costs(self):
+        output = run("context_budget")
+        self.assertIn("remaining        40,556 (OK)", output)
+        self.assertIn("16.0 GiB", output)
+        self.assertIn("$12.19", output)
+
+    def test_over_budget_is_reported(self):
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+        completed = subprocess.run(
+            [sys.executable, str(EXAMPLES / "context_budget.py"),
+             "--retrieved", "120000"],
+            cwd=ROOT, env=env, check=True, capture_output=True, text=True,
+            encoding="utf-8")
+        self.assertIn("OVER BUDGET", completed.stdout)
+
+
+if __name__ == "__main__":
+    unittest.main()

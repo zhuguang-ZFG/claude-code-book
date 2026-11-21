@@ -114,7 +114,10 @@ def route_map_page(manifest: dict, lang: str, nos: dict[str, str]) -> str:
     rows = [(front, ui("front", lang), [front_stop], ui("rm_why_front", lang))]
     rows += [(p["id"], head, stops, p["goal"][lang])
              for p, (head, stops) in zip(manifest["parts"], legs)]
-    rows.append((side[0][0], siding, side, ui("rm_why_apx", lang)))
+    # A preview volume may ship no appendices at all. The road then ends at
+    # its last part instead of raising on an empty siding list.
+    if side:
+        rows.append((side[0][0], siding, side, ui("rm_why_apx", lang)))
 
     def li(anchor: str, head: str, stops: list[tuple[str, str]], why: str) -> str:
         numbers = " ".join(n for _a, n in stops if n)
@@ -122,13 +125,15 @@ def route_map_page(manifest: dict, lang: str, nos: dict[str, str]) -> str:
                 f'{esc(head)}</a><span class="rm-nos">{esc(numbers)}</span></p>'
                 f'<p class="rm-why">{esc(why)}</p></li>')
 
+    kinds = [("wheel", "rm_key_wheel"), ("ring", "rm_key_ring")]
+    if side:
+        kinds.append(("siding", "rm_key_siding"))
     keys = "".join(f'<li>{key_mark(kind)}{esc(ui(label, lang))}</li>'
-                   for kind, label in (("wheel", "rm_key_wheel"),
-                                       ("ring", "rm_key_ring"),
-                                       ("siding", "rm_key_siding")))
-    map_svg = itinerary("route",
-                        [(esc(head), stops) for head, stops in legs]
-                        + [(esc(siding), side)],
+                   for kind, label in kinds)
+    route = [(esc(head), stops) for head, stops in legs]
+    if side:
+        route.append((esc(siding), side))
+    map_svg = itinerary("route", route,
                         start_label=esc(nos.get(front, "")))
     chapters = sum(len(p["units"]) for p in manifest["parts"])
     return (f'<section class="front-page route-map" id="route-map">'

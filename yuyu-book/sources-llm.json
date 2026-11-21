@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "tiktoken": {
+    "title": "openai/tiktoken",
+    "authority": "上游仓库与 README",
+    "kind": "github",
+    "url": "https://github.com/openai/tiktoken/tree/79dc2c0533685b893616c78160b5d9e40876e724",
+    "snapshot": "固定到完整提交 79dc2c0533685b893616c78160b5d9e40876e724，2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "MIT",
+    "scope": "第 1 章：byte-level BPE、词表与特殊 token 的参考实现；只引用 README 与仓库结构，不复制其代码。",
+    "pinned": {
+      "commit": "79dc2c0533685b893616c78160b5d9e40876e724"
+    }
+  },
+  "minbpe": {
+    "title": "karpathy/minbpe",
+    "authority": "上游仓库与教学讲义",
+    "kind": "github",
+    "url": "https://github.com/karpathy/minbpe/tree/1acefe89412b20245db5a22d2a02001e547dc602",
+    "snapshot": "固定到完整提交 1acefe89412b20245db5a22d2a02001e547dc602，2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "MIT",
+    "scope": "第 1 章：BPE 训练、编码与解码的最小实现对照；本章示例为自写代码。",
+    "pinned": {
+      "commit": "1acefe89412b20245db5a22d2a02001e547dc602"
+    }
+  },
+  "utf8-rfc": {
+    "title": "RFC 3629: UTF-8, a transformation format of ISO 10646",
+    "authority": "IETF",
+    "kind": "spec",
+    "url": "https://www.rfc-editor.org/rfc/rfc3629",
+    "snapshot": "RFC 3629（2003-11），2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "IETF RFC，按 RFC 版权条款链接引用",
+    "scope": "第 1 章：UTF-8 的 1–4 字节编码规则，以及 byte-level BPE 的 256 个基础符号。",
+    "pinned": {
+      "spec-version": "RFC 3629"
+    }
+  },
+  "hf-generation": {
+    "title": "Hugging Face Transformers: Generation strategies",
+    "authority": "Hugging Face 官方文档",
+    "kind": "docs",
+    "url": "https://huggingface.co/docs/transformers/main/en/generation_strategies",
+    "snapshot": "main 分支文档，2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "Apache-2.0（Transformers 文档）",
+    "scope": "第 5 章：greedy、temperature、top-k、top-p 的术语与常见实现顺序。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "attention-paper": {
+    "title": "Attention Is All You Need",
+    "authority": "arXiv 预印本（NeurIPS 2017）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1706.03762",
+    "snapshot": "arXiv:1706.03762，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 6 章：self-attention 的计算结构，以及序列长度对注意力分数矩阵的影响。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "lost-middle": {
+    "title": "Lost in the Middle: How Language Models Use Long Contexts",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2307.03172",
+    "snapshot": "arXiv:2307.03172，2023-07 首次提交，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 6 章：长上下文中开头、中间、结尾位置的信息利用差异，以及“塞满窗口”的质量风险。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "paged-attention": {
+    "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2309.06180",
+    "snapshot": "arXiv:2309.06180，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 6 章：KV cache 的显存占用、分页管理与长上下文服务的背景；本章只使用其问题框架，不引用实现性能数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  }
+}

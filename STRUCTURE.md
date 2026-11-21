@@ -28,6 +28,7 @@
 │   └── images/              star-history-light.svg / star-history-dark.svg
 ├── omp/                     第二分册《Omp 从入门到精通：原理与实战》书稿（product=omp，见 §3.6 与 omp/BUILD.md）
 ├── vibe/                    第十册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文单语，12 章 + 附录 A–D）
+├── llm/                     模型原理分册 0.1.0 试读版（product=llm，中文单语，前言 + 第 1、5、6 章，见 llm/README.md）
 ├── yuyu-book/               整书构建器（见下）
 └── .github/workflows/       book.yml / release.yml / pages.yml / update-star-history.yml
 ```
@@ -163,7 +164,7 @@ yuyu-book/
 
 ### 3.6 十卷：`book`、`omp` 与其余分册
 
-同一套构建器装十卷（御舆、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe），再加把这十卷订成一本的 `collected`。分册靠**登记表文件名**而不是代码里的产品分支。十卷的登记表、产物前缀和命令在
+同一套构建器装十卷合订本（御舆、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe），再加把这十卷订成一本的 `collected`；另有一册不进合订本的 `llm` 试读版。分册靠**登记表文件名**而不是代码里的产品分支。全部产品的登记表、产物前缀和命令在
 `yuyu-book/PRODUCTS.md`。下表只展开御舆和 omp 这一对的边界；其余分册用各自的 `manifest-<product>.json`，机制相同：
 
 | | `book`（御舆，默认） | `omp`（第二分册《Omp 从入门到精通：原理与实战》） |

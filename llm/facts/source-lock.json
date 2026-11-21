@@ -1,0 +1,17 @@
+{
+  "accessed": "2026-11-21",
+  "repositories": [
+    {
+      "repo": "openai/tiktoken",
+      "commit": "79dc2c0533685b893616c78160b5d9e40876e724",
+      "license": "MIT",
+      "scope": "第 1 章：byte-level BPE 与特殊 token 的参考实现"
+    },
+    {
+      "repo": "karpathy/minbpe",
+      "commit": "1acefe89412b20245db5a22d2a02001e547dc602",
+      "license": "MIT",
+      "scope": "第 1 章：BPE 训练、编码与解码的教学对照"
+    }
+  ]
+}

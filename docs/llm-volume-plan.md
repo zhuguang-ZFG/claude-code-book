@@ -1,6 +1,6 @@
 # LLM 卷规划：写给 Agent 工程师的大模型原理与实战
 
-日期：2026-11-20。状态：规格已定，待逐章落地。
+日期：2026-11-20。状态：0.1.0 中文试读版已落地（第 1、5、6 章），其余章节待补。
 
 ## 为什么写、为什么不复刻现有赛道
 
@@ -23,7 +23,7 @@ GitHub 中文/英文 LLM 教学仓格局（星数为 2026-11 实测）：
 
 ## 读者基线
 
-会写 prompt、会调 API、读过本书系列其他卷；没读过 attention 推导，不假设会 PyTorch（每章代码只用 numpy/torch 的最小子集，第一次出现处带三行注释）。
+会写 prompt、会调 API、读过本书系列其他卷；没读过 attention 推导，不假设会 PyTorch（每章代码优先用 Python 标准库，必要时才用 numpy/torch 的最小子集，第一次出现处带三行注释）。
 
 ## 章节骨架（15 章）
 
@@ -49,15 +49,24 @@ GitHub 中文/英文 LLM 教学仓格局（星数为 2026-11 实测）：
 
 - 每个技术断言钉版本：rasbt/LLMs-from-scratch、datawhalechina/happy-llm、karpathy/nanoGPT、MCP 规范等一律 full SHA 或 tag，进 `yuyu-book/sources-llm.json`。
 - 不嵌入第三方资产；代码示例自写或 MIT 许可并注明。
-- 中英同步：`llm/`（zh）与 `en/llm/` 同步成稿，遵守 H1 格式、全角标点、中西文空格等仓库规范。
+- 中英同步：`llm/`（zh）与 `en/llm/` 同步成稿，遵守 H1 格式、全角标点、中西文空格等仓库规范。0.1.0 试读版先出中文，英文版待正文定稿后同步，不把未翻译的章节挂进 manifest。
 
 ## 流水线复用与注册顺序
 
 1. 章节源文件落 `llm/` 与 `en/llm/`。
-2. 新增 `yuyu-book/manifest-llm.json`（仿 manifest-omp.json），sources/notes/glosses 同前缀。
-3. `build_epub.py` / 门户生成器纳入新卷，CI 合约测试（tests/test_ci_contracts.py）同步扩展。
+2. 新增 `yuyu-book/manifest-llm.json`（试读版按篇分组、无附录、`plain_optional`），`sources-llm.json` 同前缀；`notes-llm.json` / `glosses-llm.json` 等通俗层文件留空，不登记未启用层。
+3. `scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 与 CI 的 `agent-volumes` 矩阵纳入 `llm`；门户与合订本暂不收录试读版，等章节齐了再议。
 4. `make check` 全绿后出第一册 HTML；合订本收录决策另议。
 
 ## 写作顺序
 
 第 1、5、6 章先行（agent 工程师最高频痛点：token、采样、上下文），再 3→4→8→9 原理主线，最后 7、10、11、12、13、14，第 15 章总表收官。
+
+## 落地状态（2026-11-21）
+
+- 已建 `llm/`：前言、第 1、5、6 章、`README.md`、`VERIFY.md` 与 `examples/` 三个纯标准库脚本。
+- 已注册独立产品 `llm`：`yuyu-book/manifest-llm.json`、`sources-llm.json`、`registry.py` 白名单、`scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 的 `book-llm*`、CI 矩阵与 EPUB 流程。
+- 产物前缀 `yuyu-llm`，当前只有中文版（`langs: ["zh"]`），不启用通俗层（`plain_optional: true`），暂不进入合订本与发布脚本的 `COMPANION_VOLUMES`。
+- 实测：HTML 0.2 MB，PDF 28 页 / 2.5 MB（本机微软雅黑），EPUB 97 929 字节；构建器测试 624 项、仓库测试 356 项全部通过。详见 `llm/VERIFY.md`。
+- 未做：第 2–4、7–15 章；英文版 `en/llm/`；真实 tokenizer 跨模型计数、长上下文质量实验、GPU 吞吐压测。正文中未把未测内容写成结论。
+
