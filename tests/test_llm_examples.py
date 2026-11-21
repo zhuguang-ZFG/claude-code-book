@@ -327,6 +327,49 @@ class RagExample(unittest.TestCase):
         self.assertIn("intact=True", output)
 
 
+class ToolCallExample(unittest.TestCase):
+    def setUp(self):
+        self.tool = load("toolcall_demo")
+
+    def test_schema_rejects_wrong_types_and_unknown_tools(self):
+        module = self.tool
+        errors = module.validate("get_refund_status", {"order_id": 1001})
+        self.assertIn("order_id must be a string", errors[0])
+        self.assertEqual(module.validate("get_refund_status",
+                                         {"order_id": "ORD-1001"}), [])
+        self.assertIn("unknown tool",
+                      module.validate("delete_order", {})[0])
+
+    def test_a_validation_error_becomes_a_tool_result(self):
+        module = self.tool
+        bad = module.call_tool("get_refund_status", {"order_id": 1001})
+        self.assertTrue(bad["isError"])
+        self.assertIn("validation failed", bad["content"])
+        good = module.call_tool("get_refund_status", {"order_id": "ORD-1001"})
+        self.assertFalse(good["isError"])
+        self.assertIn("退款处理中", good["content"])
+        missing = module.call_tool("get_refund_status", {"order_id": "ORD-9999"})
+        self.assertTrue(missing["isError"])
+        self.assertIn("order not found", missing["content"])
+
+    def test_mcp_messages_have_the_expected_shape(self):
+        module = self.tool
+        messages = module.mcp_messages()
+        self.assertEqual([message["method"] for message in messages],
+                         ["initialize", "tools/list", "tools/call"])
+        self.assertTrue(all(message["jsonrpc"] == "2.0" for message in messages))
+        self.assertEqual(messages[0]["params"]["protocolVersion"], "2026-07-28")
+        self.assertEqual(messages[-1]["params"]["name"], "get_refund_status")
+
+    def test_command_prints_validation_and_mcp(self):
+        output = run("toolcall_demo")
+        self.assertIn("get_refund_status: 181 chars", output)
+        self.assertIn("create_ticket: 241 chars", output)
+        self.assertIn("validation failed: order_id must be a string", output)
+        self.assertIn('"method": "tools/call"', output)
+        self.assertIn("退款处理中", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")

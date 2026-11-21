@@ -16,6 +16,7 @@
 - [第 9 章：对齐：模型为什么“听话”](ch09.md)
 - [第 10 章：推理与部署：吞吐、延迟与显存](ch10.md)
 - [第 11 章：RAG：切块、检索与重排](ch11.md)
+- [第 12 章：工具调用与 MCP：把动作写进协议](ch12.md)
 
 完整十五章规划见 [`docs/llm-volume-plan.md`](../docs/llm-volume-plan.md)。
 
@@ -31,7 +32,7 @@ python scripts/bookctl.py build --product llm --lang zh --pdf --epub
 
 ## 示例
 
-`llm/examples/` 下十一个脚本只用 Python 标准库：
+`llm/examples/` 下十二个脚本只用 Python 标准库：
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -45,14 +46,15 @@ python llm/examples/sft_demo.py
 python llm/examples/alignment_demo.py
 python llm/examples/serving_demo.py
 python llm/examples/rag_demo.py
+python llm/examples/toolcall_demo.py
 ```
 
-它们分别演示 byte-level BPE、embedding 与余弦检索、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算、预训练算力分配、SFT 损失掩码与 LoRA 参数账、奖励模型与 DPO 损失、推理显存与批处理、RAG 切块与混合召回。输出是教学数据，不是厂商 benchmark。
+它们分别演示 byte-level BPE、embedding 与余弦检索、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算、预训练算力分配、SFT 损失掩码与 LoRA 参数账、奖励模型与 DPO 损失、推理显存与批处理、RAG 切块与混合召回、工具调用与 MCP 消息。输出是教学数据，不是厂商 benchmark。
 
 ## 状态
 
-- 正文：第 1–11 章已写；第 12–15 章按规划补齐。
-- 插图：12 枚单元章徽、7 幅篇题与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
+- 正文：第 1–12 章已写；第 13–15 章按规划补齐。
+- 插图：13 枚单元章徽、7 幅篇题与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
 - 构建与测试：`make check`、`python -m unittest tests.test_llm_examples yuyu-book.tests.test_llm_product -v`。
 - 实测记录与未测范围见 [`VERIFY.md`](VERIFY.md)。
 - 来源与许可见 [`yuyu-book/sources-llm.json`](../yuyu-book/sources-llm.json) 和 [`facts/source-lock.json`](facts/source-lock.json)。

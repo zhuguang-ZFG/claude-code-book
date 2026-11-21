@@ -325,6 +325,33 @@
       "accessed": "2026-11-21"
     }
   },
+  "mcp-spec": {
+    "title": "Model Context Protocol Specification (2026-07-28)",
+    "authority": "Model Context Protocol 开源项目",
+    "kind": "spec",
+    "url": "https://modelcontextprotocol.io/specification/2026-07-28",
+    "snapshot": "2026-07-28 定版，2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "规范仓库许可以其仓库声明为准；链接引用，不转载条文",
+    "scope": "第 12 章：initialize、tools/list、tools/call 的生命周期，tools/resources/prompts 三类原语；用来说明工具调用的协议形状。",
+    "pinned": {
+      "spec-version": "2026-07-28",
+      "released": "2026-07-28T16:47:49Z"
+    }
+  },
+  "jsonrpc": {
+    "title": "JSON-RPC 2.0 Specification",
+    "authority": "JSON-RPC 工作组",
+    "kind": "spec",
+    "url": "https://www.jsonrpc.org/specification",
+    "snapshot": "JSON-RPC 2.0，2026-11-21 读取",
+    "accessed": "2026-11-21",
+    "license": "规范页，链接引用",
+    "scope": "第 12 章：请求、响应、通知与错误对象的 JSON-RPC 2.0 格式；MCP 消息以此为基础。",
+    "pinned": {
+      "spec-version": "2.0"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",
