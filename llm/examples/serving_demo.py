@@ -7,8 +7,6 @@ throughput, and why continuous batching keeps slots busier than static batches.
 """
 from __future__ import annotations
 
-import math
-
 PARAMS = 7e9
 LAYERS = 32
 KV_HEADS = 8
