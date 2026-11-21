@@ -352,6 +352,71 @@
       "spec-version": "2.0"
     }
   },
+  "cot": {
+    "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+    "authority": "arXiv 预印本（NeurIPS 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2201.11903",
+    "snapshot": "arXiv:2201.11903，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 13 章：思维链提示让模型先写中间步骤的做法，以及它依赖模型与任务的边界。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "self-consistency": {
+    "title": "Self-Consistency Improves Chain of Thought Reasoning in Language Models",
+    "authority": "arXiv 预印本（ICLR 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2203.11171",
+    "snapshot": "arXiv:2203.11171，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 13 章：多采样后对最终答案投票的自洽方法；不引用其 benchmark 数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "process-verification": {
+    "title": "Let's Verify Step by Step",
+    "authority": "arXiv 预印本（ICLR 2024）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2305.20050",
+    "snapshot": "arXiv:2305.20050，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 13 章：结果监督与过程监督的对照，用来说明验证器在测试时计算中的角色。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "test-time-scaling": {
+    "title": "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2408.03314",
+    "snapshot": "arXiv:2408.03314，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 13 章：固定推理预算下采样、验证与搜索的分配，以及测试时计算的收益边界。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "deepseek-r1": {
+    "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2501.12948",
+    "snapshot": "arXiv:2501.12948，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 13 章：用强化学习训练长思维链的公开案例；只作为例子，不概括所有推理模型。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

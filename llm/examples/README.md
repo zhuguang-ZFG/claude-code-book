@@ -1,6 +1,6 @@
 # 示例说明
 
-十二个脚本都只依赖 Python 3.12+ 标准库，不需要 GPU、模型文件、API key 或网络。
+十三个脚本都只依赖 Python 3.12+ 标准库，不需要 GPU、模型文件、API key 或网络。
 
 | 脚本 | 用途 | 主要输出 |
 | --- | --- | --- |
@@ -16,6 +16,7 @@
 | `serving_demo.py` | 计算权重、KV cache、decode 时间与批处理利用率 | 显存表、tok/s、静态/连续批处理对比 |
 | `rag_demo.py` | 演示切块、BM25、向量召回、RRF 与重排 | 切块完整性、各阶段 top-3、过滤与去重计数 |
 | `toolcall_demo.py` | 演示工具 schema、参数校验、失败重试与 MCP 消息 | schema 字符数、校验错误、JSON-RPC 请求与结果 |
+| `cot_demo.py` | 模拟自洽投票并计算每道正确题的成本 | 采样数/准确率表、策略成本表 |
 
 从仓库根目录运行：
 
@@ -32,6 +33,7 @@ python llm/examples/alignment_demo.py
 python llm/examples/serving_demo.py
 python llm/examples/rag_demo.py
 python llm/examples/toolcall_demo.py
+python llm/examples/cot_demo.py
 ```
 
 `context_budget.py` 接受 `--window`、`--retrieved`、`--kv-heads`、`--price-per-million` 等参数；运行 `python llm/examples/context_budget.py --help` 查看全部输入。
@@ -46,10 +48,11 @@ python llm/examples/toolcall_demo.py
 - 部署示例只算显存流量与槽位占用，不测真实框架的吞吐或延迟；
 - RAG 示例的语料、向量与重排权重都是手设的，不代表真实检索质量；
 - 工具调用示例没有权限、传输、超时和幂等，只演示协议形状；
+- 推理示例用独立错误假设模拟多数投票，不代表真实模型的采样相关性；
 - SFT 示例用目标概率代替完整词表 softmax，LoRA 示例用 4×4 矩阵，不包含训练过程；
 - 对齐示例的奖励分数与 log 概率都是手设的，不包含奖励模型或策略训练；
 - 采样示例使用手工设定的 logits，不代表任何模型的真实分布；
 - 预算示例中的层数、KV 头数、精度和价格都是可替换的输入，不是厂商规格或报价；
-- 十二个脚本不测量真实延迟、吞吐或显存占用。
+- 十三个脚本不测量真实延迟、吞吐或显存占用。
 
-测试位于仓库根目录的 `tests/test_llm_examples.py`，会检查 round-trip、余弦与 top-k、因果遮罩、归一化、参数公式、算力公式、损失掩码、LoRA 更新、偏好损失、显存公式、切块与混合召回、工具校验、固定 seed 和预算公式。
+测试位于仓库根目录的 `tests/test_llm_examples.py`，会检查 round-trip、余弦与 top-k、因果遮罩、归一化、参数公式、算力公式、损失掩码、LoRA 更新、偏好损失、显存公式、切块与混合召回、工具校验、自洽投票、固定 seed 和预算公式。

@@ -370,6 +370,40 @@ class ToolCallExample(unittest.TestCase):
         self.assertIn("退款处理中", output)
 
 
+class CotExample(unittest.TestCase):
+    def setUp(self):
+        self.cot = load("cot_demo")
+
+    def test_majority_accuracy_rises_with_samples(self):
+        module = self.cot
+        scores = [module.majority_accuracy(0.60, n) for n in (1, 3, 5, 9)]
+        self.assertAlmostEqual(scores[0], 0.607, places=3)
+        self.assertEqual(scores, sorted(scores))
+        self.assertGreater(scores[-1], scores[0])
+
+    def test_invalid_sample_counts_are_rejected(self):
+        module = self.cot
+        with self.assertRaises(ValueError):
+            module.majority_accuracy(0.6, 2)
+        with self.assertRaises(ValueError):
+            module.majority_accuracy(0.0, 3)
+
+    def test_cost_per_correct_divides_by_accuracy(self):
+        module = self.cot
+        self.assertAlmostEqual(module.cost_per_correct(100, 0.6, 0.5),
+                               0.00012)
+        with self.assertRaises(ValueError):
+            module.cost_per_correct(100, 0.6, 0)
+
+    def test_command_prints_voting_and_cost_tables(self):
+        output = run("cot_demo")
+        self.assertIn("60.7%", output)
+        self.assertIn("79.5%", output)
+        self.assertIn("CoT x15 majority", output)
+        self.assertIn("$0.004053", output)
+        self.assertIn("independent errors", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")
