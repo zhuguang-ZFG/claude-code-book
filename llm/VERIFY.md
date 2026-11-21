@@ -1,6 +1,6 @@
 # 构建与测试实测记录
 
-本文件记录 **0.1.0 中文试读版**（第 1–6 章）在本机的实际构建结果。日期：2026-11-21。
+本文件记录 **0.1.0 中文试读版**（第 1–6、8 章）在本机的实际构建结果。日期：2026-11-21。
 
 ## 环境
 
@@ -17,14 +17,14 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 327 319 | 7 个单元、3 张图版、28 条引用链接 |
-| `yuyu-llm-zh.pdf` | 3 473 952 | 50 页、11 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 164 706 | 69 条导航、17 个文档、4 张图片（含 4 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 353 374 | 8 个单元、3 张图版、30 条引用链接 |
+| `yuyu-llm-zh.pdf` | 3 870 834 | 56 页、13 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 172 343 | 78 条导航、19 个文档、4 张图片（含 4 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
 ```text
-yuyu-llm-zh.html: 0.3 MB, 7 units, 3 plates, 28 cited links,
+yuyu-llm-zh.html: 0.4 MB, 8 units, 3 plates, 30 cited links,
 0 glosses, 0 lead bands, 0 tier chips, 0 emblems, 0 headpieces, 0 keeper notes
 CHECK OK
 ```
@@ -34,18 +34,18 @@ CHECK OK
 | 命令 | 结果 |
 | --- | --- |
 | `python -m unittest discover -s yuyu-book/tests` | 624 项通过 |
-| `python -m unittest discover -s tests` | 371 项通过 |
+| `python -m unittest discover -s tests` | 376 项通过 |
 | `python scripts/bookctl.py check --fast` | 通过（内容检查、两套测试） |
 | `python scripts/bookctl.py build --product llm --lang zh --check` | `CHECK OK` |
 
 新增测试：
 
-- `tests/test_llm_examples.py`：加载六个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置，并实际执行脚本。
+- `tests/test_llm_examples.py`：加载七个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、SFT 损失掩码与 LoRA 更新，并实际执行脚本。
 - `yuyu-book/tests/test_llm_product.py`：检查产品注册、前缀、单语、`plain_optional`、章节与磁盘文件一致、卷规划仍是 15 章、GitHub 来源为完整 SHA 且与 `llm/facts/source-lock.json` 一致。
 
 ## 示例脚本实测输出
 
-六个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
+七个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -54,6 +54,7 @@ python llm/examples/attention_demo.py
 python llm/examples/transformer_demo.py
 python llm/examples/sampling_demo.py
 python llm/examples/context_budget.py
+python llm/examples/sft_demo.py
 ```
 
 - `bpe_demo.py`：7 行语料训练 32 条合并规则，词表 288；五个样本全部 round-trip 成功。`青禾工作坊` 为 5 字符 / 15 字节 / 8 toy tokens；`🙂` 为 1 字符 / 4 字节 / 4 toy tokens。
@@ -62,6 +63,7 @@ python llm/examples/context_budget.py
 - `transformer_demo.py`：`x=[1.0, 2.0, 3.0]` 经 RMSNorm 得 `[0.463, 0.926, 1.389]`，经 LayerNorm 得 `[-1.225, 0.000, 1.225]`；两个 pre-norm block 后残差流模长从 3.742 增至 4.030。`d_model=4096`、32 层、`d_ff=11008` 的 SwiGLU 配置每层 202 383 360 个参数，未共享词嵌入时整模 6 738 411 520。二维 RoPE 在偏移 0–3 上的点积为 +1.000 / +0.540 / -0.416 / -0.990。
 - `sampling_demo.py`：`T=0.2` 时分布最高概率 0.865，`top-p=0.90` 保留 2 个候选；`T=1.0` 时最高概率 0.371，同一 `top-p` 保留 5 个候选。固定 seed 的两次八连抽完全一致。
 - `context_budget.py`：默认预算用掉 87 444 / 128 000 token，剩 40 556；128K 上下文、32 层 / 8 KV 头 / 128 维 / fp16 的 KV cache 为 16.0 GiB；每层因果注意力 8 590 000 128 个 pair；1 000 次调用、每次 81 300 输入 token、每百万 0.15 美元时账单 12.19 美元。
+- `sft_demo.py`：五个位置的 SFT 损失在全部 token 上平均 0.367，只算 assistant 时 0.520；LoRA rank 2、`alpha=4` 把输出从 `[0.300, 0.400, 0.300, 0.500]` 改为 `[0.300, 0.500, 0.300, 0.540]`，合并检查通过。`4096×4096` 矩阵上 r=8 的可训练参数为 65 536（0.391%），fp16 每层 128 KiB，32 层约 4 MiB；r=d 时为 200%，并不省。
 
 ## 未实测范围
 
@@ -70,6 +72,7 @@ python llm/examples/context_budget.py
 - 真实厂商模型上的温度 / top-p 对比与 seed 复现实验；
 - 生产 tokenizer（如 `tiktoken`）与本书玩具 BPE 的跨模型计数对比；
 - 真实编码器的语义检索质量（第 2 章的向量是手设三维玩具）；
+- 真实 SFT / LoRA / QLoRA 训练实验（第 8 章只有手设概率与矩阵）；
 - 训练好的模型里注意力头实际学到了什么（本书示例的权重是手设的）；
 - 反向传播、损失函数与优化器（本卷只走前向算术）；
 - 长上下文位置效应（Lost in the Middle）的复现实验；

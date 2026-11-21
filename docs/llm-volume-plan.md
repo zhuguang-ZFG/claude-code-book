@@ -1,6 +1,6 @@
 # LLM 卷规划：写给 Agent 工程师的大模型原理与实战
 
-日期：2026-11-20。状态：0.1.0 中文试读版已落地（第 1–6 章），其余章节待补。
+日期：2026-11-20。状态：0.1.0 中文试读版已落地（第 1–6、8 章），其余章节待补。
 
 ## 为什么写、为什么不复刻现有赛道
 
@@ -60,13 +60,13 @@ GitHub 中文/英文 LLM 教学仓格局（星数为 2026-11 实测）：
 
 ## 写作顺序
 
-第 1、5、6 章先行（agent 工程师最高频痛点：token、采样、上下文），第 3、4 章已补注意力与 Transformer，第 2 章已补 embedding；再 8→9 原理主线，最后 7、10、11、12、13、14，第 15 章总表收官。
+第 1、5、6 章先行（agent 工程师最高频痛点：token、采样、上下文），第 3、4 章已补注意力与 Transformer，第 2 章已补 embedding，第 8 章已补 SFT/LoRA；再 9 对齐主线，最后 7、10、11、12、13、14，第 15 章总表收官。
 
 ## 落地状态（2026-11-21）
 
-- 已建 `llm/`：前言、第 1–6 章、`README.md`、`VERIFY.md` 与 `examples/` 六个纯标准库脚本。
+- 已建 `llm/`：前言、第 1–6、8 章、`README.md`、`VERIFY.md` 与 `examples/` 七个纯标准库脚本。
 - 已注册独立产品 `llm`：`yuyu-book/manifest-llm.json`、`sources-llm.json`、`registry.py` 白名单、`scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 的 `book-llm*`、CI 矩阵与 EPUB 流程。
 - 产物前缀 `yuyu-llm`，当前只有中文版（`langs: ["zh"]`），不启用通俗层（`plain_optional: true`），暂不进入合订本与发布脚本的 `COMPANION_VOLUMES`。
-- 实测：HTML 327 319 字节，PDF 50 页 / 3.5 MB（本机微软雅黑），EPUB 164 706 字节；构建器测试 624 项、仓库测试 371 项全部通过。详见 `llm/VERIFY.md`。
-- 未做：第 7–15 章；英文版 `en/llm/`；真实 tokenizer 跨模型计数、长上下文质量实验、GPU 吞吐压测。正文中未把未测内容写成结论。
+- 实测：HTML 353 374 字节，PDF 56 页 / 3.9 MB（本机微软雅黑），EPUB 172 343 字节；构建器测试 624 项、仓库测试 376 项全部通过。详见 `llm/VERIFY.md`。
+- 未做：第 7、9–15 章；英文版 `en/llm/`；真实 tokenizer 跨模型计数、真实微调实验、长上下文质量实验、GPU 吞吐压测。正文中未把未测内容写成结论。
 

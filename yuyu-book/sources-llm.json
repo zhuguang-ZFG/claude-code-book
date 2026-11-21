@@ -195,6 +195,45 @@
       "accessed": "2026-11-21"
     }
   },
+  "lora": {
+    "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+    "authority": "arXiv 预印本（ICLR 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2106.09685",
+    "snapshot": "arXiv:2106.09685，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 8 章：冻结基座、训练低秩矩阵 A/B 的公式与参数节省；不引用其 benchmark 数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "qlora": {
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "authority": "arXiv 预印本（NeurIPS 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2305.14314",
+    "snapshot": "arXiv:2305.14314，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 8 章：4-bit 基座加 LoRA 的显存取舍；只讲方法，不引用其性能与显存数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "instructgpt": {
+    "title": "Training language models to follow instructions with human feedback",
+    "authority": "arXiv 预印本（NeurIPS 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2203.02155",
+    "snapshot": "arXiv:2203.02155，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 8 章：SFT 作为对齐流程第一阶段的定位；不引用其评分与人工评测数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

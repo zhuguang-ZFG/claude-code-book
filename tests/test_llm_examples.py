@@ -98,6 +98,60 @@ class EmbeddingExample(unittest.TestCase):
         self.assertIn("1.5 GiB", output)
 
 
+class SftExample(unittest.TestCase):
+    def setUp(self):
+        self.sft = load("sft_demo")
+
+    def test_masking_changes_the_loss_average(self):
+        module = self.sft
+        losses, all_mean, assistant_mean = module.masked_loss(
+            module.TARGET_PROB, module.MASK)
+        self.assertAlmostEqual(losses[0], 0.051, places=3)
+        self.assertAlmostEqual(losses[-1], 0.693, places=3)
+        self.assertAlmostEqual(all_mean, 0.367, places=3)
+        self.assertAlmostEqual(assistant_mean, 0.520, places=3)
+        self.assertLess(all_mean, assistant_mean)
+        self.assertEqual(sum(module.MASK), 3)
+
+    def test_lora_delta_has_the_expected_low_rank_update(self):
+        module = self.sft
+        delta = module.lora_delta(module.A, module.B, module.ALPHA, module.RANK)
+        self.assertEqual(len(delta), 4)
+        self.assertEqual([round(value, 3) for value in delta[0]],
+                         [0.1, 0.0, -0.1, 0.0])
+        base = module.matvec(module.W, module.X)
+        adapted = module.matvec(module.add(module.W, delta), module.X)
+        self.assertEqual([round(value, 3) for value in base],
+                         [0.3, 0.4, 0.3, 0.5])
+        self.assertEqual([round(value, 3) for value in adapted],
+                         [0.3, 0.5, 0.3, 0.54])
+
+    def test_zero_b_starts_from_the_base_model(self):
+        module = self.sft
+        zero = [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
+        delta = module.lora_delta(module.A, zero, module.ALPHA, module.RANK)
+        self.assertTrue(all(value == 0 for row in delta for value in row))
+        self.assertEqual(module.matvec(module.add(module.W, delta), module.X),
+                         module.matvec(module.W, module.X))
+
+    def test_parameter_counts_and_adapter_size(self):
+        module = self.sft
+        r8 = module.params(4096, 8)
+        self.assertEqual(r8["trainable"], 65_536)
+        self.assertAlmostEqual(r8["ratio"], 0.00390625)
+        self.assertEqual(r8["trainable"] * 2, 131_072)
+        self.assertEqual(module.size(r8["trainable"] * 2 * 32), "4.0 MiB")
+        self.assertEqual(module.params(4096, 4096)["ratio"], 2.0)
+
+    def test_command_prints_the_masked_loss_and_lora_table(self):
+        output = run("sft_demo")
+        self.assertIn("assistant-only mean:  0.520", output)
+        self.assertIn("[0.300, 0.500, 0.300, 0.540]", output)
+        self.assertIn("merge check: OK", output)
+        self.assertIn("65,536", output)
+        self.assertIn("4.0 MiB", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")
