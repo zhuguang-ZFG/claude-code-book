@@ -283,6 +283,50 @@ class ServingExample(unittest.TestCase):
         self.assertIn("continuous utilization: 97.5%", output)
 
 
+class RagExample(unittest.TestCase):
+    def setUp(self):
+        self.rag = load("rag_demo")
+
+    def test_chunk_size_can_split_the_answer(self):
+        module = self.rag
+        text = "退款审核通过后原路退回"
+        small = module.chunk_fixed(text, 10)
+        large = module.chunk_fixed(text, 20)
+        self.assertFalse(any("原路退回" in chunk for chunk in small))
+        self.assertTrue(any("原路退回" in chunk for chunk in large))
+
+    def test_version_filter_and_dedupe_shrink_the_candidate_set(self):
+        module = self.rag
+        raw = module.build_chunks(module.DOCS)
+        self.assertEqual(len(raw), 13)
+        filtered = module.filter_stale(raw)
+        self.assertEqual(len(filtered), 12)
+        self.assertTrue(all(chunk["version"] >= 2 for chunk in filtered))
+        self.assertEqual(len(module.dedupe(filtered)), 12)
+
+    def test_lexical_and_vector_recall_disagree_then_rrf_fuses(self):
+        module = self.rag
+        chunks = module.dedupe(module.filter_stale(module.build_chunks(module.DOCS)))
+        lexical = module.bm25(chunks, module.QUERY)
+        semantic = module.vector_search(chunks, module.QUERY_VEC)
+        self.assertEqual(lexical[0][0]["chunk_id"], "refund-faq#0")
+        self.assertEqual(semantic[0][0]["chunk_id"], "refund-policy#0")
+        fused = module.rrf([[row[0] for row in lexical],
+                            [row[0] for row in semantic]])
+        self.assertEqual(fused[0][0]["chunk_id"], "refund-policy#0")
+        reranked = module.rerank([row[0] for row in fused[:8]], module.QUERY)
+        self.assertEqual(reranked[0][0]["chunk_id"], "refund-policy#2")
+
+    def test_command_prints_the_pipeline_and_top_hits(self):
+        output = run("rag_demo")
+        self.assertIn("raw chunks: 13", output)
+        self.assertIn("after version filter + dedupe: 12", output)
+        self.assertIn("refund-faq#0", output)
+        self.assertIn("refund-policy#2", output)
+        self.assertIn("intact=False", output)
+        self.assertIn("intact=True", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")

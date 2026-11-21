@@ -22,8 +22,8 @@ from yuyu_book.core import REPO_ROOT, expected_ids, load_configs, load_unit, uni
 
 PREVIEW_IDS = ["llm-front", "llm-ch01", "llm-ch02", "llm-ch03",
                "llm-ch04", "llm-ch05", "llm-ch06", "llm-ch07",
-               "llm-ch08", "llm-ch09", "llm-ch10"]
-PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+               "llm-ch08", "llm-ch09", "llm-ch10", "llm-ch11"]
+PREVIEW_CHAPTERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
 PLANNED_CHAPTERS = set(range(1, 16))
 
 
@@ -101,12 +101,12 @@ class LlmProduct(unittest.TestCase):
         for name in ("bpe_demo.py", "embedding_demo.py", "attention_demo.py",
                      "transformer_demo.py", "sampling_demo.py",
                      "context_budget.py", "scaling_demo.py", "sft_demo.py",
-                     "alignment_demo.py", "serving_demo.py"):
+                     "alignment_demo.py", "serving_demo.py", "rag_demo.py"):
             self.assertTrue((REPO_ROOT / "llm/examples" / name).is_file(), name)
             self.assertIn(name, readme)
         for chapter in ("ch01.md", "ch02.md", "ch03.md", "ch04.md", "ch05.md",
                         "ch06.md", "ch07.md", "ch08.md", "ch09.md",
-                        "ch10.md"):
+                        "ch10.md", "ch11.md"):
             self.assertIn(chapter, readme)
 
 

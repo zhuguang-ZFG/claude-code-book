@@ -299,6 +299,32 @@
       "accessed": "2026-11-21"
     }
   },
+  "rag": {
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "authority": "arXiv 预印本（NeurIPS 2020）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2005.11401",
+    "snapshot": "arXiv:2005.11401，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 11 章：检索增强生成的原始框架，用来说明检索与生成的组合；不引用其 benchmark 数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "dpr": {
+    "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+    "authority": "arXiv 预印本（EMNLP 2020）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2004.04906",
+    "snapshot": "arXiv:2004.04906，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 11 章：稠密向量检索的经典做法，用来说明双编码器召回；不引用其 benchmark 数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

@@ -1,6 +1,6 @@
 # 构建与测试实测记录
 
-本文件记录 **0.1.0 中文试读版**（第 1–10 章）在本机的实际构建结果。日期：2026-11-21。
+本文件记录 **0.1.0 中文试读版**（第 1–11 章）在本机的实际构建结果。日期：2026-11-21。
 
 ## 环境
 
@@ -17,37 +17,37 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 427 097 | 11 个单元、3 张图版、37 条引用链接、11 枚章徽、6 幅篇题 |
-| `yuyu-llm-zh.pdf` | 4 505 130 | 75 页、18 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 215 525 | 106 条导航、24 个文档、21 张图片（含 21 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 450 230 | 12 个单元、3 张图版、39 条引用链接、12 枚章徽、7 幅篇题 |
+| `yuyu-llm-zh.pdf` | 4 690 518 | 80 页、20 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 228 348 | 115 条导航、26 个文档、23 张图片（含 23 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
 ```text
-yuyu-llm-zh.html: 0.4 MB, 11 units, 3 plates, 37 cited links,
-0 glosses, 0 lead bands, 0 tier chips, 11 emblems, 6 headpieces, 0 keeper notes
+yuyu-llm-zh.html: 0.5 MB, 12 units, 3 plates, 39 cited links,
+0 glosses, 0 lead bands, 0 tier chips, 12 emblems, 7 headpieces, 0 keeper notes
 CHECK OK
 ```
 
-插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：11 枚单元章徽、6 幅篇题、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
+插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：12 枚单元章徽、7 幅篇题、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
 
 ## 测试
 
 | 命令 | 结果 |
 | --- | --- |
 | `python -m unittest discover -s yuyu-book/tests` | 624 项通过 |
-| `python -m unittest discover -s tests` | 390 项通过 |
+| `python -m unittest discover -s tests` | 394 项通过 |
 | `python scripts/bookctl.py check --fast` | 通过（内容检查、两套测试） |
 | `python scripts/bookctl.py build --product llm --lang zh --check` | `CHECK OK` |
 
 新增测试：
 
-- `tests/test_llm_examples.py`：加载十个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率，并实际执行脚本。
+- `tests/test_llm_examples.py`：加载十一个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回，并实际执行脚本。
 - `yuyu-book/tests/test_llm_product.py`：检查产品注册、前缀、单语、`plain_optional`、章节与磁盘文件一致、卷规划仍是 15 章、GitHub 来源为完整 SHA 且与 `llm/facts/source-lock.json` 一致。
 
 ## 示例脚本实测输出
 
-十个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
+十一个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -60,6 +60,7 @@ python llm/examples/scaling_demo.py
 python llm/examples/sft_demo.py
 python llm/examples/alignment_demo.py
 python llm/examples/serving_demo.py
+python llm/examples/rag_demo.py
 ```
 
 - `bpe_demo.py`：7 行语料训练 32 条合并规则，词表 288；五个样本全部 round-trip 成功。`青禾工作坊` 为 5 字符 / 15 字节 / 8 toy tokens；`🙂` 为 1 字符 / 4 字节 / 4 toy tokens。
@@ -72,6 +73,7 @@ python llm/examples/serving_demo.py
 - `sft_demo.py`：五个位置的 SFT 损失在全部 token 上平均 0.367，只算 assistant 时 0.520；LoRA rank 2、`alpha=4` 把输出从 `[0.300, 0.400, 0.300, 0.500]` 改为 `[0.300, 0.500, 0.300, 0.540]`，合并检查通过。`4096×4096` 矩阵上 r=8 的可训练参数为 65 536（0.391%），fp16 每层 128 KiB，32 层约 4 MiB；r=d 时为 200%，并不省。
 - `alignment_demo.py`：四组奖励对的平均 Bradley-Terry 损失 0.681，成对准确率 1/4；差值 1.0 的损失 0.313，差值 0 的损失 0.693。DPO 在偏好正确时，`β=0.1` 的边际 0.05、损失 0.668，`β=1.0` 的边际 0.50、损失 0.474；偏好反转且 `β=1.0` 时边际 -0.30、损失 0.854。
 - `serving_demo.py`：7B 配置的 KV cache 为 128 KiB/token；权重 fp16 / int8 / int4 分别为 14.0 / 7.0 / 3.5 GB。8K 上下文下批大小 1 / 8 / 32 的 decode 时间为 5.02 / 7.53 / 16.12 ms，吞吐为 199 / 1 062 / 1 985 tok/s；32K 上下文、32 路批处理需要 128 GiB KV cache，80 GiB 卡装不下。四请求两槽位的静态/连续批处理利用率为 60.9% / 97.5%。
+- `rag_demo.py`：6 份文档切成 13 块，按版本过滤后剩 12 块；块大小 10 会把“原路退回”切断，20 不会。BM25 第一是 `refund-faq#0`，向量第一是 `refund-policy#0`，RRF 第一是 `refund-policy#0`，玩具重排第一是 `refund-policy#2`（到账时间 1–3 个工作日）。
 
 ## 未实测范围
 
@@ -82,6 +84,7 @@ python llm/examples/serving_demo.py
 - 真实编码器的语义检索质量（第 2 章的向量是手设三维玩具）；
 - 真实预训练实验与集群吞吐（第 7 章只算 FLOPs 与显存粗账）；
 - 真实推理框架的吞吐、延迟与显存占用（第 10 章只算显存流量与槽位占用）；
+- 真实 RAG 检索质量（第 11 章的语料、向量与重排权重都是手设的）；
 - 真实 SFT / LoRA / QLoRA 训练实验（第 8 章只有手设概率与矩阵）；
 - 真实偏好对齐实验与奖励模型训练（第 9 章只有手设分数与 log 概率）；
 - 训练好的模型里注意力头实际学到了什么（本书示例的权重是手设的）；
