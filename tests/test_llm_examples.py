@@ -116,6 +116,59 @@ class AttentionExample(unittest.TestCase):
         self.assertIn("16,384 B", output)
 
 
+class TransformerExample(unittest.TestCase):
+    def setUp(self):
+        self.transformer = load("transformer_demo")
+
+    def test_norms_center_or_scale_the_vector(self):
+        module = self.transformer
+        rms, scale = module.rms_norm(module.X0)
+        self.assertEqual(len(rms), len(module.X0))
+        self.assertAlmostEqual(module.norm(rms), 3 ** 0.5, places=5)
+        self.assertGreater(scale, 0)
+        centered, mean, _scale = module.layer_norm(module.X0)
+        self.assertAlmostEqual(mean, 2.0)
+        self.assertAlmostEqual(sum(centered), 0.0, places=6)
+        self.assertAlmostEqual(
+            sum(value * value for value in centered) / len(centered), 1.0,
+            places=4)
+
+    def test_zero_updates_leave_the_residual_stream_untouched(self):
+        module = self.transformer
+        zero = [0.0, 0.0, 0.0]
+        self.assertEqual(module.block(module.X0, zero, zero), module.X0)
+
+    def test_parameter_breakdown_matches_the_model_card(self):
+        module = self.transformer
+        counts = module.params(4096, 32, 32, 11008, 32000, True, False)
+        self.assertEqual(counts["attention"], 67_108_864)
+        self.assertEqual(counts["ffn"], 135_266_304)
+        self.assertEqual(counts["per_layer"], 202_383_360)
+        self.assertEqual(counts["total"], 6_738_411_520)
+        tied = module.params(4096, 32, 32, 11008, 32000, True, True)
+        self.assertEqual(counts["total"] - tied["total"], 131_072_000)
+
+    def test_rope_dot_depends_on_the_offset(self):
+        module = self.transformer
+        query = [1.0, 0.0]
+        key = [1.0, 0.0]
+        import math
+        for offset in range(4):
+            value = module.dot(module.rope(query, offset),
+                               module.rope(key, 0))
+            self.assertAlmostEqual(value, math.cos(offset), places=6)
+        self.assertAlmostEqual(
+            module.dot(module.rope(query, 5), module.rope(key, 2)),
+            module.dot(module.rope(query, 3), module.rope(key, 0)),
+            places=6)
+
+    def test_command_prints_params_and_rope_offsets(self):
+        output = run("transformer_demo")
+        self.assertIn("202,383,360", output)
+        self.assertIn("6,738,411,520", output)
+        self.assertIn("m-n=2: dot=-0.416", output)
+
+
 class SamplingExample(unittest.TestCase):
     def setUp(self):
         self.sampling = load("sampling_demo")

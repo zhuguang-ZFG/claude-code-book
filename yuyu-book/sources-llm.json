@@ -104,6 +104,58 @@
       "accessed": "2026-11-21"
     }
   },
+  "layernorm": {
+    "title": "Layer Normalization",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1607.06450",
+    "snapshot": "arXiv:1607.06450，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：LayerNorm 的去均值与缩放公式，以及它和 RMSNorm 的差别。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "pre-ln": {
+    "title": "On Layer Normalization in the Transformer Architecture",
+    "authority": "arXiv 预印本（ICML 2020）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2002.04745",
+    "snapshot": "arXiv:2002.04745，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：pre-norm 与 post-norm 的训练差异，用来解释现代 decoder 的 block 顺序；不引用具体实验数字。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "swiglu": {
+    "title": "GLU Variants Improve Transformer",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2002.05202",
+    "snapshot": "arXiv:2002.05202，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：SwiGLU 等门控 FFN 变体的结构，以及 d_ff 取值与参数量的关系。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
+  "rope": {
+    "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2104.09864",
+    "snapshot": "arXiv:2104.09864，2026-11-21 读取摘要页",
+    "accessed": "2026-11-21",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：RoPE 用旋转把相对位置注入查询与键的做法；长上下文缩放只作名词提及。",
+    "pinned": {
+      "accessed": "2026-11-21"
+    }
+  },
   "lost-middle": {
     "title": "Lost in the Middle: How Language Models Use Long Contexts",
     "authority": "arXiv 预印本",

@@ -7,6 +7,7 @@
 - [前言](00-前言.md)
 - [第 1 章：token 不是字，也不是词](ch01.md)
 - [第 3 章：注意力在算什么](ch03.md)
+- [第 4 章：一层一层读懂模型卡](ch04.md)
 - [第 5 章：同一个提示，为什么每次答案不同](ch05.md)
 - [第 6 章：上下文窗口不是免费的抽屉](ch06.md)
 
@@ -24,20 +25,21 @@ python scripts/bookctl.py build --product llm --lang zh --pdf --epub
 
 ## 示例
 
-`llm/examples/` 下四个脚本只用 Python 标准库：
+`llm/examples/` 下五个脚本只用 Python 标准库：
 
 ```bash
 python llm/examples/bpe_demo.py
 python llm/examples/attention_demo.py
+python llm/examples/transformer_demo.py
 python llm/examples/sampling_demo.py
 python llm/examples/context_budget.py
 ```
 
-它们分别演示 byte-level BPE、单头/多头注意力、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算。输出是教学数据，不是厂商 benchmark。
+它们分别演示 byte-level BPE、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算。输出是教学数据，不是厂商 benchmark。
 
 ## 状态
 
-- 正文：第 1、3、5、6 章已写；其余章节按规划补齐。
+- 正文：第 1、3、4、5、6 章已写；其余章节按规划补齐。
 - 构建与测试：`make check`、`python -m unittest tests.test_llm_examples yuyu-book.tests.test_llm_product -v`。
 - 实测记录与未测范围见 [`VERIFY.md`](VERIFY.md)。
 - 来源与许可见 [`yuyu-book/sources-llm.json`](../yuyu-book/sources-llm.json) 和 [`facts/source-lock.json`](facts/source-lock.json)。
