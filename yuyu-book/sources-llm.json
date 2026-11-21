@@ -663,5 +663,96 @@
     "pinned": {
       "accessed": "2026-11-21"
     }
+  },
+  "text-degeneration": {
+    "title": "The Curious Case of Neural Text Degeneration",
+    "authority": "arXiv 预印本（ICLR 2020）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1904.09751",
+    "snapshot": "arXiv:1904.09751，2026-11-22 读取摘要页核验",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 5 章：高似然解码在开放生成上产出空洞重复文本的现象，也是束搜索不适用于开放生成的依据。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "rope-extrapolation": {
+    "title": "Scaling Laws of RoPE-based Extrapolation",
+    "authority": "arXiv 预印本（COLM 2024）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2310.05209",
+    "snapshot": "arXiv:2310.05209，2026-11-22 引用号经赵鑫等《大语言模型》参考文献页核对",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4 章：RoPE 长上下文外推的频段视角与关键子空间分析，支撑位置截断一派的动机。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "gpt3-paper": {
+    "title": "Language Models are Few-Shot Learners",
+    "authority": "arXiv 预印本（NeurIPS 2020）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2005.14165",
+    "snapshot": "arXiv:2005.14165，2026-11-22 读取摘要页",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 7 章：GPT-3 训练用余弦学习率衰减到峰值 10% 的做法，是本章示例调度参数的出处。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "bert-paper": {
+    "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    "authority": "arXiv 预印本（NAACL 2019）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1810.04805",
+    "snapshot": "arXiv:1810.04805，2026-11-22 读取摘要页",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 8 章：取末位隐藏向量接线性分类头的微调做法源头；只引用其分类微调范式。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "gptq-paper": {
+    "title": "GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers",
+    "authority": "arXiv 预印本（ICLR 2023）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2210.11423",
+    "snapshot": "arXiv:2210.11423，2026-11-22 读取摘要页",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 10 章：训练后量化用校准样本逐层修整舍入误差的代表方法；只引用其思路，不引用精度数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "agieval-paper": {
+    "title": "AGIEval: A Human-Centric Benchmark for Evaluating Foundation Models",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2304.06364",
+    "snapshot": "arXiv:2304.06364，2026-11-22 读取摘要页核验",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 14 章：用人类标准化考试评基础模型的人类中心评测路线；只引用其题库构成。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "llama-paper": {
+    "title": "LLaMA: Open and Efficient Foundation Language Models",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2302.13971",
+    "snapshot": "arXiv:2302.13971，2026-11-22 读取摘要页",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 7 章：65B 模型按论文报告用 2 048 张 A100 训约 21 天，用作分布式训练量级的公开参照。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
   }
 }

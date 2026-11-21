@@ -17,6 +17,8 @@ D_FF = 48
 N_CTX = 10
 STEPS = 240
 LR = 0.6
+WARMUP = 12
+MIN_LR_RATIO = 0.1
 SEED = 7
 
 CORPUS = (
@@ -246,6 +248,21 @@ def gradcheck(model: Tiny, ids: list[int], targets: list[int],
     return worst
 
 
+def lr_at(step: int) -> float:
+    """Warmup linearly, then cosine-decay to MIN_LR_RATIO: the standard
+    schedule in practice.
+
+    Small steps early keep noisy first gradients from throwing the weights
+    around; shrinking (but never zero) steps late let the loss settle.
+    """
+    if step <= WARMUP:
+        return LR * step / WARMUP
+    progress = (step - WARMUP) / max(1, STEPS - WARMUP)
+    floor = LR * MIN_LR_RATIO
+    span = LR - floor
+    return floor + span * 0.5 * (1.0 + math.cos(math.pi * progress))
+
+
 def train(model: Tiny, rng: random.Random) -> list[tuple[int, float]]:
     history = []
     for step in range(1, STEPS + 1):
@@ -253,7 +270,7 @@ def train(model: Tiny, rng: random.Random) -> list[tuple[int, float]]:
         window = IDS[start:start + N_CTX]
         targets = IDS[start + 1:start + N_CTX + 1]
         loss, grads = model.loss_and_grads(window, targets)
-        sgd(model, grads, LR)
+        sgd(model, grads, lr_at(step))
         if step == 1 or step % 60 == 0:
             history.append((step, loss))
     return history
@@ -279,7 +296,8 @@ def main() -> int:
     print(f"corpus: {len(CORPUS)} chars, vocab {len(VOCAB)}, ctx {N_CTX}")
     print(f"model: d_model={D_MODEL}, ffn={D_FF}, 1 causal layer, "
           f"{count} params, untied head")
-    print(f"optimizer: SGD lr={LR}, batch=1 random window, {STEPS} steps")
+    print(f"optimizer: SGD lr={LR}, warmup {WARMUP} steps then cosine decay "
+          f"to {MIN_LR_RATIO:.0%}, batch=1 random window, {STEPS} steps")
 
     start = rng.randrange(0, len(IDS) - N_CTX - 1)
     probe = IDS[start:start + N_CTX]
