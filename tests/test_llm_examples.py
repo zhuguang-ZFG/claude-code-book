@@ -239,6 +239,50 @@ class ScalingExample(unittest.TestCase):
         self.assertIn("35 GPU-seconds", output)
 
 
+class ServingExample(unittest.TestCase):
+    def setUp(self):
+        self.serving = load("serving_demo")
+
+    def test_kv_cache_and_weight_sizes(self):
+        module = self.serving
+        self.assertEqual(module.KV_PER_TOKEN, 131_072)
+        self.assertEqual(module.size(module.KV_PER_TOKEN), "128.0 KiB")
+        self.assertEqual(module.size(module.weights_bytes(7e9, 2)), "13.0 GiB")
+        self.assertEqual(module.size(module.weights_bytes(7e9, 1)), "6.5 GiB")
+        self.assertEqual(module.size(module.weights_bytes(7e9, 0.5)), "3.3 GiB")
+
+    def test_decode_time_and_throughput_grow_with_batch(self):
+        module = self.serving
+        one = module.decode_seconds(1, 8192, module.weights_bytes(7e9, 2))
+        many = module.decode_seconds(32, 8192, module.weights_bytes(7e9, 2))
+        self.assertAlmostEqual(one * 1000, 5.02, places=2)
+        self.assertAlmostEqual(many * 1000, 16.12, places=2)
+        self.assertLess(module.decode_throughput(1, 8192, 14e9), 200)
+        self.assertGreater(module.decode_throughput(32, 8192, 14e9), 1900)
+
+    def test_long_context_batch_does_not_fit(self):
+        module = self.serving
+        self.assertTrue(module.fits(8, 32768, module.weights_bytes(7e9, 2)))
+        self.assertFalse(module.fits(32, 32768, module.weights_bytes(7e9, 2)))
+
+    def test_continuous_batching_keeps_slots_busier(self):
+        module = self.serving
+        lengths = [20, 200, 50, 120]
+        static = module.static_utilization(lengths, 2)
+        continuous = module.continuous_utilization(lengths, 2)
+        self.assertAlmostEqual(static, 0.609375)
+        self.assertAlmostEqual(continuous, 0.975)
+        self.assertGreater(continuous, static)
+
+    def test_command_prints_memory_and_scheduler_tables(self):
+        output = run("serving_demo")
+        self.assertIn("131,072 B/token", output)
+        self.assertIn("5.02", output)
+        self.assertIn("1985", output)
+        self.assertIn("static utilization:     60.9%", output)
+        self.assertIn("continuous utilization: 97.5%", output)
+
+
 class AttentionExample(unittest.TestCase):
     def setUp(self):
         self.attention = load("attention_demo")
