@@ -52,7 +52,7 @@ guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/`
 声明 `plain_optional`，不带 guides、索引、修订页与附录。十四个示例在 `llm/examples/`，
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。插图在 `illustrations-agents/` 的 `llm-*`、
-`part-llm-p*` 与 `cover-llm.svg`，含 15 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
+`part-llm-p*` 与 `cover-llm.svg`，含 28 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
 版本与实测数据见 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本版暂不进入合订本，
 也不加入 `scripts/release.py` 的 `COMPANION_VOLUMES`；CI 的 `agent-volumes` 矩阵会照常构建三件套。
 

@@ -17,19 +17,19 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 522 099 | 16 个单元、15 张正文手绘图、83 条引用链接、16 枚章徽、9 幅篇题 |
-| `yuyu-llm-zh.pdf` | 6 098 717 | 108 页、26 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 204 700 | 153 条导航、32 个文档、26 张图片（含 26 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 544 085 | 16 个单元、28 张正文手绘图、83 条引用链接、16 枚章徽、9 幅篇题 |
+| `yuyu-llm-zh.pdf` | 6 520 900 | 113 页、26 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 205 097 | 153 条导航、32 个文档、26 张图片（含 26 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
 ```text
-yuyu-llm-zh.html: 0.5 MB, 16 units, 15 plates, 83 cited links,
+yuyu-llm-zh.html: 0.5 MB, 16 units, 28 plates, 83 cited links,
 0 glosses, 0 lead bands, 0 tier chips, 16 emblems, 9 headpieces, 0 keeper notes
 CHECK OK
 ```
 
-插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：16 枚单元章徽、9 幅篇题、15 张正文手绘图、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
+插图用 `yuyu-book/illustrations-agents/` 的墨线托盘：16 枚单元章徽、9 幅篇题、28 张正文手绘图、1 张独立封面。全部通过 `art._read()` 的 6000 字节、`viewBox`、`currentColor` 与禁用 `id/href/url()` 校验；封面走 `cover-llm.svg`，不借用御舆的四马图。
 
 ## 测试
 
