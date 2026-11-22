@@ -17,9 +17,9 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 648270 | 17 个单元、31 张正文手绘图、131 条引用链接、17 枚章徽、10 幅篇题 |
-| `yuyu-llm-zh.pdf` | 7748468 | 138 页、28 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 240822 | 163 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 648764 | 17 个单元、31 张正文手绘图、131 条引用链接、17 枚章徽、10 幅篇题 |
+| `yuyu-llm-zh.pdf` | 7750617 | 138 页、28 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 241009 | 163 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
@@ -42,12 +42,12 @@ CHECK OK
 
 新增测试：
 
-- `tests/test_llm_examples.py`：加载十五个示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回、工具 schema 校验与 MCP 消息、自洽投票、Wilson 区间与评测口径、patch 切块与图像 token 预算，并实际执行脚本。
+- `tests/test_llm_examples.py`：加载全部示例模块，检查 BPE round-trip、训练可复现、余弦与 top-k、softmax/过滤器的归一化、固定 seed、因果遮罩、注意力参数与 KV cache 公式、Norm 与残差、模型参数账、RoPE 相对位置、预训练算力公式、SFT 损失掩码与 LoRA 更新、偏好损失、decode 显存与批处理利用率、RAG 切块与混合召回、工具 schema 校验与 MCP 消息、自洽投票、Wilson 区间与评测口径、patch 切块与图像 token 预算，并实际执行脚本。
 - `yuyu-book/tests/test_llm_product.py`：检查产品注册、前缀、单语、`plain_optional`、章节与磁盘文件一致、卷规划仍是 16 章、RoPE 图的旋转几何与 q/k 端点约定、GitHub 来源为完整 SHA 且与 `llm/facts/source-lock.json` 一致。
 
 ## 示例脚本实测输出
 
-十七个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
+十八个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash
 python llm/examples/bpe_demo.py

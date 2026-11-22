@@ -36,7 +36,7 @@ python scripts/bookctl.py build --product llm --lang zh --pdf --epub
 
 ## 示例
 
-`llm/examples/` 下十七个脚本只用 Python 标准库：
+`llm/examples/` 下十八个脚本只用 Python 标准库：
 
 ```bash
 python llm/examples/bpe_demo.py
@@ -50,6 +50,7 @@ python llm/examples/train_demo.py
 python llm/examples/embedding_train_demo.py
 python llm/examples/sft_demo.py
 python llm/examples/alignment_demo.py
+python llm/examples/rejection_demo.py
 python llm/examples/serving_demo.py
 python llm/examples/rag_demo.py
 python llm/examples/toolcall_demo.py

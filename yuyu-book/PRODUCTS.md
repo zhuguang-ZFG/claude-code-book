@@ -49,7 +49,7 @@ guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/`
 ## LLM 分册（中文版）
 
 `llm` 是模型原理分册的 0.1.0 中文版，中文单语，前言加第 1–16 章（17 个单元），
-声明 `plain_optional`，不带 guides、索引、修订页与附录。十五个示例在 `llm/examples/`，
+声明 `plain_optional`，不带 guides、索引、修订页与附录。十八个示例在 `llm/examples/`，
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。插图在 `illustrations-agents/` 的 `llm-*`、
 `part-llm-p*` 与 `cover-llm.svg`，含 31 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，

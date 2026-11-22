@@ -796,5 +796,50 @@ class EmbeddingTrainExample(unittest.TestCase):
         self.assertIn("after :", output)
 
 
+class RejectionExample(unittest.TestCase):
+    def setUp(self):
+        self.module = load("rejection_demo")
+
+    def test_verifier_is_exact_match(self):
+        module = self.module
+        prompt = next(iter(module.PROMPTS))
+        self.assertTrue(module.passes(module.PROMPTS[prompt], prompt))
+        self.assertFalse(module.passes("#error", prompt))
+
+    def test_rejection_round_counts_stay_in_bounds(self):
+        module = self.module
+        attempts, kept, hit = module.rejection_round(
+            module.P_CORRECT, 16, __import__("random").Random(module.SEED))
+        self.assertEqual(attempts, 16 * len(module.PROMPTS))
+        self.assertLessEqual(kept, attempts)
+        self.assertLessEqual(hit, len(module.PROMPTS))
+
+    def test_more_candidates_solve_more_prompts(self):
+        module = self.module
+        import random
+        small = module.best_of_n(
+            module.P_CORRECT, 4, random.Random(module.SEED))
+        big = module.best_of_n(
+            module.P_CORRECT, 64, random.Random(module.SEED))
+        self.assertGreaterEqual(big, small)
+        self.assertEqual(big, len(module.PROMPTS))
+        self.assertGreaterEqual(small, 0)
+
+    def test_self_taught_loop_raises_probability(self):
+        module = self.module
+        import random
+        history = module.self_taught(
+            module.P_CORRECT, 8, module.ROUNDS, random.Random(module.SEED))
+        self.assertEqual(len(history), module.ROUNDS + 1)
+        self.assertTrue(all(b > a for a, b in zip(history, history[1:])))
+
+    def test_command_prints_filter_and_loop(self):
+        output = run("rejection_demo")
+        self.assertIn("rejection sampling", output)
+        self.assertIn("best-of-N at inference", output)
+        self.assertIn("self-taught loop", output)
+        self.assertIn("P(at least one pass)", output)
+
+
 if __name__ == "__main__":
     unittest.main()
