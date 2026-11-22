@@ -59,12 +59,12 @@ python llm/examples/eval_demo.py
 python llm/examples/multimodal_demo.py
 ```
 
-它们分别演示 byte-level BPE、embedding 与余弦检索、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算、预训练算力分配、**手写反向传播真训练一个小 Transformer（含梯度检查）**、**skip-gram 真训练把相似度从语料里学出来**、SFT 损失掩码与 LoRA 参数账、奖励模型与 DPO 损失、推理显存与批处理、RAG 切块与混合召回、工具调用与 MCP 消息、自洽投票与测试时计算成本、置信区间与评测口径、patch 切块与图像 token 预算。输出是教学数据，不是厂商 benchmark。
+它们分别演示 byte-level BPE、embedding 与余弦检索、单头/多头注意力、Transformer block 与参数账、温度与 top-k/top-p 采样、上下文预算与 KV cache 估算、预训练算力分配、**手写反向传播真训练一个小 Transformer（含梯度检查）**、**skip-gram 真训练把相似度从语料里学出来**、SFT 损失掩码与 LoRA 参数账、奖励模型与 DPO 损失、**拒绝采样（过滤 + best-of-N + self-taught 循环）**、推理显存与批处理、RAG 切块与混合召回、工具调用与 MCP 消息、自洽投票与测试时计算成本、置信区间与评测口径、patch 切块与图像 token 预算。输出是教学数据，不是厂商 benchmark。
 
 ## 状态
 
 - 正文：第 1–16 章已齐；英文版待后续同步。
-- 插图：16 枚单元章徽、10 幅篇题、31 张正文手绘图与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
+- 插图：17 枚单元章徽、10 幅篇题、31 张正文手绘图与 1 张独立封面，源文件在 `yuyu-book/illustrations-agents/`，遵循仓库的墨线 SVG 硬契约。
 - 构建与测试：`make check`、`python -m unittest tests.test_llm_examples yuyu-book.tests.test_llm_product -v`。
 - 实测记录与未测范围见 [`VERIFY.md`](VERIFY.md)。
 - 来源与许可见 [`yuyu-book/sources-llm.json`](../yuyu-book/sources-llm.json) 和 [`facts/source-lock.json`](facts/source-lock.json)。
