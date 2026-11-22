@@ -781,4 +781,31 @@
       "accessed": "2026-11-22"
     }
   }
+,
+  "lightman-verify-step-by-step": {
+    "title": "Let's Verify Step by Step",
+    "authority": "arXiv 预印本 + ICLR 2024 官方页（钉 eprint 版号 2305.20050，摘要含 PRM800K 数据集说明）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2305.20050",
+    "snapshot": "arXiv:2305.20050，2026-11-22 核号获 Lightman 等（2024, ICLR）作者与摘要里的 PRM/ORM 聚合方式、PRM800K 说明",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：ORM 与 PRM 的聚合方式对比（Lightman 的实验，PRM 比 ORM 更强）；本轮钉出 Lightman（ICLR 2024）作为 PRM 论文；PRM 公式只用在 ch09 9.10 正文；Lightman 是 PRM 论文的引用品牌。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "hands-on-llm-serving": {
+    "title": "Hands-On LLM Serving and Optimization: Hosting LLMs at Scale",
+    "authority": "O'Reilly（Chi Wang, Peiheng Hu, 2026）",
+    "kind": "docs",
+    "url": "https://www.oreilly.com/library/view/hands-on-llm-serving/9798341621497/",
+    "snapshot": "O'Reilly 页面（2026-11-22 核号，ISBN 9798341621497，《Hands-On LLM Serving and Optimization》第 8 章 vLLM/TensorRT-LLM/SGLang/Llama.cpp 路线图的官方参照）",
+    "accessed": "2026-11-22",
+    "license": "O'Reilly（仅作引用品牌）",
+    "scope": "第 10 章：框架路线图（vLLM 系列）与评测工具（MODEL, Metric, p95/p99/p999 语境），引用仅作框架分水岭概念，本书代码细节不入本书",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  }
 }

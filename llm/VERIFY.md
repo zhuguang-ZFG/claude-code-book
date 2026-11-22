@@ -17,14 +17,14 @@
 
 | 产物 | 字节 | 实测 |
 | --- | ---: | --- |
-| `yuyu-llm-zh.html` | 627 848 | 17 个单元、31 张正文手绘图、123 条引用链接、17 枚章徽、10 幅篇题 |
-| `yuyu-llm-zh.pdf` | 7 492 431 | 133 页、28 个书签、0 个索引页码项 |
-| `yuyu-llm-zh.epub` | 233 969 | 163 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
+| `yuyu-llm-zh.html` | 638 223 | 17 个单元、31 张正文手绘图、127 条引用链接、17 枚章徽、10 幅篇题 |
+| `yuyu-llm-zh.pdf` | 7 628 709 | 134 页、28 个书签、0 个索引页码项 |
+| `yuyu-llm-zh.epub` | 237 681 | 163 条导航、34 个文档、28 张图片（含 28 个转位图 SVG）、封面 `image-0` |
 
 `build --check` 的审计行：
 
 ```text
-yuyu-llm-zh.html: 0.6 MB, 17 units, 31 plates, 123 cited links,
+yuyu-llm-zh.html: 0.6 MB, 17 units, 31 plates, 127 cited links,
 0 glosses, 0 lead bands, 0 tier chips, 17 emblems, 10 headpieces, 0 keeper notes
 CHECK OK
 ```
