@@ -754,5 +754,31 @@
     "pinned": {
       "accessed": "2026-11-22"
     }
+  },
+  "deepseek-math": {
+    "title": "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2402.03300",
+    "snapshot": "arXiv:2402.03300，2026-11-22 核号：DeepSeekMath 7B 在 MATH 竞赛题上 51.7%；GRPO 引入点在附录里，是组相对优势估计。",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：GRPO 的引入者，附可用的规则赏值/验证器思想；本轮钉出 DeepSeekMath 7B 在 MATH 竞赛题上 51.7% 的报告数字与 GRPO 的 MATH 验证路径；不引用 DeepSeekMath 的数学方向的任何结论。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "deepseek-r1": {
+    "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+    "authority": "arXiv 预印本（Nature 2025）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2501.12948",
+    "snapshot": "arXiv:2501.12948，2026-11-22 核号：DeepSeek-R1 叙事；GRPO 在 R1 中作为纯强化学习路线的继承者。",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：纯 GRPO 激发长思维链的叙事；本轮钉出 R1 的长推理叙事，不引用 R1 文中的数学定义（GRPO 定义已按本轮在 ch09 中手写）。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
   }
 }

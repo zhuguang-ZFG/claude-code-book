@@ -71,7 +71,8 @@ GitHub 中文/英文 LLM 教学仓格局（星数为 2026-11 实测）：
 - 知识点补全（2026-11-21 第二轮）：MoE 专家与路由机制（第 4 章）、长上下文扩展三法 PI/NTK/YaRN（第 4 章）、MLA 潜在注意力（第 3 章）、投机解码的命中条件与模型路由/级联（第 10 章）、约束解码（第 12 章）、LLM-as-judge 及位置与自偏好偏差（第 14 章）、视觉提示注入与视频帧预算（第 15 章）；术语表同步新增 13 条，七篇引用进 `sources-llm.json`。有意不收：音频模态（按范围决策只做图像）、扩散生成模型（非 Agent 输入通道）、分布式多机训练（超出单机教学定位）。
 - 已注册独立产品 `llm`：`yuyu-book/manifest-llm.json`、`sources-llm.json`、`registry.py` 白名单、`scripts/bookctl.py` 的 `AGENT_PRODUCTS`、Makefile 的 `book-llm*`、CI 矩阵与 EPUB 流程。
 - 产物前缀 `yuyu-llm`，当前只有中文版（`langs: ["zh"]`），不启用通俗层（`plain_optional: true`）；现已编入合订本卷二，并进入发布脚本的 `COMPANION_VOLUMES`。
-- 实测：HTML 620 815 字节，PDF 132 页 / 7.4 MB（本机微软雅黑），EPUB 231 804 字节；构建器测试 628 项、仓库测试 423 项全部通过。详见 `llm/VERIFY.md`。
+- 实测：HTML 627 848 字节，PDF 7 492 431 字节（133 页、28 个书签）、EPUB 233 969 字节，引用链接 123 条；构建器测试 628 项、仓库测试 423 项全部通过。详见 `llm/VERIFY.md`。
+- 深度补全（2026-11-23 第五轮）：改进第 9 章“对齐：模型为什么听话”，新增 9.9（GRPO：把批评者去掉的比较学习）——相对优势公式、DeepSeekMath 的规则赏值（MATH 竞赛题上 51.7%）与路线对比表，钉 [DeepSeekMath（2402.03300）](https://arxiv.org/abs/2402.03300) 与 [DeepSeek-R1（2501.12948）](https://arxiv.org/abs/2501.12948) 进 `sources-llm.json`；术语表 16.5 补 GRPO / rule-based reward / verifier / DeepSeekMath / DeepSeek-R1 各条。脚本（十七个）与路由表规模不变。
 - 插图：`illustrations-agents/` 下 17 枚章徽、10 幅篇题、31 张正文手绘图与 1 张独立封面，全部通过墨线 SVG 硬契约。
 - 知识点补全（2026-11-21 第二轮）：MoE 专家与路由机制（第 4 章）、长上下文扩展三法 PI/NTK/YaRN（第 4 章）、MLA 潜在注意力（第 3 章）、投机解码的命中条件与模型路由/级联（第 10 章）、约束解码（第 12 章）、LLM-as-judge 及位置与自偏好偏差（第 14 章）、视觉提示注入与视频帧预算（第 15 章）；术语表同步新增 13 条，七篇引用进 `sources-llm.json`。有意不收：音频模态（按范围决策只做图像）、扩散生成模型（非 Agent 输入通道）、分布式多机训练（超出单机教学定位）。
 - 未做：英文版 `en/llm/`；真实 tokenizer 跨模型计数、真实预训练/微调/对齐实验、长上下文质量实验、GPU 吞吐压测、真实多模态模型识读、真实 LLM-as-judge 偏差实测。正文中未把未测内容写成结论。
