@@ -119,15 +119,10 @@ class LlmProduct(unittest.TestCase):
 
     def test_examples_and_readme_are_part_of_the_preview(self):
         readme = (REPO_ROOT / "llm/README.md").read_text(encoding="utf-8")
-        for name in ("bpe_demo.py", "embedding_demo.py", "attention_demo.py",
-                     "transformer_demo.py", "sampling_demo.py",
-                     "context_budget.py", "scaling_demo.py", "train_demo.py",
-                     "embedding_train_demo.py", "sft_demo.py",
-                     "alignment_demo.py", "serving_demo.py", "rag_demo.py",
-                     "toolcall_demo.py", "cot_demo.py", "eval_demo.py",
-                     "multimodal_demo.py"):
-            self.assertTrue((REPO_ROOT / "llm/examples" / name).is_file(), name)
-            self.assertIn(name, readme)
+        examples = sorted((REPO_ROOT / "llm/examples").glob("*.py"))
+        self.assertGreaterEqual(len(examples), 21)
+        for path in examples:
+            self.assertIn(path.name, readme, path.name)
         for chapter in ("ch01.md", "ch02.md", "ch03.md", "ch04.md", "ch05.md",
                         "ch06.md", "ch07.md", "ch08.md", "ch09.md",
                         "ch10.md", "ch11.md", "ch12.md", "ch13.md",

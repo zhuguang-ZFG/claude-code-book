@@ -419,15 +419,15 @@
   },
   "deepseek-r1": {
     "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
-    "authority": "arXiv 预印本",
+    "authority": "arXiv 预印本（Nature 2025）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2501.12948",
-    "snapshot": "arXiv:2501.12948，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2501.12948，2026-11-22 核号：DeepSeek-R1 叙事；GRPO 在 R1 中作为纯强化学习路线的继承者。",
+    "accessed": "2026-11-22",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 13 章：用强化学习训练长思维链的公开案例；只作为例子，不概括所有推理模型。",
+    "scope": "第 9 章：纯 GRPO 激发长思维链的叙事；本轮钉出 R1 的长推理叙事，不引用 R1 文中的数学定义（GRPO 定义已按本轮在 ch09 中手写）。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-22"
     }
   },
   "hallucination-survey": {
@@ -768,20 +768,6 @@
       "accessed": "2026-11-22"
     }
   },
-  "deepseek-r1": {
-    "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
-    "authority": "arXiv 预印本（Nature 2025）",
-    "kind": "docs",
-    "url": "https://arxiv.org/abs/2501.12948",
-    "snapshot": "arXiv:2501.12948，2026-11-22 核号：DeepSeek-R1 叙事；GRPO 在 R1 中作为纯强化学习路线的继承者。",
-    "accessed": "2026-11-22",
-    "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 9 章：纯 GRPO 激发长思维链的叙事；本轮钉出 R1 的长推理叙事，不引用 R1 文中的数学定义（GRPO 定义已按本轮在 ch09 中手写）。",
-    "pinned": {
-      "accessed": "2026-11-22"
-    }
-  }
-,
   "lightman-verify-step-by-step": {
     "title": "Let's Verify Step by Step",
     "authority": "arXiv 预印本 + ICLR 2024 官方页（钉 eprint 版号 2305.20050，摘要含 PRM800K 数据集说明）",
@@ -807,8 +793,7 @@
     "pinned": {
       "accessed": "2026-11-22"
     }
-  }
-,
+  },
   "rlhf-book": {
     "title": "Reinforcement Learning from Human Feedback",
     "authority": "arXiv 预印本（2025，Nathan Lambert；rlhfbook.com 与 Manning 版 2026 同源）",
@@ -831,6 +816,97 @@
     "accessed": "2026-11-22",
     "license": "arXiv 预印本，仅链接引用",
     "scope": "第 9 章：self-taught 循环（用模型自己产出的正确推理做下一轮示范）的来源；只引用循环形式，不引用实验数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "infonce": {
+    "title": "Representation Learning with Contrastive Predictive Coding",
+    "authority": "arXiv 预印本（NeurIPS 2018）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1807.03748",
+    "snapshot": "arXiv:1807.03748，2026-11-22 核号：正例对一组负例做 softmax",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：对比学习的 InfoNCE 损失形式；只引用损失形状，不引用其 CPC 实验数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "mteb": {
+    "title": "MTEB: Massive Text Embedding Benchmark",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2210.07316",
+    "snapshot": "arXiv:2210.07316，2026-11-22 核号：多任务、多语言 embedding 评测",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：embedding 选型要看分任务榜单；只引用榜单覆盖范围，不引用具体模型排名。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "matryoshka": {
+    "title": "Matryoshka Representation Learning",
+    "authority": "arXiv 预印本（NeurIPS 2022）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2205.13147",
+    "snapshot": "arXiv:2205.13147，2026-11-22 核号：前缀维度可截断的表示学习",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：按前缀截断维度的 Matryoshka 表示；只引用训练目标与用法，不引用其精度数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "faiss": {
+    "title": "Billion-scale similarity search with GPUs",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1702.08734",
+    "snapshot": "arXiv:1702.08734，2026-11-22 核号：IVF 与乘积量化的工程实现",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 2 章：IVF 分桶与乘积量化的实现参考；只引用索引结构，不引用其 GPU 基准数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "sentence-transformers": {
+    "title": "sentence-transformers training overview",
+    "authority": "上游仓库训练文档",
+    "kind": "github",
+    "url": "https://github.com/huggingface/sentence-transformers/blob/3b17a2c948120350315245030f71d52f356d0c05/docs/sentence_transformer/training_overview.md",
+    "snapshot": "固定到完整提交 3b17a2c948120350315245030f71d52f356d0c05，2026-11-22 读取训练总览",
+    "accessed": "2026-11-22",
+    "license": "Apache-2.0",
+    "scope": "第 2 章：难负例、批内负例与 MultipleNegativesRankingLoss 的官方训练说明；只引用训练组合，不复制其代码。",
+    "pinned": {
+      "commit": "3b17a2c948120350315245030f71d52f356d0c05"
+    }
+  },
+  "ndcg": {
+    "title": "Cumulated gain-based evaluation of IR techniques",
+    "authority": "ACM TOIS 论文（2002）",
+    "kind": "docs",
+    "url": "https://doi.org/10.1145/582415.582418",
+    "snapshot": "DOI 10.1145/582415.582418，2026-11-22 核号：分级增益与位置折扣",
+    "accessed": "2026-11-22",
+    "license": "论文元数据，仅链接引用",
+    "scope": "第 11 章：NDCG 的分级增益 `2^rel - 1` 与位置折扣 `1/log2(i+1)` 定义；只引用公式，不引用其 IR 实验数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "ragas": {
+    "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2309.15217",
+    "snapshot": "arXiv:2309.15217，2026-11-22 核号：faithfulness 与 answer relevance",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 11 章：RAG 生成层评测的两个轴；只引用指标命名，不引用其评分结果。",
     "pinned": {
       "accessed": "2026-11-22"
     }

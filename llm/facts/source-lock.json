@@ -18,6 +18,12 @@
       "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
       "license": "MIT",
       "scope": "第 7 章：train_demo 是同一训练循环的手写缩小版（前向/反向/SGD）；只引结构与流程，不复制其代码"
+    },
+    {
+      "repo": "huggingface/sentence-transformers",
+      "commit": "3b17a2c948120350315245030f71d52f356d0c05",
+      "license": "Apache-2.0",
+      "scope": "第 2 章：难负例、批内负例与 MultipleNegativesRankingLoss 的官方训练文档"
     }
   ]
 }

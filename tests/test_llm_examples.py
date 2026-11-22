@@ -841,5 +841,158 @@ class RejectionExample(unittest.TestCase):
         self.assertIn("P(at least one pass)", output)
 
 
+class SessionLedgerExample(unittest.TestCase):
+    def setUp(self):
+        self.module = load("session_ledger")
+
+    def test_prompts_grow_by_output_plus_tool_result(self):
+        module = self.module
+        prompts = module.turn_prompts()
+        growth = module.OUTPUT_TOKENS[0] + module.TOOL_TOKENS
+        for before, after in zip(prompts, prompts[1:]):
+            self.assertEqual(after - before, growth)
+        self.assertEqual(prompts[0], module.SYSTEM_TOKENS + module.TASK_TOKENS
+                         + module.DOCS * module.DOC_TOKENS)
+
+    def test_cached_tokens_are_cheaper_than_fresh_ones(self):
+        module = self.module
+        fresh, _ = module.cost(1000, 0, 0)
+        cached, _ = module.cost(1000, 1000, 0)
+        self.assertLess(cached, fresh)
+        self.assertAlmostEqual(cached / fresh, module.PRICE_CACHED
+                               / module.PRICE_INPUT)
+
+    def test_prefix_caching_never_costs_more(self):
+        module = self.module
+        none = module.run("no cache")["bill"]
+        stable = module.run("stable prefix")["bill"]
+        append = module.run("append-only prefix")["bill"]
+        self.assertLess(stable, none)
+        self.assertLess(append, stable)
+
+    def test_bill_equals_the_sum_of_turns(self):
+        module = self.module
+        result = module.run("append-only prefix")
+        per_turn = sum(row["input_cost"] + row["output_cost"]
+                       for row in result["rows"])
+        self.assertAlmostEqual(result["bill"], per_turn, places=12)
+        self.assertAlmostEqual(result["input_cost"],
+                               sum(row["input_cost"] for row in result["rows"]),
+                               places=12)
+
+    def test_command_prints_the_three_strategies(self):
+        output = run("session_ledger")
+        self.assertIn("what the model sees on each turn", output)
+        self.assertIn("no cache", output)
+        self.assertIn("stable prefix", output)
+        self.assertIn("append-only prefix", output)
+        self.assertIn("input tokens are fresh", output)
+        self.assertIn("KV cache at peak context", output)
+
+
+class AnnExample(unittest.TestCase):
+    def setUp(self):
+        self.module = load("ann_demo")
+
+    def test_flat_search_returns_k_sorted_neighbours(self):
+        module = self.module
+        import random
+        rng = random.Random(module.SEED)
+        points, _labels = module.build_corpus(rng)
+        query = points[0]
+        answer = module.nearest(query, points, module.K)
+        self.assertEqual(len(answer), module.K)
+        distances = [module.distance(query, points[i]) for i in answer]
+        self.assertEqual(distances, sorted(distances))
+
+    def test_buckets_partition_the_corpus_exactly_once(self):
+        module = self.module
+        import random
+        rng = random.Random(module.SEED)
+        points, _labels = module.build_corpus(rng)
+        centroids = module.kmeans(points, module.CLUSTERS, rng)
+        buckets = module.assign(points, centroids)
+        flattened = [index for bucket in buckets for index in bucket]
+        self.assertEqual(sorted(flattened), list(range(len(points))))
+
+    def test_full_probe_equals_flat_search(self):
+        module = self.module
+        import random
+        rng = random.Random(module.SEED)
+        points, _labels = module.build_corpus(rng)
+        centroids = module.kmeans(points, module.CLUSTERS, rng)
+        buckets = module.assign(points, centroids)
+        for query in points[:5]:
+            found, _count = module.ivf_search(
+                query, points, buckets, centroids, module.CLUSTERS)
+            self.assertEqual(found, module.nearest(query, points, module.K))
+
+    def test_more_probes_never_reduce_recall(self):
+        module = self.module
+        import random
+        rng = random.Random(module.SEED)
+        points, _labels = module.build_corpus(rng)
+        centroids = module.kmeans(points, module.CLUSTERS, rng)
+        buckets = module.assign(points, centroids)
+        queries = points[::37][:8]
+        exact = [module.nearest(q, points, module.K) for q in queries]
+        previous = -1.0
+        for nprobe in (1, 2, 4, 8):
+            hits = 0.0
+            for query, answer in zip(queries, exact):
+                found, _count = module.ivf_search(
+                    query, points, buckets, centroids, nprobe)
+                hits += len(set(found) & set(answer)) / module.K
+            recall = hits / len(queries)
+            self.assertGreaterEqual(recall, previous)
+            previous = recall
+
+    def test_command_prints_the_tradeoff(self):
+        output = run("ann_demo")
+        self.assertIn("recall@10", output)
+        self.assertIn("bucket map", output)
+        self.assertIn("worst nprobe=1 query", output)
+
+
+class RetrievalMetricsExample(unittest.TestCase):
+    def setUp(self):
+        self.module = load("retrieval_metrics")
+
+    def test_ideal_ranking_scores_one(self):
+        module = self.module
+        grades = {"a": 2, "b": 1, "c": 0}
+        ideal = ["a", "b", "c"]
+        self.assertEqual(module.recall_at_k(ideal, grades, 3), 1.0)
+        self.assertEqual(module.ndcg_at_k(ideal, grades, 3), 1.0)
+        self.assertEqual(module.average_precision(ideal, grades, 3), 1.0)
+        self.assertEqual(module.reciprocal_rank(ideal, grades), 1.0)
+
+    def test_ndcg_punishes_a_buried_best_answer(self):
+        module = self.module
+        grades = {"a": 2, "b": 2, "c": 0}
+        good = module.ndcg_at_k(["a", "b", "c"], grades, 3)
+        bad = module.ndcg_at_k(["c", "b", "a"], grades, 3)
+        self.assertGreater(good, bad)
+
+    def test_recall_ignores_order(self):
+        module = self.module
+        grades = {"a": 2, "b": 1, "c": 0}
+        self.assertEqual(module.recall_at_k(["c", "a", "b"], grades, 3),
+                         module.recall_at_k(["a", "b", "c"], grades, 3))
+
+    def test_mrr_reports_the_first_hit_position(self):
+        module = self.module
+        grades = {"a": 0, "b": 0, "c": 1}
+        self.assertAlmostEqual(module.reciprocal_rank(["a", "b", "c"], grades),
+                               1 / 3)
+
+    def test_command_prints_both_rankers(self):
+        output = run("retrieval_metrics")
+        self.assertIn("keyword", output)
+        self.assertIn("vector", output)
+        self.assertIn("recall@3", output)
+        self.assertIn("NDCG@3", output)
+
+
 if __name__ == "__main__":
     unittest.main()
