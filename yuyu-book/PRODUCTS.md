@@ -49,7 +49,7 @@ guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/`
 ## LLM 分册（中文版）
 
 `llm` 是模型原理分册的 0.1.0 中文版，中文单语，前言加第 1–16 章（17 个单元），
-声明 `plain_optional`，不带 guides、索引、修订页与附录。十八个示例在 `llm/examples/`，
+声明 `plain_optional`，不带 guides、索引、修订页与附录。二十一个示例在 `llm/examples/`，
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。插图在 `illustrations-agents/` 的 `llm-*`、
 `part-llm-p*` 与 `cover-llm.svg`，含 31 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
@@ -73,6 +73,8 @@ manifest 与 sources，卷宗、卷目录和页码层级由 `build_collected()` 
 第七轮（2026-11-22 zlib 对照《The RLHF Book》《Hands-On LLM Serving and Optimization》补缺）：第 9 章新增 9.11（拒绝采样：同一 prompt 多生成、按奖励模型/验证器过滤后 SFT，附 best-of-N 与 STaR 自我训练循环），钉 rlhf-book（arXiv:2504.12501）与 star（arXiv:2203.14465）；第 10 章 10.6 增语义缓存与多 LoRA serving 两段；术语表 16.5 补 rejection sampling / best-of-N，16.6 补 semantic caching；引用链接 127 → 131。
 
 第八轮（2026-11-22 入门到精通）：前言新增「一次请求的旅程」与「三档阅读路线」（入门/进阶/精通）；示例扩到 18 个，新增 `rejection_demo.py`（拒绝采样、best-of-N 与 self-taught 循环，附 5 项测试）；第 9 章以「训练信号地图」收束（方法 × 信号 × 梯度 × 成本 × 天花板）；本机实测：HTML 75 158 943 字节；PDF 100 446 403 字节（2 058 页、351 个书签）；EPUB 52 240 321 字节、631 张图片、2 588 条导航、355 个文档，EPUBCheck 5.4.0 零错零警告。
+
+第九、十轮（2026-11-22 会话账单 + 检索质量）：新增 `session_ledger.py`、`ann_demo.py`、`retrieval_metrics.py`（各 5 项测试），示例总数 21；前言「把旅程算成一张账单」；第 2 章补对比学习/难负例/MTEB/Matryoshka 与 LSH/HNSW/IVF/PQ；第 11 章补 recall@k、MRR、NDCG@k、MAP@k 与 faithfulness/answer relevance；术语表 +14 条，引用链接 131 → 145。合订本实测：HTML 75 185 920 字节；PDF 100 731 304 字节（2 063 页、351 个书签、87 个索引页码项）；EPUB 52 248 158 字节、631 张图片、2 591 条导航、355 个文档，EPUBCheck 5.4.0 零错零警告。
 
 这条路径长期卡在 `iter_doc()` 的注释扫描上：它每个分块都把文档余下部分重扫一遍，6 MB 的书要 381 秒、60 MB 的分册要 564 秒，合订本因此永远跑不完。改为记住下一个 `<!--` 的位置后，同样的 60 MB 只要 4.1 秒，全文分块逐字节不变。
 
