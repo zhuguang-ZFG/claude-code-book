@@ -808,4 +808,31 @@
       "accessed": "2026-11-22"
     }
   }
+,
+  "rlhf-book": {
+    "title": "Reinforcement Learning from Human Feedback",
+    "authority": "arXiv 预印本（2025，Nathan Lambert；rlhfbook.com 与 Manning 版 2026 同源）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2504.12501",
+    "snapshot": "arXiv:2504.12501，2026-11-22 核号：rlhfbook.com 摘要与引用条目（eprint 2504.12501，Nathan Lambert）核对",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：rejection sampling 的四步流程与 best-of-N 的做法；作为第二轮强化学习参考书来源。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  },
+  "star": {
+    "title": "STaR: Bootstrapping Reasoning With Reasoning",
+    "authority": "arXiv 预印本",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2203.14465",
+    "snapshot": "arXiv:2203.14465，2026-11-22 核号：生成—过滤—训练循环（self-taught）",
+    "accessed": "2026-11-22",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 9 章：self-taught 循环（用模型自己产出的正确推理做下一轮示范）的来源；只引用循环形式，不引用实验数字。",
+    "pinned": {
+      "accessed": "2026-11-22"
+    }
+  }
 }
