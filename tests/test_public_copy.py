@@ -115,7 +115,8 @@ class MaintenanceNotes(unittest.TestCase):
         self.assertIn("fragments/en/", text)
 
     def test_command_help_does_not_advertise_an_english_build(self):
-        # Force UTF-8: builder --help embeds 《御舆》, and Windows defaults to GBK.
+        # Force the child process to write UTF-8: builder --help embeds 《御舆》,
+        # and Windows otherwise defaults to the active code page (often GBK).
         check_help = subprocess.check_output(
             [sys.executable, "scripts/bookctl.py", "check", "--help"],
             cwd=ROOT, text=True, encoding="utf-8")
@@ -124,6 +125,7 @@ class MaintenanceNotes(unittest.TestCase):
             cwd=ROOT, text=True, encoding="utf-8")
         env = os.environ.copy()
         env["PYTHONPATH"] = str(ROOT / "yuyu-book")
+        env["PYTHONIOENCODING"] = "utf-8"
         builder_help = subprocess.check_output(
             [sys.executable, "-m", "yuyu_book", "--help"],
             cwd=ROOT, text=True, encoding="utf-8", env=env)
