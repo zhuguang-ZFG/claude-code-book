@@ -10,16 +10,16 @@
     "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/"
   },
   "title": {
-    "zh": "Agent Harness 十一卷合订本"
+    "zh": "Agent Harness 十二卷合订本"
   },
   "subtitle": {
-    "zh": "御舆 · 大模型原理 · 六部 Harness 读本 · Kimi · 提示词工程 · Vibe Coding"
+    "zh": "御舆 · 大模型原理 · 六部 Harness 读本 · Kimi · 提示词工程 · Vibe Coding · T3 Code"
   },
   "epigraph": {
     "zh": "一器而工聚焉者，车为多。——《周礼·考工记》"
   },
   "kicker": {
-    "zh": "合订本 · 卷一至卷十一"
+    "zh": "合订本 · 卷一至卷十二"
   },
   "langs": [
     "zh"
@@ -187,6 +187,20 @@
       "sources": "sources-vibe.json",
       "reading": {
         "zh": "用旧书市集案例完成原型、检查、回退和交接。先读卷九明确任务，再逐步增加可运行的功能。"
+      }
+    },
+    {
+      "id": "vol12",
+      "no": {
+        "zh": "卷十二"
+      },
+      "title": {
+        "zh": "T3 Code：coding agent 的控制平面"
+      },
+      "manifest": "manifest-t3code.json",
+      "sources": "sources-t3code.json",
+      "reading": {
+        "zh": "从所有权边界出发，沿线程、权限、工作树与远程鉴权追一条命令；最后用事件溯源解释一次确认承诺了什么。"
       }
     }
   ]

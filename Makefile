@@ -15,7 +15,7 @@ BOOKCTL    := $(PYTHON) scripts/bookctl.py
 
 .PHONY: help doctor lint check check-fast check-full book book-pdf book-omp book-omp-pdf book-pi book-pi-pdf book-pi-epub book-pi-all index clean
 .PHONY: book-agents book-opencode-all book-deepseek-all book-hermes-all book-codex-all
-.PHONY: book-prompt-all book-kimi-all book-vibe-all book-llm book-llm-pdf book-llm-epub book-llm-all book-collected book-collected-all package-prompt
+.PHONY: book-prompt-all book-kimi-all book-vibe-all book-llm book-llm-pdf book-llm-epub book-llm-all book-t3code-all book-collected book-collected-all package-prompt
 
 help:
 	@echo "make doctor     environment report (python/node/browser/font/deps)"
@@ -33,9 +33,10 @@ help:
 	@echo "make book-agents  all companion volumes: Chinese HTML + PDF + EPUB"
 	@echo "make book-vibe-all  Vibe Coding volume (HTML + PDF + EPUB)"
 	@echo "make book-llm-all  LLM volume (HTML + PDF + EPUB)"
-	@echo "make book-collected  eleven-volume Chinese HTML only"
-	@echo "make book-collected-all  eleven-volume Chinese HTML + PDF + EPUB"
-	@echo "make book-codex-all  one companion volume (also opencode/deepseek/hermes/prompt/kimi/vibe)"
+	@echo "make book-collected  twelve-volume Chinese HTML only"
+	@echo "make book-collected-all  twelve-volume Chinese HTML + PDF + EPUB"
+	@echo "make book-t3code-all  T3 Code volume (HTML + PDF + EPUB)"
+	@echo "make book-codex-all  one companion volume (also opencode/deepseek/hermes/prompt/kimi/vibe/t3code)"
 	@echo "make index      rebuild subject-index.json from appendix D"
 	@echo "make clean      remove yuyu-book/dist/ (no rm -rf)"
 	@echo "variables in use: PYTHON=$(PYTHON) BOOK_LANG=$(BOOK_LANG)"
@@ -82,10 +83,10 @@ book-pi-all:
 	$(BOOKCTL) build --product pi --lang zh --pdf --epub
 
 book-agents: book-opencode-all book-deepseek-all book-hermes-all book-codex-all \
-            book-prompt-all book-kimi-all book-vibe-all book-llm-all
+            book-prompt-all book-kimi-all book-vibe-all book-llm-all book-t3code-all
 
 book-opencode-all book-deepseek-all book-hermes-all book-codex-all \
-book-prompt-all book-kimi-all book-vibe-all book-llm-all:
+book-prompt-all book-kimi-all book-vibe-all book-llm-all book-t3code-all:
 	$(BOOKCTL) build --product $(patsubst book-%-all,%,$@) --lang zh --pdf --epub
 
 book-llm:
@@ -97,11 +98,12 @@ book-llm-pdf:
 book-llm-epub:
 	$(BOOKCTL) build --product llm --lang zh --epub
 
-# The eleven-volume collected edition binds every shipped book; each volume
+# The twelve-volume collected edition binds every shipped book; each volume
 # keeps its own manifest, so only the collection manifest is passed.
 # HTML alone is the short path. PDF is two Chromium prints plus PyMuPDF
 # (about 21 minutes locally); EPUB follows that HTML so the index folios match.
 
+book-collected:
 	$(BOOKCTL) build --product collected --lang zh
 
 book-collected-all:

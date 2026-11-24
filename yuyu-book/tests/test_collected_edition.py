@@ -65,7 +65,7 @@ class CollectedEdition(unittest.TestCase):
     def test_collection_volume_numbers_are_contiguous_and_match_order(self):
         numbers = [raw["no"]["zh"] for raw in self.spec["volumes"]]
         expected = [f"卷{number}" for number in (
-            "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一")]
+            "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二")]
         self.assertEqual(numbers, expected)
 
     def test_two_volumes_may_not_share_one_page_anchor(self):

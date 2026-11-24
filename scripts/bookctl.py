@@ -38,7 +38,7 @@ REQUIREMENTS = ROOT / "yuyu-book" / "requirements.txt"
 DIST = ROOT / "yuyu-book" / "dist"
 VENDOR = ROOT / "yuyu-book"
 AGENT_PRODUCTS = ("opencode", "deepseek", "hermes", "codex", "prompt", "kimi",
-                  "vibe", "llm")
+                  "vibe", "llm", "t3code")
 COLLECTION_PRODUCTS = ("collected",)
 ZH_PRODUCTS = ("omp", "pi", *AGENT_PRODUCTS)
 BOOK_PRODUCTS = ("book", *ZH_PRODUCTS, *COLLECTION_PRODUCTS)
