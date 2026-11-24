@@ -49,6 +49,10 @@ class BookWorkflow(unittest.TestCase):
         self.assertTrue(jobs["bootstrap"]["name"].startswith("Bootstrap"))
         self.assertEqual(jobs["full"].get("needs"), "fast")
 
+    def test_fast_job_has_time_for_slow_dependency_installation(self):
+        timeout = load("book.yml")["jobs"]["fast"]["timeout-minutes"]
+        self.assertGreaterEqual(timeout, 45)
+
     def test_pull_requests_skip_the_rendered_pdf_but_validate_the_epub(self):
         workflow = load("book.yml")
         trigger = triggers(workflow)
