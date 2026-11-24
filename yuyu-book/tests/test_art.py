@@ -74,6 +74,16 @@ class ShippedDrawings(unittest.TestCase):
             ids |= found
 
     @unittest.skipUnless(art.ART_DIR.exists(), "no illustrations yet")
+    def test_every_shipped_svg_declares_the_svg_namespace(self):
+        """独立打开或被 <img>/EPUB 引用时，根元素必须自带 xmlns；
+        只靠 HTML 内联时的命名空间推断会让单独使用的插图变成破图。"""
+        for directory in (art.ART_DIR, art.PI_ART_DIR, art.AGENT_ART_DIR, art.OMP_ART_DIR):
+            for path in sorted(directory.glob("*.svg")):
+                root = re.match(r"<svg\b[^>]*>", path.read_text("utf-8"))
+                self.assertIsNotNone(root, path.name)
+                self.assertIn('xmlns="http://www.w3.org/2000/svg"', root.group(0), path.name)
+
+    @unittest.skipUnless(art.ART_DIR.exists(), "no illustrations yet")
     def test_every_body_drawing_is_named_or_hidden(self):
         """A body drawing is announced once: by its caption, or by itself.
 
@@ -113,12 +123,12 @@ class ShippedDrawings(unittest.TestCase):
 
     def test_agent_volumes_have_distinct_offline_covers(self):
         drawings = []
-        for product in ("opencode", "deepseek", "hermes", "codex"):
+        for product in ("opencode", "deepseek", "hermes", "codex", "t3code"):
             drawing = art._read(f"cover-{product}", art.PLATE_BYTES)
             self.assertTrue(drawing, product)
             self.assertIn(drawing, art.cover_plate("zh", product))
             drawings.append(drawing)
-        self.assertEqual(len(set(drawings)), 4)
+        self.assertEqual(len(set(drawings)), 5)
         self.assertNotIn(drawings[0], art.cover_plate("zh", "book"))
 
 

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "t3code-source": {
+    "title": "T3 Code 官方文档与源码（固定提交）",
+    "authority": "T3 Tools Inc.（pingdotgg/t3code）",
+    "kind": "github",
+    "url": "https://github.com/pingdotgg/t3code/tree/3b3b662f3c601ba6ce3f2435c7b5e20e9d6841f1",
+    "snapshot": "HEAD at 3b3b662f3c60，MIT 许可；文档位于 docs/ 目录",
+    "accessed": "2026-11-24",
+    "license": "MIT",
+    "scope": "README、user 文档、internals 架构决策与 operations runbook",
+    "pinned": {
+      "tag": null,
+      "commit": "3b3b662f3c601ba6ce3f2435c7b5e20e9d6841f1"
+    }
+  }
+}

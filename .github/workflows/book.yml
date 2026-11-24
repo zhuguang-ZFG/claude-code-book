@@ -11,6 +11,7 @@ on:
       - 'hermes/**'
       - 'codex/**'
       - 'llm/**'
+      - 't3code/**'
       - 'yuyu-book/**'
       - 'scripts/**'
       - 'tests/**'
@@ -149,7 +150,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        product: [opencode, deepseek, hermes, codex, prompt, kimi, vibe, llm]
+        product: [opencode, deepseek, hermes, codex, prompt, kimi, vibe, llm, t3code]
     steps:
       - uses: actions/checkout@v4
         with:

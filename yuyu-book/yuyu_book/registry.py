@@ -53,7 +53,7 @@ FILES = (
     "subject-index.json",
     "subject-index-pi.json",
 ) + tuple(f"{kind}-{product}.json"
-          for product in ("opencode", "deepseek", "hermes", "codex")
+          for product in ("opencode", "deepseek", "hermes", "codex", "t3code")
           for kind in ("manifest", "glosses", "sources", "notes",
                        "reading-paths", "revisions", "subject-index"))
 

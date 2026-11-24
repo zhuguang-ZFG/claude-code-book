@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "accessed": "2026-11-09",
-  "purpose": "Pinned source baselines for four registered Chinese book products",
+  "purpose": "Pinned source baselines for five registered Chinese book products",
   "repositories": [
     {
       "id": "opencode",
@@ -214,6 +214,43 @@
       "accessed_dates": [
         "2026-11-09",
         "2026-11-10"
+      ]
+    },
+    {
+      "id": "t3code",
+      "repo": "pingdotgg/t3code",
+      "tag": null,
+      "observed_ref": "HEAD",
+      "commit": "3b3b662f3c601ba6ce3f2435c7b5e20e9d6841f1",
+      "license": "MIT",
+      "paths": [
+        "README.md",
+        "docs/README.md",
+        "docs/internals/00_glossary.md",
+        "docs/internals/01_architecture.md",
+        "docs/internals/03_providers.md",
+        "docs/internals/04_environment-auth.md",
+        "docs/internals/05_remote.md",
+        "docs/internals/09_connection-runtime.md",
+        "docs/internals/16_performance-regressions.md",
+        "docs/user/composer.md",
+        "docs/user/thread-sidebar.md",
+        "docs/user/permission-modes.md",
+        "docs/user/source-control.md",
+        "docs/user/outside-agents.md",
+        "docs/user/remote-access.md",
+        "docs/user/devices.md",
+        "docs/user/secrets.md",
+        "docs/user/telemetry.md",
+        "docs/user/updating.md",
+        "docs/user/background-service.md"
+      ],
+      "verification": "Pinned official documentation at the recorded HEAD commit; link-only reuse with original Chinese analysis, no upstream content republished",
+      "url": "https://github.com/pingdotgg/t3code/tree/3b3b662f3c601ba6ce3f2435c7b5e20e9d6841f1",
+      "reuse": "Link and original analysis; upstream docs are not redistributed",
+      "evidence": "t3code/appendix-d.md",
+      "accessed_dates": [
+        "2026-11-24"
       ]
     }
   ],

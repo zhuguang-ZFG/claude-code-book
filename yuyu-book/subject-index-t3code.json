@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "key": "controlplane",
+      "letter": "C",
+      "zh": {
+        "term": "控制平面",
+        "refs": [
+          {
+            "anchor": "t3code-ch01",
+            "label": "第 1 章"
+          },
+          {
+            "anchor": "t3code-ch02",
+            "label": "第 2 章"
+          },
+          {
+            "anchor": "t3code-ch16",
+            "label": "第 16 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "控制平面",
+        "refs": []
+      }
+    },
+    {
+      "key": "provider",
+      "letter": "P",
+      "zh": {
+        "term": "Provider 适配器",
+        "refs": [
+          {
+            "anchor": "t3code-ch03",
+            "label": "第 3 章"
+          },
+          {
+            "anchor": "t3code-ch06",
+            "label": "第 6 章"
+          },
+          {
+            "anchor": "t3code-ch13",
+            "label": "第 13 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "Provider 适配器",
+        "refs": []
+      }
+    },
+    {
+      "key": "thread",
+      "letter": "T",
+      "zh": {
+        "term": "线程（thread）",
+        "refs": [
+          {
+            "anchor": "t3code-ch02",
+            "label": "第 2 章"
+          },
+          {
+            "anchor": "t3code-ch04",
+            "label": "第 4 章"
+          },
+          {
+            "anchor": "t3code-ch05",
+            "label": "第 5 章"
+          },
+          {
+            "anchor": "t3code-ch14",
+            "label": "第 14 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "线程（thread）",
+        "refs": []
+      }
+    },
+    {
+      "key": "worktree",
+      "letter": "W",
+      "zh": {
+        "term": "工作树（worktree）",
+        "refs": [
+          {
+            "anchor": "t3code-ch04",
+            "label": "第 4 章"
+          },
+          {
+            "anchor": "t3code-ch07",
+            "label": "第 7 章"
+          },
+          {
+            "anchor": "t3code-ch08",
+            "label": "第 8 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "工作树（worktree）",
+        "refs": []
+      }
+    },
+    {
+      "key": "checkpoint",
+      "letter": "C",
+      "zh": {
+        "term": "检查点（checkpoint）",
+        "refs": [
+          {
+            "anchor": "t3code-ch07",
+            "label": "第 7 章"
+          },
+          {
+            "anchor": "t3code-ch16",
+            "label": "第 16 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "检查点（checkpoint）",
+        "refs": []
+      }
+    },
+    {
+      "key": "permission",
+      "letter": "P",
+      "zh": {
+        "term": "权限模式",
+        "refs": [
+          {
+            "anchor": "t3code-ch06",
+            "label": "第 6 章"
+          },
+          {
+            "anchor": "t3code-ch13",
+            "label": "第 13 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "权限模式",
+        "refs": []
+      }
+    },
+    {
+      "key": "settlement",
+      "letter": "S",
+      "zh": {
+        "term": "settlement",
+        "refs": [
+          {
+            "anchor": "t3code-ch04",
+            "label": "第 4 章"
+          },
+          {
+            "anchor": "t3code-ch07",
+            "label": "第 7 章"
+          },
+          {
+            "anchor": "t3code-ch16",
+            "label": "第 16 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "settlement",
+        "refs": []
+      }
+    },
+    {
+      "key": "event",
+      "letter": "E",
+      "zh": {
+        "term": "事件溯源",
+        "refs": [
+          {
+            "anchor": "t3code-ch16",
+            "label": "第 16 章"
+          },
+          {
+            "anchor": "t3code-ch17",
+            "label": "第 17 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "事件溯源",
+        "refs": []
+      }
+    },
+    {
+      "key": "projection",
+      "letter": "P",
+      "zh": {
+        "term": "投影（projection）",
+        "refs": [
+          {
+            "anchor": "t3code-ch16",
+            "label": "第 16 章"
+          },
+          {
+            "anchor": "t3code-ch17",
+            "label": "第 17 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "投影（projection）",
+        "refs": []
+      }
+    },
+    {
+      "key": "effect",
+      "letter": "E",
+      "zh": {
+        "term": "effect lane",
+        "refs": [
+          {
+            "anchor": "t3code-ch07",
+            "label": "第 7 章"
+          },
+          {
+            "anchor": "t3code-ch16",
+            "label": "第 16 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "effect lane",
+        "refs": []
+      }
+    },
+    {
+      "key": "auth",
+      "letter": "A",
+      "zh": {
+        "term": "环境鉴权",
+        "refs": [
+          {
+            "anchor": "t3code-ch11",
+            "label": "第 11 章"
+          },
+          {
+            "anchor": "t3code-ch12",
+            "label": "第 12 章"
+          },
+          {
+            "anchor": "t3code-ch15",
+            "label": "第 15 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "环境鉴权",
+        "refs": []
+      }
+    },
+    {
+      "key": "mcp",
+      "letter": "M",
+      "zh": {
+        "term": "MCP",
+        "refs": [
+          {
+            "anchor": "t3code-ch03",
+            "label": "第 3 章"
+          },
+          {
+            "anchor": "t3code-ch13",
+            "label": "第 13 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "MCP",
+        "refs": []
+      }
+    },
+    {
+      "key": "remote",
+      "letter": "R",
+      "zh": {
+        "term": "远程访问",
+        "refs": [
+          {
+            "anchor": "t3code-ch11",
+            "label": "第 11 章"
+          },
+          {
+            "anchor": "t3code-ch12",
+            "label": "第 12 章"
+          },
+          {
+            "anchor": "t3code-ch14",
+            "label": "第 14 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "远程访问",
+        "refs": []
+      }
+    },
+    {
+      "key": "secret",
+      "letter": "S",
+      "zh": {
+        "term": "secrets",
+        "refs": [
+          {
+            "anchor": "t3code-ch15",
+            "label": "第 15 章"
+          },
+          {
+            "anchor": "t3code-ch13",
+            "label": "第 13 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "secrets",
+        "refs": []
+      }
+    },
+    {
+      "key": "update",
+      "letter": "U",
+      "zh": {
+        "term": "更新与排障",
+        "refs": [
+          {
+            "anchor": "t3code-ch18",
+            "label": "第 18 章"
+          }
+        ]
+      },
+      "en": {
+        "term": "更新与排障",
+        "refs": []
+      }
+    }
+  ]
+}

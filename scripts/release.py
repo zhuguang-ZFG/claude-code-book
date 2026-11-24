@@ -60,11 +60,11 @@ def write_release_notes(staged: Path, version: str, revisions: dict) -> Path:
     return markdown
 
 
-# The nine volumes after 御舆 and Omp. Each carries its own manifest/sources
+# The ten volumes after 御舆 and Omp. Each carries its own manifest/sources
 # pair, so the release builds them with the same call the Makefile uses; pi is
 # not in `make book-agents` but has the same shape.
 COMPANION_VOLUMES = ("pi", "opencode", "deepseek", "hermes", "codex",
-                     "kimi", "prompt", "vibe", "llm")
+                     "kimi", "prompt", "vibe", "llm", "t3code")
 
 
 RELEASE_ONLY_PREFIXES = (

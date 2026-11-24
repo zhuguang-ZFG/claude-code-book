@@ -23,7 +23,7 @@ from yuyu_book import plain, registry
 from yuyu_book.core import REPO_ROOT, expected_ids, load_configs, load_unit, unit_stream
 
 
-PRODUCTS = ("opencode", "deepseek", "hermes", "codex")
+PRODUCTS = ("opencode", "deepseek", "hermes", "codex", "t3code")
 VOLUMES = ("prompt", "kimi")
 
 
