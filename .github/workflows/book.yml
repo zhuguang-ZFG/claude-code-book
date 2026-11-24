@@ -31,7 +31,7 @@ jobs:
   fast:
     name: Fast
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -138,6 +138,9 @@ jobs:
         with:
           browser: 'true'
       - run: python scripts/bookctl.py build --product pi --lang zh --pdf --epub
+      - uses: ./.github/actions/epubcheck
+        with:
+          epub: yuyu-book/dist/yuyu-pi-zh.epub
       - uses: actions/upload-artifact@v4
         with:
           name: yuyu-pi-dist
@@ -166,6 +169,9 @@ jobs:
           for extension in html pdf epub; do
             test -s "yuyu-book/dist/yuyu-${{ matrix.product }}-zh.${extension}"
           done
+      - uses: ./.github/actions/epubcheck
+        with:
+          epub: yuyu-book/dist/yuyu-${{ matrix.product }}-zh.epub
       - name: Package the offline exercises
         if: matrix.product == 'prompt'
         run: python scripts/package_prompt.py --output yuyu-book/dist/yuyu-prompt-zh-examples.zip
@@ -176,7 +182,7 @@ jobs:
           if-no-files-found: error
   collected:
     name: Collected edition
-    # Ten bound volumes inline every plate. The quadratic iter_doc scan is
+    # Twelve bound volumes inline every plate. The quadratic iter_doc scan is
     # already fixed; what remains is a measuring Chromium print, the stamped
     # print, and PyMuPDF garbage=4. A finished local run is about 21 minutes
     # of PDF plus 4 minutes of EPUB. An earlier attempt was killed at 3600s
@@ -197,26 +203,9 @@ jobs:
       - name: Build the collected HTML and EPUB for pull requests
         if: github.event_name == 'pull_request'
         run: python scripts/bookctl.py build --product collected --lang zh --epub
-      - uses: actions/setup-java@v4
+      - uses: ./.github/actions/epubcheck
         with:
-          distribution: temurin
-          java-version: '17'
-      - name: Install pinned EPUBCheck 5.4.0
-        shell: bash
-        run: |
-          mkdir -p .scratch/epubcheck
-          curl --fail --location --retry 3 \
-            https://github.com/w3c/epubcheck/releases/download/v5.4.0/epubcheck-5.4.0.zip \
-            --output .scratch/epubcheck/epubcheck.zip
-          echo '33350c61038e71dfb3d45a76aed04bf5481e6d5500cb780f6e98db8bbd15a28c  .scratch/epubcheck/epubcheck.zip' \
-            | sha256sum --check --status
-          unzip -q .scratch/epubcheck/epubcheck.zip -d .scratch/epubcheck
-          test -s .scratch/epubcheck/epubcheck-5.4.0/epubcheck.jar
-      - name: Validate the collected EPUB archive and package
-        run: >-
-          python scripts/check_epub.py
-          --epubcheck-jar .scratch/epubcheck/epubcheck-5.4.0/epubcheck.jar
-          yuyu-book/dist/yuyu-collected-zh.epub
+          epub: yuyu-book/dist/yuyu-collected-zh.epub
       - name: Check the collected edition exists
         shell: bash
         run: |

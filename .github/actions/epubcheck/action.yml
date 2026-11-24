@@ -1,0 +1,32 @@
+name: Validate EPUB with EPUBCheck
+description: Validate one generated EPUB archive and its package using pinned EPUBCheck.
+inputs:
+  epub:
+    description: Path to the EPUB archive, relative to the repository root.
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+    - name: Install pinned EPUBCheck 5.4.0
+      shell: bash
+      run: |
+        mkdir -p .scratch/epubcheck
+        curl --fail --location --retry 3 \
+          https://github.com/w3c/epubcheck/releases/download/v5.4.0/epubcheck-5.4.0.zip \
+          --output .scratch/epubcheck/epubcheck.zip
+        echo '33350c61038e71dfb3d45a76aed04bf5481e6d5500cb780f6e98db8bbd15a28c  .scratch/epubcheck/epubcheck.zip' \
+          | sha256sum --check --status
+        unzip -q .scratch/epubcheck/epubcheck.zip -d .scratch/epubcheck
+        test -s .scratch/epubcheck/epubcheck-5.4.0/epubcheck.jar
+    - name: Validate EPUB archive and package
+      shell: bash
+      env:
+        EPUB_PATH: ${{ inputs.epub }}
+      run: >-
+        python scripts/check_epub.py
+        --epubcheck-jar .scratch/epubcheck/epubcheck-5.4.0/epubcheck.jar
+        "$EPUB_PATH"

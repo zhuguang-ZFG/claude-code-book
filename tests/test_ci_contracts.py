@@ -49,6 +49,10 @@ class BookWorkflow(unittest.TestCase):
         self.assertTrue(jobs["bootstrap"]["name"].startswith("Bootstrap"))
         self.assertEqual(jobs["full"].get("needs"), "fast")
 
+    def test_fast_job_has_time_for_slow_dependency_installation(self):
+        timeout = load("book.yml")["jobs"]["fast"]["timeout-minutes"]
+        self.assertGreaterEqual(timeout, 45)
+
     def test_pull_requests_skip_the_rendered_pdf_but_validate_the_epub(self):
         workflow = load("book.yml")
         trigger = triggers(workflow)
@@ -82,7 +86,6 @@ class BookWorkflow(unittest.TestCase):
         self.assertEqual(
             guarded("--product collected --lang zh --epub"),
             "github.event_name == 'pull_request'")
-        self.assertIsNone(guarded("scripts/check_epub.py"))
 
     def test_epubcheck_install_and_validation_agree_on_the_jar_path(self):
         """The release zip unpacks to ``epubcheck-5.4.0/``, not to the root.
@@ -90,11 +93,12 @@ class BookWorkflow(unittest.TestCase):
         A jar path that does not match the extraction layout fails the
         install step before EPUBCheck ever runs, so both steps must name the
         same versioned path."""
-        job = load("book.yml")["jobs"]["collected"]
-        runs = {step.get("name"): str(step.get("run", ""))
-                for step in job["steps"]}
-        install = runs["Install pinned EPUBCheck 5.4.0"]
-        validate = runs["Validate the collected EPUB archive and package"]
+        action = yaml.safe_load(
+            (ROOT / ".github" / "actions" / "epubcheck" / "action.yml")
+            .read_text(encoding="utf-8"))
+        runs = [str(step.get("run", "")) for step in action["runs"]["steps"]]
+        install = next(command for command in runs if "sha256sum --check" in command)
+        validate = next(command for command in runs if "scripts/check_epub.py" in command)
         self.assertIn("epubcheck/releases/download/v5.4.0/", install)
         tested = re.search(r"test -s (\S*epubcheck\.jar)", install)
         used = re.search(r"--epubcheck-jar (\S*epubcheck\.jar)", validate)
@@ -104,6 +108,20 @@ class BookWorkflow(unittest.TestCase):
         self.assertTrue(
             tested.group(1).startswith(".scratch/epubcheck/epubcheck-5.4.0/"),
             tested.group(1))
+
+    def test_every_offline_edition_uses_the_shared_epubcheck_action(self):
+        jobs = load("book.yml")["jobs"]
+        expected_epubs = {
+            "pi": "yuyu-book/dist/yuyu-pi-zh.epub",
+            "agent-volumes": "yuyu-book/dist/yuyu-${{ matrix.product }}-zh.epub",
+            "collected": "yuyu-book/dist/yuyu-collected-zh.epub",
+        }
+        for job_name, epub_path in expected_epubs.items():
+            with self.subTest(job=job_name):
+                checks = [step for step in jobs[job_name]["steps"]
+                          if step.get("uses") == "./.github/actions/epubcheck"]
+                self.assertEqual(len(checks), 1, job_name)
+                self.assertEqual(checks[0].get("with", {}).get("epub"), epub_path)
 
     def test_collected_ships_pdf_and_epub_off_pull_requests(self):
         job = load("book.yml")["jobs"]["collected"]
