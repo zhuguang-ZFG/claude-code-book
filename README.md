@@ -39,7 +39,7 @@
 - **跨册阅读：** 打开[合集导读](合集导读.md)，按任务选卷，或直接查会话恢复、沙箱失败、定时任务与 MCP 冲突案例。
 - **网站阅读：** [在线阅读入口](https://zhuguang-zfg.github.io/claude-code-book/)；也可直接点击本仓库的章节链接。
 
-站点上能打开的是御舆中文整书、中文入门分册、插画画廊、知识卡、样章，以及 Omp 中文 HTML（`/omp/yuyu-omp-zh.html`）。PDF 不在 Pages 上。大模型原理、Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程、Vibe Coding 和十一卷合订本可以本地构建，站点上还没有这些页面。英文整书和英文入门分册今天也不在 Pages 上。已发布的 `v0.3.7` 里仍留着当时的英文 HTML/PDF/EPUB，不删。
+站点上能打开的是御舆中文整书、中文入门分册、插画画廊、知识卡、样章，以及 Omp 中文 HTML（`/omp/yuyu-omp-zh.html`）。PDF 不在 Pages 上。大模型原理、Pi、OpenCode、DeepSeek Harness、Hermes、Codex CLI、Kimi Code、提示词工程、Vibe Coding、T3 Code 和十二卷合订本可以本地构建，站点上还没有这些页面。英文整书和英文入门分册今天也不在 Pages 上。已发布的 `v0.3.7` 里仍留着当时的英文 HTML/PDF/EPUB，不删。
 
 ## 第二分册 · Omp（中文书稿完成）
 
@@ -80,17 +80,17 @@ make book-pi-epub   # 再加 EPUB
 
 新增 [Vibe Coding：把想法做成能跑的软件](vibe/README.md)，12 章加附录 A–D，走中文独立构建入口 `make book-vibe-all`（HTML/PDF/EPUB）。全书用一份旧书市集 CSV 走完任务卡、样例、迭代、报错、风险边界、验收与交接；示例程序只用 Python 3.12 标准库。GitHub 资源入口固定在附录 B 的提交上。
 
-十二册可合订为《Agent Harness 十二卷合订本》，现已纳入大模型原理卷。[合集导读](合集导读.md)按任务提供阅读路线、十二卷入口和七项故障速查，并说明每项实验的验证范围。各卷保留自己的章节号和主题索引，PDF 按整本连续编页；引用时请带上卷号。HTML 中已收录的跨册章节直接在书内跳转，实验脚本与独立记录仍从仓库取得。
+十二册可合订为《Agent Harness 十二卷合订本》，现已纳入大模型原理卷与 T3 Code 卷。[合集导读](合集导读.md)按任务提供阅读路线、十二卷入口和十项故障速查（前七项为可复跑离线实验，后三项为卷十二钉版文档核对），并说明每项的验证范围。各卷保留自己的章节号和主题索引，PDF 按整本连续编页；引用时请带上卷号。HTML 中已收录的跨册章节直接在书内跳转，实验脚本与独立记录仍从仓库取得。
 
 `manifest-collected.json` 逐卷引用各册清单与来源。`make book-collected` 构建中文单文件 HTML；`make book-collected-all` 构建 HTML、PDF 和 EPUB。Windows 没有 make 时，运行 `python scripts/bookctl.py build --product collected --lang zh --pdf --epub`。当前改稿的检查范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。
 
-2026-11-19 的完整合集产物只包含当时的十卷，不代表当前十一卷版；历史 PDF/EPUB 核对数据与范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。当前十一卷版（LLM 卷十六章 + 十轮增强）已完整重建：PDF 2 063 页、351 个书签、100 731 304 字节，HTML 75 185 920 字节，EPUB 52 248 158 字节（2 591 条导航）、EPUBCheck 5.4.0 零错零警告。
+2026-11-19 的完整合集产物只包含当时的十卷；其后十一卷版（LLM 卷十六章 + 十轮增强）曾完整重建：PDF 2 063 页、351 个书签、100 731 304 字节，HTML 75 185 920 字节，EPUB 52 248 158 字节（2 591 条导航）、EPUBCheck 5.4.0 零错零警告。这些数字不代表当前十二卷版；十二卷页数与体积须在纳入 T3 Code 后重新测量。历史 PDF/EPUB 核对范围见[合集修订记录](docs/agent-series/collection-readability-20261119.md)。
 
 2026-11-20 EPUB 改为按篇拆文档，向参考书的结构看齐：正文不再是单个 6 MB 的 `content.xhtml`，合订本拆成 326 个 XHTML 文档，最大的正文一篇 190 KB（`ch15`）；每篇文档带自己的标题，封面图以 `cover-image` 声明，屏幕专用的合集跳转栏不再进入离线版。当次产物 53.4 MB，EPUBCheck 5.4.0 报 0 fatal / 0 error / 0 warning；5,950 处内部引用（同文档 953、跨文档 4,997）与 1,043 处图片/样式引用全部可解析。同一趟 HTML 为 74.6 MB、246 个正文单元、333 幅图版。构建器契约见 `tests/test_epub_splitting.py`。
 
 ## 第十二册 · T3 Code（技术试读版）
 
-新增 [T3 Code：coding agent 的控制平面](t3code/README.md)，前言、十八章与附录 A–D，走中文独立构建入口 `make book-t3code-all`（HTML/PDF/EPUB）。全书钉在 `pingdotgg/t3code` 固定提交 `3b3b662f` 的官方文档上：先建立所有权边界与一条任务走过的路径，再读权限、工作树与远程鉴权，最后用事件溯源串起一次「已确认」。上游许可 MIT，只做链接引用，不转载原文；本册不设随书实验驱动。[验证记录](t3code/VERIFY.md)写明读取范围与未验证项。以上十一册与合订本的历史产物数据保留当时口径；当前合订本为十二卷版。
+新增 [T3 Code：coding agent 的控制平面](t3code/README.md)，前言、十八章与附录 A–D，走中文独立构建入口 `make book-t3code-all`（HTML/PDF/EPUB）。全书钉在 `pingdotgg/t3code` 固定提交 `3b3b662f` 的官方文档上：先建立所有权边界与一条任务走过的路径，再读权限、工作树与远程鉴权，最后用事件溯源串起一次「已确认」。上游许可 MIT，只做链接引用，不转载原文；本册不设随书实验驱动。[验证记录](t3code/VERIFY.md)写明读取范围与未验证项。十卷、十一卷合订本的历史产物数据保留当时口径；当前合订本登记为十二卷，页数与体积在下一次 `book-collected-all` 实测前不以旧数字冒充。
 
 ## 阅读说明
 

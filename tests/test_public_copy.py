@@ -115,17 +115,18 @@ class MaintenanceNotes(unittest.TestCase):
         self.assertIn("fragments/en/", text)
 
     def test_command_help_does_not_advertise_an_english_build(self):
+        # Force UTF-8: builder --help embeds 《御舆》, and Windows defaults to GBK.
         check_help = subprocess.check_output(
             [sys.executable, "scripts/bookctl.py", "check", "--help"],
-            cwd=ROOT, text=True)
+            cwd=ROOT, text=True, encoding="utf-8")
         entry_help = subprocess.check_output(
             [sys.executable, "scripts/bookctl.py", "--help"],
-            cwd=ROOT, text=True)
+            cwd=ROOT, text=True, encoding="utf-8")
         env = os.environ.copy()
         env["PYTHONPATH"] = str(ROOT / "yuyu-book")
         builder_help = subprocess.check_output(
             [sys.executable, "-m", "yuyu_book", "--help"],
-            cwd=ROOT, text=True, env=env)
+            cwd=ROOT, text=True, encoding="utf-8", env=env)
         self.assertNotIn("both PDF", check_help)
         self.assertIn("Chinese PDF", check_help)
         self.assertNotIn("--lang both", entry_help)
@@ -139,12 +140,13 @@ class MaintenanceNotes(unittest.TestCase):
             proc = subprocess.run(
                 [sys.executable, "scripts/bookctl.py", "build",
                  "--product", product, "--lang", "both"],
-                cwd=ROOT, capture_output=True, text=True)
+                cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
             self.assertEqual(proc.returncode, 2, product)
             self.assertIn("invalid choice", proc.stderr)
         builder = subprocess.run(
             [sys.executable, "-m", "yuyu_book", "--lang", "both"],
-            cwd=ROOT, capture_output=True, text=True, env=env)
+            cwd=ROOT, capture_output=True, text=True, encoding="utf-8",
+            env=env)
         self.assertEqual(builder.returncode, 2)
         self.assertIn("invalid choice", builder.stderr)
 
