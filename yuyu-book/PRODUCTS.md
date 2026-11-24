@@ -12,8 +12,9 @@
 | `prompt` | 《提示词工程：从提问到 Agent 协作》 | `manifest-prompt.json` | `yuyu-prompt-*` | 同上（`make book-prompt-all`），随书练习包另见下 |
 | `kimi` | 《Kimi Code：从插件到审查助手》 | `manifest-kimi.json` | `yuyu-kimi-*` | 同上（`make book-kimi-all`） |
 | `vibe` | 《Vibe Coding：把想法做成能跑的软件》 | `manifest-vibe.json` | `yuyu-vibe-*` | `build --product vibe --lang zh --pdf --epub`（`make book-vibe-all`） |
+| `t3code` | 《T3 Code：coding agent 的控制平面》 | `manifest-t3code.json` | `yuyu-t3code-*` | `build --product t3code --lang zh --pdf --epub`（`make book-t3code-all`） |
 | `llm` | 《大模型：写给 Agent 工程师的原理与实战》（中文版） | `manifest-llm.json` | `yuyu-llm-*` | `build --product llm --lang zh --pdf --epub`（`make book-llm-all`） |
-| `collected` | 《Agent Harness 十一卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`，仅 HTML）；HTML/PDF/EPUB 用 `make book-collected-all` |
+| `collected` | 《Agent Harness 十二卷合订本》 | `manifest-collected.json` | `yuyu-collected-*` | `build --product collected --lang zh`（`make book-collected`，仅 HTML）；HTML/PDF/EPUB 用 `make book-collected-all` |
 
 御舆、omp、pi 各有一套通俗层登记表：`plain.registry_names()` 按 manifest 的 `product` 字段
 取同名兄弟文件——御舆用裸名（`glosses.json` / `notes.json` / `reading-paths.json`），
@@ -24,17 +25,18 @@ omp 用 `-omp` 后缀，pi 用 `-pi` 后缀（`glosses-pi.json` / `notes-pi.json
 
 ## Agent 分册
 
-六本 Agent 分册共用 `manifest-<product>.json` / `sources-<product>.json`，各有前言、十八章和
+七本 Agent 分册共用 `manifest-<product>.json` / `sources-<product>.json`，各有前言、十八章和
 附录 A–D（23 个单元），中文单语，产物前缀 `yuyu-<product>`，由 `make book-agents` 一次编完，
 CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩阵里另有 `llm` 中文版：
 它只有前言加第 1–16 章（17 个单元），不套用这里的十八章程式，契约由
 `yuyu-book/tests/test_llm_product.py` 单独校验。
 
-- `opencode`、`deepseek`、`hermes`、`codex` 带完整通俗层：guides、reading-paths、
-  `subject-index-*`、`revisions-*` 都是自己的文件，`docs/agent-series/sources.lock.json`
-  固定四个上游提交。
+- `opencode`、`deepseek`、`hermes`、`codex`、`t3code` 带通俗层骨架：guides、reading-paths、
+  `subject-index-*`、`revisions-*` 都是自己的文件；前四册的上游提交钉在
+  `docs/agent-series/sources.lock.json`，`t3code` 钉在同文件与 `sources-t3code.json`。
+  `t3code` 的 glosses/notes 仍为空壳，只登记 guides 与 reading-paths（见 `t3code/VERIFY.md`）。
 - `prompt`、`kimi` 声明 `plain_optional`，不带通俗层，因此没有 guides、索引和修订页；
-  书架形状与另四册相同，`yuyu-book/tests/test_agent_products.py` 分开校验这两类契约。
+  书架形状与另几册相同，`yuyu-book/tests/test_agent_products.py` 分开校验这两类契约。
   两册的上游钉版各记在自己的 `facts/source-lock.json`。
 - `prompt` 另发随书练习包 `yuyu-prompt-zh-examples.zip`，由
   `python scripts/package_prompt.py --output yuyu-book/dist/yuyu-prompt-zh-examples.zip`
@@ -53,17 +55,25 @@ guides / 索引 / 修订页；正文、示例与练习模板都在册内 `vibe/`
 只用 Python 标准库，测试会实际执行；来源钉在 `yuyu-book/sources-llm.json` 与
 `llm/facts/source-lock.json`。插图在 `illustrations-agents/` 的 `llm-*`、
 `part-llm-p*` 与 `cover-llm.svg`，含 31 张正文手绘图，走同一套墨线契约。构建走 `make book-llm-all`，
-版本与实测数据见 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本卷已编入十一卷合订本（卷二），
+版本与实测数据见 `llm/VERIFY.md` 与 `docs/llm-volume-plan.md`。本卷已编入十二卷合订本（卷二），
 并加入 `scripts/release.py` 的 `COMPANION_VOLUMES`；CI 的 `agent-volumes` 矩阵会照常构建三件套。
+
+## T3 Code 分册
+
+`t3code` 是第十二册，中文单语，前言加十八章与附录 A–D（23 个单元），写作钉
+`pingdotgg/t3code` 提交 `3b3b662f`。带 guides、reading-paths、主题索引与修订页；
+glosses/notes 为空壳。插图在 `illustrations-agents/` 的 `t3code-*`、`part-t3code-p*`
+与 `cover-t3code.svg`。构建走 `make book-t3code-all`，证据见 `t3code/VERIFY.md`。
+本册不设随书实验驱动；合集导读里的卷十二故障行只核对钉版文档。
 
 ## 合订本
 
-`collected` 把十一卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
+`collected` 把十二卷合成一本：`manifest-collected.json` 的 `volumes` 逐卷引用各自的
 manifest 与 sources，卷宗、卷目录和页码层级由 `build_collected()` 生成。`load_collection()`
 只做一件事——拒绝两卷共用同一个页面锚点或重复的卷 ID，否则合订本会出现两个同名页。
-合订本只出中文。`make book-collected` 构建单文件 HTML；十一册的图版内联到同一文档。HTML/PDF/EPUB 同一趟：`build --product collected --lang zh --pdf --epub`（`make book-collected-all`），三件套落在同一 `dist/`。本机旧版数据（2026-11-16，只有十卷）为 PDF 1,925 页、109.3 MB，EPUB 52.0 MB；这些数字不代表当前十一卷版。合订本带主题索引，PDF 先印一趟量页码、再印一趟盖号；页码把索引挤到下一页时 `print_with_index()` 还会再量再印一次。`iter_doc()` 的重复扫描已修复。Book CI 的 `collected` 任务超时 150 分钟：pull request 上构建 HTML、EPUB 并运行 EPUBCheck 5.4.0；整册 PDF 与三件套上传仍只在 main push 与 `workflow_dispatch`。发布装配 `release.py` 会构建独立分册及合订本，并把三件套打进发布目录。
+合订本只出中文。`make book-collected` 构建单文件 HTML；十二册的图版内联到同一文档。HTML/PDF/EPUB 同一趟：`build --product collected --lang zh --pdf --epub`（`make book-collected-all`），三件套落在同一 `dist/`。本机旧版数据（2026-11-16，只有十卷）为 PDF 1,925 页、109.3 MB，EPUB 52.0 MB；十一卷版（2026-11-22）实测见下，**不代表当前十二卷版**。合订本带主题索引，PDF 先印一趟量页码、再印一趟盖号；页码把索引挤到下一页时 `print_with_index()` 还会再量再印一次。`iter_doc()` 的重复扫描已修复。Book CI 的 `collected` 任务超时 150 分钟：pull request 上构建 HTML、EPUB 并运行 EPUBCheck 5.4.0；整册 PDF 与三件套上传仍只在 main push 与 `workflow_dispatch`。发布装配 `release.py` 会构建独立分册及合订本，并把三件套打进发布目录。
 
-2026-11-22 四轮内容增强（多模态章、九项知识点补全、真训练、三书对比七项）后，本机实测：HTML 75 128 858 字节、11 卷、263 个正文单元、364 幅图版；PDF 100 438 516 字节、2 051 页、351 个书签；EPUB 52 230 473 字节、631 张图片、2 584 条导航、355 个文档，EPUBCheck 5.4.0 零错误零警告。旧版阅读抽检记录见 `docs/agent-series/collection-readability-20261119.md`，其页数、体积与页码核对仍只适用于当时的十卷版。
+2026-11-22 四轮内容增强（多模态章、九项知识点补全、真训练、三书对比七项）后，本机实测（十一卷，尚未含 T3）：HTML 75 128 858 字节、11 卷、263 个正文单元、364 幅图版；PDF 100 438 516 字节、2 051 页、351 个书签；EPUB 52 230 473 字节、631 张图片、2 584 条导航、355 个文档，EPUBCheck 5.4.0 零错误零警告。旧版阅读抽检记录见 `docs/agent-series/collection-readability-20261119.md`，其页数、体积与页码核对仍只适用于当时的十卷版。
 
 第五轮深度优化（第 9 章新增 9.9 节 GRPO 路线 + 术语表 16.5 补 5 条）后，本机实测：HTML 75 135 998 字节；PDF 100 462 153 字节、2 052 页、351 个书签；EPUB 52 232 680 字节、631 张图片、2 585 条导航、355 个文档，EPUBCheck 5.4.0 零错误零警告。引用链接 119 → 123。
 第六轮（2026-11-22 zlib 对照三书优化，对照《Let's Verify Step by Step》《Hands-On LLM Serving and Optimization》）后，本机实测：HTML 75 146 177 字节；PDF 100 563 660 字节（2 054 页、351 个书签）；EPUB 52 236 310 字节、631 张图片、2 587 条导航、355 个文档，EPUBCheck 5.4.0 零错零警告。内容：第 9 章新增 9.10（过程奖励 PRM/结果奖励 ORM，钉 Lightman arXiv:2305.20050）；第 10 章新增 10.6 vLLM 专项（PagedAttention/prefix caching，钉 Kwon arXiv:2309.06180 + Hands-On O'Reilly），旧 10.6/10.7/10.8 顺延为 10.7/10.8/10.9；术语表 +5 条（16.5 补 ORM/PRM，16.6 补 vLLM/SGLang/Llama.cpp）；引用链接 123 → 127。

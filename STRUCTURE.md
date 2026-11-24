@@ -28,6 +28,7 @@
 │   └── images/              star-history-light.svg / star-history-dark.svg
 ├── omp/                     第二分册《Omp 从入门到精通：原理与实战》书稿（product=omp，见 §3.6 与 omp/BUILD.md）
 ├── vibe/                    第十一册《Vibe Coding：把想法做成能跑的软件》书稿（product=vibe，中文单语，12 章 + 附录 A–D）
+├── t3code/                  第十二册《T3 Code：coding agent 的控制平面》书稿（product=t3code，中文单语，前言 + 18 章 + 附录 A–D）
 ├── llm/                     模型原理分册 0.1.0 中文版（product=llm，中文单语，前言 + 第 1–16 章，见 llm/README.md）
 ├── yuyu-book/               整书构建器（见下）
 └── .github/workflows/       book.yml / release.yml / pages.yml / update-star-history.yml
@@ -162,9 +163,9 @@ yuyu-book/
 - `yuyu-book/dist/yuyu-agent-harness-zh.html`：自包含单文件，图片走 data URI，无外链资源、无脚本。当前构建只出这一份中文 HTML。
 - `yuyu-book/dist/yuyu-agent-harness-zh.pdf`：A4，含书签树、奇偶眉标、页脚页码与带页码的目录。`v0.3.7` 的 Release 里仍有当时的英文 HTML/PDF/EPUB，不在这次删除。
 
-### 3.6 十一卷：`book`、`omp` 与其余分册
+### 3.6 十二卷：`book`、`omp` 与其余分册
 
-同一套构建器装十一卷合订本（御舆、大模型、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe），并将这十一卷订成 `collected`。分册靠**登记表文件名**而不是代码里的产品分支。全部产品的登记表、产物前缀和命令在
+同一套构建器装十二卷合订本（御舆、大模型、omp、pi、OpenCode、DeepSeek、Hermes、Codex、提示词、Kimi、Vibe、T3 Code），并将这十二卷订成 `collected`。分册靠**登记表文件名**而不是代码里的产品分支。全部产品的登记表、产物前缀和命令在
 `yuyu-book/PRODUCTS.md`。下表只展开御舆和 omp 这一对的边界；其余分册用各自的 `manifest-<product>.json`，机制相同：
 
 | | `book`（御舆，默认） | `omp`（第二分册《Omp 从入门到精通：原理与实战》） |
@@ -195,7 +196,7 @@ yuyu-book/
 | `scripts/draw_omp_illustrations.py` | 用 Pillow 与本机 CJK 字体重绘 omp 六张入门概念图：默认只写 `.scratch/` 预览，确认后加 `--out-dir omp/images`；单张超过构建器的 300,000 字节内嵌预算会在写盘前失败，语义边界与字体说明见 `omp/overhaul/PYTHON-ILLUSTRATIONS.md` |
 | `scripts/star_history.py` | 生成并增量维护 `docs/images/star-history-{light,dark}.svg` |
 | `tests/test_star_history.py` | 上面那个脚本的单测（`python -m unittest discover -s tests`） |
-| `.github/workflows/book.yml` | Book CI 八个 job：`Fast`（PR 与 main：书稿契约与 `bookctl check --fast`）；`Full`（仅 main/手动，`needs: fast`：`check --full`、产物声明与版面检查，上传御舆 HTML/PDF）；`Omp`（仅 main/手动：结构/交付审计 + 中文 HTML/PDF，不 `needs` 御舆）；`Bootstrap`（仅 main/手动，Ubuntu/Windows：`doctor` 与源码装配）；`Pi`（PR 也跑：中文 HTML/PDF/EPUB）；`Agent volume`（矩阵 opencode、deepseek、hermes、codex、prompt、kimi、vibe，PR 也跑：中文 HTML/PDF/EPUB）；`Collected edition`（150 分钟：合订本中文 HTML/PDF/EPUB。PR 也跑 HTML+EPUB，并对生成的 EPUB 跑 EPUBCheck 5.4.0；只有整册 PDF 留在 main/手动）；`DeepSeek Cordis components`（PR 也跑：钉住的 Cordis 源码与示例） |
+| `.github/workflows/book.yml` | Book CI 八个 job：`Fast`（PR 与 main：书稿契约与 `bookctl check --fast`）；`Full`（仅 main/手动，`needs: fast`：`check --full`、产物声明与版面检查，上传御舆 HTML/PDF）；`Omp`（仅 main/手动：结构/交付审计 + 中文 HTML/PDF，不 `needs` 御舆）；`Bootstrap`（仅 main/手动，Ubuntu/Windows：`doctor` 与源码装配）；`Pi`（PR 也跑：中文 HTML/PDF/EPUB）；`Agent volume`（矩阵 opencode、deepseek、hermes、codex、prompt、kimi、vibe、llm、t3code，PR 也跑：中文 HTML/PDF/EPUB）；`Collected edition`（150 分钟：合订本中文 HTML/PDF/EPUB。PR 也跑 HTML+EPUB，并对生成的 EPUB 跑 EPUBCheck 5.4.0；只有整册 PDF 留在 main/手动）；`DeepSeek Cordis components`（PR 也跑：钉住的 Cordis 源码与示例） |
 | `.github/workflows/release.yml` | Release CI：`v*` 标签或手动触发，先跑 `check --full` 与产物声明核对，再调 `bookctl release --version <tag> --epub` 装配，`sha256sum --check` 后上传工件；标签推送时创建 GitHub Release。`v0.3.7` 已由 run 43834162260 跑过 |
 | `.github/workflows/check-book.yml` | 已删除：原内容门（`check_book.py` + `check:diagrams` + unittest）并入 `book.yml` 的 `Fast` job |
 | `.github/workflows/pages.yml` | Pages CI：main 上构建御舆中文 HTML 与导读页，并单独构建 Omp 中文 HTML（`omp` job，`continue-on-error`，失败不挡御舆）。触发路径包含 `omp/**`。装配时只有 `omp-site` 工件到了，才用 `scripts/build_site_portal.py --omp` 给门户卡加上 `omp/yuyu-omp-zh.html`。PDF 和其他分册不进这个站点。仓库里提交的 `docs/portal.html` 仍是不带链接的那一版 |
