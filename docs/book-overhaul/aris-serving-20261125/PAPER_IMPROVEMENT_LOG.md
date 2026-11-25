@@ -33,9 +33,9 @@
 
 原句包括：
 
-> “既不要奖励模型，也不要 critic”  
-> “DeepSeekMath 的 GRPO 用的是脚本规则赏值”  
-> “DeepSeek-R1……要跳过监督微调、直接走纯 GRPO”  
+> “既不要奖励模型，也不要 critic”
+> “DeepSeekMath 的 GRPO 用的是脚本规则赏值”
+> “DeepSeek-R1……要跳过监督微调、直接走纯 GRPO”
 > `loss = -mean_i(A_i · log π_theta(y_i | x))`
 
 核对 [DeepSeekMath](https://arxiv.org/abs/2402.03300) §4.1–4.2，原文明确使用奖励模型；§4.2 还说明初始奖励模型基于 DeepSeekMath-Base 7B 训练。GRPO 去掉的是独立价值模型，奖励可来自规则，也可来自模型。其原始目标包含策略概率比、裁剪、序列内 token 聚合与 KL 项，正文公式只是未注明条件的奖励加权策略梯度简式。
@@ -56,9 +56,9 @@
 
 原句包括：
 
-> “Lightman 的实现……损失只放在终点 token 上。”  
-> “用一个三分类头（num_classes=3）……”  
-> “用 ORM 合成步骤训练数据（见……PRM800K）。”  
+> “Lightman 的实现……损失只放在终点 token 上。”
+> “用一个三分类头（num_classes=3）……”
+> “用 ORM 合成步骤训练数据（见……PRM800K）。”
 > “PRM 78.2% vs ORM 72.4%”
 
 核对 [Let's Verify Step by Step](https://arxiv.org/abs/2305.20050)：
@@ -77,7 +77,7 @@
 
 原句：
 
-> “β 越大……策略更容易偏离参考模型”  
+> “β 越大……策略更容易偏离参考模型”
 > “β 过大｜策略偏离参考，输出模式坍塌”
 
 [DPO 原论文](https://arxiv.org/abs/2305.18290)式 (3)–(5) 中，β 对应 KL 正则强度，最优策略满足：
@@ -111,8 +111,8 @@
 
 原句：
 
-> “self-taught 循环四轮把 p 从 0.4 抬到约 0.86”  
-> “拒绝采样没有梯度穿过生成过程，只有一道过滤门槛”  
+> “self-taught 循环四轮把 p 从 0.4 抬到约 0.86”
+> “拒绝采样没有梯度穿过生成过程，只有一道过滤门槛”
 > “梯度落在哪：无（过滤数据）”
 
 实际代码直接执行：
@@ -133,8 +133,8 @@ p = p + ALPHA * (kept / attempts) * (1.0 - p)
 
 原句：
 
-> “起草被接受的步数等于这步白赚的算力”  
-> “加速比完全取决于……分布的吻合度”  
+> “起草被接受的步数等于这步白赚的算力”
+> “加速比完全取决于……分布的吻合度”
 > “两个模型的词表和分词必须对齐”
 
 即使接受率相同，草稿模型耗时、目标模型验证成本、草稿长度、批量和硬件不同，也会改变加速比。接受 token 并非免费计算。另据 Transformers **v4.57.3** 官方 [generation_strategies.md](https://github.com/huggingface/transformers/blob/v4.57.3/docs/source/en/generation_strategies.md)，Universal Assisted Decoding 已支持不同 tokenizer，经重编码和匹配完成验证。
@@ -187,7 +187,7 @@ score=0.06327607388058208
 
 原句：
 
-> “怕‘用户第一眼看到的是次要答案’，盯 NDCG@k 与 MRR”  
+> “怕‘用户第一眼看到的是次要答案’，盯 NDCG@k 与 MRR”
 > `recall@k`：“前 k 个结果里包含正确片段的比率”
 
 实现将 `grade > 0` 都计作相关。因此“退款多久到账”的关键词排序把 grade=1 放第一，MRR 仍为 **1.0**。MRR 不能区分此处的“完整答案”和“相关但不完整”。术语表中的 recall 定义也容易被理解为 precision@k 或 hit@k；实际分母是标注相关文档总数。
@@ -198,7 +198,7 @@ score=0.06327607388058208
 
 位置：`llm/ch10.md:85–93`；`llm/ch16.md:166`。
 
-> “Z = 把 α 对齐到整数零点的偏移”  
+> “Z = 把 α 对齐到整数零点的偏移”
 > “零点对齐与否的两类均匀量化”
 
 零点是浮点 0 对应的整数编码；非对称量化也需要表示浮点 0，并非“不对齐零点”。建议给出带 `q_min/q_max` 的 Z 定义，并在量化公式中补上范围裁剪。对称量化的 `Z=0` 应注明这里采用有符号整数编码。该项属公式完整性问题，不影响已复现的显存数表。
@@ -400,5 +400,3 @@ python llm/examples/retrieval_metrics.py
 - 最终预览：[LLM 卷 HTML](../../../.scratch/aris-serving-20261125/round2/yuyu-llm-zh.html)。
 
 两轮审读完成：首轮 2 CRITICAL / 7 MAJOR / 2 MINOR、次轮 3 MINOR 均已处理。未进行第三轮模型打分；最终结论仍限定于本轮范围及 same-family / provisional 审读。保留工作区原有改动，未提交、推送或发布。
-
-

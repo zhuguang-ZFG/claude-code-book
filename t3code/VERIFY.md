@@ -1,6 +1,6 @@
 # T3 Code 验证记录
 
-日期：2026-11-24。基线：`pingdotgg/t3code` 的 HEAD 提交 `3b3b662f3c601ba6ce3f2435c7b5e20e9d6841f1`，许可 MIT（`LICENSE`，Copyright 2026 T3 Tools Inc.）。
+日期：2026-11-24（首版）；2026-11-25（通俗层补齐）。基线：`pingdotgg/t3code` 的 HEAD 提交 `3b3b662f3c601ba6ce3f2435c7b5e20e9d6841f1`，许可 MIT（`LICENSE`，Copyright 2026 T3 Tools Inc.）。
 
 ## 已完成
 
@@ -15,7 +15,7 @@
 | 阅读单元 | 23（前言 + 18 章 + 附录 A–D） |
 | 每章二级小节 | 恰好 8 个 |
 | 引导块 | 每单元一个 `<unit>.b-opening`，供通俗层证据引用 |
-| 通俗层 | guides 23 条、reading-paths 每章 8 档、术语/按语为空壳、索引 15 条 |
+| 通俗层 | guides 23 条、reading-paths 每章 8 档、术语 gloss 24 条、单元按语 23 条、索引 15 条 |
 | 图版 | 24 幅手绘 SVG（18 章徽 + 4 篇题 + 前言徽 + 封面） |
 
 装配命令：

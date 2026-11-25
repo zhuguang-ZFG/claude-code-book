@@ -45,3 +45,11 @@ node deepseek/examples/check-session-recovery.mjs .scratch/dsh-resume
 - [x] 写句柄续写并 flush 后再次挂载，读得 0、1 两项，结束理由为 `interrupted`，已提交前缀逐字节一致。
 
 参数是安装固定版包的 npm 前缀，准备命令见正文。故障为定点模拟的未完成写入，验证限于未压缩 JSONL 后端。
+
+## 2026-11-25 通俗层补强
+
+新增 9 条术语 gloss 与 23 条单元按语。 gloss 只使用现有 opening 证据块，9 个术语的并集覆盖全部 23 个阅读单元；未改正文、代码、图示或实验范围。
+
+```bash
+python scripts/bookctl.py build --product deepseek --lang zh --check --mermaid source
+```
