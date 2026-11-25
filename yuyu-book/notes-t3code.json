@@ -1,3 +1,72 @@
 {
-  "schema_version": 1
+  "schema_version": 1,
+  "t3code-front": {
+    "zh": "控制平面安排工作，agent 才真正动手。"
+  },
+  "t3code-ch01": {
+    "zh": "环境拥有执行，控制平面只发意图。"
+  },
+  "t3code-ch02": {
+    "zh": "provider 登录要落在运行服务器的机器上。"
+  },
+  "t3code-ch03": {
+    "zh": "adapter 吸收差异，编排不认厂商名字。"
+  },
+  "t3code-ch04": {
+    "zh": "thread 跨进程保存，turn 只代表一段工作。"
+  },
+  "t3code-ch05": {
+    "zh": "composer 决定输入，也决定消息如何排队。"
+  },
+  "t3code-ch06": {
+    "zh": "permission mode 管审批，不替代 provider 检查。"
+  },
+  "t3code-ch07": {
+    "zh": "worktree 隔离改动，回滚仍要核对会话。"
+  },
+  "t3code-ch08": {
+    "zh": "diff 说明改了什么，提交与 PR 是下一步。"
+  },
+  "t3code-ch09": {
+    "zh": "SnapShot 留下现场，终端记录仍有上限。"
+  },
+  "t3code-ch10": {
+    "zh": "project 圈定仓库，不把设置变成全局默认。"
+  },
+  "t3code-ch11": {
+    "zh": "Tailscale 只改路由，执行仍留在原环境。"
+  },
+  "t3code-ch12": {
+    "zh": "scope 收窄权限，guest link 不是会话。"
+  },
+  "t3code-ch13": {
+    "zh": "MCP server 接入 outside agents，审批仍归环境。"
+  },
+  "t3code-ch14": {
+    "zh": "client-runtime 共享连接，设备不复制执行现场。"
+  },
+  "t3code-ch15": {
+    "zh": "secret provider 只交引用，凭据留在密码管理器。"
+  },
+  "t3code-ch16": {
+    "zh": "command 提交意图，event 与 projection 落盘。"
+  },
+  "t3code-ch17": {
+    "zh": "wire 预算守住线协议，性能回归必须实测量。"
+  },
+  "t3code-ch18": {
+    "zh": "t3 update 分机器推进，版本不匹配就别硬连。"
+  },
+  "t3code-apxa": {
+    "zh": "thread 命令先认项目，再决定要不要 worktree。"
+  },
+  "t3code-apxb": {
+    "zh": "控制平面读 capability，不靠 provider 名字猜能力。"
+  },
+  "t3code-apxc": {
+    "zh": "环境路由先核对，loopback 不能冒充远端。"
+  },
+  "t3code-apxd": {
+    "zh": "provider 文档钉住提交，不随 HEAD 漂移。"
+  }
 }
