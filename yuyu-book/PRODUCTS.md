@@ -34,7 +34,7 @@ CI 的 `agent-volumes` 任务按同一矩阵逐个构建 HTML、PDF、EPUB。矩
 - `opencode`、`deepseek`、`hermes`、`codex`、`t3code` 带通俗层骨架：guides、reading-paths、
   `subject-index-*`、`revisions-*` 都是自己的文件；前四册的上游提交钉在
   `docs/agent-series/sources.lock.json`，`t3code` 钉在同文件与 `sources-t3code.json`。
-  `t3code` 另有术语 gloss 24 条、单元按语 23 条，证据绑定各单元稳定文本块。
+  `t3code` 另有术语 gloss 24 条、单元按语 23 条；`deepseek` 补入 9 条 gloss 与 23 条按语，证据均绑定稳定文本块。
 - `prompt`、`kimi` 声明 `plain_optional`，不带通俗层，因此没有 guides、索引和修订页；
   书架形状与另几册相同，`yuyu-book/tests/test_agent_products.py` 分开校验这两类契约。
   两册的上游钉版各记在自己的 `facts/source-lock.json`。
