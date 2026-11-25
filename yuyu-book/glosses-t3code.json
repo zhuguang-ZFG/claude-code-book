@@ -1,3 +1,460 @@
 {
-  "schema_version": 1
+  "schema_version": 1,
+  "control-plane": {
+    "term": {
+      "zh": "控制平面"
+    },
+    "forms": {
+      "zh": [
+        "控制平面",
+        "control plane"
+      ]
+    },
+    "plain": {
+      "zh": "安排线程、权限与连接，不代替 agent 执行"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-front.b-opening",
+      "t3code-ch01.b-opening"
+    ]
+  },
+  "environment": {
+    "term": {
+      "zh": "环境"
+    },
+    "forms": {
+      "zh": [
+        "环境",
+        "environment"
+      ]
+    },
+    "plain": {
+      "zh": "拥有工作区、进程、凭据与持久状态的服务器"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch11.b-opening"
+    ]
+  },
+  "provider": {
+    "term": {
+      "zh": "Provider"
+    },
+    "forms": {
+      "zh": [
+        "provider",
+        "Provider"
+      ]
+    },
+    "plain": {
+      "zh": "提供模型与 agent 会话的上游服务或进程"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch02.b-opening"
+    ]
+  },
+  "adapter": {
+    "term": {
+      "zh": "适配器"
+    },
+    "forms": {
+      "zh": [
+        "适配器",
+        "adapter"
+      ]
+    },
+    "plain": {
+      "zh": "吸收 provider 协议与能力差异的边界层"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch03.b-opening"
+    ]
+  },
+  "thread": {
+    "term": {
+      "zh": "线程"
+    },
+    "forms": {
+      "zh": [
+        "线程",
+        "thread",
+        "Thread"
+      ]
+    },
+    "plain": {
+      "zh": "跨 provider 进程保存的对话与工作历史"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch04.b-opening"
+    ]
+  },
+  "composer": {
+    "term": {
+      "zh": "消息输入框"
+    },
+    "forms": {
+      "zh": [
+        "composer",
+        "消息输入框"
+      ]
+    },
+    "plain": {
+      "zh": "装配消息、附件与上下文并决定投递方式的输入面"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch05.b-opening"
+    ]
+  },
+  "permission-mode": {
+    "term": {
+      "zh": "权限档位"
+    },
+    "forms": {
+      "zh": [
+        "权限档位",
+        "permission mode"
+      ]
+    },
+    "plain": {
+      "zh": "线程在执行前是否需要人批准的档位"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch06.b-opening"
+    ]
+  },
+  "worktree": {
+    "term": {
+      "zh": "工作树"
+    },
+    "forms": {
+      "zh": [
+        "工作树",
+        "worktree"
+      ]
+    },
+    "plain": {
+      "zh": "可替代主 checkout 的独立 Git 工作目录"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch07.b-opening"
+    ]
+  },
+  "diff": {
+    "term": {
+      "zh": "差异视图"
+    },
+    "forms": {
+      "zh": [
+        "Diff",
+        "diff"
+      ]
+    },
+    "plain": {
+      "zh": "展示本轮工作区改动内容的视图"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch08.b-opening"
+    ]
+  },
+  "snapshot": {
+    "term": {
+      "zh": "快照"
+    },
+    "forms": {
+      "zh": [
+        "SnapShot",
+        "快照"
+      ]
+    },
+    "plain": {
+      "zh": "把当前应用窗口与可选可访问性数据带进线程的现场记录"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch09.b-opening"
+    ]
+  },
+  "project": {
+    "term": {
+      "zh": "项目"
+    },
+    "forms": {
+      "zh": [
+        "项目",
+        "project"
+      ]
+    },
+    "plain": {
+      "zh": "按目录组织仓库、线程与设置覆盖的工作区记录"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch10.b-opening"
+    ]
+  },
+  "tailscale": {
+    "term": {
+      "zh": "Tailscale"
+    },
+    "forms": {
+      "zh": [
+        "Tailscale"
+      ]
+    },
+    "plain": {
+      "zh": "把客户端接入私有网络的连接路径，不改变执行归属"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch11.b-opening"
+    ]
+  },
+  "scope": {
+    "term": {
+      "zh": "作用域"
+    },
+    "forms": {
+      "zh": [
+        "scope",
+        "作用域"
+      ]
+    },
+    "plain": {
+      "zh": "会话被允许执行的操作范围"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch12.b-opening"
+    ]
+  },
+  "mcp-server": {
+    "term": {
+      "zh": "MCP server"
+    },
+    "forms": {
+      "zh": [
+        "MCP server",
+        "MCP 服务端"
+      ]
+    },
+    "plain": {
+      "zh": "环境向外提供工具与线程操作的 MCP 入口"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch13.b-opening"
+    ]
+  },
+  "client-runtime": {
+    "term": {
+      "zh": "客户端运行时"
+    },
+    "forms": {
+      "zh": [
+        "client-runtime",
+        "客户端运行时"
+      ]
+    },
+    "plain": {
+      "zh": "多端共享的连接、重连与领域状态层"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch14.b-client-runtime"
+    ]
+  },
+  "secret-provider": {
+    "term": {
+      "zh": "秘密提供器"
+    },
+    "forms": {
+      "zh": [
+        "secret provider",
+        "秘密提供器"
+      ]
+    },
+    "plain": {
+      "zh": "从密码管理器读取凭据并只向线程暴露引用的适配层"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch15.b-opening"
+    ]
+  },
+  "command": {
+    "term": {
+      "zh": "命令"
+    },
+    "forms": {
+      "zh": [
+        "command",
+        "Command"
+      ]
+    },
+    "plain": {
+      "zh": "改变领域状态的一次请求"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch16.b-opening"
+    ]
+  },
+  "event": {
+    "term": {
+      "zh": "事件"
+    },
+    "forms": {
+      "zh": [
+        "event",
+        "Event",
+        "事件"
+      ]
+    },
+    "plain": {
+      "zh": "command 裁定后持久化的事实"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch16.b-opening"
+    ]
+  },
+  "projection": {
+    "term": {
+      "zh": "投影"
+    },
+    "forms": {
+      "zh": [
+        "projection",
+        "投影"
+      ]
+    },
+    "plain": {
+      "zh": "事件应用后保存的当前状态视图"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch16.b-opening"
+    ]
+  },
+  "capability": {
+    "term": {
+      "zh": "能力声明"
+    },
+    "forms": {
+      "zh": [
+        "capabilities",
+        "能力声明"
+      ]
+    },
+    "plain": {
+      "zh": "provider 声明支持哪些能力的清单"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch03.b-opening"
+    ]
+  },
+  "outside-agent": {
+    "term": {
+      "zh": "外部 agent"
+    },
+    "forms": {
+      "zh": [
+        "outside agents",
+        "外面的 agent"
+      ]
+    },
+    "plain": {
+      "zh": "通过环境 MCP server 接入的外部 agent"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch13.b-opening"
+    ]
+  },
+  "guest-link": {
+    "term": {
+      "zh": "访客链接"
+    },
+    "forms": {
+      "zh": [
+        "guest link",
+        "访客链接"
+      ]
+    },
+    "plain": {
+      "zh": "受访问级别约束的访客入口，不是环境会话"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch12.b-opening"
+    ]
+  },
+  "wire-budget": {
+    "term": {
+      "zh": "线协议"
+    },
+    "forms": {
+      "zh": [
+        "wire",
+        "线协议"
+      ]
+    },
+    "plain": {
+      "zh": "线协议消息允许占用的字节与行数上限"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch17.b-opening"
+    ]
+  },
+  "t3-update": {
+    "term": {
+      "zh": "更新命令"
+    },
+    "forms": {
+      "zh": [
+        "t3 update"
+      ]
+    },
+    "plain": {
+      "zh": "切换本机 t3 与服务，不更新手动部署的服务器"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "t3code-ch18.b-t3-update"
+    ]
+  }
 }
