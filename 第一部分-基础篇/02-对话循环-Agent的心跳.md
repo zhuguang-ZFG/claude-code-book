@@ -1,6 +1,6 @@
 # 第2章：对话循环 -- Agent 的心跳
 
-> **开门一句话：**对话循环是 Agent 的心跳：每 yield 一次就搏动一下；肯收缰的马，才敢跑远路。
+> **开门一句话：**对话循环逐步交出事件，调用方据此显示进度；取消和资源清理还需要底层操作配合。
 
 > "The truth is like a lion. You don't have to defend it. Let it loose. It will defend itself."
 > -- Augustine of Hippo
@@ -517,6 +517,6 @@ print(list(loop("read")))
 
 5. **终止不是失败，是设计**：十种终止原因各有其触发条件和清理逻辑。理解这些终止路径是理解整个循环健壮性的关键。在生产级 Agent 系统中，错误的终止处理比错误的正常流程更危险，因为它可能导致资源泄漏、状态不一致或用户数据丢失。
 
-> **三句话带走：**①主循环是一个异步生成器：yield 推事件、yield* 委托子生成器、return() 取消，状态不可变，每一跳都有 transition 可查。②把 callModel、microcompact、autocompact、uuid 四个副作用注入成 QueryDeps，循环内部就成了纯逻辑——可测性是设计出来的，不是事后补的。③掂量一个 Agent 循环就三问：能不能暂停、能不能取消、终止时收不收拾现场。
+> **三句话带走：**①用 yield 和 yield* 追踪事件怎样交给调用方。②检查取消信号是否传到实际等待的 I/O，并确认资源清理。③通过 QueryDeps 替换外部依赖，验证继续与终止分支。
 
 第 3 章转到工具系统：一次工具调用从 schema 校验到执行、渲染，走完整条路要过哪几道关。

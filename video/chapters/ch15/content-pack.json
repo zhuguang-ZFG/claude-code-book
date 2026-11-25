@@ -47,16 +47,16 @@
       "en": "callback"
     },
     {
+      "zh": "取消传播",
+      "en": "cancellation propagation"
+    },
+    {
       "zh": "AbortController",
       "en": "AbortController"
     },
     {
       "zh": "不可变",
       "en": "immutability"
-    },
-    {
-      "zh": "阻塞",
-      "en": "blocking"
     }
   ]
 }
