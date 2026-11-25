@@ -397,6 +397,6 @@ python llm/examples/retrieval_metrics.py
 - 十二卷合订本组装检查通过：12 卷、286 单元、366 图版。仅检查组装，未发布。
 - 两项新增回归分别验证极端负分差的有限损失、新旧文档版本的独立融合；最终完整测试包含 105 项 LLM 示例测试。
 - 最终验证摘要及 HTML SHA-256：`.scratch/aris-serving-20261125/final-verification.json`；日志为 `check-final.log`、`build-round2.log`、`collected-final.log`、`visual-final.log`。
-- 最终预览：[LLM 卷 HTML](../../../.scratch/aris-serving-20261125/round2/yuyu-llm-zh.html)。
+- 最终本地预览：`.scratch/aris-serving-20261125/round2/yuyu-llm-zh.html`。该目录不入库；其他环境可运行 `python scripts/bookctl.py build --product llm --lang zh` 重建。
 
 两轮审读完成：首轮 2 CRITICAL / 7 MAJOR / 2 MINOR、次轮 3 MINOR 均已处理。未进行第三轮模型打分；最终结论仍限定于本轮范围及 same-family / provisional 审读。保留工作区原有改动，未提交、推送或发布。
