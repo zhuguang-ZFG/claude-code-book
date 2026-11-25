@@ -1,3 +1,72 @@
 {
-  "schema_version": 1
+  "schema_version": 1,
+  "deepseek-front": {
+    "zh": "Cordis 把服务、插件与清理接成一张依赖网。"
+  },
+  "deepseek-ch01": {
+    "zh": "Cordis 组件实验先跑通，再谈完整 dsh 宿主。"
+  },
+  "deepseek-ch02": {
+    "zh": "Cordis 用运行时依赖决定插件何时能工作。"
+  },
+  "deepseek-ch03": {
+    "zh": "fiber 拥有这次挂载，effect 登记资源与撤销。"
+  },
+  "deepseek-ch04": {
+    "zh": "Cordis 的失败发生在哪层，决定应用能否继续。"
+  },
+  "deepseek-ch05": {
+    "zh": "Agent 契约固定公共行为，循环仍可替换。"
+  },
+  "deepseek-ch06": {
+    "zh": "Turn 管整轮任务，Step 管一次模型请求。"
+  },
+  "deepseek-ch07": {
+    "zh": "review-lab 的事件日志先落盘，视图再由日志推出。"
+  },
+  "deepseek-ch08": {
+    "zh": "作用域内的动态材料，不要塞进固定系统提示词。"
+  },
+  "deepseek-ch09": {
+    "zh": "Agent 循环需要协议边界，不只看纯文本流。"
+  },
+  "deepseek-ch10": {
+    "zh": "作用域决定工具能力边界，执行仍走完整管线。"
+  },
+  "deepseek-ch11": {
+    "zh": "next 串起 waterfall，漏掉它会截断后续监听。"
+  },
+  "deepseek-ch12": {
+    "zh": "作用域同时管可见性与清理所有权。"
+  },
+  "deepseek-ch13": {
+    "zh": "Agent 恢复要分清历史、运行态与副作用。"
+  },
+  "deepseek-ch14": {
+    "zh": "Agent 的实时流与耐久历史分开，重连才不重复。"
+  },
+  "deepseek-ch15": {
+    "zh": "Cordis 插件代码可执行，工具审批不等于代码审批。"
+  },
+  "deepseek-ch16": {
+    "zh": "review-lab 打包后仍要从真实入口验证卸载。"
+  },
+  "deepseek-ch17": {
+    "zh": "review-lab 只统计文本，完整 Harness 需接工具与存储。"
+  },
+  "deepseek-ch18": {
+    "zh": "Cordis 组合要看依赖、作用域与清理是否同时成立。"
+  },
+  "deepseek-apxa": {
+    "zh": "Cordis 源码基线钉住提交，不随主分支漂移。"
+  },
+  "deepseek-apxb": {
+    "zh": "fiber 拥有挂载，effect 负责登记可撤销资源。"
+  },
+  "deepseek-apxc": {
+    "zh": "Cordis 组件实验只证明固定范围，不冒充完整宿主。"
+  },
+  "deepseek-apxd": {
+    "zh": "Cordis 术语先认对象，再认生命周期与边界。"
+  }
 }

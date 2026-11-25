@@ -1,3 +1,165 @@
 {
-  "schema_version": 1
+  "schema_version": 1,
+  "cordis": {
+    "term": {
+      "zh": "Cordis"
+    },
+    "forms": {
+      "zh": [
+        "Cordis"
+      ]
+    },
+    "plain": {
+      "zh": "把服务、插件与生命周期接起来的宿主"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch02.b-opening"
+    ]
+  },
+  "agent": {
+    "term": {
+      "zh": "Agent"
+    },
+    "forms": {
+      "zh": [
+        "Agent"
+      ]
+    },
+    "plain": {
+      "zh": "拥有工具与状态、能持续推进任务的对象"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch05.b-opening"
+    ]
+  },
+  "fiber": {
+    "term": {
+      "zh": "fiber"
+    },
+    "forms": {
+      "zh": [
+        "fiber"
+      ]
+    },
+    "plain": {
+      "zh": "一次插件挂载的句柄，拥有状态与清理责任"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch03.b-opening"
+    ]
+  },
+  "turn": {
+    "term": {
+      "zh": "Turn"
+    },
+    "forms": {
+      "zh": [
+        "Turn"
+      ]
+    },
+    "plain": {
+      "zh": "用户任务从开始到结束的一段运行"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch06.b-opening"
+    ]
+  },
+  "effect": {
+    "term": {
+      "zh": "effect"
+    },
+    "forms": {
+      "zh": [
+        "effect"
+      ]
+    },
+    "plain": {
+      "zh": "插件声明资源创建方式与撤销动作的机制"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch03.b-opening"
+    ]
+  },
+  "next": {
+    "term": {
+      "zh": "next"
+    },
+    "forms": {
+      "zh": [
+        "next"
+      ]
+    },
+    "plain": {
+      "zh": "把事件交给下一个监听者的继续调用"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch11.b-opening"
+    ]
+  },
+  "scope": {
+    "term": {
+      "zh": "作用域"
+    },
+    "forms": {
+      "zh": [
+        "作用域"
+      ]
+    },
+    "plain": {
+      "zh": "局部注册的可见性与清理所有权边界"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch12.b-opening"
+    ]
+  },
+  "review-lab": {
+    "term": {
+      "zh": "review-lab"
+    },
+    "forms": {
+      "zh": [
+        "review-lab"
+      ]
+    },
+    "plain": {
+      "zh": "本书用于演示插件组合的本地审查实例"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch17.b-opening"
+    ]
+  },
+  "step": {
+    "term": {
+      "zh": "Step"
+    },
+    "forms": {
+      "zh": [
+        "Step"
+      ]
+    },
+    "plain": {
+      "zh": "一次模型请求及其触发的工具工作"
+    },
+    "priority": "extra",
+    "mark": true,
+    "evidence": [
+      "deepseek-ch06.b-opening"
+    ]
+  }
 }
