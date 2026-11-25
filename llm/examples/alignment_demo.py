@@ -17,9 +17,11 @@ PAIRS = [
 ]
 # (label, policy logp chosen, reference logp chosen,
 #         policy logp rejected, reference logp rejected)
+# Distinct complete answers: their probabilities sum to less than one;
+# the remaining mass belongs to other possible answers.
 CASES = [
-    ("偏好正确", -0.2, -0.5, -0.6, -0.4),
-    ("偏好反转", -0.4, -0.5, -0.2, -0.6),
+    ("偏好正确", -2.2, -2.5, -2.6, -2.4),
+    ("偏好反转", -2.4, -2.5, -2.2, -2.6),
 ]
 BETAS = (0.1, 1.0)
 
@@ -33,7 +35,12 @@ def sigmoid(value: float) -> float:
 
 def bt_loss(chosen: float, rejected: float):
     margin = chosen - rejected
-    return -math.log(sigmoid(margin)), margin
+    return negative_log_sigmoid(margin), margin
+
+
+def negative_log_sigmoid(value: float) -> float:
+    """softplus(-value), avoiding exp overflow and log(0)."""
+    return max(0.0, -value) + math.log1p(math.exp(-abs(value)))
 
 
 def dpo_terms(policy_chosen: float, reference_chosen: float,
@@ -51,7 +58,7 @@ def dpo_loss(policy_chosen: float, reference_chosen: float,
     _c, _r, gap = dpo_terms(policy_chosen, reference_chosen,
                             policy_rejected, reference_rejected)
     margin = beta * gap
-    return -math.log(sigmoid(margin)), margin
+    return negative_log_sigmoid(margin), margin
 
 
 def main() -> int:
@@ -84,7 +91,7 @@ def main() -> int:
           "it does not remove the data problem")
     print()
 
-    loss, margin = dpo_loss(-0.2, -0.5, -0.6, -0.4, 0.1)
+    loss, margin = dpo_loss(-2.2, -2.5, -2.6, -2.4, 0.1)
     print(f"worked example: gap=0.50, beta=0.1 -> margin={margin:.2f}, "
           f"loss={loss:.3f}")
     print("  at init the policy often equals the reference, so the gap is 0 "

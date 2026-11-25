@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluation arithmetic: Wilson intervals, contamination, abstention, cost.
+"""Evaluation arithmetic: Wilson intervals, paired tests, abstention, cost.
 
 The counts are hand-set. The point is to show how a single accuracy number can
 hide sample size, test-set contamination, abstention and serving cost.
@@ -20,6 +20,23 @@ def wilson(correct: int, total: int, z: float = Z) -> tuple[float, float]:
     half = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total))
     half /= denominator
     return center - half, center + half
+
+
+def mcnemar_exact(a_only: int, b_only: int) -> float:
+    """Two-sided exact McNemar p-value from discordant paired outcomes.
+
+    Under equal marginal accuracy, each discordant pair favors either
+    system with probability 1/2. This small-count teaching implementation
+    sums the binomial lower tail and doubles it, capped at one.
+    """
+    if a_only < 0 or b_only < 0:
+        raise ValueError("discordant counts must be nonnegative")
+    discordant = a_only + b_only
+    if discordant == 0:
+        return 1.0
+    tail = sum(math.comb(discordant, k)
+               for k in range(min(a_only, b_only) + 1))
+    return min(1.0, 2 * tail / 2 ** discordant)
 
 
 def contamination(clean_correct: int, clean_total: int,
@@ -54,7 +71,16 @@ def main() -> int:
     low_a, high_a = wilson(164, 200)
     low_b, high_b = wilson(172, 200)
     print(f"  intervals overlap: {max(low_a, low_b) <= min(high_a, high_b)}")
-    print("  82% vs 86% on 200 questions is not enough to declare a winner")
+    print("  overlap of separate intervals does not test the paired difference")
+    print()
+    print("same marginal accuracies, different paired outcomes")
+    print("  both correct   A only   B only   both wrong   exact McNemar p")
+    for both, a_only, b_only, neither in ((164, 0, 8, 28),
+                                         (144, 20, 28, 8)):
+        p_value = mcnemar_exact(a_only, b_only)
+        print(f"  {both:>12}   {a_only:>6}   {b_only:>6}   {neither:>10}   "
+              f"{p_value:.4f}")
+    print("  each table has A=164/200 and B=172/200; keep item-level results")
     print()
 
     result = contamination(144, 180, 20, 20)

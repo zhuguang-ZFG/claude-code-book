@@ -6,6 +6,9 @@ the question, 1 = related, 0 = off-topic). The "keyword" ranker retrieves
 more relevant documents but orders them by string match; the "vector" ranker
 drops one relevant document but puts the best answer first.
 
+Binary relevance means grade > 0. AP@k uses min(k, R) as denominator;
+RR scans the full ranking. Inputs are unique document IDs and positive k.
+
 The point is that one number is never enough: recall@3 rewards the keyword
 ranker, NDCG@3 rewards the vector ranker, and both are right.
 """
@@ -89,8 +92,9 @@ def main() -> int:
     print(f"k = {K}; grades 2/1/0 = answers / related / off-topic")
     print(f"{len(CASES)} queries; two rankers over the same pools")
     print()
-    header = (f"  {'query':<12} {'ranker':<8} {'top-3':<14} "
-              f"{'recall':>6} {'MRR':>6} {'NDCG':>6} {'MAP':>6}")
+    top_label = f"top-{K}"
+    header = (f"  {'query':<12} {'ranker':<8} {top_label:<14} "
+              f"{'recall':>6} {'RR':>6} {'NDCG':>6} {'AP':>6}")
     print(header)
     totals = {"keyword": [0.0] * 4, "vector": [0.0] * 4}
     for case in CASES:
@@ -109,6 +113,7 @@ def main() -> int:
             print(f"  {case['query']:<12} {ranker:<8} {top:<14} "
                   f"{row[0]:>6.2f} {row[1]:>6.2f} {row[2]:>6.2f} {row[3]:>6.2f}")
     print()
+    print(f"  averages: recall@{K}, MRR (full ranking), NDCG@{K}, MAP@{K}")
     print(f"  {'average':<12} {'keyword':<8} {'':<14} "
           f"{totals['keyword'][0] / len(CASES):>6.2f} "
           f"{totals['keyword'][1] / len(CASES):>6.2f} "
@@ -121,15 +126,14 @@ def main() -> int:
           f"{totals['vector'][3] / len(CASES):>6.2f}")
     print()
     print("reading the table")
-    print("  recall@3  punished when a relevant document never appears")
+    print(f"  recall@{K}  punished when relevant documents fall outside top-{K}")
     print("  MRR       punished when the first relevant document is far down")
-    print("  NDCG@3    punished when the best answer is not near the top")
-    print("  MAP@3     averages precision at every relevant hit, binary")
+    print(f"  NDCG@{K}    punished when the best answer is not near the top")
+    print(f"  MAP@{K}     mean AP@{K}; AP denominator = min(k, relevant count)")
     print()
-    print("note: recall@3 and MAP@3 favor the keyword ranker because it "
-          "retrieves more relevant documents; NDCG@3 favors the vector ranker "
-          "because it puts the best answer first. Pick the metric that matches "
-          "the failure you fear, then check the end-to-end answer quality")
+    print("note: grade 1 counts as a hit for RR, recall and AP. Only NDCG "
+          "uses the graded gains here. Compare coverage and ordering, then "
+          "check end-to-end answer quality")
     return 0
 
 

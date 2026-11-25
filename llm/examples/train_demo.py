@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Train a tiny character-level Transformer with hand-written backprop.
 
-Standard library only. The model is deliberately tiny; the honesty is the
-point. A real loss goes down under real gradient descent, a numeric gradient
-check proves the backprop formulas, and the trained model continues the
-prompt in its own repetitive style. Every number is reproducible with the
-fixed seed.
+Standard library only. The model is deliberately tiny. A sampled numeric
+gradient check compares a few analytic derivatives, and training reduces
+loss on a window from the training corpus. The fixed seed makes the example
+reproducible; it does not provide a held-out generalization measurement.
 """
 from __future__ import annotations
 
@@ -74,8 +73,8 @@ def matmul_bt_a(b: list[list[float]], a: list[list[float]]) -> list[list[float]]
 class Tiny:
     """One causal self-attention layer, one FFN, untied output, no norm.
 
-    Norms and biases are left out for readability; the gradients below are
-    the real formulas and the numeric check proves them.
+    Norms and biases are left out for readability. The numeric check samples
+    derivatives at selected inputs; it is a diagnostic, not a proof.
     """
 
     def __init__(self, vocab: int, rng: random.Random):
@@ -159,7 +158,8 @@ class Tiny:
         dx = [row[:] for row in dh1]
         dattn_out = dh1
         dwo = matmul_bt_a(cache["o"], dattn_out)
-        do = matmul(dattn_out, self.wo)
+        # For Y = X W, dX = dY W^T and dW = X^T dY.
+        do = matmul_at_b(dattn_out, self.wo)
 
         # attention weights: softmax rows
         dattn = matmul_at_b(do, cache["v"])
@@ -180,9 +180,9 @@ class Tiny:
         dwv = matmul_bt_a(cache["x"], dv)
         for t in range(T):
             for d in range(D_MODEL):
-                extra = (sum(dq[t][c] * self.wq[c][d] for c in range(D_MODEL))
-                         + sum(dk[t][c] * self.wk[c][d] for c in range(D_MODEL))
-                         + sum(dv[t][c] * self.wv[c][d] for c in range(D_MODEL)))
+                extra = (sum(dq[t][c] * self.wq[d][c] for c in range(D_MODEL))
+                         + sum(dk[t][c] * self.wk[d][c] for c in range(D_MODEL))
+                         + sum(dv[t][c] * self.wv[d][c] for c in range(D_MODEL)))
                 dx[t][d] += extra
 
         dwte = zeros(self.vocab, D_MODEL)
@@ -249,11 +249,10 @@ def gradcheck(model: Tiny, ids: list[int], targets: list[int],
 
 
 def lr_at(step: int) -> float:
-    """Warmup linearly, then cosine-decay to MIN_LR_RATIO: the standard
-    schedule in practice.
+    """Linear warmup followed by cosine decay to MIN_LR_RATIO.
 
-    Small steps early keep noisy first gradients from throwing the weights
-    around; shrinking (but never zero) steps late let the loss settle.
+    This is one schedule to compare with a constant learning rate, not a
+    guarantee of lower validation loss for every training budget.
     """
     if step <= WARMUP:
         return LR * step / WARMUP
@@ -304,7 +303,7 @@ def main() -> int:
     targets = IDS[start + 1:start + N_CTX + 1]
     untrained = model.loss(probe, targets)
     print(f"loss before training: {untrained:.2f} "
-          f"(ln {len(VOCAB)}) = {math.log(len(VOCAB)):.2f})")
+          f"(ln {len(VOCAB)} = {math.log(len(VOCAB)):.2f})")
 
     worst = gradcheck(model, probe, targets, random.Random(SEED + 1))
     print(f"gradcheck: 8 sampled weights, max |analytic-numeric| "
@@ -319,8 +318,8 @@ def main() -> int:
 
     sample = generate(model, "青禾工作坊", 20)
     print(f"greedy sample from '青禾工作坊': {sample}")
-    print("note: a real nano-GPT is the same loop with more layers, "
-          "bytes and GPUs; the curve above is the honest small version")
+    print("note: the fixed probe comes from the training corpus; "
+          "lower probe loss is not a held-out generalization result")
     return 0
 
 

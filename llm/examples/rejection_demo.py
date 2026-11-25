@@ -3,8 +3,8 @@
 
 A prompt has one exact answer. The toy policy is right with probability p and
 otherwise returns a wrong candidate; the verifier is exact match. The numbers
-show how filtering N candidates per prompt raises the chance of at least one
-pass, and how kept samples nudge p in a small self-taught loop.
+show how filtering N independent candidates per prompt raises the chance of
+at least one pass. Filtering does not update p; this script does not train.
 """
 from __future__ import annotations
 
@@ -13,15 +13,13 @@ import random
 SEED = 11
 P_CORRECT = 0.4
 SIZES = (1, 4, 16, 64)
-ROUNDS = 4
-ALPHA = 0.5
 
 PROMPTS = {
     "计算 17 的平方": "289",
     "把 2024-02-29 换成 ISO 周": "2024-W09-4",
     "把 'Hello World' 转成 snake_case": "hello_world",
     "把 '3.14159' 四舍五入到两位小数": "3.14",
-    "用十六进制写 255": "ff",
+    "用小写十六进制写 255，不加 0x 前缀": "ff",
     "计算 2 ** 10": "1024",
 }
 WRONG = {
@@ -29,7 +27,7 @@ WRONG = {
     "把 2024-02-29 换成 ISO 周": ("2024-W08-4", "2024-W09-5", "2024-02-29"),
     "把 'Hello World' 转成 snake_case": ("HelloWorld", "hello-world", "hello_World"),
     "把 '3.14159' 四舍五入到两位小数": ("3.15", "3.1", "3.141"),
-    "用十六进制写 255": ("FF", "0xff", "255"),
+    "用小写十六进制写 255，不加 0x 前缀": ("FF", "0xff", "255"),
     "计算 2 ** 10": ("1000", "512", "1023"),
 }
 
@@ -68,7 +66,7 @@ def rejection_round(p: float, n: int, rng: random.Random):
 
 
 def best_of_n(p: float, n: int, rng: random.Random) -> int:
-    """Inference mode: stop at the first passing answer per prompt."""
+    """Generate all N candidates, then count a prompt if any passes."""
     solved = 0
     for prompt in PROMPTS:
         for candidate in sample_n(prompt, n, rng, p):
@@ -76,16 +74,6 @@ def best_of_n(p: float, n: int, rng: random.Random) -> int:
                 solved += 1
                 break
     return solved
-
-
-def self_taught(p: float, n: int, rounds: int, rng: random.Random) -> list[float]:
-    """Kept-data loop: filter N per prompt, then nudge p upward."""
-    history = [p]
-    for _ in range(rounds):
-        attempts, kept, _hits = rejection_round(p, n, rng)
-        p = p + ALPHA * (kept / attempts) * (1.0 - p)
-        history.append(min(p, 0.99))
-    return history
 
 
 def main() -> int:
@@ -108,19 +96,15 @@ def main() -> int:
         print(f"  {n:>2}  {solved}/{len(PROMPTS)}")
     print()
 
-    print("self-taught loop (filter, keep, nudge p): p over rounds")
-    history = self_taught(P_CORRECT, 8, ROUNDS, random.Random(SEED))
-    for index, value in enumerate(history):
-        print(f"  round {index}: p = {value:.3f}")
-    print()
-
     print("notes:")
     print(f"  - with p = {P_CORRECT} and N = 4, P(at least one pass) = "
           f"{1 - (1 - P_CORRECT) ** 4:.3f}")
     print(f"  - with N = 16, P(at least one pass) = "
           f"{1 - (1 - P_CORRECT) ** 16:.4f}")
-    print("  - rejection sampling is SFT on filtered samples; the ceiling is "
-          "the verifier, not the sampler")
+    print("  - p stays fixed: filtering candidates is not policy training")
+    print("  - all N candidates are generated; no early-stopping cost saving")
+    print("  - exact-match success is format-specific; a real verifier can "
+          "reject valid alternatives or accept incorrect answers")
     return 0
 
 

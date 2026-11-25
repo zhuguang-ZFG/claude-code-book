@@ -2,8 +2,8 @@
 """Serving arithmetic: weights, KV cache, decode bandwidth and batching.
 
 The bandwidth and compute figures are assumptions, not hardware specs. The
-model shows why decode is memory-bound, how batch size trades latency for
-throughput, and why continuous batching keeps slots busier than static batches.
+model estimates decode time under a bandwidth-only assumption, and compares
+slot occupancy in two toy schedulers. It is not a hardware benchmark.
 """
 from __future__ import annotations
 
@@ -37,7 +37,8 @@ def kv_bytes(batch: int, context: int) -> float:
 
 
 def decode_seconds(batch: int, context: int, weight_bytes: float) -> float:
-    # Every decode step reads the weights once plus the cached K/V.
+    # Assumption: one weight read per batch step plus all historical K/V.
+    # Compute, writes, cache hierarchy, communication and scheduling are omitted.
     moved = weight_bytes + kv_bytes(batch, context)
     return moved / BANDWIDTH
 
@@ -91,8 +92,8 @@ def main() -> int:
     print()
 
     for context in (8192, 32768):
-        print(f"decode at context {context:,}")
-        print("  batch   KV cache   step ms   tok/s   fits 80 GiB")
+        print(f"bandwidth-only decode estimate at context {context:,}")
+        print("  batch   KV cache   step ms   tok/s   rough fit 80 GiB")
         for batch in (1, 8, 32):
             kv = kv_bytes(batch, context)
             step = decode_seconds(batch, context, weights_bytes(PARAMS, 2))
@@ -103,8 +104,8 @@ def main() -> int:
 
     context = 8192
     prefill = 2 * PARAMS * context
-    print(f"prefill one {context:,}-token request: {prefill:.2e} FLOPs, "
-          f"{prefill / COMPUTE:.2f} s at the assumed compute rate")
+    print(f"prefill weight-matmul estimate, {context:,} tokens: {prefill:.2e} FLOPs, "
+          f"{prefill / COMPUTE:.2f} s at the assumed compute rate; attention omitted")
     print()
 
     lengths = [20, 200, 50, 120]

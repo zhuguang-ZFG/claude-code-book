@@ -16,14 +16,14 @@
 | `embedding_train_demo.py` | skip-gram 加负采样，把相似度从语料里学出来 | pair loss、同主题近邻的前后对比 |
 | `sft_demo.py` | 比较 SFT 损失掩码，计算 LoRA 更新与参数账 | 两种损失均值、LoRA 前后输出、秩与适配器体积 |
 | `alignment_demo.py` | 计算 Bradley-Terry 奖励损失与 DPO 损失 | 成对准确率、边际、β 对损失的影响 |
-| `rejection_demo.py` | 拒绝采样、best-of-N 与 self-taught 循环 | keep 率随 N 变化、通过概率、准确率曲线 |
-| `serving_demo.py` | 计算权重、KV cache、decode 时间与批处理利用率 | 显存表、tok/s、静态/连续批处理对比 |
+| `rejection_demo.py` | 固定成功概率下的候选生成与筛选 | keep 率、best-of-N 通过率与生成次数；不含训练 |
+| `serving_demo.py` | 计算权重、KV cache、带宽模型耗时与槽位利用率 | 理想化显存与吞吐估算、静态/连续批处理对比 |
 | `session_ledger.py` | 给一次四轮会话按轮记账 | 每轮输入/输出、三种缓存策略的账单与耗时、峰值 KV cache |
 | `rag_demo.py` | 演示切块、BM25、向量召回、RRF 与重排 | 切块完整性、各阶段 top-3、过滤与去重计数 |
-| `retrieval_metrics.py` | 用同一份标注比较两套排序 | recall@k、MRR、NDCG@k、MAP@k 的逐条与平均 |
+| `retrieval_metrics.py` | 用同一份标注比较两套排序 | 逐条 recall@k、RR、NDCG@k、AP@k；跨查询汇总 MRR/MAP |
 | `toolcall_demo.py` | 演示工具 schema、参数校验、失败重试与 MCP 消息 | schema 字符数、校验错误、JSON-RPC 请求与结果 |
 | `cot_demo.py` | 模拟自洽投票并计算每道正确题的成本 | 采样数/准确率表、策略成本表 |
-| `eval_demo.py` | 计算置信区间、污染偏差、弃权指标与蒸馏成本 | Wilson 区间、干净/报告准确率、覆盖率、成本 |
+| `eval_demo.py` | 计算置信区间、配对差异、污染偏差、弃权指标与蒸馏成本 | Wilson 区间、精确 McNemar 对照、覆盖率、成本 |
 | `multimodal_demo.py` | 切 patch、算图像 token 预算与图文相似度 | patch 网格、token 数、预算表 |
 
 从仓库根目录运行：

@@ -1,5 +1,5 @@
 {
-  "accessed": "2026-11-21",
+  "accessed": "2026-11-25",
   "repositories": [
     {
       "repo": "openai/tiktoken",
@@ -24,6 +24,48 @@
       "commit": "3b17a2c948120350315245030f71d52f356d0c05",
       "license": "Apache-2.0",
       "scope": "第 2 章：难负例、批内负例与 MultipleNegativesRankingLoss 的官方训练文档"
+    },
+    {
+      "repo": "huggingface/transformers",
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324",
+      "license": "Apache-2.0",
+      "scope": "第 4、8 章：v4.57.3 的 RoPE、Mixtral 与 BERT/decoder 分类实现；第 10 章：投机解码和不同 tokenizer 的 UAD"
+    },
+    {
+      "repo": "rasbt/LLMs-from-scratch",
+      "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8",
+      "license": "Apache-2.0",
+      "scope": "第 2、7、8 章：token embedding、训练/验证损失与分类微调的公开配套教材"
+    },
+    {
+      "repo": "huggingface/trl",
+      "commit": "55f5433e15cc6203d3c731f9de5247b00878bebd",
+      "license": "Apache-2.0",
+      "scope": "第 8 章：v0.25.0 的 SFT 损失掩码与模板前提；第 9 章：GRPO 奖励来源、KL 与归一化配置"
+    },
+    {
+      "repo": "huggingface/peft",
+      "commit": "53c25fe4fdd7c6aa4b40db0560815ea570d32303",
+      "license": "Apache-2.0",
+      "scope": "第 8 章：v0.17.1 的 LoRA 初始化、合并与卸载接口"
+    },
+    {
+      "repo": "vllm-project/vllm",
+      "commit": "b8b302cde434df8c9289a2b465406b47ebab1c2d",
+      "license": "Apache-2.0",
+      "scope": "第 10 章：完整块缓存、父块与 token 哈希、LoRA/多模态/缓存盐；同提交的 APC 与 LoRA 文档用于收益边界和多 adapter serving。"
+    },
+    {
+      "repo": "natolambert/rlhf-book",
+      "commit": "b0926fd5f57c64295a086ebabcd8a04e4c71cce7",
+      "license": "CC BY-NC-SA 4.0（章节）；仅链接与独立概述",
+      "scope": "第 9 章：生成、筛选、后续 SFT 与 best-of-N 的区别；读取公开章节，独立改写，不复制第三方图表。"
+    },
+    {
+      "repo": "openai/prm800k",
+      "commit": "7ecc794703b2877f63226f2477a49b34f9b25163",
+      "license": "仅链接与独立概述；未引入仓库数据",
+      "scope": "第 9 章：人工步骤标签来源与数据结构；仅链接 README，不复制数据或资产。"
     }
   ]
 }

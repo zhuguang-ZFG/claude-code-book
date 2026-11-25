@@ -96,7 +96,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="32" cy="32" r="5.8" stroke-width="1.2" opacity=".65" pathLength="100"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">模型是马，只出力气；这套 Harness 是车——装什么货、走哪条路，车说了算。</blockquote>
+      <blockquote class="k-quote">Agent Harness 负责组织模型请求、工具执行、权限检查和运行状态。理解它，可以从一次工具调用开始。</blockquote>
       <p class="k-foot">第 1 章</p>
     </article>
     <article class="kcard k-core">
@@ -117,7 +117,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>真正的转移是模型开始调工具，光是更会聊撑不起这个判断，Agent Harness 是接住这件事的运行时。</li><li>包一层 API 不等于做一套 Harness：分不清这条线，系统一上生产就散架；那 51 万行代码，填的就是这些坑。</li><li>打量一个 Agent 系统，先数 Harness 那几层在不在：流式、权限、缓存、状态，缺了就不算。</li></ol>
+      <ol class="k-list"><li>沿一次工具调用区分模型请求与运行时执行。</li><li>检查五个核心模块如何传递请求、结果和状态。</li><li>评估自己的 Harness 时，同时走一遍成功、失败与取消路径。</li></ol>
       <p class="k-foot">第 1 章</p>
     </article>
   </div>
@@ -145,7 +145,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="39" cy="24" r="1.1" fill="currentColor" stroke="none" opacity=".5"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">对话循环是 Agent 的心跳：每 yield 一次就搏动一下；肯收缰的马，才敢跑远路。</blockquote>
+      <blockquote class="k-quote">对话循环逐步交出事件，调用方据此显示进度；取消和资源清理还需要底层操作配合。</blockquote>
       <p class="k-foot">第 2 章</p>
     </article>
     <article class="kcard k-core">
@@ -177,7 +177,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>主循环是一个异步生成器：yield 推事件、yield* 委托子生成器、return() 取消，状态不可变，每一跳都有 transition 可查。</li><li>把 callModel、microcompact、autocompact、uuid 四个副作用注入成 QueryDeps，循环内部就成了纯逻辑——可测性是设计出来的，不是事后补的。</li><li>掂量一个 Agent 循环就三问：能不能暂停、能不能取消、终止时收不收拾现场。</li></ol>
+      <ol class="k-list"><li>用 yield 和 yield* 追踪事件怎样交给调用方。</li><li>检查取消信号是否传到实际等待的 I/O，并确认资源清理。</li><li>通过 QueryDeps 替换外部依赖，验证继续与终止分支。</li></ol>
       <p class="k-foot">第 2 章</p>
     </article>
   </div>
@@ -202,7 +202,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="32" cy="32" r="2.3" fill="currentColor" stroke="none"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">55 枚腰牌挂在 Agent 手上：每枚先过 JSON Schema 验形制，才许出手干活。</blockquote>
+      <blockquote class="k-quote">工具的名称、Schema、权限、执行与渲染构成共同契约，调度器据此安排调用。</blockquote>
       <p class="k-foot">第 3 章</p>
     </article>
     <article class="kcard k-core">
@@ -222,7 +222,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>名称、Schema、权限、执行、渲染——五要素协议是 55 个工具共用的 DNA，泛型契约给每个工具独立的类型空间。</li><li>契约立住了，注册、死代码消除、并发分区、流式执行才有统一的依据；isConcurrencySafe 标错一个，代价就是数据竞争。</li><li>往系统里加工具不用碰编排引擎——把五要素写对，剩下的交给默认值。</li></ol>
+      <ol class="k-list"><li>新增工具时，写清名称、Schema、权限、执行和渲染五项契约。</li><li>根据读写副作用设置并发属性，检查同批调用会不会互相影响。</li><li>测试失败与中断路径，确认后续排队工具的处理方式。</li></ol>
       <p class="k-foot">第 3 章</p>
     </article>
   </div>
@@ -248,7 +248,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="42" cy="47" r="1.2" fill="currentColor" stroke="none" opacity=".55"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">工具每次出手都要过关卡：验输入、查名册、盖印章——盖几道，权限模式说了算。</blockquote>
+      <blockquote class="k-quote">一次工具调用能否执行，要结合输入校验、权限规则、工具上下文和审批结果判断。</blockquote>
       <p class="k-foot">第 4 章</p>
     </article>
     <article class="kcard k-core">
@@ -266,7 +266,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>权限检查是四道关卡：验输入、对规则、评估上下文、问用户，任何一层都能当场拒掉一次调用。</li><li>deny 规则优先级最高——就算开到 bypassPermissions 模式，deny 和 safetyCheck 照样生效；单一检查点靠不住，防御必须纵深。</li><li>给项目配权限，先写 deny 清单，再挑模式；团队落地靠 settings.json 管共享、settings.local.json 管个人。</li></ol>
+      <ol class="k-list"><li>沿四阶段流程查清一次调用为什么得到 allow、ask 或 deny。</li><li>核对 deny 规则与 safetyCheck，不把 bypassPermissions 当作跳过全部检查。</li><li>分别维护团队共享设置与个人本地设置，并用具体命令验证生效结果。</li></ol>
       <p class="k-foot">第 4 章</p>
     </article>
   </div>
@@ -289,7 +289,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="43" cy="22" r="1.3" fill="currentColor" stroke="none" opacity=".55"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">六层配置像地层沉积：上层只遮盖、从不删除——看懂层序，再动笔改写 Agent 的基因。</blockquote>
+      <blockquote class="k-quote">配置来自六个层级。排查某个设置为何没有生效，要同时看优先级和字段的合并规则。</blockquote>
       <p class="k-foot">第 5 章</p>
     </article>
     <article class="kcard k-core">
@@ -322,7 +322,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>六层配置从不互相删除，只按类型分派合并——数组只增不减，标量后写赢。</li><li>正因为合并规则可预期，安全检查才敢把 projectSettings 整体关在门外，挡住仓库级的供应链攻击。</li><li>给团队定策略时守住一条：每层只装该层的事；配置改一笔，全站换一副做派。</li></ol>
+      <ol class="k-list"><li>从六层来源追查最终生效值，按字段类型核对合并结果。</li><li>检查项目配置受哪些安全限制，避免把仓库内容直接当作可信策略。</li><li>把团队策略、个人偏好和临时覆盖放到各自的配置层。</li></ol>
       <p class="k-foot">第 5 章</p>
     </article>
   </div>
@@ -347,7 +347,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="45.5" cy="52.5" r="1.2" fill="currentColor" stroke="none" opacity=".5"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">记忆分两层：上下文是工作记忆，memdir 是长期记忆——只存代码里推导不出的事，用前先验证。</blockquote>
+      <blockquote class="k-quote">上下文承载当前任务，memdir 保存长期记忆。记忆优先记录代码里无法推导的信息，使用前核对当前状态。</blockquote>
       <p class="k-foot">第 6 章</p>
     </article>
     <article class="kcard k-core">
@@ -366,7 +366,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>这套记忆只存代码里推导不出的东西——user、feedback、project、reference 四类各管一摊，其余一律关在门外。</li><li>记忆是快照不是事实，用之前必须验证当前状态——把记忆当线索，别当结论。</li><li>判断一条记忆该不该留，只问一句：删掉它，行为会变吗？</li></ol>
+      <ol class="k-list"><li>优先保存代码里无法直接推导的偏好、反馈、项目背景和外部入口。</li><li>使用旧记忆前核对当前文件、运行结果与本次要求。</li><li>删除过时或无助于后续行动的条目，保持索引便于查找。</li></ol>
       <p class="k-foot">第 6 章</p>
     </article>
   </div>
@@ -392,7 +392,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="40" cy="33" r="1.1" fill="currentColor" stroke="none" opacity=".5"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">上下文窗口有天花板：历史一膨胀就连升四级压缩，连败三次，断路器直接拉闸。</blockquote>
+      <blockquote class="k-quote">上下文管理需要预留输出空间、逐级压缩历史，并在自动压缩连续失败时停止重试。</blockquote>
       <p class="k-foot">第 7 章</p>
     </article>
     <article class="kcard k-core">
@@ -426,7 +426,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>压缩是四级渐进：裁剪、微压缩、折叠、自动压缩，成本一级高过一级。</li><li>等撞上窗口天花板才动手，代价最高；连败三次，断路器还会拉闸。</li><li>主动压缩优于被动压缩：在关键节点手动触发并附注重点，比等系统自动出手留下更多有用的上下文。</li></ol>
+      <ol class="k-list"><li>先算可用上下文，再判断需要哪一级压缩。</li><li>检查压缩失败后的重试次数与断路器状态。</li><li>在任务关键节点压缩时，说明下一步仍需保留的约束和证据。</li></ol>
       <p class="k-foot">第 7 章</p>
     </article>
   </div>
@@ -452,7 +452,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <path d="M9 34.7q8.2-.7 14.2-.3" stroke-width=".7" opacity=".25" pathLength="100"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">权限管线是护栏，钩子是神经反射弧：二十二个节点上，能观察、能改写、能一口回绝。</blockquote>
+      <blockquote class="k-quote">钩子在生命周期事件上接入自定义处理；能观察或改变哪些行为，取决于事件和响应协议。</blockquote>
       <p class="k-foot">第 8 章</p>
     </article>
     <article class="kcard k-core">
@@ -499,7 +499,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>所有钩子说同一种语言：JSON 响应协议加退出码，引擎只认协议，不认实现。</li><li>协议统一，五种钩子才插得上 22 个生命周期节点，任何一个钩子的阻止决策都会生效。</li><li>记住分工：权限管线决定"能否执行"，钩子决定"如何执行"——护栏之后，钩子是第二道安全检查。</li></ol>
+      <ol class="k-list"><li>先选生命周期事件，再确认它支持的输入和响应字段。</li><li>让退出码与 JSON 响应表达一致的意图，检查多个钩子命中时的结果。</li><li>配置后核对全局禁用、仅托管钩子和工作区信任三层门禁。</li></ol>
       <p class="k-foot">第 8 章</p>
     </article>
   </div>
@@ -526,7 +526,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="14" cy="32" r="7.6" stroke-width=".9" opacity=".28" pathLength="100"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">子智能体是另雇的车，各付各的过路费；Fork 共用一套行李，只差缰绳。</blockquote>
+      <blockquote class="k-quote">子智能体在独立上下文中完成任务；Fork 复用分叉时的请求前缀，以减少重复处理的开销。</blockquote>
       <p class="k-foot">第 9 章</p>
     </article>
     <article class="kcard k-core">
@@ -538,13 +538,13 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
 <g class="frame"><path d="M273 18q34-3 66 0l1 49q-2 5-7 4l-61-1q-2-25 1-52" stroke-width="2.2" pathLength="100"/><path d="M278 24q12-3 26 0l1 20q-14 4-27 2q-3-10 0-22" stroke-width="2.6" pathLength="100"/><path d="M283 31q7-1 14 0" stroke-width="1.4" pathLength="100"/><path d="M283 37q5 1 11 0" stroke-width="1.4" pathLength="100"/><path d="M291 47q-1 5 1 9" stroke-width="2.3" pathLength="100"/><path d="M291 55q-5 5-11 8" stroke-width="2.4" pathLength="100"/><path d="M286 60l-6 3 1-6" pathLength="100"/><path d="M292 55q7 5 13 7" stroke-width="2.4" pathLength="100"/><path d="M299 59l6 3-1-6" pathLength="100"/><path d="M314 28q4-2 8 0l1 37q-4 3-9 1q-2-20 0-38" stroke-width="2.5" pathLength="100"/><path d="M328 53q3-2 7 0l1 12q-4 2-8 1q-1-6 0-13" stroke-width="2.5" pathLength="100"/><path d="M310 66q14-1 28 0" opacity=".5" stroke-width="1.2" pathLength="100"/><text class="frame-no" x="275" y="84" fill="currentColor" stroke="none">4</text><path d="M281 28l-1 12m37-8-1 29" opacity=".3" stroke-width=".8" pathLength="100"/></g>
 <g opacity=".55" stroke-width="1.5"><path d="M79 44q6-1 12 0" pathLength="100"/><path d="M89 42l3 2-3 2" pathLength="100"/><path d="M167 44q6-1 12 0" pathLength="100"/><path d="M177 42l3 2-3 2" pathLength="100"/><path d="M255 44q6-1 12 0" pathLength="100"/><path d="M265 42l3 2-3 2" pathLength="100"/></g><g opacity=".16" stroke-width="6"><path d="M8 8h332" stroke-dasharray="6 13"/><path d="M8 96h332" stroke-dasharray="6 13"/></g>
 </svg></div>
-      <p class="k-plain">把活交给专职子智能体：内置与自定义智能体怎么定义，Fork 靠字节级继承父上下文并行且不浪费 token</p>
-      <p class="k-ana">✦ 像复印同一份会议底稿：每人拿一份完全一样的原件各写各结论，不必重新打印</p>
+      <p class="k-plain">子智能体各自执行任务，Fork 复用分叉时的请求前缀；实际缓存用量需要另行核对。</p>
+      <p class="k-ana">✦ 像多人阅读同一份会议底稿，再分别补充自己的调查结果；共同背景与各自新增内容需要分开计算。</p>
       <p class="k-foot">第 9 章</p>
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>Fork 的缓存共享是字节级契约：系统提示、工具定义、消息前缀逐字一致才命中，所以 Fork 直接传递渲染好的字节。</li><li>缓存一命中，三个并行子智能体只新增各自的指令文本，token 省六成以上。</li><li>只读探索找 Explore、唱反调的验证找 Verification、同一上下文并行就用 Fork——车各配各的，路才走得快。</li></ol>
+      <ol class="k-list"><li>按任务选择子智能体，并核对实际工具池与执行权限。</li><li>使用 Fork 时保持共同前缀，分别记录新增输入、缓存读取与输出用量。</li><li>检查生命周期和递归限制，需要多层分工时再考虑协调器。</li></ol>
       <p class="k-foot">第 9 章</p>
     </article>
   </div>
@@ -581,7 +581,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="52" cy="50" r=".9" fill="currentColor" stroke="none" opacity=".7"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">车马多了，管得过来吗？请出一位自己不拉货的调度，看队伍怎么不打结。</blockquote>
+      <blockquote class="k-quote">协调者汇总发现、编写实施规格并分配任务，工作者负责调查、实现和验证。</blockquote>
       <p class="k-foot">第 10 章</p>
     </article>
     <article class="kcard k-core">
@@ -599,7 +599,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>协调者手里没有一把执行工具，只有四个编排工具；"理解"不许委派，实施规格必须由它消化所有发现后亲笔写下。</li><li>转发理解会弄丢上下文，协调者吃透发现、写出带文件路径和行号的规格，实施工作者拿到的才是统一、精确的指令。</li><li>多步骤要协调的活找 Coordinator，独立的并行搜索找 Fork——调度只分派不拉货，两辆车不同时上路。</li></ol>
+      <ol class="k-list"><li>协调者先读完研究结果，再写出带文件位置的实施规格。</li><li>为工作者划分任务与文件责任，检查依赖后再决定并行范围。</li><li>比较协调开销和任务规模，独立调查也可以使用 Fork。</li></ol>
       <p class="k-foot">第 10 章</p>
     </article>
   </div>
@@ -629,7 +629,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <path d="M12 11q9-.9 15-.4m6.8 40.5 6-.2" stroke-width=".7" opacity=".3" pathLength="100"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">马的本事和借来的行头，边界画在哪？装上行头之前，先学会看它哪里最薄。</blockquote>
+      <blockquote class="k-quote">技能把可复用的任务说明交给模型，插件负责分发和扩展；加载来源与安全检查需要分别核对。</blockquote>
       <p class="k-foot">第 11 章</p>
     </article>
     <article class="kcard k-core">
@@ -661,7 +661,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>技能是加载即执行的 prompt：来源决定加载器允许的转换，却不替技能内容作信誉背书，所以分层的安全措施一道都不能省。</li><li>gitignore 过滤与 `O_NOFOLLOW` 拦的是 node_modules 里悄悄塞进来的技能——漏一道，别人就能借你的马跑自己的路。</li><li>技能要小而专注，一个技能做一件事；组合成工作流，别造万能技能。</li></ol>
+      <ol class="k-list"><li>先核对技能的来源、目录和激活条件，再排查为什么没有出现。</li><li>分别检查 gitignore 过滤与文件提取保护，不能用其中一项代替另一项。</li><li>保持单个技能的职责明确，通过组合完成更长的工作流。</li></ol>
       <p class="k-foot">第 11 章</p>
     </article>
   </div>
@@ -692,7 +692,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <path d="m14.8 44.8 6.2-.6m22-.1 6.5.7M12.8 51.1l3.1-2m-1 4.3 2.7-1.7" stroke-width=".8" opacity=".32" pathLength="100"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">马帮要出远门，异乡集市讲什么话才不吃亏？学一门通用商语，再验一验外市的秤。</blockquote>
+      <blockquote class="k-quote">MCP 为外部工具提供共同协议，宿主仍需负责注册、权限检查和调用管理。</blockquote>
       <p class="k-foot">第 12 章</p>
     </article>
     <article class="kcard k-core">
@@ -735,7 +735,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>MCP 是 AI 世界的"USB-C 接口"：协议即契约、传输无关、安全边界内嵌，把碎片化的工具集成变成标准组合。</li><li>四层权限模型按"默认不信任"层层设防——攻击者绕过一层，其余各层仍在保护；`mcp__{server}__{tool}` 命名让权限检查有了独立命名空间。</li><li>MCP 落在工具生态之内，是这套生态的自然延伸：注册调度走工具系统、四阶段检查走权限管线、生命周期拦截走钩子系统。</li></ol>
+      <ol class="k-list"><li>先确认服务器连接与工具注册，再排查调用失败。</li><li>用 mcp__{server}__{tool} 名称定位权限规则，逐层核对授权。</li><li>将 MCP 调用放回工具调度、权限管线与钩子流程中检查。</li></ol>
       <p class="k-foot">第 12 章</p>
     </article>
   </div>
@@ -767,7 +767,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <path d="m28.5 23 3.6-2.3m-1.8 4.8 3.5-2.1M50.2 40l3.4-2m-1.7 4.5 3.6-2.2" stroke-width=".8" opacity=".32" pathLength="100"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">第一个字凭什么迟迟不上路？账单又为何越跑越重？这章把两笔账一起算清。</blockquote>
+      <blockquote class="k-quote">等待输出的时间和 token 费用需要分别测量，再决定优化启动、工具调度还是缓存。</blockquote>
       <p class="k-foot">第 13 章</p>
     </article>
     <article class="kcard k-core">
@@ -787,7 +787,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>流式是一种架构选择，优化只是它的下游收益。</li><li>它决定了从 QueryEngine 到工具执行，每个组件都按增量、可中断、可组合来设计，性能与成本都由此派生。</li><li>带走这句：缓存求字节级一致，优化先量瓶颈——工具输出的 token 往往比模型输出更值钱。</li></ol>
+      <ol class="k-list"><li>分别测量启动、首字输出与工具执行时间，定位等待发生在哪里。</li><li>检查并行执行与按序提交的区别，注意队头阻塞。</li><li>把输入、缓存创建、缓存读取和输出分开计量，再判断优化是否降低成本。</li></ol>
       <p class="k-foot">第 13 章</p>
     </article>
   </div>
@@ -813,7 +813,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="44" cy="7.5" r="1.1" fill="currentColor" stroke="none" opacity=".5"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">一步岔路折返一整天，这样的远门怎么出？先把路线图钉在纸上，再让车队动身。</blockquote>
+      <blockquote class="k-quote">Plan 模式先进行只读探索，再转入可写执行；计划文件保存方案，供审批和中断后恢复使用。</blockquote>
       <p class="k-foot">第 14 章</p>
     </article>
     <article class="kcard k-core">
@@ -830,7 +830,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>Plan 模式把只读探索和可写执行分开，方向性错误的代价几乎为零。</li><li>先对齐意图再动手，返工只发生在图纸上；计划文件的三层恢复还能兜住中断。</li><li>复杂任务走 Plan-Execute-Verify：无计划，不动工。</li></ol>
+      <ol class="k-list"><li>修改前用只读探索核对需求和方案，再进入执行。</li><li>保存计划文件，并检查中断后从哪里恢复。</li><li>按 Plan-Execute-Verify 推进复杂任务，仍用实际结果验收；定时任务另设过期条件。</li></ol>
       <p class="k-foot">第 14 章</p>
     </article>
   </div>
@@ -858,7 +858,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   <circle cx="30.2" cy="30.4" r="1.6" fill="currentColor" stroke="none"/>
 </svg></div>
       <p class="k-kicker">章钩子</p>
-      <blockquote class="k-quote">自家线束头一遭上路必是冷启动——前 14 章拆下的零件，到这一步装成能跑的车。</blockquote>
+      <blockquote class="k-quote">从最小对话循环开始，逐步加入工具、权限、上下文、记忆和钩子，再检查取消、错误处理与部署条件。</blockquote>
       <p class="k-foot">第 15 章</p>
     </article>
     <article class="kcard k-core">
@@ -871,13 +871,13 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
 <path d="M107 99c18-3 21 24 2 26s-21-24-2-26" stroke-width="2.7" pathLength="100"/><path d="M99 106q8-2 18 0l1 10q-10 4-19 2q-2-6 0-12" pathLength="100"/><path d="M104 112q4 2 8 0" stroke-width="1.5" pathLength="100"/><path d="M231 99c18-3 21 24 2 26s-21-24-2-26" stroke-width="2.7" pathLength="100"/><path d="M232 104q-1 6 0 11c0 9 14 3 9-3l-2-2" stroke-width="2.5" pathLength="100"/>
 <path d="M24 128q8-4 14 2" opacity=".5" stroke-width="1.2" pathLength="100"/><path d="M302 126q10-2 14 6" opacity=".5" stroke-width="1.2" pathLength="100"/><circle cx="26" cy="120" r="1.6" fill="currentColor" stroke="none" opacity=".6"/><circle cx="314" cy="118" r="1.6" fill="currentColor" stroke="none" opacity=".6"/><path d="M158 53q-12 9-8 22m4 3 3 6M84 21q-4 7 0 13m150-14q-4 7 0 13m22 30q-4 7 0 13M97 106q-4 7 0 13m125-13q-4 7 0 13" opacity=".3" stroke-width=".9" pathLength="100"/>
 </svg></div>
-      <p class="k-plain">全书收口成一张施工图：按六步搭出最小可跑 Harness（代码是教学示例），再谈架构教训与生产化</p>
+      <p class="k-plain">按六步搭建最小 Harness，再检查生产化要求；代码用于教学演示。</p>
       <p class="k-ana">✦ 像照邻居厨房自己搭灶：六样大致按顺序来，中间反复回去改，最后能自己开火</p>
       <p class="k-foot">第 15 章</p>
     </article>
     <article class="kcard k-recap">
       <p class="k-kicker">三句带走</p>
-      <ol class="k-list"><li>每个决策点上，Claude Code 都选了更安全、更可控、更可观测的方案。</li><li>循环状态、fail-closed 默认值、依赖注入、断路器、特性开关，都是这条哲学的落点。</li><li>照六步路线图装你的车：先把安全守住，再尽情释放智能体的潜力。</li></ol>
+      <ol class="k-list"><li>按六步路线搭建最小 Harness，逐步验证各模块的交接。</li><li>把失败默认拒绝、依赖注入、断路器和状态管理落实到具体路径。</li><li>上线前补测取消、错误处理与部署配置，教学示例本身不构成生产验收。</li></ol>
       <p class="k-foot">第 15 章</p>
     </article>
   </div>

@@ -1,0 +1,36 @@
+{
+  "current_round": 2,
+  "status": "completed",
+  "timestamp": "2026-11-25T15:07:46.673659+00:00",
+  "scope": [
+    "llm/ch09.md",
+    "llm/ch10.md",
+    "llm/ch11.md",
+    "llm/ch16.md",
+    "llm/VERIFY.md",
+    "llm/examples/alignment_demo.py",
+    "llm/examples/rejection_demo.py",
+    "llm/examples/serving_demo.py",
+    "llm/examples/rag_demo.py",
+    "llm/examples/retrieval_metrics.py",
+    "tests/test_llm_examples.py"
+  ],
+  "max_rounds": 2,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "last_score": 9.1,
+  "last_verdict": "Ready",
+  "next_action": null,
+  "validation": {
+    "ch09.md": "headings/block IDs/illustration references unchanged",
+    "ch10.md": "headings/block IDs/illustration references unchanged",
+    "ch11.md": "headings/block IDs/illustration references unchanged",
+    "ch16.md": "headings/block IDs/illustration references unchanged",
+    "rerun_commands": "21 entries in both VERIFY and README",
+    "gate": "9 steps passed; 453 repository tests (1 skip), 629 builder tests, 483 Markdown, 280 Mermaid",
+    "visual": "24 section/viewport/theme checks; all pre blocks in ch09–11 and cache comparison fit 390 px",
+    "built_html_sha256": "db7b0700d4edae3725d488ba93256f2e3f9d212099d34ffe3de984f9f78ff2c7"
+  },
+  "agent_id": "/root/aris_serving_review2",
+  "final_artifact": ".scratch/aris-serving-20261125/round2/yuyu-llm-zh.html"
+}

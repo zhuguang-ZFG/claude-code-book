@@ -54,15 +54,15 @@
   },
   "hf-generation": {
     "title": "Hugging Face Transformers: Generation strategies",
-    "authority": "Hugging Face 官方文档",
-    "kind": "docs",
-    "url": "https://huggingface.co/docs/transformers/main/en/generation_strategies",
-    "snapshot": "main 分支文档，2026-11-21 读取",
-    "accessed": "2026-11-21",
-    "license": "Apache-2.0（Transformers 文档）",
-    "scope": "第 5 章：greedy、temperature、top-k、top-p 的术语与常见实现顺序。",
+    "authority": "上游固定提交的公开资料",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/docs/source/en/generation_strategies.md",
+    "snapshot": "固定提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 读取",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 5、10 章：采样与投机解码；v4.57.3 的 Universal Assisted Decoding 允许不同 tokenizer。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
     }
   },
   "attention-paper": {
@@ -164,7 +164,7 @@
     "snapshot": "arXiv:2104.09864，2026-11-21 读取摘要页",
     "accessed": "2026-11-21",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：RoPE 用旋转把相对位置注入查询与键的做法；长上下文缩放只作名词提及。",
+    "scope": "第 4 章：RoPE 的位置旋转与点积中的相对偏移；缩放算法另以 PI、YaRN 与固定版本实现为依据。",
     "pinned": {
       "accessed": "2026-11-21"
     }
@@ -226,12 +226,12 @@
     "authority": "arXiv 预印本（NeurIPS 2023）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2305.14314",
-    "snapshot": "arXiv:2305.14314，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2305.14314，2026-11-21 读取摘要页；2026-11-25 复核摘要中的适用条件",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
     "scope": "第 8 章：4-bit 基座加 LoRA 的显存取舍；只讲方法，不引用其性能与显存数字。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-25"
     }
   },
   "instructgpt": {
@@ -304,12 +304,12 @@
     "authority": "arXiv 预印本（NeurIPS 2022）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2203.15556",
-    "snapshot": "arXiv:2203.15556，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2203.15556，2026-11-21 读取摘要页；2026-11-25 复核摘要中的适用条件",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
     "scope": "第 7 章：固定训练算力下参数量与 token 数应同比例增长的结论，以及“20 token/参数”经验比例的来源背景。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-25"
     }
   },
   "rag": {
@@ -396,10 +396,10 @@
     "authority": "arXiv 预印本（ICLR 2024）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2305.20050",
-    "snapshot": "arXiv:2305.20050，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2305.20050，2026-11-25 读取 §2.4–2.6、图 3、附录 E–F",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 13 章：结果监督与过程监督的对照，用来说明验证器在测试时计算中的角色。",
+    "scope": "第 9、16 章：人工步骤标签、PRM 标签 token 预测、ORM 逐 token 结果监督和末 token 推理评分；500 题、best-of-1860 的 78.2% / 72.4% 比较。",
     "pinned": {
       "accessed": "2026-11-21"
     }
@@ -422,10 +422,10 @@
     "authority": "arXiv 预印本（Nature 2025）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2501.12948",
-    "snapshot": "arXiv:2501.12948，2026-11-22 核号：DeepSeek-R1 叙事；GRPO 在 R1 中作为纯强化学习路线的继承者。",
-    "accessed": "2026-11-22",
+    "snapshot": "arXiv:2501.12948，2026-11-25 读取 R1-Zero 与 R1 训练流程",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 9 章：纯 GRPO 激发长思维链的叙事；本轮钉出 R1 的长推理叙事，不引用 R1 文中的数学定义（GRPO 定义已按本轮在 ch09 中手写）。",
+    "scope": "第 9、16 章：区分 R1-Zero 的无前置 SFT 探索与 R1 的冷启动、多阶段训练。",
     "pinned": {
       "accessed": "2026-11-22"
     }
@@ -578,10 +578,10 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2306.15595",
-    "snapshot": "arXiv:2306.15595，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2306.15595，2026-11-21 读取摘要页；2026-11-25 复核摘要中位置插值与微调的前提",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：位置插值把位置坐标除以缩放因子、压回训练过的旋转范围的做法。",
+    "scope": "第 4 章：位置索引线性缩放；论文报告的扩展结果包含微调，不能推广成免训练的质量保证。",
     "pinned": {
       "accessed": "2026-11-21"
     }
@@ -591,10 +591,10 @@
     "authority": "arXiv 预印本（ICLR 2024）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2309.00071",
-    "snapshot": "arXiv:2309.00071，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2309.00071，2026-11-21 读取摘要页；2026-11-25 复核摘要中的训练前提，频段与注意力缩放另核固定版本源码",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：按频段分开处理的 RoPE 缩放，以及 NTK-aware 缩放的频谱视角。",
+    "scope": "第 4 章：长上下文扩展包含训练条件；分频段混合与注意力缩放同时对照固定版本 Transformers 源码。",
     "pinned": {
       "accessed": "2026-11-21"
     }
@@ -685,7 +685,7 @@
     "snapshot": "arXiv:2310.05209，2026-11-22 引用号经赵鑫等《大语言模型》参考文献页核对",
     "accessed": "2026-11-22",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：RoPE 长上下文外推的频段视角与关键子空间分析，支撑位置截断一派的动机。",
+    "scope": "第 4 章：RoPE 外推的频段分析，作为进一步阅读；不据此声称位置截断通用有效或无需训练。",
     "pinned": {
       "accessed": "2026-11-22"
     }
@@ -760,10 +760,10 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2402.03300",
-    "snapshot": "arXiv:2402.03300，2026-11-22 核号：DeepSeekMath 7B 在 MATH 竞赛题上 51.7%；GRPO 引入点在附录里，是组相对优势估计。",
-    "accessed": "2026-11-22",
+    "snapshot": "arXiv:2402.03300，2026-11-25 读取 §4.1–4.2",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 9 章：GRPO 的引入者，附可用的规则赏值/验证器思想；本轮钉出 DeepSeekMath 7B 在 MATH 竞赛题上 51.7% 的报告数字与 GRPO 的 MATH 验证路径；不引用 DeepSeekMath 的数学方向的任何结论。",
+    "scope": "第 9、16 章：原始 GRPO 的组内优势、概率比裁剪与 KL 项；DeepSeekMath 使用并训练奖励模型，省去独立价值模型。",
     "pinned": {
       "accessed": "2026-11-22"
     }
@@ -773,10 +773,10 @@
     "authority": "arXiv 预印本 + ICLR 2024 官方页（钉 eprint 版号 2305.20050，摘要含 PRM800K 数据集说明）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2305.20050",
-    "snapshot": "arXiv:2305.20050，2026-11-22 核号获 Lightman 等（2024, ICLR）作者与摘要里的 PRM/ORM 聚合方式、PRM800K 说明",
-    "accessed": "2026-11-22",
+    "snapshot": "arXiv:2305.20050，2026-11-25 读取 §2.4–2.6、图 3、附录 E–F",
+    "accessed": "2026-11-25",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 9 章：ORM 与 PRM 的聚合方式对比（Lightman 的实验，PRM 比 ORM 更强）；本轮钉出 Lightman（ICLR 2024）作为 PRM 论文；PRM 公式只用在 ch09 9.10 正文；Lightman 是 PRM 论文的引用品牌。",
+    "scope": "第 9、16 章：人工步骤标签、PRM 标签 token 预测、ORM 逐 token 结果监督和末 token 推理评分；500 题、best-of-1860 的 78.2% / 72.4% 比较。",
     "pinned": {
       "accessed": "2026-11-22"
     }
@@ -786,25 +786,25 @@
     "authority": "O'Reilly（Chi Wang, Peiheng Hu, 2026）",
     "kind": "docs",
     "url": "https://www.oreilly.com/library/view/hands-on-llm-serving/9798341621497/",
-    "snapshot": "O'Reilly 页面（2026-11-22 核号，ISBN 9798341621497，《Hands-On LLM Serving and Optimization》第 8 章 vLLM/TensorRT-LLM/SGLang/Llama.cpp 路线图的官方参照）",
+    "snapshot": "历史登记的出版社书目页；本轮未取得可核对的正文或性能基准",
     "accessed": "2026-11-22",
-    "license": "O'Reilly（仅作引用品牌）",
-    "scope": "第 10 章：框架路线图（vLLM 系列）与评测工具（MODEL, Metric, p95/p99/p999 语境），引用仅作框架分水岭概念，本书代码细节不入本书",
+    "license": "出版社版权；仅书目链接，不复制正文",
+    "scope": "补充阅读书目。第 10 章的缓存机制改由固定 vLLM 官方资料支持，不以本书目页支持具体章号、实现或加速倍数。",
     "pinned": {
       "accessed": "2026-11-22"
     }
   },
   "rlhf-book": {
-    "title": "Reinforcement Learning from Human Feedback",
-    "authority": "arXiv 预印本（2025，Nathan Lambert；rlhfbook.com 与 Manning 版 2026 同源）",
-    "kind": "docs",
-    "url": "https://arxiv.org/abs/2504.12501",
-    "snapshot": "arXiv:2504.12501，2026-11-22 核号：rlhfbook.com 摘要与引用条目（eprint 2504.12501，Nathan Lambert）核对",
-    "accessed": "2026-11-22",
-    "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 9 章：rejection sampling 的四步流程与 best-of-N 的做法；作为第二轮强化学习参考书来源。",
+    "title": "Reinforcement Learning from Human Feedback, Chapter 9",
+    "authority": "上游固定提交的公开资料",
+    "kind": "github",
+    "url": "https://github.com/natolambert/rlhf-book/blob/b0926fd5f57c64295a086ebabcd8a04e4c71cce7/book/chapters/09-rejection-sampling.md",
+    "snapshot": "固定提交 b0926fd5f57c64295a086ebabcd8a04e4c71cce7，2026-11-25 读取",
+    "accessed": "2026-11-25",
+    "license": "CC BY-NC-SA 4.0（章节）；仅链接与独立概述",
+    "scope": "第 9 章：生成、筛选、后续 SFT 与 best-of-N 的区别；读取公开章节，独立改写，不复制第三方图表。",
     "pinned": {
-      "accessed": "2026-11-22"
+      "commit": "b0926fd5f57c64295a086ebabcd8a04e4c71cce7"
     }
   },
   "star": {
@@ -877,10 +877,10 @@
     "authority": "上游仓库训练文档",
     "kind": "github",
     "url": "https://github.com/huggingface/sentence-transformers/blob/3b17a2c948120350315245030f71d52f356d0c05/docs/sentence_transformer/training_overview.md",
-    "snapshot": "固定到完整提交 3b17a2c948120350315245030f71d52f356d0c05，2026-11-22 读取训练总览",
-    "accessed": "2026-11-22",
+    "snapshot": "固定到完整提交 3b17a2c948120350315245030f71d52f356d0c05，2026-11-22 读取训练总览；2026-11-25 复核训练总览中的 Transformer、Pooling 与损失组合",
+    "accessed": "2026-11-25",
     "license": "Apache-2.0",
-    "scope": "第 2 章：难负例、批内负例与 MultipleNegativesRankingLoss 的官方训练说明；只引用训练组合，不复制其代码。",
+    "scope": "第 2 章：Transformer 加池化的句子表示，以及难负例、批内负例与 MultipleNegativesRankingLoss；只转述结构，不复制代码。",
     "pinned": {
       "commit": "3b17a2c948120350315245030f71d52f356d0c05"
     }
@@ -893,7 +893,7 @@
     "snapshot": "DOI 10.1145/582415.582418，2026-11-22 核号：分级增益与位置折扣",
     "accessed": "2026-11-22",
     "license": "论文元数据，仅链接引用",
-    "scope": "第 11 章：NDCG 的分级增益 `2^rel - 1` 与位置折扣 `1/log2(i+1)` 定义；只引用公式，不引用其 IR 实验数字。",
+    "scope": "第 11 章：归一化折扣累计增益的思想来源。本例明确采用指数增益变体，不将其具体公式约定全部归于本论文；此登记仅核实书目，不声称全文逐式核对。",
     "pinned": {
       "accessed": "2026-11-22"
     }
@@ -909,6 +909,280 @@
     "scope": "第 11 章：RAG 生成层评测的两个轴；只引用指标命名，不引用其评分结果。",
     "pinned": {
       "accessed": "2026-11-22"
+    }
+  },
+  "transformers-rope": {
+    "title": "Transformers v4.57.3: RoPE utilities",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/modeling_rope_utils.py",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 阅读线性、动态 NTK、YaRN 频率计算",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 4 章：区分缩放算法、频段处理与注意力缩放；只核对算法实现，不据此承诺 checkpoint 的长上下文质量。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "transformers-mixtral": {
+    "title": "Transformers v4.57.3: Mixtral implementation",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/mixtral/modeling_mixtral.py",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 阅读 MixtralSparseMoeBlock",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 4 章：逐 token top-k 路由、路由权重归一化与专家输出合并；不引用硬件性能数字。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "llms-from-scratch-ch02": {
+    "title": "Build a Large Language Model (From Scratch): Chapter 2 code",
+    "authority": "Sebastian Raschka 官方配套仓库",
+    "kind": "github",
+    "url": "https://github.com/rasbt/LLMs-from-scratch/blob/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch02/01_main-chapter-code/ch02.ipynb",
+    "snapshot": "固定到完整提交 22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8，2026-11-25 阅读第 2 章 2.7–2.8 配套 notebook",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 2 章：token ID、输入嵌入查表与位置表示的区分；阅读的是作者公开配套讲解和代码，不声称通读商业书全文，不复制代码或插图。",
+    "pinned": {
+      "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8"
+    }
+  },
+  "d2l-word2vec": {
+    "title": "Dive into Deep Learning: 15.1 Word Embedding (word2vec)",
+    "authority": "《动手学深度学习》作者公开教材站点",
+    "kind": "docs",
+    "url": "https://d2l.ai/chapter_natural-language-processing-pretraining/word2vec.html",
+    "snapshot": "站点标示 1.0.3，2026-11-25 阅读第 15.1 节，重点为 15.1.3 skip-gram 目标",
+    "accessed": "2026-11-25",
+    "license": "作者公开教材，仅链接与原创转述，不转载正文或插图",
+    "scope": "第 2 章：中心词预测上下文词、静态词表示的训练目标；不将简化实验泛化为现代检索编码器。",
+    "pinned": {
+      "accessed": "2026-11-25",
+      "version": "1.0.3"
+    }
+  },
+  "raschka-book-guide": {
+    "title": "Build a Large Language Model (From Scratch): official study guide",
+    "authority": "Sebastian Raschka 作者官网",
+    "kind": "docs",
+    "url": "https://sebastianraschka.com/llms-from-scratch/",
+    "snapshot": "2026-11-25 阅读作者学习路线与章节导览",
+    "accessed": "2026-11-25",
+    "license": "作者网站，仅链接引用",
+    "scope": "本轮编辑参考：确认教材及官方配套材料的章节对应关系；正文知识点以钉版第 2 章 notebook 为依据，未取得商业书全文。",
+    "pinned": {
+      "accessed": "2026-11-25"
+    }
+  },
+  "accelerate-offload": {
+    "title": "Accelerate v1.11.0: Loading big models into memory",
+    "authority": "Hugging Face 官方文档",
+    "kind": "docs",
+    "url": "https://huggingface.co/docs/accelerate/v1.11.0/en/concept_guides/big_model_inference",
+    "snapshot": "v1.11.0，2026-11-25 阅读设备映射、CPU/磁盘卸载过程及性能限制",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0（Accelerate 文档）",
+    "scope": "第 4 章：权重可分布于多设备或卸载，完整权重大小不等于单卡常驻显存；不保证所有模型和部署后端均支持这些方式。",
+    "pinned": {
+      "version": "v1.11.0"
+    }
+  },
+  "llms-from-scratch-ch05": {
+    "title": "Build a Large Language Model (From Scratch): Chapter 5 code",
+    "authority": "Sebastian Raschka 官方配套教材仓库",
+    "kind": "github",
+    "url": "https://github.com/rasbt/LLMs-from-scratch/blob/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch05/01_main-chapter-code/ch05.ipynb",
+    "snapshot": "固定提交 22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8，2026-11-25 阅读相应章节的训练、验证或分类讲解与代码",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 7 章：独立计算训练损失与验证损失，区分拟合与泛化；不引用其模型训练性能数字。",
+    "pinned": {
+      "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8"
+    }
+  },
+  "llms-from-scratch-ch06": {
+    "title": "Build a Large Language Model (From Scratch): Chapter 6 code",
+    "authority": "Sebastian Raschka 官方配套教材仓库",
+    "kind": "github",
+    "url": "https://github.com/rasbt/LLMs-from-scratch/blob/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch06/01_main-chapter-code/ch06.ipynb",
+    "snapshot": "固定提交 22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8，2026-11-25 阅读相应章节的训练、验证或分类讲解与代码",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 8 章：decoder 分类位置及冻结范围，分类头之外也可以更新部分主干；不将配套代码等同于通读商业书全文。",
+    "pinned": {
+      "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8"
+    }
+  },
+  "trl-sft-masks": {
+    "title": "TRL v0.25.0: SFTTrainer",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/trl/blob/55f5433e15cc6203d3c731f9de5247b00878bebd/docs/source/sft_trainer.md",
+    "snapshot": "v0.25.0 tag 解析到提交 55f5433e15cc6203d3c731f9de5247b00878bebd；读取 sft_trainer.md 与 sft_config.py",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 8 章：assistant_only_loss、completion_only_loss 与聊天模板的助手区域掩码；只说明此版本契约，不据此宣称微调效果。",
+    "pinned": {
+      "commit": "55f5433e15cc6203d3c731f9de5247b00878bebd"
+    }
+  },
+  "peft-lora-merge": {
+    "title": "PEFT v0.17.1: LoRA developer guide",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/peft/blob/53c25fe4fdd7c6aa4b40db0560815ea570d32303/docs/source/developer_guides/lora.md",
+    "snapshot": "v0.17.1 对应提交 53c25fe4fdd7c6aa4b40db0560815ea570d32303，读取初始化、合并与多适配器限制，并核对 layer.py",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 8 章：初始化、可撤销合并和 merge_and_unload 的区别；不把库接口推广成所有服务端都支持热切换。",
+    "pinned": {
+      "commit": "53c25fe4fdd7c6aa4b40db0560815ea570d32303"
+    }
+  },
+  "transformers-bert-classification": {
+    "title": "Transformers v4.57.3: BERT sequence classification",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/bert/modeling_bert.py",
+    "snapshot": "固定提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 阅读 BertPooler 与 BertForSequenceClassification",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 8 章：BERT 常见分类使用首 token，经 pooler 后接分类头；纠正与 decoder 末 token 的混淆。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "transformers-sequence-classification": {
+    "title": "Transformers v4.57.3: GenericForSequenceClassification",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/modeling_layers.py",
+    "snapshot": "固定提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 阅读 last_non_pad_token 处理，并核对 LlamaForSequenceClassification 的继承关系",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 8 章：最后有效 token 与 padding 的处理；不把一种池化方式写成所有分类模型的唯一做法。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "nist-wilson": {
+    "title": "NIST/SEMATECH e-Handbook: Confidence intervals",
+    "authority": "NIST 官方统计手册",
+    "kind": "docs",
+    "url": "https://www.itl.nist.gov/div898/handbook/prc/section2/prc241.htm",
+    "snapshot": "2026-11-25 阅读比例区间的 Wilson 推导与公式",
+    "accessed": "2026-11-25",
+    "license": "NIST 网页，仅链接与原创转述",
+    "scope": "第 14 章：Wilson 是单个二项比例的区间；配对差异另用逐题结果计算，不以两个区间重叠代替检验。",
+    "pinned": {
+      "accessed": "2026-11-25"
+    }
+  },
+  "statsmodels-mcnemar": {
+    "title": "statsmodels: McNemar test",
+    "authority": "statsmodels 官方文档",
+    "kind": "docs",
+    "url": "https://www.statsmodels.org/stable/generated/statsmodels.stats.contingency_tables.mcnemar.html",
+    "snapshot": "2026-11-25 阅读 exact=True 的二项分布、2×2 配对列联表与原假设说明",
+    "accessed": "2026-11-25",
+    "license": "官方文档，仅链接与原创转述",
+    "scope": "第 14 章：精确 McNemar 对照的定义；本书用标准库自写小计数计算，不依赖 statsmodels。",
+    "pinned": {
+      "accessed": "2026-11-25"
+    }
+  },
+  "deepspeed-zero-stages": {
+    "title": "DeepSpeed: ZeRO tutorial",
+    "authority": "DeepSpeed 官方教程",
+    "kind": "docs",
+    "url": "https://www.deepspeed.ai/tutorials/zero/",
+    "snapshot": "2026-11-25 阅读 Stage 1/2/3 分片对象与按需收集说明",
+    "accessed": "2026-11-25",
+    "license": "官方教程，仅链接与原创转述",
+    "scope": "第 7 章：按阶段区分优化器状态、梯度和参数分片；不引用教程吞吐数字。",
+    "pinned": {
+      "accessed": "2026-11-25"
+    }
+  },
+  "pytorch-fsdp-fully-shard": {
+    "title": "PyTorch 2.15: fully_shard",
+    "authority": "PyTorch 官方文档",
+    "kind": "docs",
+    "url": "https://docs.pytorch.org/docs/2.15/distributed.fsdp.fully_shard.html",
+    "snapshot": "stable 页面指向 2.15；2026-11-25 阅读定版 fully_shard 页的参数 all-gather 与梯度 reduce-scatter 说明",
+    "accessed": "2026-11-25",
+    "license": "官方文档，仅链接与原创转述",
+    "scope": "第 7 章：FSDP 完全分片降低常驻状态但需要参数收集和梯度归约；不展开配置 API。",
+    "pinned": {
+      "version": "2.15"
+    }
+  },
+  "trl-grpo": {
+    "title": "TRL v0.25.0: GRPOTrainer",
+    "authority": "上游固定提交的公开资料",
+    "kind": "github",
+    "url": "https://github.com/huggingface/trl/blob/55f5433e15cc6203d3c731f9de5247b00878bebd/docs/source/grpo_trainer.md",
+    "snapshot": "固定提交 55f5433e15cc6203d3c731f9de5247b00878bebd，2026-11-25 读取",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 9 章：奖励函数或奖励模型、beta=0 默认值、长度归一化与奖励缩放变体。",
+    "pinned": {
+      "commit": "55f5433e15cc6203d3c731f9de5247b00878bebd"
+    }
+  },
+  "vllm-prefix-cache": {
+    "title": "vLLM v0.11.0: Prefix caching design",
+    "authority": "上游固定提交的公开资料",
+    "kind": "github",
+    "url": "https://github.com/vllm-project/vllm/blob/b8b302cde434df8c9289a2b465406b47ebab1c2d/docs/design/prefix_caching.md",
+    "snapshot": "固定提交 b8b302cde434df8c9289a2b465406b47ebab1c2d，2026-11-25 读取",
+    "accessed": "2026-11-25",
+    "license": "Apache-2.0",
+    "scope": "第 10 章：完整块缓存、父块与 token 哈希、LoRA/多模态/缓存盐；同提交的 APC 与 LoRA 文档用于收益边界和多 adapter serving。",
+    "pinned": {
+      "commit": "b8b302cde434df8c9289a2b465406b47ebab1c2d"
+    }
+  },
+  "prm800k": {
+    "title": "PRM800K: A Process Supervision Dataset",
+    "authority": "上游固定提交的公开资料",
+    "kind": "github",
+    "url": "https://github.com/openai/prm800k/blob/7ecc794703b2877f63226f2477a49b34f9b25163/README.md",
+    "snapshot": "固定提交 7ecc794703b2877f63226f2477a49b34f9b25163，2026-11-25 读取",
+    "accessed": "2026-11-25",
+    "license": "仅链接与独立概述；未引入仓库数据",
+    "scope": "第 9 章：人工步骤标签来源与数据结构；仅链接 README，不复制数据或资产。",
+    "pinned": {
+      "commit": "7ecc794703b2877f63226f2477a49b34f9b25163"
+    }
+  },
+  "rrf": {
+    "title": "Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods",
+    "authority": "Cormack、Clarke、Buettcher，SIGIR 2009",
+    "kind": "docs",
+    "url": "https://doi.org/10.1145/1571941.1572114",
+    "snapshot": "SIGIR 2009，2026-11-25 读取作者公开 PDF 的公式与 k=60 设置",
+    "accessed": "2026-11-25",
+    "license": "ACM 版权，仅链接与独立概述",
+    "scope": "第 11 章：RRF 按倒数名次融合，以及常数 60 的实验来源。",
+    "pinned": {
+      "spec-version": "SIGIR 2009, DOI 10.1145/1571941.1572114"
+    }
+  },
+  "speculative-decoding": {
+    "title": "Fast Inference from Transformers via Speculative Decoding",
+    "authority": "Leviathan、Kalman、Matias，ICML 2023",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/2211.17192",
+    "snapshot": "arXiv:2211.17192，2026-11-25 读取算法与接受/修正采样条件",
+    "accessed": "2026-11-25",
+    "license": "论文仅链接与独立概述",
+    "scope": "第 10 章：保持目标分布的投机采样，以及草稿成本、接受率、验证成本共同决定的收益。",
+    "pinned": {
+      "accessed": "2026-11-25"
     }
   }
 }

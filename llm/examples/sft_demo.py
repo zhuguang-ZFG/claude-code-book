@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """SFT loss masking and LoRA arithmetic on toy matrices. Standard library only.
 
-The probabilities and matrices are hand-set. They show which tokens receive
-gradient and how a low-rank update changes a weight matrix; they are not a
+The probabilities and matrices are hand-set. They show which target positions
+contribute direct loss and how a low-rank update changes a matrix; they are not a
 trained model or a benchmark.
 """
 from __future__ import annotations
@@ -69,6 +69,15 @@ def lora_delta(a: list[list[float]], b: list[list[float]],
     return [[scale * value for value in row] for row in matmul(b, a)]
 
 
+def lora_output(w: list[list[float]], a: list[list[float]],
+                b: list[list[float]], x: list[float], alpha: float) -> list[float]:
+    """Unmerged linear branch: W x + (alpha/r) B(A x), without dropout."""
+    base = matvec(w, x)
+    update = matvec(b, matvec(a, x))
+    return [value + alpha / len(a) * delta
+            for value, delta in zip(base, update)]
+
+
 def params(d: int, rank: int) -> dict:
     trainable = 2 * d * rank
     return {"a": d * rank, "b": d * rank, "trainable": trainable,
@@ -98,21 +107,22 @@ def main() -> int:
     print(f"  all-token mean:       {all_mean:.3f}")
     print(f"  assistant-only mean:  {assistant_mean:.3f}")
     kept = sum(MASK)
-    print(f"  each assistant token gets weight 1/{kept}; "
-          f"prompt tokens get 0")
-    print("  the masked mean is larger here, but that is not 'worse': "
-          "the prompt tokens no longer enter the gradient")
+    print(f"  each selected target loss gets weight 1/{kept}; "
+          "other target losses get 0")
+    print("  prompt representations still condition the answers; "
+          "masking target losses does not detach the prompt computation")
     print()
 
     delta = lora_delta(A, B, ALPHA, RANK)
-    adapted = add(W, delta)
     base_out = matvec(W, X)
-    adapted_out = matvec(adapted, X)
+    adapted_out = lora_output(W, A, B, X, ALPHA)
     print(f"LoRA rank={RANK}, alpha={ALPHA}, scale={ALPHA / RANK:.2f}")
     print(f"  base output:    {fmt(base_out)}")
     print(f"  adapted output: {fmt(adapted_out)}")
     merged_out = matvec(add(W, delta), X)
-    print(f"  merge check: {'OK' if merged_out == adapted_out else 'MISMATCH'}")
+    equivalent = all(math.isclose(left, right, rel_tol=1e-12, abs_tol=1e-12)
+                     for left, right in zip(merged_out, adapted_out))
+    print(f"  merge check: {'OK' if equivalent else 'MISMATCH'}")
     print()
 
     print("trainable parameters for one 4096x4096 matrix")
@@ -121,7 +131,7 @@ def main() -> int:
         print(f"  r={rank:<3} A={counts['a']:,} B={counts['b']:,} "
               f"total={counts['trainable']:,} "
               f"({counts['ratio'] * 100:.3f}% of full) "
-              f"fp16/layer={size(counts['trainable'] * 2)}")
+              f"fp16/target-matrix={size(counts['trainable'] * 2)}")
     full = params(4096, 4096)
     print(f"  r=d   total={full['trainable']:,} "
           f"({full['ratio'] * 100:.1f}% of full): two full matrices, "

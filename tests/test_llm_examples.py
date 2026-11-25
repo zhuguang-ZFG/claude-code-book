@@ -142,6 +142,19 @@ class SftExample(unittest.TestCase):
         self.assertEqual(module.matvec(module.add(module.W, delta), module.X),
                          module.matvec(module.W, module.X))
 
+    def test_unmerged_and_merged_lora_agree_for_rectangular_weights(self):
+        module = self.sft
+        w = [[1.0, 0.0, -1.0], [0.0, 2.0, 0.0]]
+        a, b = [[1.0, -2.0, 0.5]], [[0.5], [-1.0]]
+        for x in ([1.0, 2.0, -1.0], [-2.0, 0.0, 3.0]):
+            branch = module.lora_output(w, a, b, x, 2.0)
+            merged = module.matvec(
+                module.add(w, module.lora_delta(a, b, 2.0, 1)), x)
+            for left, right in zip(branch, merged):
+                self.assertAlmostEqual(left, right)
+        self.assertEqual(module.lora_output(w, a, b, [1.0, 2.0, -1.0], 2.0),
+                         [-1.5, 11.0])
+
     def test_parameter_counts_and_adapter_size(self):
         module = self.sft
         r8 = module.params(4096, 8)
@@ -161,6 +174,17 @@ class SftExample(unittest.TestCase):
 
 
 class AlignmentExample(unittest.TestCase):
+    def test_losses_remain_finite_for_extreme_margins(self):
+        import math
+        module = load("alignment_demo")
+        for margin in (-1000.0, 1000.0):
+            loss, _ = module.bt_loss(margin, 0.0)
+            self.assertTrue(math.isfinite(loss))
+            self.assertAlmostEqual(loss, max(0.0, -margin))
+        loss, margin = module.dpo_loss(-1000.0, 0.0, 0.0, 0.0, 1.0)
+        self.assertEqual(margin, -1000.0)
+        self.assertAlmostEqual(loss, 1000.0)
+
     def setUp(self):
         self.alignment = load("alignment_demo")
 
@@ -188,24 +212,24 @@ class AlignmentExample(unittest.TestCase):
 
     def test_dpo_terms_and_beta_scale_the_margin(self):
         module = self.alignment
-        chosen, rejected, gap = module.dpo_terms(-0.2, -0.5, -0.6, -0.4)
+        chosen, rejected, gap = module.dpo_terms(-2.2, -2.5, -2.6, -2.4)
         self.assertAlmostEqual(chosen, 0.3)
         self.assertAlmostEqual(rejected, -0.2)
         self.assertAlmostEqual(gap, 0.5)
-        loss, margin = module.dpo_loss(-0.2, -0.5, -0.6, -0.4, 0.1)
+        loss, margin = module.dpo_loss(-2.2, -2.5, -2.6, -2.4, 0.1)
         self.assertAlmostEqual(margin, 0.05)
         self.assertAlmostEqual(loss, 0.668, places=3)
-        loss, margin = module.dpo_loss(-0.2, -0.5, -0.6, -0.4, 1.0)
+        loss, margin = module.dpo_loss(-2.2, -2.5, -2.6, -2.4, 1.0)
         self.assertAlmostEqual(margin, 0.5)
         self.assertAlmostEqual(loss, 0.474, places=3)
 
     def test_reversed_preference_has_a_higher_loss_and_beta_must_be_positive(self):
         module = self.alignment
-        loss, margin = module.dpo_loss(-0.4, -0.5, -0.2, -0.6, 1.0)
+        loss, margin = module.dpo_loss(-2.4, -2.5, -2.2, -2.6, 1.0)
         self.assertAlmostEqual(margin, -0.3)
         self.assertAlmostEqual(loss, 0.854, places=3)
         with self.assertRaises(ValueError):
-            module.dpo_loss(-0.2, -0.5, -0.6, -0.4, 0)
+            module.dpo_loss(-2.2, -2.5, -2.6, -2.4, 0)
 
     def test_command_prints_both_losses_and_the_log_two_check(self):
         output = run("alignment_demo")
@@ -312,25 +336,35 @@ class RagExample(unittest.TestCase):
         self.assertTrue(all(chunk["version"] >= 2 for chunk in filtered))
         self.assertEqual(len(module.dedupe(filtered)), 12)
 
+    def test_rrf_keeps_document_versions_separate(self):
+        module = self.rag
+        chunks = module.filter_stale(module.build_chunks(module.DOCS), min_version=1)
+        ids = [chunk["chunk_id"] for chunk in chunks]
+        self.assertEqual(len(ids), len(set(ids)))
+        fused = module.rrf([chunks, list(reversed(chunks))])
+        self.assertEqual(len(fused), len(chunks))
+        refunds = [chunk for chunk, _ in fused if chunk["id"] == "refund-policy"]
+        self.assertEqual({chunk["version"] for chunk in refunds}, {1, 2})
+
     def test_lexical_and_vector_recall_disagree_then_rrf_fuses(self):
         module = self.rag
         chunks = module.dedupe(module.filter_stale(module.build_chunks(module.DOCS)))
         lexical = module.bm25(chunks, module.QUERY)
         semantic = module.vector_search(chunks, module.QUERY_VEC)
-        self.assertEqual(lexical[0][0]["chunk_id"], "refund-faq#0")
-        self.assertEqual(semantic[0][0]["chunk_id"], "refund-policy#0")
+        self.assertEqual(lexical[0][0]["chunk_id"], "refund-faq@v2#0")
+        self.assertEqual(semantic[0][0]["chunk_id"], "refund-policy@v2#0")
         fused = module.rrf([[row[0] for row in lexical],
                             [row[0] for row in semantic]])
-        self.assertEqual(fused[0][0]["chunk_id"], "refund-policy#0")
+        self.assertEqual(fused[0][0]["chunk_id"], "refund-policy@v2#0")
         reranked = module.rerank([row[0] for row in fused[:8]], module.QUERY)
-        self.assertEqual(reranked[0][0]["chunk_id"], "refund-policy#2")
+        self.assertEqual(reranked[0][0]["chunk_id"], "refund-policy@v2#2")
 
     def test_command_prints_the_pipeline_and_top_hits(self):
         output = run("rag_demo")
         self.assertIn("raw chunks: 13", output)
         self.assertIn("after version filter + dedupe: 12", output)
-        self.assertIn("refund-faq#0", output)
-        self.assertIn("refund-policy#2", output)
+        self.assertIn("refund-faq@v2#0", output)
+        self.assertIn("refund-policy@v2#2", output)
         self.assertIn("intact=False", output)
         self.assertIn("intact=True", output)
 
@@ -438,6 +472,27 @@ class EvalExample(unittest.TestCase):
         self.assertAlmostEqual(result["overall"], 0.72)
         self.assertAlmostEqual(result["wrong_rate"], 0.08)
 
+    def test_paired_evidence_differs_with_the_same_accuracy_totals(self):
+        module = self.eval
+        # Both tables have A=164 and B=172 out of 200, so their separate
+        # Wilson intervals are identical. Their paired evidence differs.
+        cases = ((164, 0, 8, 28), (144, 20, 28, 8))
+        for both, a_only, b_only, neither in cases:
+            self.assertEqual(both + a_only, 164)
+            self.assertEqual(both + b_only, 172)
+            self.assertEqual(both + a_only + b_only + neither, 200)
+        self.assertEqual(module.mcnemar_exact(0, 8), 1 / 128)
+        self.assertGreater(module.mcnemar_exact(20, 28), 0.05)
+
+    def test_exact_paired_test_is_symmetric_and_handles_no_disagreements(self):
+        module = self.eval
+        self.assertEqual(module.mcnemar_exact(0, 0), 1.0)
+        self.assertEqual(module.mcnemar_exact(4, 4), 1.0)
+        self.assertEqual(module.mcnemar_exact(2, 6), 74 / 256)
+        self.assertEqual(module.mcnemar_exact(2, 6), module.mcnemar_exact(6, 2))
+        with self.assertRaises(ValueError):
+            module.mcnemar_exact(-1, 2)
+
     def test_cost_per_correct_and_invalid_inputs(self):
         module = self.eval
         self.assertAlmostEqual(module.cost_per_correct(0.006, 0.85),
@@ -457,6 +512,8 @@ class EvalExample(unittest.TestCase):
         self.assertIn("coverage:           80.0%", output)
         self.assertIn("$0.0071", output)
         self.assertIn("$0.0015", output)
+        self.assertIn("exact McNemar p", output)
+        self.assertIn("0.0078", output)
 
 
 class AttentionExample(unittest.TestCase):
@@ -571,6 +628,36 @@ class TransformerExample(unittest.TestCase):
         self.assertIn("202,383,360", output)
         self.assertIn("6,738,411,520", output)
         self.assertIn("m-n=2: dot=-0.416", output)
+        self.assertIn("base=10000, m-n=10: dot=+0.156", output)
+        self.assertIn("base=100, m-n=10: dot=-0.299", output)
+
+    def test_rope_base_exercise_needs_a_second_coordinate_pair(self):
+        module = self.transformer
+        two_dim = [1.0, 0.0]
+        self.assertEqual(module.rope(two_dim, 10, 10000),
+                         module.rope(two_dim, 10, 100))
+        four_dim = [1.0, 0.0, 1.0, 0.0]
+        # The worked example has angles 10 and 0.1, or 10 and 1 radians.
+        import math
+        for base, second_angle in ((10000, 0.1), (100, 1.0)):
+            expected = math.cos(10) + math.cos(second_angle)
+            value = module.dot(module.rope(four_dim, 10, base), four_dim)
+            self.assertAlmostEqual(value, expected)
+
+    def test_rope_shift_invariance_does_not_remove_content_dependence(self):
+        module = self.transformer
+        query = [0.4, -1.2, 0.7, 2.0]
+        key = [1.3, 0.5, -0.8, 0.1]
+        for base in (100, 10000):
+            value = module.dot(module.rope(query, 10, base),
+                               module.rope(key, 0, base))
+            shifted = module.dot(module.rope(query, 17, base),
+                                 module.rope(key, 7, base))
+            self.assertAlmostEqual(value, shifted)
+            changed_content = module.dot(
+                module.rope([-x for x in query], 10, base),
+                module.rope(key, 0, base))
+            self.assertNotAlmostEqual(value, changed_content)
 
 
 class SamplingExample(unittest.TestCase):
@@ -715,6 +802,39 @@ class TrainExample(unittest.TestCase):
         worst = self.module.gradcheck(model, probe, targets, random.Random(2))
         self.assertLess(worst, 1e-4)
 
+    def test_all_backprop_parameters_on_small_nonsymmetric_models(self):
+        import random
+        from unittest.mock import patch
+
+        module = self.module
+        # Larger, nonsymmetric weights expose transposed-Jacobian mistakes
+        # that tiny attention gradients can hide under an absolute tolerance.
+        with patch.multiple(module, D_MODEL=4, D_FF=6, N_CTX=4):
+            for seed in (7, 17):
+                model = module.Tiny(6, random.Random(seed))
+                for weight in model.params().values():
+                    for row in weight:
+                        for j in range(len(row)):
+                            row[j] *= 10
+                # Repeated token IDs also exercise accumulated embedding grads.
+                ids, targets = [0, 1, 0, 2], [1, 0, 2, 3]
+                _loss, grads = model.loss_and_grads(ids, targets)
+                epsilon = 1e-5
+                for name, weight in model.params().items():
+                    for i, row in enumerate(weight):
+                        for j, original in enumerate(row):
+                            with self.subTest(seed=seed, tensor=name, row=i, col=j):
+                                try:
+                                    row[j] = original + epsilon
+                                    plus = model.loss(ids, targets)
+                                    row[j] = original - epsilon
+                                    minus = model.loss(ids, targets)
+                                finally:
+                                    row[j] = original
+                                numeric = (plus - minus) / (2 * epsilon)
+                                self.assertAlmostEqual(
+                                    grads[name][i][j], numeric, delta=1e-7)
+
     def test_the_loss_actually_drops(self):
         model, history = self._trained(self.module.SEED)
         first = history[0][1]
@@ -825,19 +945,21 @@ class RejectionExample(unittest.TestCase):
         self.assertEqual(big, len(module.PROMPTS))
         self.assertGreaterEqual(small, 0)
 
-    def test_self_taught_loop_raises_probability(self):
+    def test_sampling_respects_zero_and_one_success_probabilities(self):
         module = self.module
         import random
-        history = module.self_taught(
-            module.P_CORRECT, 8, module.ROUNDS, random.Random(module.SEED))
-        self.assertEqual(len(history), module.ROUNDS + 1)
-        self.assertTrue(all(b > a for a, b in zip(history, history[1:])))
+        for prompt in module.PROMPTS:
+            for probability in (0.0, 1.0):
+                draws = module.sample_n(prompt, 8, random.Random(11), probability)
+                self.assertEqual(len(draws), 8)
+                self.assertTrue(all(module.passes(x, prompt) == bool(probability)
+                                    for x in draws))
 
     def test_command_prints_filter_and_loop(self):
         output = run("rejection_demo")
         self.assertIn("rejection sampling", output)
         self.assertIn("best-of-N at inference", output)
-        self.assertIn("self-taught loop", output)
+        self.assertIn("p stays fixed", output)
         self.assertIn("P(at least one pass)", output)
 
 

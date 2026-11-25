@@ -83,7 +83,7 @@ def build_chunks(docs: list[dict]) -> list[dict]:
         for index, sentence in enumerate(split_sentences(doc["text"])):
             chunks.append({
                 **doc,
-                "chunk_id": f'{doc["id"]}#{index}',
+                "chunk_id": f'{doc["id"]}@v{doc["version"]}#{index}',
                 "text": f'{doc["title"]}：{sentence}',
             })
     return chunks
@@ -197,8 +197,9 @@ def main() -> int:
     print(f"  rerank top: {reranked[0][1]:.3f}  {reranked[0][0]['text']}")
     print()
     print("note: BM25 is lexical, the vectors are hand-set, and the reranker "
-          "is a toy; a production stack needs trained encoders, a cross-encoder "
-          "and an evaluation set")
+          "is a toy. Validate production retrieval on real documents and an "
+          "evaluation set; choose dense retrieval and reranking components "
+          "to match the task")
     return 0
 
 

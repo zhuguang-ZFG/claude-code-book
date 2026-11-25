@@ -20,7 +20,7 @@ def training_flops(params: float, tokens: float) -> float:
 
 
 def inference_flops(params: float, tokens: float) -> float:
-    # one forward pass per token, roughly 2N multiply-adds
+    # Roughly N multiply-adds = 2N FLOPs in the main weight projections.
     return 2 * params * tokens
 
 
@@ -77,12 +77,12 @@ def main() -> int:
     print(f"  7B model: {per_token / 1e9:.0f} GFLOP per token")
     print(f"  1M tokens: {million:.1e} FLOPs, "
           f"{million / EFFECTIVE_FLOPS:.0f} GPU-seconds at the assumed rate")
-    print("  decode is memory-bandwidth bound in practice; FLOPs alone "
+    print("  low-batch decode is often memory-bandwidth bound; FLOPs alone "
           "do not predict latency")
     print()
-    print("note: 6ND and 2N are accounting identities, not measured "
-          "throughput; real runs lose time to communication, bubbles and "
-          "recomputation")
+    print("note: 6ND and 2N are approximations for main weight computations, "
+          "excluding context-dependent attention and extra recomputation; "
+          "communication and pipeline bubbles also affect elapsed time")
     return 0
 
 

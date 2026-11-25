@@ -51,7 +51,12 @@ def block(x: list[float], attention: list[float], ffn: list[float]):
 
 def params(d_model: int, layers: int, heads: int, d_ff: int, vocab: int,
            swiglu: bool = True, tied: bool = True) -> dict:
-    """Dense decoder parameter count, ignoring biases and minor terms."""
+    """MHA decoder estimate, omitting biases and the final normalization.
+
+    Q, K and V all span d_model. With that assumption, splitting the same
+    width into more heads does not change projection parameter counts.
+    This formula does not cover GQA or MQA.
+    """
     attention = 4 * d_model * d_model
     ffn = (3 if swiglu else 2) * d_model * d_ff
     norms = 2 * d_model
@@ -117,18 +122,28 @@ def main() -> int:
     print(f"  embedding (untied):  {counts['embedding']:,}")
     print()
 
-    print("RoPE: dot product depends on the offset, not the absolute position")
+    print("RoPE with fixed query/key content: shared position shifts preserve the dot product")
     query = [1.0, 0.0]
     key = [1.0, 0.0]
     for offset in (0, 1, 2, 3):
         left = rope(query, offset)
         right = rope(key, 0)
         print(f"  m-n={offset}: dot={dot(left, right):+.3f}")
-    print("  a learned position embedding would grow with absolute position; "
-          "rotation keeps the relative offset in the dot product")
+    print("  in 2D the only frequency is base**0 = 1; changing base has no effect")
     print()
-    print("note: this is a forward-pass sketch; training also needs gradients, "
-          "a loss and an optimizer, which this volume does not cover")
+
+    print("RoPE in 4D: compare bases using two coordinate pairs")
+    query = [1.0, 0.0, 1.0, 0.0]
+    key = [1.0, 0.0, 1.0, 0.0]
+    for base in (10_000.0, 100.0):
+        value = dot(rope(query, 10, base), rope(key, 0, base))
+        shifted = dot(rope(query, 17, base), rope(key, 7, base))
+        print(f"  base={base:g}, m-n=10: dot={value:+.3f}; "
+              f"after shifting both positions by 7: {shifted:+.3f}")
+    print("  changing query/key content can change scores at the same offset")
+    print()
+    print("note: this is a forward-pass sketch; chapter 7 adds a separate "
+          "training example with gradients, a loss and an optimizer")
     return 0
 
 
