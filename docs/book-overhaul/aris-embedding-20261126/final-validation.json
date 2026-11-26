@@ -1,0 +1,140 @@
+{
+  "timestamp": "2026-11-26T04:03:32.779517+00:00",
+  "artifacts": {
+    "epub": {
+      "bytes": 1030425,
+      "sha256": "182ee2fe2f0cf0548fbca49fd2bd8fad05e4b81ac9f27133a16de3002fdc2735",
+      "hash_source": "successful build_epub.py output; direct reread of earlier EPUB denied by local permissions",
+      "navigation_entries": 170,
+      "documents": 34
+    },
+    "html": {
+      "bytes": 796999,
+      "sha256": "652005678594b9a4a7538107275e946fda4d139c5371ff778c952c0563b17753"
+    },
+    "pdf": {
+      "bytes": 8177202,
+      "sha256": "07715a71f096e04f202397dbf453b87670da540057cbeda850c67abe59f5eb22",
+      "pages": 166,
+      "bookmarks": 28
+    }
+  },
+  "checks": {
+    "fast": "9 steps passed",
+    "general_tests": "480 run, 1 skipped",
+    "builder_tests": 629,
+    "llm_tests_included": 131,
+    "ruff": "passed",
+    "collected_assembly": "12 volumes, 286 units, 366 plates; passed",
+    "products": "7 byte-identical outputs; local anchors checked"
+  },
+  "visual": {
+    "structure": {
+      "llm/ch02.md": "headings, stable block markers and illustrations preserved",
+      "llm/ch16.md": "headings, stable block markers and illustrations preserved"
+    },
+    "visual_checks": [
+      {
+        "name": "sgd",
+        "width": 390,
+        "theme": "light"
+      },
+      {
+        "name": "neighbours",
+        "width": 390,
+        "theme": "light"
+      },
+      {
+        "name": "ann",
+        "width": 390,
+        "theme": "light"
+      },
+      {
+        "name": "glossary",
+        "width": 390,
+        "theme": "light"
+      },
+      {
+        "name": "sgd",
+        "width": 390,
+        "theme": "dark"
+      },
+      {
+        "name": "neighbours",
+        "width": 390,
+        "theme": "dark"
+      },
+      {
+        "name": "ann",
+        "width": 390,
+        "theme": "dark"
+      },
+      {
+        "name": "glossary",
+        "width": 390,
+        "theme": "dark"
+      },
+      {
+        "name": "sgd",
+        "width": 1440,
+        "theme": "light"
+      },
+      {
+        "name": "neighbours",
+        "width": 1440,
+        "theme": "light"
+      },
+      {
+        "name": "ann",
+        "width": 1440,
+        "theme": "light"
+      },
+      {
+        "name": "glossary",
+        "width": 1440,
+        "theme": "light"
+      },
+      {
+        "name": "sgd",
+        "width": 1440,
+        "theme": "dark"
+      },
+      {
+        "name": "neighbours",
+        "width": 1440,
+        "theme": "dark"
+      },
+      {
+        "name": "ann",
+        "width": 1440,
+        "theme": "dark"
+      },
+      {
+        "name": "glossary",
+        "width": 1440,
+        "theme": "dark"
+      }
+    ],
+    "pdf_pages": 166,
+    "bookmarks": 28,
+    "sgd_formula_page": 24,
+    "glossary_page": 133
+  },
+  "reviews": {
+    "round1": {
+      "score": 7,
+      "verdict": "Almost",
+      "major": 2,
+      "minor": 3
+    },
+    "round2": {
+      "score": 9,
+      "verdict": "Ready",
+      "major": 0,
+      "minor": 2
+    },
+    "acceptance": "same-family / provisional",
+    "final_fixes": "two minor findings addressed; no third review"
+  },
+  "limits": "Controlled training and ANN examples only; no production retrieval-quality or speed benchmark."
+}

@@ -1304,5 +1304,70 @@
     "pinned": {
       "commit": "5c4886908584029761b579af026dcfb627c84070"
     }
+  },
+  "word2vec-code": {
+    "title": "tmikolov/word2vec: word2vec.c",
+    "authority": "上游固定提交源码",
+    "kind": "github",
+    "url": "https://github.com/tmikolov/word2vec/blob/20c129af10659f7c50e86e3be406df663beff438/word2vec.c",
+    "snapshot": "固定提交 20c129af10659f7c50e86e3be406df663beff438，2026-11-26 经 GitHub contents API 读取",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0；仅链接与独立讲解",
+    "scope": "第 2 章：原始负采样的词频 0.75 次幂与梯度更新次序；保留本书逐词对 SGD，不复制 C 源码。",
+    "pinned": {
+      "commit": "20c129af10659f7c50e86e3be406df663beff438"
+    }
+  },
+  "d2l-word2vec-dataset": {
+    "title": "d2l-ai/d2l-en: chapter_natural-language-processing-pretraining/word-embedding-dataset.md",
+    "authority": "上游固定提交源码",
+    "kind": "github",
+    "url": "https://github.com/d2l-ai/d2l-en/blob/23d7a5aecceee57d1292c56e90cce307f183bb0a/chapter_natural-language-processing-pretraining/word-embedding-dataset.md",
+    "snapshot": "固定提交 23d7a5aecceee57d1292c56e90cce307f183bb0a，2026-11-26 经 GitHub contents API 读取",
+    "accessed": "2026-11-26",
+    "license": "教材 CC BY-SA 4.0，代码 Apache-2.0；仅链接与独立概述",
+    "scope": "第 2 章：词频噪声分布、已知上下文的排除与负例标签；仅链接与独立概述。",
+    "pinned": {
+      "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a"
+    }
+  },
+  "d2l-word2vec-training": {
+    "title": "d2l-ai/d2l-en: chapter_natural-language-processing-pretraining/word2vec-pretraining.md",
+    "authority": "上游固定提交源码",
+    "kind": "github",
+    "url": "https://github.com/d2l-ai/d2l-en/blob/23d7a5aecceee57d1292c56e90cce307f183bb0a/chapter_natural-language-processing-pretraining/word2vec-pretraining.md",
+    "snapshot": "固定提交 23d7a5aecceee57d1292c56e90cce307f183bb0a，2026-11-26 经 GitHub contents API 读取",
+    "accessed": "2026-11-26",
+    "license": "教材 CC BY-SA 4.0，代码 Apache-2.0；仅链接与独立概述",
+    "scope": "第 2 章：输入/输出两张嵌入表、二元交叉熵、先反向再更新；区分批训练与本书逐词对 SGD。",
+    "pinned": {
+      "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a"
+    }
+  },
+  "faiss-flat-tutorial": {
+    "title": "facebookresearch/faiss: tutorial/python/1-Flat.py",
+    "authority": "上游固定提交源码",
+    "kind": "github",
+    "url": "https://github.com/facebookresearch/faiss/blob/b14b3d693161c7b1cbc5f2e398c8234b42b04c8b/tutorial/python/1-Flat.py",
+    "snapshot": "固定提交 b14b3d693161c7b1cbc5f2e398c8234b42b04c8b，2026-11-26 经 GitHub contents API 读取",
+    "accessed": "2026-11-26",
+    "license": "MIT；仅链接与独立讲解",
+    "scope": "第 2 章：按索引 ID 返回记录、库内向量查询自身；另核对同提交 IndexFlat.cpp 的 knn_L2sqr。",
+    "pinned": {
+      "commit": "b14b3d693161c7b1cbc5f2e398c8234b42b04c8b"
+    }
+  },
+  "faiss-ivf-tutorial": {
+    "title": "facebookresearch/faiss: tutorial/python/2-IVFFlat.py",
+    "authority": "上游固定提交源码",
+    "kind": "github",
+    "url": "https://github.com/facebookresearch/faiss/blob/b14b3d693161c7b1cbc5f2e398c8234b42b04c8b/tutorial/python/2-IVFFlat.py",
+    "snapshot": "固定提交 b14b3d693161c7b1cbc5f2e398c8234b42b04c8b，2026-11-26 经 GitHub contents API 读取",
+    "accessed": "2026-11-26",
+    "license": "MIT；仅链接与独立讲解",
+    "scope": "第 2 章：训练分桶、加入向量、nprobe 与 L2 度量；不把本书 ID 平局规则当作 Faiss 契约。",
+    "pinned": {
+      "commit": "b14b3d693161c7b1cbc5f2e398c8234b42b04c8b"
+    }
   }
 }

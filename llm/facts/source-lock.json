@@ -83,13 +83,25 @@
       "repo": "d2l-ai/d2l-en",
       "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a",
       "license": "教材 CC BY-SA 4.0，代码 Apache-2.0；仅链接与独立概述",
-      "scope": "第 15 章：公开教材的 patch embedding、位置嵌入、分类 token 与 Transformer 编码；不冒称通读商业书。"
+      "scope": "第 15 章：公开教材的 patch embedding、位置嵌入、分类 token 与 Transformer 编码；不冒称通读商业书。 第 2 章另核对同提交的 word-embedding-dataset.md 与 word2vec-pretraining.md。"
     },
     {
       "repo": "pytorch/pytorch",
       "commit": "5c4886908584029761b579af026dcfb627c84070",
       "license": "BSD-3-Clause；仅链接与独立讲解",
       "scope": "第 3 章：非方阵 is_causal 的左上对齐、布尔 mask 的 True 为可见，以及 dropout_p=0 的推理用法。"
+    },
+    {
+      "repo": "tmikolov/word2vec",
+      "commit": "20c129af10659f7c50e86e3be406df663beff438",
+      "license": "Apache-2.0；仅链接与独立讲解",
+      "scope": "第 2 章：原始负采样的词频 0.75 次幂与梯度更新次序；保留本书逐词对 SGD，不复制 C 源码。"
+    },
+    {
+      "repo": "facebookresearch/faiss",
+      "commit": "b14b3d693161c7b1cbc5f2e398c8234b42b04c8b",
+      "license": "MIT；仅链接与独立讲解",
+      "scope": "第 2 章：精确搜索的记录 ID、自身查询、IVF 训练与 nprobe；IndexFlat.cpp 核对平方 L2 距离。仅链接与独立讲解，未复制源码。"
     }
   ]
 }

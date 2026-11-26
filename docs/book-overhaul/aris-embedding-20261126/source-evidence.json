@@ -1,0 +1,72 @@
+[
+  {
+    "name": "word2vec.c",
+    "repo": "tmikolov/word2vec",
+    "commit": "20c129af10659f7c50e86e3be406df663beff438",
+    "path": "word2vec.c",
+    "bytes": 26418,
+    "sha256": "df07a1d504c22aa747f9fc40ddc6cfed52e12c3a402861398426829b83d96ef4",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  },
+  {
+    "name": "word2vec-LICENSE",
+    "repo": "tmikolov/word2vec",
+    "commit": "20c129af10659f7c50e86e3be406df663beff438",
+    "path": "LICENSE",
+    "bytes": 11358,
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  },
+  {
+    "name": "d2l-word-embedding-dataset.md",
+    "repo": "d2l-ai/d2l-en",
+    "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a",
+    "path": "chapter_natural-language-processing-pretraining/word-embedding-dataset.md",
+    "bytes": 15659,
+    "sha256": "106fd54974ae5a9dc5d37d71aee1b01def9aee6b1168df74bd01cae11a053ec4",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  },
+  {
+    "name": "d2l-word2vec-pretraining.md",
+    "repo": "d2l-ai/d2l-en",
+    "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a",
+    "path": "chapter_natural-language-processing-pretraining/word2vec-pretraining.md",
+    "bytes": 11683,
+    "sha256": "104bd943ff8db50f2762e47ed2d84a6254e5dc106cb9e839b86a5924bc0db965",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  },
+  {
+    "name": "faiss-flat.py",
+    "repo": "facebookresearch/faiss",
+    "commit": "b14b3d693161c7b1cbc5f2e398c8234b42b04c8b",
+    "path": "tutorial/python/1-Flat.py",
+    "bytes": 912,
+    "sha256": "ef52a07c81bf94ae043f615c521711c69d82a29a20af6363fed1c6ea20c71d22",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  },
+  {
+    "name": "faiss-ivfflat.py",
+    "repo": "facebookresearch/faiss",
+    "commit": "b14b3d693161c7b1cbc5f2e398c8234b42b04c8b",
+    "path": "tutorial/python/2-IVFFlat.py",
+    "bytes": 1055,
+    "sha256": "8f566946817a494ec67f4c3f1871c467c9c92efb697d6185e15e6d8be876f6c8",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  },
+  {
+    "name": "faiss-IndexFlat.cpp",
+    "repo": "facebookresearch/faiss",
+    "commit": "b14b3d693161c7b1cbc5f2e398c8234b42b04c8b",
+    "path": "faiss/IndexFlat.cpp",
+    "bytes": 31643,
+    "sha256": "3320f79b1f892d51cf401c4a33515e82cacbb149d3284190512c312a8130da85",
+    "accessed": "2026-11-26",
+    "retrieval": "GitHub CLI contents API"
+  }
+]
