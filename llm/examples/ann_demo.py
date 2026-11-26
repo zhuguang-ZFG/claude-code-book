@@ -6,9 +6,9 @@ drawn as text. Flat search compares the query with every point; IVF (inverted
 file) compares it with the bucket centroids first, then scans only the
 `nprobe` nearest buckets. Recall is measured against the flat answer.
 
-This is the mechanism behind FAISS/HNSW-style approximate search, not a
-benchmark: vectors are 2-D, the bucket count is tiny, and no product
-quantization is applied.
+This demonstrates IVF bucket search, one index family available in Faiss.
+HNSW instead searches a graph. This is not a benchmark: vectors are 2-D,
+the bucket count is tiny, and no product quantization is applied.
 """
 from __future__ import annotations
 
