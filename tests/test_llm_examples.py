@@ -13,7 +13,7 @@ EXAMPLES = ROOT / "llm" / "examples"
 
 
 def load(name: str):
-    spec = importlib.util.spec_from_file_location(f"llm_{name}", EXAMPLES / f"{name}.py")
+    spec = importlib.util.spec_from_file_location(f"llm.examples.{name}", EXAMPLES / f"{name}.py")
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(module)
@@ -46,6 +46,42 @@ class BpeExample(unittest.TestCase):
         second = self.bpe.train(self.bpe.CORPUS, 16)
         self.assertEqual(first[0], second[0])
         self.assertEqual(first[1], second[1])
+
+    def test_overlapping_pairs_merge_left_to_right(self):
+        self.assertEqual(self.bpe.apply([97, 97, 97], (97, 97), 256), [256, 97])
+        self.assertEqual(self.bpe.apply([97] * 4, (97, 97), 256), [256, 256])
+        self.assertEqual(self.bpe.apply([], (97, 97), 256), [])
+
+    def test_encoding_uses_rank_before_pair_frequency(self):
+        # 'ab' ranks before the more frequent 'bc'; merging it enables 'abc'.
+        rules = [(97, 98), (256, 99), (98, 99)]
+        self.assertEqual(self.bpe.encode('abcbcbc', rules), [257, 258, 258])
+        self.assertEqual(self.bpe.encode('', rules), [])
+        self.assertEqual(self.bpe.encode('x', rules), [120])
+
+    def test_training_preserves_document_boundaries_and_tie_break(self):
+        rules, _ = self.bpe.train(['a', 'b'], 2)
+        self.assertEqual(rules, [])
+        forward = self.bpe.train(['ab', 'bc'], 1)
+        reverse = self.bpe.train(['bc', 'ab'], 1)
+        self.assertEqual(forward, reverse)
+        self.assertEqual(forward[0], [(97, 98)])
+
+    def test_printed_walkthrough_matches_reused_encoder(self):
+        import re
+        chapter = (ROOT / "llm/ch01.md").read_text(encoding="utf-8")
+        code = next(block for block in re.findall(r"```python\n(.*?)\n```", chapter, re.S)
+                    if "def train(" in block)
+        walkthrough = {}
+        exec(compile(code, "llm/ch01.md", "exec"), walkthrough)
+        for corpus in (self.bpe.CORPUS, ["aaaaa", "abcbcbc"], ["青禾🙂", "e\u0301"]):
+            for count in (0, 8, 32):
+                rules, vocab = self.bpe.train(corpus, count)
+                self.assertEqual(walkthrough["train"](corpus, count), (rules, vocab))
+                for sample in [*corpus, *self.bpe.SAMPLES, ""]:
+                    with self.subTest(corpus=corpus, count=count, sample=sample):
+                        self.assertEqual(walkthrough["encode"](sample, rules),
+                                         self.bpe.encode(sample, rules))
 
     def test_unicode_and_partial_tokens_have_distinct_boundaries(self):
         rules, vocab = self.bpe.train(self.bpe.CORPUS, 32)
@@ -620,6 +656,49 @@ class AttentionExample(unittest.TestCase):
         future, rows = module.attention(q, k, v, causal=False)
         self.assertGreater(rows[0][1], 0.0)
         self.assertNotAlmostEqual(causal[0][0], future[0][0], places=3)
+
+    def test_cached_single_and_chunked_queries_match_full_attention(self):
+        import random
+        module = self.attention
+        rng = random.Random(17)
+        q = [[rng.uniform(-2, 2) for _ in range(3)] for _ in range(6)]
+        k = [[rng.uniform(-2, 2) for _ in range(3)] for _ in range(6)]
+        v = [[rng.uniform(-2, 2) for _ in range(2)] for _ in range(6)]
+        full, _ = module.attention(q, k, v)
+        for chunk in (1, 2, 3):
+            cached = []
+            for start in range(0, len(q), chunk):
+                stop = start + chunk
+                result, rows = module.attention(q[start:stop], k[:stop], v[:stop],
+                                                query_start=start)
+                cached.extend(result)
+                for offset, row in enumerate(rows):
+                    self.assertTrue(all(w == 0 for w in row[start + offset + 1:]))
+            for actual, expected in zip(cached, full):
+                for a, b in zip(actual, expected):
+                    self.assertAlmostEqual(a, b, places=12)
+
+    def test_decode_query_position_must_not_reset_to_zero(self):
+        module = self.attention
+        correct, _ = module.attention(module.X[-1:], module.X, module.X, query_start=2)
+        wrong, _ = module.attention(module.X[-1:], module.X, module.X)
+        self.assertEqual(wrong, [[1.0, 0.0]])
+        self.assertAlmostEqual(correct[0][0], 0.488, places=3)
+        self.assertAlmostEqual(correct[0][1], 0.646, places=3)
+
+    def test_shape_mismatches_do_not_silently_truncate_vectors(self):
+        module = self.attention
+        for q, k, v in [([], [[1]], [[1]]), ([[1, 2]], [[1]], [[1]]),
+                        ([[1]], [[1], [2]], [[1]]),
+                        ([[1]], [[1], [2]], [[1], [2, 3]])]:
+            with self.subTest(q=q, k=k, v=v), self.assertRaises(ValueError):
+                module.attention(q, k, v)
+        for start in (-1, 0.5, 3):
+            with self.subTest(start=start), self.assertRaises(ValueError):
+                module.attention([[1]], [[1]], [[1]], query_start=start)
+        for config in ((0, 1, 1), (8, 0, 1), (10, 3, 1), (8, 4, 3), (8, 2, 4)):
+            with self.subTest(config=config), self.assertRaises(ValueError):
+                module.attention_params(*config)
 
     def test_head_concat_keeps_one_value_per_head(self):
         module = self.attention

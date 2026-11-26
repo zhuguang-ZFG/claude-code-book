@@ -11,13 +11,13 @@
       "repo": "karpathy/minbpe",
       "commit": "1acefe89412b20245db5a22d2a02001e547dc602",
       "license": "MIT",
-      "scope": "第 1 章：BPE 训练、编码与解码的教学对照"
+      "scope": "第 1 章：原样复用 base.py 的 merge 与 basic.py 的 BasicTokenizer.encode；源码与 MIT LICENSE 位于 llm/examples/vendor/minbpe。多文本训练、并列排序与严格 UTF-8 解码由本书处理。"
     },
     {
       "repo": "karpathy/nanoGPT",
       "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
       "license": "MIT",
-      "scope": "第 7 章：train_demo 是同一训练循环的手写缩小版（前向/反向/SGD）；只引结构与流程，不复制其代码"
+      "scope": "第 3 章：Q/K/V 分头、缩放、因果遮罩、输出投影及 SDPA 调用；第 7 章：训练循环结构。仅引用与独立讲解，未复制代码。"
     },
     {
       "repo": "huggingface/sentence-transformers",
@@ -84,6 +84,12 @@
       "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a",
       "license": "教材 CC BY-SA 4.0，代码 Apache-2.0；仅链接与独立概述",
       "scope": "第 15 章：公开教材的 patch embedding、位置嵌入、分类 token 与 Transformer 编码；不冒称通读商业书。"
+    },
+    {
+      "repo": "pytorch/pytorch",
+      "commit": "5c4886908584029761b579af026dcfb627c84070",
+      "license": "BSD-3-Clause；仅链接与独立讲解",
+      "scope": "第 3 章：非方阵 is_causal 的左上对齐、布尔 mask 的 True 为可见，以及 dropout_p=0 的推理用法。"
     }
   ]
 }

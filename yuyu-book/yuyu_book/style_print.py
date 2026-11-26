@@ -175,6 +175,8 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   .codehilite .c,.codehilite .c1{color:#7A6F58}
   .codehilite .k{color:#7A5B22}.codehilite .s{color:#4F6B3A}
   .codehilite .m{color:#8A5A2B}.codehilite .nt{color:#3A5F80}
+  /* The walkthroughs need legible operators and digits on the light paper. */
+  #llm-ch01 .codehilite span,#llm-ch03 .codehilite span{color:#423622}
   h1{bookmark-level:1;bookmark-label:content()}
   .page-title,.pd-title{bookmark-level:1;bookmark-label:content()}
   article h2,article h3,article h4,.rev-v,.reg-kind,.idx-letter{
@@ -199,6 +201,7 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   /* These chapter examples are short enough to keep their steps/rows together. */
   #llm-ch05 .table-scroll[data-cols="4"],
   #llm-ch05 ul,
+  #llm-ch03 pre,
   #llm-ch12 pre,
   #llm-ch15 .table-scroll[data-cols="3"]{break-inside:avoid}
   .illu-frame:has(svg.llm-explainer){max-width:110mm}

@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "current_round": 2,
+  "max_rounds": 2,
+  "timestamp": "2026-11-26T01:11:24.799408+00:00",
+  "scope": [
+    "llm/ch01.md",
+    "llm/ch03.md",
+    "llm/ch16.md",
+    "llm/examples/bpe_demo.py",
+    "llm/examples/attention_demo.py",
+    "llm/examples/vendor/minbpe"
+  ],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "last_score": 8,
+  "last_verdict": "Almost",
+  "next_action": null,
+  "final_artifact": ".scratch/aris-reuse-20261126/round2/yuyu-llm-zh.html",
+  "post_review_fixes": "All accepted findings fixed and executor-validated; no third reviewer score",
+  "publication": "Prepared for authorized commit/push/merge; CI status is reported separately"
+}

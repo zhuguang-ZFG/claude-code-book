@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-11-26T01:22:43.214845+00:00",
+  "artifacts": {
+    "html": {
+      "bytes": 786295,
+      "sha256": "6c5def4bb6662ed0965c35becbe3bab7b93f9a323dedc4d6d96a406909334d7a"
+    },
+    "pdf": {
+      "bytes": 8093530,
+      "sha256": "d67c1ec0e3166f75680970fc21dfe1c9f15d338ee939a2c6d35dce23810dc947",
+      "pages": 163,
+      "bookmarks": 28
+    },
+    "epub": {
+      "bytes": 1027724,
+      "sha256": "350ed72ef628f1ecf62e386b2b3f5e8866f4191e141621475933a97aea392c1a",
+      "hash_source": "build_epub.py successful build result; later direct reread denied by local file permissions",
+      "navigation_entries": 170,
+      "documents": 34
+    }
+  },
+  "structure": {
+    "llm/ch01.md": "headings, stable blocks, and illustration slots preserved",
+    "llm/ch03.md": "headings, stable blocks, and illustration slots preserved",
+    "llm/ch16.md": "headings, stable blocks, and illustration slots preserved"
+  },
+  "checks": {
+    "fast": "9 steps passed",
+    "repository_tests": "474 passed (1 skipped)",
+    "builder_tests": 629,
+    "llm_tests_included": 126,
+    "ruff": "passed",
+    "collected_assembly": "12 volumes, 286 units, 366 plates; passed",
+    "visual": "16 section/viewport/theme checks; two right-scroll checks; print code color checked",
+    "pdf_cache_example_page": 35,
+    "python_3_11": "BPE direct and module execution with -B -S passed",
+    "products": "7 byte-identical regenerated outputs; local anchors checked"
+  },
+  "sdpa": {
+    "torch": "2.14.1+cpu",
+    "device": "cpu",
+    "dtype": "float64",
+    "full_max_error": 1.1102230246251565e-16,
+    "correct_last": [
+      [
+        0.4878158748453896,
+        0.6463606446231905
+      ]
+    ],
+    "reset_mask_last": [
+      [
+        1.0,
+        0.0
+      ]
+    ],
+    "benchmark": false
+  },
+  "limits": "No production tokenizer/model quality or speed benchmark; same-family reviews remain provisional."
+}

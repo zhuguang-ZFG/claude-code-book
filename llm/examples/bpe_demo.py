@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Byte-level BPE trained on a tiny corpus. Standard library only.
 
-This is a teaching implementation. It skips the pretokenization regex,
+The merge primitive and rank-ordered encoder reuse vendored minbpe (MIT),
+see vendor/minbpe/README.md. The multi-text trainer and strict decoder
+remain local. This example skips the pretokenization regex,
 special tokens and vocabulary compaction used by production tokenizers, so
 its counts demonstrate the mechanism, not any vendor's token count.
 """
@@ -9,6 +11,11 @@ from __future__ import annotations
 
 from collections import Counter
 import sys
+
+if __package__:
+    from .vendor.minbpe import BasicTokenizer, merge as apply
+else:
+    from vendor.minbpe import BasicTokenizer, merge as apply
 
 BASE = 256
 CORPUS = [
@@ -27,21 +34,6 @@ SAMPLES = [
     "🙂",
     "hello",
 ]
-
-
-def apply(sequence: list[int], pair: tuple[int, int],
-          new_id: int) -> list[int]:
-    """Replace every non-overlapping occurrence of `pair` with `new_id`."""
-    out: list[int] = []
-    i = 0
-    while i < len(sequence):
-        if i + 1 < len(sequence) and (sequence[i], sequence[i + 1]) == pair:
-            out.append(new_id)
-            i += 2
-        else:
-            out.append(sequence[i])
-            i += 1
-    return out
 
 
 def train(texts: list[str], merges: int):
@@ -67,11 +59,10 @@ def train(texts: list[str], merges: int):
 
 
 def encode(text: str, rules: list[tuple[int, int]]) -> list[int]:
-    """Apply learned merges in rank order, exactly once each."""
-    sequence = list(text.encode("utf-8"))
-    for rank, pair in enumerate(rules):
-        sequence = apply(sequence, pair, BASE + rank)
-    return sequence
+    """Reuse minbpe's rank-based encoder with this example's trained rules."""
+    tokenizer = BasicTokenizer()
+    tokenizer.merges = {pair: BASE + rank for rank, pair in enumerate(rules)}
+    return tokenizer.encode(text)
 
 
 def decode(ids: list[int], vocab: dict[int, bytes]) -> str:
@@ -111,7 +102,8 @@ def main() -> int:
 
     print()
     print("round-trip OK: every sample decoded back to its original text")
-    print(f"Unicode counts: len('é')={len('é')}, len('e\\u0301')={len('e\u0301')}")
+    decomposed = "e\u0301"
+    print(f"Unicode counts: len('é')={len('é')}, len('e\\u0301')={len(decomposed)}")
     print("partial UTF-8 bytes:", "青".encode("utf-8")[:2].hex())
     try:
         "青".encode("utf-8")[:2].decode("utf-8")

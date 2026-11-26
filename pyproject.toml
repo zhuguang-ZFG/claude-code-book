@@ -25,6 +25,7 @@ package = false
 [tool.ruff]
 target-version = "py312"
 line-length = 92
+extend-exclude = ["llm/examples/vendor/minbpe/base.py", "llm/examples/vendor/minbpe/basic.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W"]
