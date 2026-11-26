@@ -83,7 +83,11 @@ def attention(queries: list[list[float]], keys: list[list[float]],
 
 
 def attention_params(d_model: int, heads: int, kv_heads: int | None = None) -> dict:
-    """Per-layer Q/K/V/O parameters, ignoring biases and the FFN."""
+    """Per-layer Q/K/V/O parameters for equal-width MHA/GQA/MQA heads.
+
+    Assumes head_dim = d_model / heads and an output width of d_model;
+    ignores biases and the FFN. This does not count mixed-width heads.
+    """
     kv_heads = heads if kv_heads is None else kv_heads
     if any(not isinstance(value, int) or value <= 0 for value in (d_model, heads, kv_heads)):
         raise ValueError("model width and head counts must be positive integers")
@@ -166,8 +170,9 @@ def main() -> int:
               f"total={counts['total']:,} "
               f"kv_cache/token={cache:,} B")
     print()
-    print("note: the toy weights are hand-set; a trained model learns "
-          "projections, and its attention patterns are not readable as vectors")
+    print("note: inputs and projection matrices are hand-set; attention "
+          "weights are computed from dot products and softmax. "
+          "No trained model is involved")
     return 0
 
 
