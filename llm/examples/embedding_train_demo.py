@@ -2,9 +2,9 @@
 """Train toy word embeddings from co-occurrence, skip-gram style.
 
 Standard library only. The vectors in ch02 are hand-set to explain the
-geometry; here the geometry is *learned*: words that share contexts end up
-with high cosine similarity after real gradient descent on a skip-gram
-objective with negative sampling. Fixed seed, reproducible numbers.
+geometry; here two embedding tables are learned with binary logistic loss.
+This controlled corpus separates three topics. Uniform negative sampling
+and per-pair SGD are teaching choices, not a reproduction of word2vec.c.
 """
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ TOPIC = {
 
 
 def sigmoid(x: float) -> float:
-    """Numerically stable: exp(-x) overflows for large x, so split."""
+    """Split by sign to avoid exp(-x) overflow for large negative x."""
     if x >= 0:
         return 1.0 / (1.0 + math.exp(-x))
     scaled = math.exp(x)
@@ -76,8 +76,41 @@ def pairs(ids: list[int]) -> list[tuple[int, int]]:
     return out
 
 
-def train(rng: random.Random) -> tuple[list[list[float]], list[float]]:
-    """Skip-gram with negative sampling; returns (vectors, loss history)."""
+def sgd_pair(center: list[float], context: list[float],
+             label: float, rate: float) -> float:
+    """Update two distinct embedding rows; return their pre-update loss."""
+    score = dot(center, context)
+    loss = softplus(-score) if label else softplus(score)
+    grad = sigmoid(score) - label
+    for d in range(len(center)):
+        old_center, old_context = center[d], context[d]
+        center[d] -= rate * grad * old_context
+        context[d] -= rate * grad * old_center
+    return loss
+
+
+def negative_pool(center: int, contexts: set[int], vocab_size: int) -> list[int]:
+    """Finite uniform-sampling pool for this sentence's known contexts."""
+    pool = [word for word in range(vocab_size)
+            if word != center and word not in contexts]
+    if not pool:
+        raise ValueError("no eligible negative words; change corpus or window")
+    return pool
+
+
+def train(rng: random.Random) -> tuple[list[list[float]], list[list[float]],
+                                      list[tuple[int, float]]]:
+    """Return trained input vectors, initial input vectors and online losses."""
+    corpus_pairs = [pairs(sentence) for sentence in IDS]
+    if not any(corpus_pairs):
+        raise ValueError("training needs at least one context pair")
+    pools = []
+    for sentence_pairs in corpus_pairs:
+        real: dict[int, set[int]] = {}
+        for center, context in sentence_pairs:
+            real.setdefault(center, set()).add(context)
+        pools.append({center: negative_pool(center, contexts, len(VOCAB))
+                      for center, contexts in real.items()} if NEGATIVES else {})
     scale = 0.1
     vec = [[rng.gauss(0.0, scale) for _ in range(DIM)] for _ in VOCAB]
     out = [[rng.gauss(0.0, scale) for _ in range(DIM)] for _ in VOCAB]
@@ -86,28 +119,15 @@ def train(rng: random.Random) -> tuple[list[list[float]], list[float]]:
     for epoch in range(1, EPOCHS + 1):
         total = 0.0
         seen = 0
-        for sentence in IDS:
-            sentence_pairs = pairs(sentence)
-            real = {}
-            for c, o in sentence_pairs:
-                real.setdefault(c, set()).add(o)
+        for sentence_pairs, pool in zip(corpus_pairs, pools):
             for center, context in sentence_pairs:
                 steps = [(center, context, 1.0)]
-                forbidden = real.get(center, set())
                 for _ in range(NEGATIVES):
-                    while True:
-                        neg = rng.randrange(len(VOCAB))
-                        if neg != center and neg not in forbidden:
-                            break
+                    neg = rng.choice(pool[center])
                     steps.append((center, neg, 0.0))
                 for c, o, label in steps:
-                    score = dot(vec[c], out[o])
-                    total += softplus(-score) if label else softplus(score)
+                    total += sgd_pair(vec[c], out[o], label, LR)
                     seen += 1
-                    grad = (sigmoid(score) - label)  # dL/dscore
-                    for d in range(DIM):
-                        vec[c][d] -= LR * grad * out[o][d]
-                        out[o][d] -= LR * grad * vec[c][d]
         if epoch == 1 or epoch % 10 == 0:
             history.append((epoch, total / seen))
     return vec, initial, history
@@ -130,14 +150,14 @@ def main() -> int:
     rng = random.Random(SEED)
     vec, initial, history = train(rng)
     for epoch, loss in history:
-        print(f"  epoch {epoch:>2}: pair loss {loss:.3f}")
+        print(f"  epoch {epoch:>2}: pair loss {loss:.6f}")
 
     same, cross = [], []
     for word in VOCAB:
         best = neighbours(vec, word)
         topics = {TOPIC[other] for _score, other in best}
-        (same if TOPIC[word] in topics else cross).append(word)
-    print(f"words whose top-3 neighbours include their own topic: "
+        (same if topics == {TOPIC[word]} else cross).append(word)
+    print(f"words whose top-3 neighbours all match their own topic: "
           f"{len(same)}/{len(VOCAB)}")
     misses = [w for w in cross]
     if misses:
@@ -155,9 +175,9 @@ def main() -> int:
         print(f"    after : {after}")
 
     print()
-    print("note: ch02's hand-set vectors explain the geometry; these "
-          "vectors earned it -- same-topic words meet in context, "
-          "so gradient descent pulls them together")
+    print("note: pair loss averages pre-update binary losses, including "
+          "new negative draws. Neighbours use the input table only; "
+          "topic grouping here is not a retrieval-quality evaluation")
     return 0
 
 

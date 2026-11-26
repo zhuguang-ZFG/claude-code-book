@@ -45,7 +45,7 @@ def build_corpus(rng: random.Random) -> tuple[list[tuple[float, float]], list[in
 
 def nearest(point: tuple[float, float], points: list[tuple[float, float]],
             k: int) -> list[int]:
-    order = sorted(range(len(points)), key=lambda i: distance(point, points[i]))
+    order = sorted(range(len(points)), key=lambda i: (distance(point, points[i]), i))
     return order[:k]
 
 
@@ -87,7 +87,8 @@ def ivf_search(query: tuple[float, float], points: list[tuple[float, float]],
     order = sorted(range(len(centroids)),
                    key=lambda c: distance(query, centroids[c]))
     candidates = [index for c in order[:nprobe] for index in buckets[c]]
-    ranked = sorted(candidates, key=lambda i: distance(query, points[i]))
+    # Match flat search's ID tie-break, independent of bucket traversal order.
+    ranked = sorted(candidates, key=lambda i: (distance(query, points[i]), i))
     return ranked[:K], len(candidates)
 
 

@@ -128,12 +128,21 @@ class EmbeddingExample(unittest.TestCase):
 
     def test_top_k_excludes_the_query_and_sorts_by_cosine(self):
         module = self.embedding
-        rows = module.top_k(module.VECTORS["退款"], module.VECTORS, 3)
+        rows = module.top_k(module.VECTORS["退款"], module.VECTORS, 3,
+                            exclude_name="退款")
         names = [row[0] for row in rows]
         self.assertNotIn("退款", names)
         self.assertEqual(names[0], "不退款")
         scores = [row[1] for row in rows]
         self.assertEqual(scores, sorted(scores, reverse=True))
+
+    def test_top_k_keeps_distinct_records_with_identical_vectors(self):
+        module = self.embedding
+        vectors = {"query": [1.0, 0.0], "copy": [1.0, 0.0], "other": [0.0, 1.0]}
+        self.assertEqual([row[0] for row in module.top_k([1.0, 0.0], vectors, 3)],
+                         ["query", "copy", "other"])
+        self.assertEqual([row[0] for row in module.top_k(
+            vectors["query"], vectors, 3, exclude_name="query")], ["copy", "other"])
 
     def test_negation_is_nearly_parallel_in_the_toy_space(self):
         module = self.embedding
@@ -1130,6 +1139,48 @@ class EmbeddingTrainExample(unittest.TestCase):
             self.assertNotEqual(center, context)
             self.assertIn(abs(center - context), (1, 2))
 
+    def test_pair_sgd_matches_numerical_gradients_for_both_vectors(self):
+        import math
+        module = self.module
+        for label in (0.0, 1.0):
+            left, right = [0.4, -0.3, 0.8], [-0.7, 0.2, 0.5]
+            before = left + right
+
+            def loss(parameters):
+                score = sum(parameters[i] * parameters[i + 3] for i in range(3))
+                return math.log1p(math.exp(score)) - label * score
+
+            epsilon, rate = 1e-6, 0.03
+            expected = []
+            for index, value in enumerate(before):
+                plus, minus = before[:], before[:]
+                plus[index] += epsilon
+                minus[index] -= epsilon
+                gradient = (loss(plus) - loss(minus)) / (2 * epsilon)
+                expected.append(value - rate * gradient)
+            observed_loss = module.sgd_pair(left, right, label, rate)
+            self.assertAlmostEqual(observed_loss, loss(before), places=12)
+            for actual, wanted in zip(left + right, expected):
+                self.assertAlmostEqual(actual, wanted, places=10)
+
+    def test_negative_pool_excludes_center_and_known_contexts(self):
+        self.assertEqual(self.module.negative_pool(0, {1, 2}, 5), [3, 4])
+        with self.assertRaisesRegex(ValueError, "no eligible negative"):
+            self.module.negative_pool(0, {1, 2}, 3)
+
+    def test_training_rejects_corpus_without_context_pairs(self):
+        import random
+        self.module.IDS = [[], [0]]
+        with self.assertRaisesRegex(ValueError, "context pair"):
+            self.module.train(random.Random(11))
+
+    def test_training_rejects_exhausted_negative_pool(self):
+        import random
+        self.module.VOCAB = ["a", "b", "c"]
+        self.module.IDS = [[0, 1, 2]]
+        with self.assertRaisesRegex(ValueError, "no eligible negative"):
+            self.module.train(random.Random(11))
+
     def test_training_groups_words_by_topic(self):
         import random
         vec, _initial, _history = self.module.train(
@@ -1141,7 +1192,7 @@ class EmbeddingTrainExample(unittest.TestCase):
                       for j in range(len(vec)) if j != index]
             scored.sort(reverse=True)
             topics = {self.module.TOPIC[other] for _s, other in scored[:3]}
-            hits += self.module.TOPIC[word] in topics
+            hits += topics == {self.module.TOPIC[word]}
         self.assertEqual(hits, len(self.module.VOCAB))
 
     def test_training_is_reproducible(self):
@@ -1296,6 +1347,17 @@ class AnnExample(unittest.TestCase):
             found, _count = module.ivf_search(
                 query, points, buckets, centroids, module.CLUSTERS)
             self.assertEqual(found, module.nearest(query, points, module.K))
+
+    def test_full_probe_and_flat_agree_when_distances_tie(self):
+        module = self.module
+        module.K = 1
+        points = [(1.0, 0.0), (-1.0, 0.0)]
+        centroids, buckets = [(-1.0, 0.0), (1.0, 0.0)], [[1], [0]]
+        query = (0.0, 0.0)
+        found, scanned = module.ivf_search(query, points, buckets, centroids, 2)
+        self.assertEqual(scanned, 2)
+        self.assertEqual(found, module.nearest(query, points, module.K))
+        self.assertEqual(found, [0])
 
     def test_more_probes_never_reduce_recall(self):
         module = self.module

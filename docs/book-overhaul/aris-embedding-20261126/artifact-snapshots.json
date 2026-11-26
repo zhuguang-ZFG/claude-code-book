@@ -1,0 +1,223 @@
+[
+  {
+    "path": "round0/source/llm/ch02.md",
+    "bytes": 16131,
+    "sha256": "f2336dd4a334687b68112fe49d70ec70b626ae9bfb1eb4280ea0a2ecd8441c27"
+  },
+  {
+    "path": "round0/source/llm/ch16.md",
+    "bytes": 25116,
+    "sha256": "c6b7d063b14df5ef906e587b37780c715031c201e63bdbf43ca572924b7bdee0"
+  },
+  {
+    "path": "round0/source/llm/examples/ann_demo.py",
+    "bytes": 7703,
+    "sha256": "85df5bfb36b9532371ee0bb5fc0e084c9575986c70f315cedbf2d4cc63e449ed"
+  },
+  {
+    "path": "round0/source/llm/examples/embedding_demo.py",
+    "bytes": 3588,
+    "sha256": "476d972d6d197c1e1cec05413c1970d528629b894b17fefc5fef8c4c7126e794"
+  },
+  {
+    "path": "round0/source/llm/examples/embedding_train_demo.py",
+    "bytes": 5842,
+    "sha256": "6165771fdb3ab52eff286f81c2c17a4587d02b76528d6d6e8abee3464a778d6a"
+  },
+  {
+    "path": "round0/source/llm/facts/source-lock.json",
+    "bytes": 4620,
+    "sha256": "545067ae57f50c435c569a39effa66e1193202f0593de4b179e42e1a2bc6b991"
+  },
+  {
+    "path": "round0/source/tests/test_llm_examples.py",
+    "bytes": 63572,
+    "sha256": "b655f1edf4bf720e9b3a4e881365eee0faf33903a799c5abc096ea5ad3429f7c"
+  },
+  {
+    "path": "round0/source/yuyu-book/manifest-llm.json",
+    "bytes": 6812,
+    "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+  },
+  {
+    "path": "round0/source/yuyu-book/sources-llm.json",
+    "bytes": 63029,
+    "sha256": "57c1d3389d2387cba8e213ae8e411412977fd350efe55f777276042af93b8a48"
+  },
+  {
+    "path": "round0/yuyu-llm-zh.epub",
+    "bytes": 1182018,
+    "sha256": "1c6bdba6f660d8ff7977121007a8ddb4bb93f866154f3a7f09aa227d3a34211a"
+  },
+  {
+    "path": "round0/yuyu-llm-zh.html",
+    "bytes": 779275,
+    "sha256": "62476ae170d6ede195ce12bb3a58431d101fa5d1f483fe0c718772531437955e"
+  },
+  {
+    "path": "round0/yuyu-llm-zh.pdf",
+    "bytes": 20303790,
+    "sha256": "eeb3f1b498ec198b38aa1733730b1e686957e4928d9cca19346457fb9279c5dd"
+  },
+  {
+    "path": "round1/artifact-manifest.json",
+    "bytes": 8370,
+    "sha256": "12866dcf28ffc63cd702c4cfbed25139909d51afbfd574a8e03768ba7c120b35"
+  },
+  {
+    "path": "round1/build-report.json",
+    "bytes": 848,
+    "sha256": "00d7b46b14c685421b067b7c964ca142bcbedcb0081cade86ff45b6578ccfea9"
+  },
+  {
+    "path": "round1/source/llm/ch02.md",
+    "bytes": 19202,
+    "sha256": "b6328eb8907cf102f49b3eb399b52f65775438c3cde37a6d0e71726331359555"
+  },
+  {
+    "path": "round1/source/llm/ch16.md",
+    "bytes": 25171,
+    "sha256": "43c5d6f9a9a0953a1b0b4bd8b452b34abf7641a34eec4f38609a3f07628a9edc"
+  },
+  {
+    "path": "round1/source/llm/examples/ann_demo.py",
+    "bytes": 7793,
+    "sha256": "0a9cf83980c0a534ea1d48a2bf11a66991e18a65f32ad2076634d1f125b1a4c6"
+  },
+  {
+    "path": "round1/source/llm/examples/embedding_demo.py",
+    "bytes": 3663,
+    "sha256": "4e75765f940c5c8320900a37a51d9d217ae377ea24e655a7a549b234a18d7a95"
+  },
+  {
+    "path": "round1/source/llm/examples/embedding_train_demo.py",
+    "bytes": 6745,
+    "sha256": "a9ead278303060f871eafb69f4d1fc8f95ac578bdeaa2b2f1dd270d166196677"
+  },
+  {
+    "path": "round1/source/llm/examples/README.md",
+    "bytes": 7101,
+    "sha256": "bed75b6a53c9e21ada8110940888ebe8efbb5850dabd0a87fa8a944f19d32ce4"
+  },
+  {
+    "path": "round1/source/llm/facts/source-lock.json",
+    "bytes": 5368,
+    "sha256": "48ed58c73cc97aee7fc913110cf8583683d0c355d4a9c32ef70337e727ede227"
+  },
+  {
+    "path": "round1/source/tests/test_llm_examples.py",
+    "bytes": 66512,
+    "sha256": "49754db9022b0911ef9cb0b4b35ff686fbba9fcd904ddff2cd16dbb3fc71c48b"
+  },
+  {
+    "path": "round1/source/yuyu-book/manifest-llm.json",
+    "bytes": 6812,
+    "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+  },
+  {
+    "path": "round1/source/yuyu-book/sources-llm.json",
+    "bytes": 66798,
+    "sha256": "74bcc8be0d6fcd9855136fc1175a83f9cea991ef18e71a228b960c2380718e85"
+  },
+  {
+    "path": "round1/yuyu-llm-zh.epub",
+    "bytes": 1030390,
+    "sha256": "958d943d63125f9942a56f08ec02a338dc329c001db5a8e125f3378cb939857a"
+  },
+  {
+    "path": "round1/yuyu-llm-zh.html",
+    "bytes": 796849,
+    "sha256": "7dc0e6f1416dc5e929fe7719f9688d48b364a4ef0eac5ebe1a7be52515c795bb"
+  },
+  {
+    "path": "round1/yuyu-llm-zh.pdf",
+    "bytes": 8176240,
+    "sha256": "e6fac45f6aecf6e84b7f72883cf0ca258dac3a7d7c0804c4502a73b061da4c36"
+  },
+  {
+    "path": "round2/artifact-manifest.json",
+    "bytes": 8475,
+    "sha256": "de0e593b0f35ee89fa3d4d6fd0a71ea55d76bb24436da70380e6e24dca46157b"
+  },
+  {
+    "path": "round2/build-report.json",
+    "bytes": 848,
+    "sha256": "a12e37aa13cc8e7d2e7b5c11c01081317d4f978d256d456e8fcc33da0474356a"
+  },
+  {
+    "path": "round2/source/llm/ch02.md",
+    "bytes": 19202,
+    "sha256": "b6328eb8907cf102f49b3eb399b52f65775438c3cde37a6d0e71726331359555"
+  },
+  {
+    "path": "round2/source/llm/ch16.md",
+    "bytes": 25248,
+    "sha256": "29daab56e1fe91266c88c6e9d4c84d559568b27d0d78b44210af374e0ecfe213"
+  },
+  {
+    "path": "round2/source/llm/examples/ann_demo.py",
+    "bytes": 7793,
+    "sha256": "0a9cf83980c0a534ea1d48a2bf11a66991e18a65f32ad2076634d1f125b1a4c6"
+  },
+  {
+    "path": "round2/source/llm/examples/embedding_demo.py",
+    "bytes": 3663,
+    "sha256": "4e75765f940c5c8320900a37a51d9d217ae377ea24e655a7a549b234a18d7a95"
+  },
+  {
+    "path": "round2/source/llm/examples/embedding_train_demo.py",
+    "bytes": 6746,
+    "sha256": "ab85ab761dde3e145d51ff5c0248961e5a005bccbb9a0c5bcac84236d316e8e6"
+  },
+  {
+    "path": "round2/source/llm/examples/README.md",
+    "bytes": 7101,
+    "sha256": "bed75b6a53c9e21ada8110940888ebe8efbb5850dabd0a87fa8a944f19d32ce4"
+  },
+  {
+    "path": "round2/source/llm/facts/source-lock.json",
+    "bytes": 5368,
+    "sha256": "48ed58c73cc97aee7fc913110cf8583683d0c355d4a9c32ef70337e727ede227"
+  },
+  {
+    "path": "round2/source/llm/VERIFY.md",
+    "bytes": 18657,
+    "sha256": "f05e7ab4419696bda14466d5552ff780008f4549be1841a3ddcf602689ebaa09"
+  },
+  {
+    "path": "round2/source/tests/test_llm_examples.py",
+    "bytes": 66512,
+    "sha256": "49754db9022b0911ef9cb0b4b35ff686fbba9fcd904ddff2cd16dbb3fc71c48b"
+  },
+  {
+    "path": "round2/source/yuyu-book/manifest-llm.json",
+    "bytes": 6812,
+    "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+  },
+  {
+    "path": "round2/source/yuyu-book/sources-llm.json",
+    "bytes": 66798,
+    "sha256": "74bcc8be0d6fcd9855136fc1175a83f9cea991ef18e71a228b960c2380718e85"
+  },
+  {
+    "path": "round2/source/yuyu-book/yuyu_book/style_print.py",
+    "bytes": 15565,
+    "sha256": "d8c33f0c1bf013372757773ecd269f0a34d60bb80d50c4a2afb253f65cbacc44"
+  },
+  {
+    "path": "round2/yuyu-llm-zh.epub",
+    "bytes": 1030425,
+    "sha256": "182ee2fe2f0cf0548fbca49fd2bd8fad05e4b81ac9f27133a16de3002fdc2735",
+    "hash_source": "successful build_epub.py output; direct reread of earlier EPUB denied by local permissions"
+  },
+  {
+    "path": "round2/yuyu-llm-zh.html",
+    "bytes": 796999,
+    "sha256": "652005678594b9a4a7538107275e946fda4d139c5371ff778c952c0563b17753"
+  },
+  {
+    "path": "round2/yuyu-llm-zh.pdf",
+    "bytes": 8177202,
+    "sha256": "07715a71f096e04f202397dbf453b87670da540057cbeda850c67abe59f5eb22"
+  }
+]

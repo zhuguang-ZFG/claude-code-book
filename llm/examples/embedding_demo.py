@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import math
 
-# Six support-desk intents in a 3-D space: returns, shipping, invoices.
+# Seven support-desk phrases in a 3-D space: returns, shipping, invoices.
 VECTORS = {
     "退款": [0.9, 0.1, 0.0],
     "退货": [0.8, 0.2, 0.0],
@@ -38,10 +38,10 @@ def cosine(left: list[float], right: list[float]) -> float:
 
 
 def top_k(query: list[float], vectors: dict[str, list[float]],
-          k: int) -> list[tuple[str, float, float]]:
-    """Return (name, cosine, dot) sorted by cosine, highest first."""
+          k: int, *, exclude_name: str | None = None) -> list[tuple[str, float, float]]:
+    """Rank records by cosine; optionally exclude one record by its name."""
     scored = [(name, cosine(query, vector), dot(query, vector))
-              for name, vector in vectors.items() if vector != query]
+              for name, vector in vectors.items() if name != exclude_name]
     return sorted(scored, key=lambda row: row[1], reverse=True)[:k]
 
 
@@ -70,7 +70,7 @@ def main() -> int:
     for query_name in QUERIES:
         print(f"query: {query_name}")
         for rank, (name, cos, raw) in enumerate(
-                top_k(VECTORS[query_name], VECTORS, 4), 1):
+                top_k(VECTORS[query_name], VECTORS, 4, exclude_name=query_name), 1):
             print(f"  {rank}. {name:<4} cosine={cos:.3f} dot={raw:.3f}")
         print()
 

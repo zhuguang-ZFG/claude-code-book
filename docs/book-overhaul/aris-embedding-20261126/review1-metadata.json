@@ -1,0 +1,26 @@
+{
+  "route": {
+    "backend": "codex",
+    "host": "codex",
+    "source": "host-default",
+    "model": "gpt-6-astra",
+    "effort": "xhigh",
+    "transport": "native"
+  },
+  "agent": "aris_embedding_review1",
+  "actual_model": null,
+  "actual_effort": null,
+  "acceptance": "same-family / provisional",
+  "fresh_context": true,
+  "history_fork": "none",
+  "input_snapshot": "round0",
+  "status": "completed",
+  "score": 7,
+  "verdict": "Almost",
+  "failed_attempts": [
+    {
+      "error": "429 Too Many Requests",
+      "review_produced": false
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "route": {
+    "backend": "codex",
+    "host": "codex",
+    "source": "host-default",
+    "model": "gpt-6-astra",
+    "effort": "xhigh",
+    "transport": "native"
+  },
+  "agent": "aris_embedding_review2",
+  "actual_model": null,
+  "actual_effort": null,
+  "acceptance": "same-family / provisional",
+  "fresh_context": true,
+  "history_fork": "none",
+  "input_snapshot": "round1",
+  "status": "completed",
+  "score": 9.0,
+  "verdict": "Ready",
+  "critical": 0,
+  "major": 0,
+  "minor": 2
+}

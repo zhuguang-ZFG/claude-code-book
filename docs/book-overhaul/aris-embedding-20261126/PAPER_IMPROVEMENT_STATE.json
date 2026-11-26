@@ -1,0 +1,28 @@
+{
+  "status": "completed",
+  "current_round": 2,
+  "timestamp": "2026-11-26T04:03:32.779517+00:00",
+  "baseline_commit": "ae0061e4041c334ca44ca7ae56526035e775dd85",
+  "reviewer_route": {
+    "backend": "codex",
+    "host": "codex",
+    "model": "gpt-6-astra",
+    "effort": "xhigh",
+    "source": "host-default",
+    "transport": "native"
+  },
+  "reviewer": "aris_embedding_review2",
+  "actual_identity": null,
+  "acceptance": "same-family / provisional",
+  "failed_calls": [
+    {
+      "reviewer": "aris_embedding_review1",
+      "error": "429 Too Many Requests; no review produced",
+      "retried": true
+    }
+  ],
+  "last_score": 9.0,
+  "final_validation": "final-validation.json",
+  "final_snapshot": "round2",
+  "publication": "pending commit and CI"
+}
