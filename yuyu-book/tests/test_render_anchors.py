@@ -5,6 +5,8 @@ import time
 import unittest
 from pathlib import Path
 
+import markdown
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from yuyu_book import refs, render  # noqa: E402
@@ -101,6 +103,14 @@ class Components(unittest.TestCase):
         # a phone paints no scrollbar until the reader drags, so the only other
         # way to the columns past the cut is keyboard -- which needs a stop here
         self.assertIn('tabindex="0"', out)
+        # Markdown emits thead/tbody; <thead> must not count as a sixth cell.
+        markdown_table = markdown.markdown(
+            "| a | b | c | d | e |\n| --- | --- | --- | --- | --- |\n"
+            "| 1 | 2 | 3 | 4 | 5 |", extensions=["tables"])
+        self.assertIn('data-cols="5"', render.wrap_tables(markdown_table))
+        body_only = ("<table><tbody><tr><td>a</td><td>b</td></tr>"
+                     "<tr><td>c</td><td>d</td></tr></tbody></table>")
+        self.assertIn('data-cols="2"', render.wrap_tables(body_only))
 
     def test_a_long_flag_name_gets_break_points_in_a_table(self):
         # Appendix B ships flag names like KAIROS_GITHUB_WEBHOOKS; without a

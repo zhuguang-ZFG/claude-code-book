@@ -47,6 +47,13 @@ class BpeExample(unittest.TestCase):
         self.assertEqual(first[0], second[0])
         self.assertEqual(first[1], second[1])
 
+    def test_unicode_and_partial_tokens_have_distinct_boundaries(self):
+        rules, vocab = self.bpe.train(self.bpe.CORPUS, 32)
+        for text in ("e\u0301", "𠮷", "👩\u200d💻"):
+            self.assertEqual(self.bpe.decode(self.bpe.encode(text, rules), vocab), text)
+        with self.assertRaises(UnicodeDecodeError):
+            self.bpe.decode(self.bpe.encode("🙂", rules)[:1], vocab)
+
     def test_command_prints_the_three_counts_and_round_trip(self):
         output = run("bpe_demo")
         self.assertIn("round-trip OK", output)
@@ -394,19 +401,69 @@ class ToolCallExample(unittest.TestCase):
         self.assertTrue(missing["isError"])
         self.assertIn("order not found", missing["content"])
 
+    def test_non_object_arguments_fail_without_executing(self):
+        for arguments in (None, [], "oops", 1001):
+            with self.subTest(arguments=arguments):
+                result = self.tool.call_tool("get_refund_status", arguments)
+                self.assertTrue(result["isError"])
+                self.assertIn("arguments must be an object", result["content"])
+        for name in (None, [], {}, 1001):
+            with self.subTest(name=name):
+                result = self.tool.call_tool(name, {})
+                self.assertTrue(result["isError"])
+                self.assertIn("tool name must be a string", result["content"])
+                response = self.tool.mcp_tool_response(11, name, {})
+                self.assertEqual(response["error"]["code"], -32602)
+
+    def test_declared_required_extra_enum_and_ascii_constraints(self):
+        for name, arguments, message in (
+            ("get_refund_status", {}, "missing required field"),
+            ("get_refund_status", {"order_id": "ORD-1001", "user_id": "other"},
+             "unexpected field"),
+            ("create_ticket", {"order_id": "ORD-1001", "reason": "unknown"},
+             "must be one of"),
+            ("get_refund_status", {"order_id": "ORD-１００１"}, "does not match"),
+        ):
+            with self.subTest(name=name, arguments=arguments):
+                result = self.tool.call_tool(name, arguments)
+                self.assertTrue(result["isError"])
+                self.assertIn(message, result["content"])
+
     def test_mcp_messages_have_the_expected_shape(self):
         module = self.tool
         messages = module.mcp_messages()
-        self.assertEqual([message["method"] for message in messages],
-                         ["initialize", "tools/list", "tools/call"])
+        requests, responses = messages[::2], messages[1::2]
+        self.assertEqual([message["method"] for message in requests],
+                         ["server/discover", "tools/list", "tools/call"])
         self.assertTrue(all(message["jsonrpc"] == "2.0" for message in messages))
-        self.assertEqual(messages[0]["params"]["protocolVersion"], "2026-07-28")
-        self.assertEqual(messages[-1]["params"]["name"], "get_refund_status")
+        for request, response in zip(requests, responses):
+            self.assertEqual(request["id"], response["id"])
+            meta = request["params"]["_meta"]
+            self.assertEqual(meta["io.modelcontextprotocol/protocolVersion"],
+                             "2026-07-28")
+            self.assertEqual(meta["io.modelcontextprotocol/clientCapabilities"], {})
+            self.assertEqual(response["result"]["resultType"], "complete")
+        advertised = responses[1]["result"]["tools"]
+        self.assertEqual({tool["name"] for tool in advertised}, set(module.TOOLS))
+        self.assertIn(requests[-1]["params"]["name"], module.TOOLS)
+        self.assertFalse(responses[-1]["result"]["isError"])
+
+    def test_mcp_protocol_errors_are_distinct_from_tool_failures(self):
+        for name, arguments in (("absent", {}), ("get_refund_status", [])):
+            response = self.tool.mcp_tool_response(9, name, arguments)
+            self.assertEqual(response["id"], 9)
+            self.assertEqual(response["error"]["code"], -32602)
+            self.assertNotIn("result", response)
+        for arguments in ({"order_id": 1001}, {"order_id": "ORD-9999"}):
+            response = self.tool.mcp_tool_response(10, "get_refund_status", arguments)
+            self.assertNotIn("error", response)
+            self.assertTrue(response["result"]["isError"])
+            self.assertEqual(response["result"]["content"][0]["type"], "text")
 
     def test_command_prints_validation_and_mcp(self):
         output = run("toolcall_demo")
-        self.assertIn("get_refund_status: 181 chars", output)
-        self.assertIn("create_ticket: 241 chars", output)
+        self.assertIn("get_refund_status: 183 chars", output)
+        self.assertIn("create_ticket: 243 chars", output)
         self.assertIn("validation failed: order_id must be a string", output)
         self.assertIn('"method": "tools/call"', output)
         self.assertIn("退款处理中", output)
@@ -429,6 +486,26 @@ class CotExample(unittest.TestCase):
             module.majority_accuracy(0.6, 2)
         with self.assertRaises(ValueError):
             module.majority_accuracy(0.0, 3)
+        with self.assertRaises(ValueError):
+            module.majority_accuracy(0.6, 3, trials=0)
+
+    def test_binary_majority_matches_enumerated_vote_outcomes(self):
+        import itertools
+        module = self.cot
+        for p in (0.45, 0.5, 0.6, 0.75):
+            for n in (1, 3, 5):
+                expected = 0.0
+                for votes in itertools.product((0, 1), repeat=n):
+                    if sum(votes) > n // 2:
+                        probability = 1.0
+                        for vote in votes:
+                            probability *= p if vote else 1 - p
+                        expected += probability
+                self.assertAlmostEqual(module.exact_majority_accuracy(p, n), expected)
+                self.assertAlmostEqual(module.majority_accuracy(p, n, trials=20000),
+                                       expected, delta=0.02)
+        self.assertLess(module.exact_majority_accuracy(0.45, 15), 0.45)
+        self.assertGreater(module.exact_majority_accuracy(0.6, 15), 0.6)
 
     def test_cost_per_correct_divides_by_accuracy(self):
         module = self.cot
@@ -692,10 +769,55 @@ class SamplingExample(unittest.TestCase):
 
     def test_same_seed_and_order_repeat(self):
         import random
-        dist = self.sampling.top_p(self.sampling.softmax(self.sampling.LOGITS, 0.2), 0.9)
-        first = [self.sampling.sample(dist, random.Random(11)) for _ in range(8)]
-        second = [self.sampling.sample(dist, random.Random(11)) for _ in range(8)]
+        dist = self.sampling.top_p(self.sampling.softmax(self.sampling.LOGITS, 1.0), 0.9)
+        first = self.sampling.sample_sequence(dist, 11, 8)
+        second = self.sampling.sample_sequence(dist, 11, 8)
         self.assertEqual(first, second)
+        self.assertGreater(len(set(first)), 1)
+        # Independent inverse-CDF oracle, one random stream for the whole run.
+        rng = random.Random(11)
+        ordered = sorted(dist.items(), key=lambda item: item[1], reverse=True)
+        expected = []
+        for _ in range(8):
+            draw, total = rng.random(), 0.0
+            for token, probability in ordered:
+                total += probability
+                if draw < total:
+                    expected.append(token)
+                    break
+        self.assertEqual(first, expected)
+
+    def test_softmax_handles_extreme_temperature_and_tied_maxima(self):
+        import math
+        for t in (1e-320, 1e308):
+            probs = self.sampling.softmax({"a": 1e308, "b": -1e308}, t)
+            self.assertAlmostEqual(sum(probs.values()), 1)
+            self.assertTrue(all(math.isfinite(v) for v in probs.values()))
+        hot = self.sampling.softmax({"a": 1e308, "b": -1e308}, 1e308)
+        self.assertAlmostEqual(hot["a"], 1 / (1 + math.exp(-2)))
+        tied = self.sampling.softmax({"a": 800.0, "b": 800.0, "c": 0.0}, 1e-320)
+        self.assertEqual(tied, {"a": 0.5, "b": 0.5, "c": 0.0})
+        for t in (float("nan"), float("inf"), -1):
+            with self.assertRaises(ValueError):
+                self.sampling.softmax({"a": 0.0}, t)
+
+    def test_sampler_respects_zero_mass_and_interval_boundaries(self):
+        from unittest.mock import Mock
+        # Half-open CDF intervals: the exact boundary belongs to the next token.
+        rng = Mock()
+        rng.random.return_value = 0.5
+        self.assertEqual(self.sampling.sample({"a": 0.5, "b": 0.5, "zero": 0}, rng), "b")
+        rng.random.return_value = 0.9999999999999999
+        self.assertEqual(self.sampling.sample({"b": 0.2, "a": 0.8, "zero": 0}, rng), "b")
+        for dist in ({}, {"a": 0}, {"a": -1}, {"a": float("nan")}):
+            with self.assertRaises(ValueError):
+                self.sampling.sample(dist, rng)
+
+    def test_top_p_is_smallest_descending_prefix_at_threshold(self):
+        dist = {"c": 0.2, "a": 0.5, "b": 0.3}
+        self.assertEqual(set(self.sampling.top_p(dist, 0.5)), {"a"})
+        self.assertEqual(set(self.sampling.top_p(dist, 0.8)), {"a", "b"})
+        self.assertEqual(set(self.sampling.top_p(dist, 1.0)), set(dist))
 
     def test_command_prints_both_temperatures(self):
         output = run("sampling_demo")
@@ -731,6 +853,16 @@ class ContextExample(unittest.TestCase):
             encoding="utf-8")
         self.assertIn("OVER BUDGET", completed.stdout)
 
+    def test_zero_calls_has_zero_bill_and_negative_inputs_are_rejected(self):
+        command = [sys.executable, str(EXAMPLES / "context_budget.py")]
+        zero = subprocess.run(command + ["--calls", "0"], capture_output=True, text=True)
+        self.assertEqual(zero.returncode, 0)
+        self.assertIn("$0.00", zero.stdout)
+        for args in (["--retrieved", "-1"], ["--layers", "0"],
+                     ["--price-per-million", "nan"]):
+            result = subprocess.run(command + args, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 2)
+
 
 class MultimodalExample(unittest.TestCase):
     def setUp(self):
@@ -755,21 +887,52 @@ class MultimodalExample(unittest.TestCase):
         dim = module.project([5, 4, 5, 6])
         self.assertGreater(max(bright), max(dim))
 
+    def test_partial_patches_are_zero_padded_and_match_grid_count(self):
+        module = self.multimodal
+        image = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        blocks = module.patches(image, 2)
+        self.assertEqual(len(blocks), module.patch_grid_count(3, 3, 2))
+        self.assertEqual(blocks, [((0, 0), [1, 2, 4, 5]),
+                                  ((0, 1), [3, 0, 6, 0]),
+                                  ((1, 0), [7, 8, 0, 0]),
+                                  ((1, 1), [9, 0, 0, 0])])
+        for _, block in blocks:
+            self.assertEqual(len(module.project(block)), 3)
+
+    def test_resize_caps_dimensions_without_upscaling_or_zero_edges(self):
+        module = self.multimodal
+        self.assertEqual(module.resized(640, 480, 1568), (640, 480))
+        self.assertEqual(module.resized(1, 10000, 768), (1, 768))
+        for width, height, cap in ((1920, 1080, 768), (1080, 1920, 768)):
+            small = module.resized(width, height, cap)
+            self.assertLessEqual(max(small), cap)
+            self.assertLessEqual(small[0], width)
+            self.assertLessEqual(small[1], height)
+
+    def test_mismatched_projection_and_invalid_image_shapes_are_rejected(self):
+        module = self.multimodal
+        for block in ([1, 2, 3], [1] * 9):
+            with self.assertRaises(ValueError):
+                module.project(block)
+        for image, size in (([], 2), ([[1], [1, 2]], 2), ([[1]], 0)):
+            with self.assertRaises(ValueError):
+                module.patches(image, size)
+
     def test_resolution_decides_the_budget_and_scaling_shrinks_it(self):
         module = self.multimodal
-        self.assertEqual(module.direct_tokens(1920, 1080), 8160)
-        self.assertEqual(module.direct_tokens(4032, 3024), 47628)
+        self.assertEqual(module.patch_grid_count(1920, 1080), 8160)
+        self.assertEqual(module.patch_grid_count(4032, 3024), 47628)
         scaled = module.resized(1920, 1080, 1568)
         self.assertEqual(scaled, (1568, 882))
-        self.assertEqual(module.direct_tokens(*scaled), 5488)
-        self.assertEqual(module.pixel_priced(*scaled), 1844)
+        self.assertEqual(module.patch_grid_count(*scaled), 5488)
+        self.assertEqual(module.area_units(*scaled), 1844)
         self.assertEqual(module.resized(2480, 3508, 1568), (1109, 1568))
-        self.assertEqual(module.pixel_priced(1109, 1568), 2319)
+        self.assertEqual(module.area_units(1109, 1568), 2319)
 
-    def test_detail_levels_differ_by_about_four_times(self):
+    def test_teaching_resize_settings_differ_by_about_four_times(self):
         module = self.multimodal
-        low = module.pixel_priced(*module.resized(1920, 1080, 768))
-        high = module.pixel_priced(*module.resized(1920, 1080, 1568))
+        low = module.area_units(*module.resized(1920, 1080, 768))
+        high = module.area_units(*module.resized(1920, 1080, 1568))
         self.assertEqual(low, 442)
         self.assertEqual(high, 1844)
         self.assertGreater(high / low, 4)
@@ -780,8 +943,8 @@ class MultimodalExample(unittest.TestCase):
         self.assertIn("8160", output)
         self.assertIn("47628", output)
         self.assertIn("1844", output)
-        self.assertIn("low  (max edge 768)", output)
-        self.assertIn("high (max edge 1568)", output)
+        self.assertIn("A (max edge 768)", output)
+        self.assertIn("B (max edge 1568)", output)
 
 
 class TrainExample(unittest.TestCase):
@@ -1001,6 +1164,12 @@ class SessionLedgerExample(unittest.TestCase):
         self.assertAlmostEqual(result["input_cost"],
                                sum(row["input_cost"] for row in result["rows"]),
                                places=12)
+
+    def test_input_categories_separate_tool_results_from_assistant_history(self):
+        categories = self.module.input_categories()
+        self.assertEqual(categories["tool results"], 4_800)
+        self.assertEqual(categories["assistant history"], 1_500)
+        self.assertEqual(sum(categories.values()), sum(self.module.turn_prompts()))
 
     def test_command_prints_the_three_strategies(self):
         output = run("session_ledger")

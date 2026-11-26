@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "current_round": 2,
+  "max_rounds": 2,
+  "timestamp": "2026-11-26T00:04:49.215086+00:00",
+  "scope": [
+    "llm/ch01.md",
+    "llm/ch05.md",
+    "llm/ch06.md",
+    "llm/ch16.md",
+    "llm/examples/bpe_demo.py",
+    "llm/examples/sampling_demo.py",
+    "llm/examples/context_budget.py",
+    "llm/examples/session_ledger.py",
+    "yuyu-book/illustrations-agents/llm-ch01-token-pipeline.svg",
+    "yuyu-book/illustrations-agents/llm-ch01-byte-merge.svg",
+    "yuyu-book/illustrations-agents/llm-ch05-filter-bars.svg",
+    "yuyu-book/illustrations-agents/llm-ch05-sampling-curve.svg",
+    "yuyu-book/illustrations-agents/llm-ch06-context-ledger.svg",
+    "yuyu-book/illustrations-agents/llm-ch06-kv-growth.svg",
+    "llm/VERIFY.md",
+    "llm/examples/README.md",
+    "tests/test_llm_examples.py",
+    "yuyu-book/manifest-llm.json",
+    "yuyu-book/sources-llm.json",
+    "yuyu-book/revisions.json",
+    "llm/facts/source-lock.json",
+    "yuyu-book/yuyu_book/render.py",
+    "yuyu-book/yuyu_book/style_print.py",
+    "yuyu-book/yuyu_book/style_components.py",
+    "yuyu-book/tests/test_render_anchors.py",
+    "docs/sample-chapter.html"
+  ],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "next_action": null,
+  "last_score": 8.5,
+  "last_verdict": "Almost",
+  "agent_id": "/root/aris_foundations_review2",
+  "validation": {
+    "html": {
+      "bytes": 777593,
+      "sha256": "56f76cf48ac1cc4269ddcb3382b0f68fe4371ebeae8aaaa9332486e1ff5c4837"
+    },
+    "pdf": {
+      "bytes": 8032445,
+      "sha256": "20769aeaab105f248354e4dc166d321be509252c8b7dbeb90347d3a4259cad55",
+      "pages": 161,
+      "bookmarks": 28
+    },
+    "visual": "36 section/viewport/theme checks, plus 4 token-table scroll-to-right checks",
+    "table_columns": 91,
+    "structure": "chapter headings, stable blocks and illustration references unchanged",
+    "gate": "9 steps passed; 466 repository tests (1 skip), 629 builder tests; 488 Markdown and 280 Mermaid, 0 errors; ruff and collected assembly passed",
+    "layout": "Five samples readable in <=2 lines at 390 px, all ratio columns visible by keyboard/scroll; PDF opening sample intact and short sampling table kept together"
+  },
+  "final_artifact": ".scratch/aris-foundations-20261126/round2/yuyu-llm-zh.html",
+  "remaining_issues": [],
+  "post_review_fixes": "review2 major and four minor issues fixed; no fabricated post-fix reviewer score",
+  "publication": "local changes only; no commit or push in this cycle"
+}

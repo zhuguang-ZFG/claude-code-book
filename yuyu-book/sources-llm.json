@@ -57,10 +57,10 @@
     "authority": "上游固定提交的公开资料",
     "kind": "github",
     "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/docs/source/en/generation_strategies.md",
-    "snapshot": "固定提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 读取",
-    "accessed": "2026-11-25",
+    "snapshot": "固定提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 读取；2026-11-26 核对正文相关段落与实现",
+    "accessed": "2026-11-26",
     "license": "Apache-2.0",
-    "scope": "第 5、10 章：采样与投机解码；v4.57.3 的 Universal Assisted Decoding 允许不同 tokenizer。",
+    "scope": "第 5、10 章：v4.57.3 的贪心、采样、束搜索与投机解码。另读取同提交 logits_process.py，核对温度、top-k 并列边界与 top-p 过滤；不把教学 tie-break 当作所有框架的实现。",
     "pinned": {
       "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
     }
@@ -109,12 +109,13 @@
     "authority": "arXiv 预印本（NeurIPS 2022）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2205.14135",
-    "snapshot": "arXiv:2205.14135，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2205.14135，2026-11-21 读取摘要页；2026-11-26 核对正文相关段落与实现；本次读取版本 2205.14135v2",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 3 章：通过分块与重计算避免物化完整注意力矩阵，说明显存读写与算术量的区别；不引用其性能数字。",
+    "scope": "第 3、6 章：分块与在线 softmax 避免物化完整矩阵；反向重计算减少存储；区分有效位置对、算术量和 HBM 读写。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26",
+      "arxiv-version": "2205.14135v2"
     }
   },
   "layernorm": {
@@ -343,13 +344,14 @@
     "authority": "Model Context Protocol 开源项目",
     "kind": "spec",
     "url": "https://modelcontextprotocol.io/specification/2026-07-28",
-    "snapshot": "2026-07-28 定版，2026-11-21 读取",
-    "accessed": "2026-11-21",
+    "snapshot": "2026-07-28 tag 固定到 5f5440bb26a62e2cf3440b92da5a667efa03b267；2026-11-26 阅读版本协商、发现、stdio、工具错误及 schema 原文",
+    "accessed": "2026-11-26",
     "license": "规范仓库许可以其仓库声明为准；链接引用，不转载条文",
-    "scope": "第 12 章：initialize、tools/list、tools/call 的生命周期，tools/resources/prompts 三类原语；用来说明工具调用的协议形状。",
+    "scope": "第 12、16 章：新版逐请求版本与能力元数据、可选 server/discover、resultType 和协议/工具错误分层；旧 initialize 限定在 2025-11-25 及更早版本。",
     "pinned": {
       "spec-version": "2026-07-28",
-      "released": "2026-07-28T16:47:49Z"
+      "released": "2026-07-28T16:47:49Z",
+      "commit": "5f5440bb26a62e2cf3440b92da5a667efa03b267"
     }
   },
   "jsonrpc": {
@@ -383,12 +385,12 @@
     "authority": "arXiv 预印本（ICLR 2023）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2203.11171",
-    "snapshot": "arXiv:2203.11171，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "2026-11-26 下载并阅读原论文 PDF 的方法部分；文件哈希保存在本轮来源审计记录",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 13 章：多采样后对最终答案投票的自洽方法；不引用其 benchmark 数字。",
+    "scope": "第 13 章：按答案身份 argmax 聚合，不要求多类别正确答案绝对过半；本书二元 Bernoulli 模拟与原论文实验数字分开。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "process-verification": {
@@ -474,12 +476,12 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2307.03172",
-    "snapshot": "arXiv:2307.03172，2023-07 首次提交，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2307.03172，2023-07 首次提交，2026-11-21 读取摘要页；2026-11-26 核对正文相关段落与实现",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 6 章：长上下文中开头、中间、结尾位置的信息利用差异，以及“塞满窗口”的质量风险。",
+    "scope": "第 6 章：多文档问答、键值检索中的证据位置效应；结果限于所测模型与任务，不宣称普遍固定损失。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "paged-attention": {
@@ -500,12 +502,12 @@
     "authority": "arXiv 预印本（ICLR 2021）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2010.11929",
-    "snapshot": "arXiv:2010.11929，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "2026-11-26 下载并阅读原论文 PDF 的方法部分；文件哈希保存在本轮来源审计记录",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 15 章：把图像切成 patch、线性投影成 token、用 Transformer 编码的视觉路线；只引用其切块与编码机制，不引用分类性能数字。",
+    "scope": "第 15 章：patch 线性投影、可学习位置嵌入、分类 token 与整段 Transformer 编码；脚本只实现切块与投影。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "clip-paper": {
@@ -526,12 +528,12 @@
     "authority": "arXiv 预印本（NeurIPS 2022）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2204.14198",
-    "snapshot": "arXiv:2204.14198，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "2026-11-26 下载并阅读原论文 PDF 的方法部分；文件哈希保存在本轮来源审计记录",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 15 章：图文交错语料上的多模态预训练；只引用其交错建模的动机，不引用少样本性能数字。",
+    "scope": "第 15 章：固定数量的视觉输出、Perceiver Resampler 和门控交叉注意力；图文交错不是所有多模态模型统一的训练阶段。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "llava-paper": {
@@ -539,12 +541,12 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2304.08485",
-    "snapshot": "arXiv:2304.08485，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "2026-11-26 下载并阅读原论文 PDF 的方法部分；文件哈希保存在本轮来源审计记录",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 15 章：冻结视觉塔与语言模型、只训练轻量投影层的经济对齐路径。",
+    "scope": "第 15 章：原始 LLaVA 阶段一只训投影、阶段二同时更新投影和 LLM，视觉编码器保持冻结。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "blip2-paper": {
@@ -552,12 +554,12 @@
     "authority": "arXiv 预印本（ICML 2023）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2301.12597",
-    "snapshot": "arXiv:2301.12597，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "2026-11-26 下载并阅读原论文 PDF 的方法部分；文件哈希保存在本轮来源审计记录",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 15 章：用一组可学查询 token 压缩视觉特征的 Q-Former 连接器；只引用其连接结构。",
+    "scope": "第 15 章：固定 32 个学习查询和冻结模块的两阶段训练；视觉 patch 数不等于送入 LLM 的表示数。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "pope-paper": {
@@ -669,12 +671,13 @@
     "authority": "arXiv 预印本（ICLR 2020）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/1904.09751",
-    "snapshot": "arXiv:1904.09751，2026-11-22 读取摘要页核验",
-    "accessed": "2026-11-22",
+    "snapshot": "arXiv:1904.09751，2026-11-22 读取摘要页核验；2026-11-26 核对正文相关段落与实现；本次读取版本 1904.09751v2",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 5 章：高似然解码在开放生成上产出空洞重复文本的现象，也是束搜索不适用于开放生成的依据。",
+    "scope": "第 5 章：GPT-2 等模型的开放文本实验中，高似然搜索的重复退化与 nucleus sampling 动机；不用于推断全行业解码采用率或所有任务的优劣。",
     "pinned": {
-      "accessed": "2026-11-22"
+      "accessed": "2026-11-26",
+      "arxiv-version": "1904.09751v2"
     }
   },
   "rope-extrapolation": {
@@ -995,10 +998,10 @@
     "authority": "Sebastian Raschka 官方配套教材仓库",
     "kind": "github",
     "url": "https://github.com/rasbt/LLMs-from-scratch/blob/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch05/01_main-chapter-code/ch05.ipynb",
-    "snapshot": "固定提交 22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8，2026-11-25 阅读相应章节的训练、验证或分类讲解与代码",
-    "accessed": "2026-11-25",
+    "snapshot": "固定提交 22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8，2026-11-25 阅读相应章节的训练、验证或分类讲解与代码；2026-11-26 核对正文相关段落与实现",
+    "accessed": "2026-11-26",
     "license": "Apache-2.0",
-    "scope": "第 7 章：独立计算训练损失与验证损失，区分拟合与泛化；不引用其模型训练性能数字。",
+    "scope": "第 5、7 章：公开配套教材的连续抽样、温度与 top-k，以及训练/验证损失；只读相关单元，独立转述。",
     "pinned": {
       "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8"
     }
@@ -1138,10 +1141,10 @@
     "authority": "上游固定提交的公开资料",
     "kind": "github",
     "url": "https://github.com/vllm-project/vllm/blob/b8b302cde434df8c9289a2b465406b47ebab1c2d/docs/design/prefix_caching.md",
-    "snapshot": "固定提交 b8b302cde434df8c9289a2b465406b47ebab1c2d，2026-11-25 读取",
-    "accessed": "2026-11-25",
+    "snapshot": "固定提交 b8b302cde434df8c9289a2b465406b47ebab1c2d，2026-11-25 读取；2026-11-26 核对正文相关段落与实现",
+    "accessed": "2026-11-26",
     "license": "Apache-2.0",
-    "scope": "第 10 章：完整块缓存、父块与 token 哈希、LoRA/多模态/缓存盐；同提交的 APC 与 LoRA 文档用于收益边界和多 adapter serving。",
+    "scope": "第 10 章：完整块缓存、父块与 token 哈希、LoRA/多模态/缓存盐；同提交的 APC 与 LoRA 文档用于收益边界和多 adapter serving。 第 6 章用作缓存匹配规则的具体一手入口。",
     "pinned": {
       "commit": "b8b302cde434df8c9289a2b465406b47ebab1c2d"
     }
@@ -1183,6 +1186,110 @@
     "scope": "第 10 章：保持目标分布的投机采样，以及草稿成本、接受率、验证成本共同决定的收益。",
     "pinned": {
       "accessed": "2026-11-25"
+    }
+  },
+  "mcp-versioned-source": {
+    "title": "MCP 2026-07-28: Versioning and Compatibility",
+    "authority": "官方或作者维护的公开仓库",
+    "kind": "github",
+    "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/5f5440bb26a62e2cf3440b92da5a667efa03b267/docs/specification/2026-07-28/basic/versioning.mdx",
+    "snapshot": "固定提交 5f5440bb26a62e2cf3440b92da5a667efa03b267，2026-11-26 阅读对应章节",
+    "accessed": "2026-11-26",
+    "license": "MIT；仅链接与原创转述",
+    "scope": "第 12 章：逐请求协议声明与新旧版本边界；另读同提交的 discovery、tools、stdio 与 schema。",
+    "pinned": {
+      "commit": "5f5440bb26a62e2cf3440b92da5a667efa03b267"
+    }
+  },
+  "llava-training": {
+    "title": "LLaVA: Training",
+    "authority": "官方或作者维护的公开仓库",
+    "kind": "github",
+    "url": "https://github.com/haotian-liu/LLaVA/blob/c121f0432da27facab705978f83c4ada465e46fd/README.md",
+    "snapshot": "固定提交 c121f0432da27facab705978f83c4ada465e46fd，2026-11-26 阅读对应章节",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0；仅链接与原创转述",
+    "scope": "第 15 章：特征对齐与视觉指令微调的冻结范围；不转载训练数据或资产。",
+    "pinned": {
+      "commit": "c121f0432da27facab705978f83c4ada465e46fd"
+    }
+  },
+  "d2l-vision-transformer": {
+    "title": "Dive into Deep Learning: Transformers for Vision",
+    "authority": "官方或作者维护的公开仓库",
+    "kind": "github",
+    "url": "https://github.com/d2l-ai/d2l-en/blob/23d7a5aecceee57d1292c56e90cce307f183bb0a/chapter_attention-mechanisms-and-transformers/vision-transformer.md",
+    "snapshot": "固定提交 23d7a5aecceee57d1292c56e90cce307f183bb0a，2026-11-26 阅读对应章节",
+    "accessed": "2026-11-26",
+    "license": "教材 CC BY-SA 4.0，代码 Apache-2.0；仅链接与独立概述",
+    "scope": "第 15 章：公开教材的 patch embedding、位置嵌入、分类 token 与 Transformer 编码；不冒称通读商业书。",
+    "pinned": {
+      "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a"
+    }
+  },
+  "claude-vision-accounting": {
+    "title": "Claude API: Vision",
+    "authority": "Anthropic 官方文档",
+    "kind": "docs",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "snapshot": "2026-11-26 读取公开页面；动态文档，以访问日期和本地快照哈希记录",
+    "accessed": "2026-11-26",
+    "license": "官方文档，仅链接与原创转述",
+    "scope": "第 15 章：2026-11-26 页面中的 28×28 patch 计数、各模型尺寸上限与缩放；教学面积/750 不是现行 API 规则。",
+    "pinned": {
+      "accessed": "2026-11-26"
+    }
+  },
+  "claude-structured-outputs": {
+    "title": "Claude API: Structured outputs",
+    "authority": "Anthropic 官方文档",
+    "kind": "docs",
+    "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "snapshot": "2026-11-26 读取公开页面；动态文档，以访问日期和本地快照哈希记录",
+    "accessed": "2026-11-26",
+    "license": "官方文档，仅链接与原创转述",
+    "scope": "第 12 章：受支持的 schema、SDK 转换、拒答和截断边界；结构保证不等于业务正确。",
+    "pinned": {
+      "accessed": "2026-11-26"
+    }
+  },
+  "openai-structured-outputs": {
+    "title": "OpenAI API: Structured Outputs",
+    "authority": "OpenAI 官方文档",
+    "kind": "docs",
+    "url": "https://platform.openai.com/docs/guides/structured-outputs",
+    "snapshot": "2026-11-26 阅读 Structured Outputs vs JSON mode 与 incomplete/refusal 说明",
+    "accessed": "2026-11-26",
+    "license": "官方文档，仅链接与原创转述",
+    "scope": "第 12 章：JSON 语法、受支持 schema 约束与应用业务校验的区别。",
+    "pinned": {
+      "accessed": "2026-11-26"
+    }
+  },
+  "unicode-graphemes": {
+    "title": "Unicode Standard Annex #29: Unicode Text Segmentation",
+    "authority": "Unicode Consortium",
+    "kind": "spec",
+    "url": "https://www.unicode.org/reports/tr29/tr29-47.html",
+    "snapshot": "Revision 47，2026-11-26 读取字素簇定义",
+    "accessed": "2026-11-26",
+    "license": "仅链接和独立概述，不复制第三方资产",
+    "scope": "第 1 章：码点与用户感知字符的区别，组合序列的字素簇边界。",
+    "pinned": {
+      "spec-version": "Revision 47"
+    }
+  },
+  "transformers-kv-cache": {
+    "title": "Transformers v4.57.3: KV cache strategies",
+    "authority": "上游固定提交的公开文档",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/docs/source/en/kv_cache.md",
+    "snapshot": "固定提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-26 读取",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0",
+    "scope": "第 6 章：完整历史、滑动窗口和分块缓存的增长范围，区分数据大小与实现开销。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
     }
   }
 }

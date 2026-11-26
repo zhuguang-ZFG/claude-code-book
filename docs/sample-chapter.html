@@ -792,6 +792,9 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 .table-scroll::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
 .table-scroll::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .table-scroll:focus-visible{outline:2px solid var(--bronze)}
+/* The token-count table keeps readable samples and scrolls as a whole. */
+#llm-ch01 .table-scroll[data-cols="5"] th:first-child,
+#llm-ch01 .table-scroll[data-cols="5"] td:first-child{min-width:14rem}
 table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
  tbody tr:nth-child(even){background:rgba(243,234,216,.35)}
 th{font-family:var(--sans);font-weight:700;color:var(--bronze-3);
@@ -836,6 +839,7 @@ figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
   box-shadow:0 6px 22px -12px rgba(38,34,27,.30),
     inset 0 0 0 1px rgba(255,255,255,.55)}
 .illu-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.illu-frame:has(svg.llm-explainer){max-width:520px;margin-inline:auto}
 /* registration ticks: the hand-drawn plates borrow the diagram frame's two
    L-marks so an illustrated figure reads as the same series of pasted plates,
    not a picture dropped into a box. Skipped for photo plates, whose full-bleed
@@ -1473,6 +1477,12 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
   /* an inline drawing takes the whole 176 mm text block, so the label sizes
      chosen for the 285 px phone column would print at twice the body size.
      Paper re-caps the label scale; the screen keeps the larger attributes. */
+  /* These chapter examples are short enough to keep their steps/rows together. */
+  #llm-ch05 .table-scroll[data-cols="4"],
+  #llm-ch05 ul,
+  #llm-ch12 pre,
+  #llm-ch15 .table-scroll[data-cols="3"]{break-inside:avoid}
+  .illu-frame:has(svg.llm-explainer){max-width:110mm}
   .illu-frame svg text{font-size:14px}
   .illu-frame svg text.il-head{font-size:16px}
   .illu-frame svg text.il-big{font-size:24px}
@@ -1745,7 +1755,7 @@ body.sample{--measure:44rem}
 <p>附件注入是最容易漏掉的一环，漏掉它就是在给模型喂残缺的上下文。想象这样一个场景：在工具执行期间，用户修改了 CLAUDE.md 文件；不注入这个变更，模型下一轮调用就可能拿着过时的配置做决策。有了附件注入，每轮循环开始时模型拿到的都是最新的环境信息。</p>
 <h3 id="ch02-终止条件判断">终止条件判断</h3>
 <p>对话循环的终止发生在多个位置，每个终止原因对应不同的系统状态和清理逻辑：</p>
-<div class="table-scroll" data-cols="5" tabindex="0"><table>
+<div class="table-scroll" data-cols="4" tabindex="0"><table>
 <thead>
 <tr>
 <th>终止原因</th>
@@ -1907,7 +1917,7 @@ body.sample{--measure:44rem}
 <p>每条 continue 路径都精心构造了新的状态对象，确保不同的恢复策略之间不会冲突。<code>transition</code> 字段留着，后续迭代就认得出“我是怎么来到这里的”，往下的判断也就更有依据。</p>
 <p>每条 Continue 路径都记下原因（transition reason）。Agent 行为异常时，顺着 transition 链往回走，就能找到是哪一跳引入的问题。</p>
 <p>自己写循环最容易踩的坑，是只留一个出口、只记一种原因。岔路列全：</p>
-<div class="table-scroll" data-cols="3" tabindex="0"><table>
+<div class="table-scroll" data-cols="2" tabindex="0"><table>
 <thead>
 <tr>
 <th style="text-align: center;">常见翻车</th>

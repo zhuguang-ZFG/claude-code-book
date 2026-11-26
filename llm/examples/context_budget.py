@@ -8,6 +8,7 @@ and the current price list before using the result for a decision.
 from __future__ import annotations
 
 import argparse
+import math
 
 
 def size(count: int) -> str:
@@ -27,7 +28,7 @@ def kv_bytes_per_token(layers: int, kv_heads: int, head_dim: int,
 
 
 def attention_pairs(tokens: int) -> int:
-    # Causal attention compares each position with itself and earlier ones.
+    # Valid position pairs per head per layer for dense causal attention.
     return tokens * (tokens + 1) // 2
 
 
@@ -47,6 +48,14 @@ def main() -> int:
     parser.add_argument("--price-per-million", type=float, default=0.15)
     parser.add_argument("--calls", type=int, default=1_000)
     args = parser.parse_args()
+    for name in ("window", "layers", "kv_heads", "head_dim", "dtype_bytes"):
+        if getattr(args, name) <= 0:
+            parser.error(f"--{name.replace('_', '-')} must be positive")
+    for name in ("output", "system", "tools", "history", "retrieved", "safety", "calls"):
+        if getattr(args, name) < 0:
+            parser.error(f"--{name} must be nonnegative")
+    if not math.isfinite(args.price_per_million) or args.price_per_million < 0:
+        parser.error("--price-per-million must be finite and nonnegative")
 
     used = (args.system + args.tools + args.history + args.retrieved
             + args.output + args.safety)
@@ -78,18 +87,18 @@ def main() -> int:
         print(f"  {tokens:>7,} tokens -> {total:>14,} B = {size(total)}")
 
     print()
-    print("causal attention pairs (per layer)")
+    print("dense causal attention pairs (per head per layer)")
     for tokens in (4_096, 32_768, 131_072):
         print(f"  {tokens:>7,} tokens -> {attention_pairs(tokens):>18,} pairs")
     print("  note: FlashAttention avoids materializing the matrix, but the "
           "arithmetic still grows quadratically")
 
-    billed_input = (args.system + args.tools + args.history
-                    + args.retrieved) * args.calls
+    input_per_call = args.system + args.tools + args.history + args.retrieved
+    billed_input = input_per_call * args.calls
     cost = billed_input / 1_000_000 * args.price_per_million
     print()
-    print("hypothetical call bill")
-    print(f"  {args.calls:,} calls x {billed_input // args.calls:,} input "
+    print("hypothetical input-only bill")
+    print(f"  {args.calls:,} calls x {input_per_call:,} input "
           f"tokens = {billed_input:,} tokens")
     print(f"  at ${args.price_per_million:.2f} per million input tokens: "
           f"${cost:,.2f}")

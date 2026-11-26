@@ -94,7 +94,10 @@ _TABLE_RE = re.compile(r"<table>.*?</table>", re.S)
 def wrap_tables(doc: str) -> str:
     def repl(m):
         t = m.group(0)
-        cols = t.count("<th") or t.count("<td") or 1
+        # Count cells in one row, not <thead> or all body rows combined.
+        row = re.search(r"<tr\b[^>]*>(.*?)</tr>", t, re.S)
+        cols = len(re.findall(r"<t[hd]\b", row.group(1))) if row else 1
+        cols = cols or 1
         return f'<div class="table-scroll" data-cols="{cols}" tabindex="0">{t}</div>'
     return _TABLE_RE.sub(repl, doc)
 

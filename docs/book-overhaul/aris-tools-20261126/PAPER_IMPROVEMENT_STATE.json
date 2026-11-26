@@ -1,0 +1,56 @@
+{
+  "current_round": 2,
+  "status": "completed",
+  "timestamp": "2026-11-25T17:23:52.014384+00:00",
+  "scope": [
+    "llm/ch12.md",
+    "llm/ch13.md",
+    "llm/ch15.md",
+    "llm/ch16.md",
+    "llm/examples/toolcall_demo.py",
+    "llm/examples/cot_demo.py",
+    "llm/examples/multimodal_demo.py",
+    "tests/test_llm_examples.py",
+    "llm/VERIFY.md",
+    "llm/examples/README.md",
+    "yuyu-book/sources-llm.json",
+    "llm/facts/source-lock.json",
+    "yuyu-book/manifest-llm.json",
+    "yuyu-book/illustrations-agents/llm-ch12-mcp-bridge.svg",
+    "yuyu-book/illustrations-agents/llm-ch12-validation-loop.svg",
+    "yuyu-book/illustrations-agents/llm-ch13-cost-curve.svg",
+    "yuyu-book/illustrations-agents/llm-ch13-voting.svg",
+    "yuyu-book/illustrations-agents/llm-ch15-patch-grid.svg",
+    "yuyu-book/illustrations-agents/llm-ch15-vision-budget.svg",
+    "yuyu-book/yuyu_book/style_print.py",
+    "yuyu-book/yuyu_book/style_components.py",
+    "yuyu-book/tests/test_illustrations.py",
+    "docs/sample-chapter.html"
+  ],
+  "max_rounds": 2,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "next_action": null,
+  "last_score": 8.0,
+  "agent_id": "/root/aris_tools_review2",
+  "last_verdict": "Almost",
+  "validation": {
+    "html": {
+      "bytes": 759607,
+      "sha256": "b2152ec8e01214c9a234033f52a7ef0dcce89ecb087aa68de7fe21c09501ca00"
+    },
+    "pdf": {
+      "bytes": 8165273,
+      "sha256": "0b6f409d19f82cf002a2df8130fc05eda449d91e9ed40d8568c8f0f37684ff40",
+      "pages": 157,
+      "bookmarks": 28
+    },
+    "visual": "36 section/viewport/theme checks; all six SVG labels within viewBox and exposed with accessible names",
+    "layout": "short MCP flow and three-row grid table kept on one PDF page",
+    "gate": "9 steps passed; 460 repository tests (1 skip), 629 builder tests; 485 Markdown and 280 Mermaid clean; ruff and collected assembly passed",
+    "structure": "four chapter heading lists, block IDs and illustration references unchanged"
+  },
+  "final_artifact": ".scratch/aris-tools-20261126/round2/yuyu-llm-zh.html",
+  "remaining_issues": [],
+  "post_review_fixes": "second review major and three minor items fixed; no fabricated post-fix reviewer score"
+}

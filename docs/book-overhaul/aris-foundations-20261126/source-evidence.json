@@ -1,0 +1,108 @@
+[
+  {
+    "file": "hf-generation.md",
+    "url": "https://raw.githubusercontent.com/huggingface/transformers/47b0e478f324b54f177ea7998a0791870fdd0324/docs/source/en/generation_strategies.md",
+    "status": "readable",
+    "bytes": 26354,
+    "sha256": "4de5825f2f8e3a72b41771daa379328d79adf352584e54e319f517e3c9d7f11b",
+    "transport": "Existing pinned local snapshot from aris-serving-20261125",
+    "recorded_at": "2026-11-25T23:48:19.031848+00:00"
+  },
+  {
+    "file": "hf-logits.py",
+    "url": "https://raw.githubusercontent.com/huggingface/transformers/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/generation/logits_process.py",
+    "status": "readable",
+    "bytes": 152357,
+    "sha256": "6481506629ff6f021157e893fc64c4e7b5b06a72072771809d679387cb54a4b1",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031870+00:00"
+  },
+  {
+    "file": "hf-cache.md",
+    "url": "https://raw.githubusercontent.com/huggingface/transformers/47b0e478f324b54f177ea7998a0791870fdd0324/docs/source/en/kv_cache.md",
+    "status": "readable",
+    "bytes": 18036,
+    "sha256": "d5dfb6b93c31ec48ade7ee5fab15753cfefb182b0ee8044e76ce70b806b1ecf1",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031874+00:00"
+  },
+  {
+    "file": "minbpe.py",
+    "url": "https://raw.githubusercontent.com/karpathy/minbpe/1acefe89412b20245db5a22d2a02001e547dc602/minbpe/basic.py",
+    "status": "readable",
+    "bytes": 2883,
+    "sha256": "d240f8b54f25d8c65e81f3da1cc7c3a390a7692cdbf62d6ff6d0c1cba1b031b8",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031876+00:00"
+  },
+  {
+    "file": "tiktoken.md",
+    "url": "https://raw.githubusercontent.com/openai/tiktoken/79dc2c0533685b893616c78160b5d9e40876e724/README.md",
+    "status": "readable",
+    "bytes": 4807,
+    "sha256": "3e6cf1c4d6df2d4b9fc3d9a09d8e68a3734f4dd4d0a11341abd3a7c62256bc2a",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031879+00:00"
+  },
+  {
+    "file": "raschka-ch05.py",
+    "url": "https://raw.githubusercontent.com/rasbt/LLMs-from-scratch/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch05/01_main-chapter-code/previous_chapters.py",
+    "status": "not-used",
+    "error": "<urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>",
+    "reason": "Read existing pinned ch05 notebook snapshot instead; no claim of reading this Python file",
+    "recorded_at": "2026-11-25T23:48:19.031881+00:00"
+  },
+  {
+    "file": "rfc3629.txt",
+    "url": "https://www.rfc-editor.org/rfc/rfc3629.txt",
+    "status": "readable",
+    "bytes": 33856,
+    "sha256": "a2a3a39457d30420c812f87a38cc2b9194832f6982ef17e619de7d816879d6a6",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031883+00:00"
+  },
+  {
+    "file": "unicode-graphemes.html",
+    "url": "https://www.unicode.org/reports/tr29/tr29-47.html",
+    "status": "readable",
+    "bytes": 138801,
+    "sha256": "130d4e0d3f9da41bf9ad84bf580b3b92edc83886457cbc5a53b432761fd2c6ed",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031885+00:00"
+  },
+  {
+    "file": "degeneration.pdf",
+    "url": "https://arxiv.org/pdf/1904.09751",
+    "status": "readable",
+    "bytes": 4691115,
+    "sha256": "f0749cc4db8afeb82006a20785b2cd3615fcbced8a29886872b6174485ced21b",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031887+00:00"
+  },
+  {
+    "file": "flashattention.pdf",
+    "url": "https://arxiv.org/pdf/2205.14135",
+    "status": "readable",
+    "bytes": 2630825,
+    "sha256": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031889+00:00"
+  },
+  {
+    "file": "lost-middle.pdf",
+    "url": "https://arxiv.org/pdf/2307.03172",
+    "status": "readable",
+    "bytes": 747542,
+    "sha256": "653b29619eae2ae4b361d7bdcdc06db4bedcb1b0eabe31814036beca8c1af0b1",
+    "transport": "curl.exe with default permissions",
+    "recorded_at": "2026-11-25T23:48:19.031891+00:00"
+  },
+  {
+    "file": "raschka-ch05.txt",
+    "url": "https://github.com/rasbt/LLMs-from-scratch/blob/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch05/01_main-chapter-code/ch05.ipynb",
+    "transport": "Existing pinned local notebook snapshot from training-review-20261125",
+    "sha256": "0ef26f508468f65281e836995084c3535a2c7148ed1be1f7c7112609c5ccf4d0",
+    "status": "readable",
+    "recorded_at": "2026-11-25T23:48:19.031893+00:00"
+  }
+]
