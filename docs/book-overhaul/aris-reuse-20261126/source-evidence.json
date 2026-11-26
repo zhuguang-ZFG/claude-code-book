@@ -1,0 +1,54 @@
+{
+  "accessed": "2026-11-26",
+  "retrieval": "GitHub CLI contents API; connector returned Bad credentials",
+  "local_files": [
+    {
+      "file": "deepseek-v2.md",
+      "bytes": 20391,
+      "sha256": "03d59c7d02d2d19af8a83f588c2eebaed20b7014179cc0e9370d078f2d702ad4"
+    },
+    {
+      "file": "nanogpt-model.py",
+      "bytes": 16345,
+      "sha256": "7c01703240dbec5d554527dc666e35b3df8391d0b117fddc07afcf325a21d11c"
+    },
+    {
+      "file": "pytorch-functional.py",
+      "bytes": 278980,
+      "sha256": "95ff403085bb179477a01df63acfddf59dfac0fb58829e99a9c8b5c2fe98899b"
+    }
+  ],
+  "vendored_provenance": "llm/examples/vendor/minbpe/UPSTREAM.json",
+  "paper_evidence": {
+    "url": "https://arxiv.org/html/2405.04434v5",
+    "sections": [
+      "2.1.2",
+      "2.1.3",
+      "2.1.4",
+      "Table 1"
+    ],
+    "reader": "aris_reuse_review1",
+    "method": "urllib.request, primary HTML read during review",
+    "local_html_saved": false,
+    "executor_refetch": "blocked by socket permission; used reviewer primary-source excerpts"
+  },
+  "sdpa": {
+    "torch": "2.14.1+cpu",
+    "device": "cpu",
+    "dtype": "float64",
+    "full_max_error": 1.1102230246251565e-16,
+    "correct_last": [
+      [
+        0.4878158748453896,
+        0.6463606446231905
+      ]
+    ],
+    "reset_mask_last": [
+      [
+        1.0,
+        0.0
+      ]
+    ],
+    "benchmark": false
+  }
+}

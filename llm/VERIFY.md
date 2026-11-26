@@ -61,6 +61,8 @@ python scripts/bookctl.py build --product llm --lang zh --pdf --out-dir .scratch
 
 ## 示例脚本实测输出
 
+2026-11-26 第五轮对照开源实现：`bpe_demo.py` 的合并与编码直接复用 minbpe 固定提交，原始 MIT 文件与哈希随仓库保存；训练与严格解码保留本书口径。`attention_demo.py` 新增完整计算、单 token 和分块缓存的等价检查，以及查询位置重置的错误对照。本机 PyTorch 2.14.1 CPU/float64 的完整计算差为 `1.1102230246251565e-16`，只验证数值和遮罩，不测性能。BPE 在 Python 3.11.15 下以直接执行与包入口、禁用 site-packages 的方式运行成功；全书支持环境仍为 Python 3.12+。成品、审读和最终检查记录见 [第五轮验证](../docs/book-overhaul/aris-reuse-20261126/final-validation.json)。
+
 二十一个脚本都只用标准库。关键数字已写入正文；本节保留完整命令以便复核。
 
 ```bash

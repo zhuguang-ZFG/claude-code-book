@@ -1,0 +1,238 @@
+{
+  "round0": [
+    {
+      "path": "llm/ch01.md",
+      "sha256": "473a4936e0c6db192d25a7d058b83bcab3e2583025bf6f121b2442014e76c0ce"
+    },
+    {
+      "path": "llm/ch03.md",
+      "sha256": "6612000d5d7fc592afdc657d5ff40596b1a55a566f243145b9b5304cc5e72ec9"
+    },
+    {
+      "path": "llm/ch16.md",
+      "sha256": "2bc112dd111fc72fdd063355f13de065f886fcb231f5542964967ae5d3c3db79"
+    },
+    {
+      "path": "llm/examples/bpe_demo.py",
+      "sha256": "31e0cbf08af3ce0761c26e991c2df0a9857f52a8cc716d0845dcad20530b876f"
+    },
+    {
+      "path": "llm/examples/attention_demo.py",
+      "sha256": "6922272d0357daeef9c0dc9fac5fbf37acf4c8757b331420db33e17b6fed5d2e"
+    },
+    {
+      "path": "tests/test_llm_examples.py",
+      "sha256": "b9c3c5c737c66a2c2cbd20031980431844de51f7353aa868d42798ee4d2b79ee"
+    },
+    {
+      "path": "yuyu-book/sources-llm.json",
+      "sha256": "58429a7ca91f594559a95b090f3338c8cb4797d2ee775265d7550869065174da"
+    },
+    {
+      "path": "llm/facts/source-lock.json",
+      "sha256": "b9c9c221d4f664035b0c62ffc15033944dbef53ff7a065f20461758b0539e7fc"
+    },
+    {
+      "path": "llm/examples/README.md",
+      "sha256": "1523543d33b4ad1cb959b06e44637e4ccb3ddf7d033e481d97ad43834ec548d8"
+    },
+    {
+      "path": "yuyu-book/manifest-llm.json",
+      "sha256": "601225816f552b2c0cc15ffe1f0e0d8a79eb74e3211e3c693ab800de80690421"
+    },
+    {
+      "path": "yuyu-llm-zh.html",
+      "bytes": 777593,
+      "sha256": "56f76cf48ac1cc4269ddcb3382b0f68fe4371ebeae8aaaa9332486e1ff5c4837"
+    },
+    {
+      "path": "yuyu-llm-zh.pdf",
+      "bytes": 8032445,
+      "sha256": "20769aeaab105f248354e4dc166d321be509252c8b7dbeb90347d3a4259cad55"
+    }
+  ],
+  "round1": [
+    {
+      "path": "llm/ch01.md",
+      "sha256": "ee58ca834a1e3f4e239360464cf877a05aaea20fdaa3969ea287cd6577b4791d"
+    },
+    {
+      "path": "llm/ch03.md",
+      "sha256": "60f4433ce111984d5e1b1ce5eba3e74fa80164b98eb54f5ac9ebcf5ea35110d9"
+    },
+    {
+      "path": "llm/ch16.md",
+      "sha256": "dc79330b18210ffc2749cf45c5b3c668c6b998835f4b05e58d226cac435f9059"
+    },
+    {
+      "path": "llm/examples/bpe_demo.py",
+      "sha256": "5aeef9e18d7878c0359a4b02570b12ad0b5f4b115b28395021a474c9ffbe3500"
+    },
+    {
+      "path": "llm/examples/attention_demo.py",
+      "sha256": "c4a50279bc29726e9da1fb72abec6f2295e3f2d9e1eb49925c70619cfc8f9a16"
+    },
+    {
+      "path": "tests/test_llm_examples.py",
+      "sha256": "1f6c98ab1642c65c2c80efcd70c8e12e074cfe70725f8e58a89ff00f450b0a61"
+    },
+    {
+      "path": "yuyu-book/sources-llm.json",
+      "sha256": "57c1d3389d2387cba8e213ae8e411412977fd350efe55f777276042af93b8a48"
+    },
+    {
+      "path": "llm/facts/source-lock.json",
+      "sha256": "545067ae57f50c435c569a39effa66e1193202f0593de4b179e42e1a2bc6b991"
+    },
+    {
+      "path": "llm/examples/README.md",
+      "sha256": "9bb19d326877e99bdd0ffbe94b9984a7ad44f67214b46179803b3569ae5ac6fa"
+    },
+    {
+      "path": "yuyu-book/manifest-llm.json",
+      "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+    },
+    {
+      "path": "tests/test_llm_vendor.py",
+      "sha256": "a9beb75f70c0dff1aa0337a497c8ef597fa1469f1a3d78ba4be25ee05f31bd22"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03-causal-mask.svg",
+      "sha256": "5f88e19e47677da763a23be13e49c56ceab20a20445e6e55651594c5dfc12b5f"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03-attention-fan.svg",
+      "sha256": "d0e71380e6b399f07564244d61c209610e504a9e99d99dbc77bc936390673c6f"
+    },
+    {
+      "path": "llm/examples/vendor/__init__.py",
+      "sha256": "cc925d400dbfd5e8e78cf9838d62b57fa983f088578fa51d24990cf93579dee4"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/base.py",
+      "sha256": "b5329a834e114459dce29a6889e05b0d5d15ead8738bf66f65396139822863b4"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/basic.py",
+      "sha256": "d240f8b54f25d8c65e81f3da1cc7c3a390a7692cdbf62d6ff6d0c1cba1b031b8"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/LICENSE",
+      "sha256": "b722e9119803e43de016cab2d9ea86a69e29fb8cc3bdfd7b96d86b855d93e353"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/README.md",
+      "sha256": "693f6914967ad158fcec4f33dab03f7a82623a4a846c95dd6b47d61e95990e4b"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/UPSTREAM.json",
+      "sha256": "cb0a96d81dc97259ef6894a4244468bded16482147c17952066e99069a2a2e1d"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/__init__.py",
+      "sha256": "189e3349feee7e702cf7461b4e8c1e0ab327c93a592d36eb6cd48312486e7e71"
+    },
+    {
+      "path": "yuyu-llm-zh.html",
+      "bytes": 785837,
+      "sha256": "d80f2a34635973234245c24caa7ddc826d2cce5dab4a4a3e20a5558e1b75c33c"
+    },
+    {
+      "path": "yuyu-llm-zh.pdf",
+      "bytes": 8093679,
+      "sha256": "fa79ba6eb23af79fc90b346f73d85bbed8815a85d82fcb9e62c078b9921f6ce0"
+    }
+  ],
+  "round2": [
+    {
+      "path": "llm/ch01.md",
+      "sha256": "c7a98c286f012228d47fcd499f2d1eb75a0b0ed45b5024b2d4ce5d859a4db975"
+    },
+    {
+      "path": "llm/ch03.md",
+      "sha256": "0746c0c0dc44db61c102c12241d5ec3ebdea04fc5ab6011e6466ce4dc8d7ba28"
+    },
+    {
+      "path": "llm/ch16.md",
+      "sha256": "c6b7d063b14df5ef906e587b37780c715031c201e63bdbf43ca572924b7bdee0"
+    },
+    {
+      "path": "llm/examples/bpe_demo.py",
+      "sha256": "a40c372d99e8fc4a8ae6f93efc343384f7041b6259bad8db5dbbb08f454f64c9"
+    },
+    {
+      "path": "llm/examples/attention_demo.py",
+      "sha256": "c4a50279bc29726e9da1fb72abec6f2295e3f2d9e1eb49925c70619cfc8f9a16"
+    },
+    {
+      "path": "tests/test_llm_examples.py",
+      "sha256": "b655f1edf4bf720e9b3a4e881365eee0faf33903a799c5abc096ea5ad3429f7c"
+    },
+    {
+      "path": "yuyu-book/sources-llm.json",
+      "sha256": "57c1d3389d2387cba8e213ae8e411412977fd350efe55f777276042af93b8a48"
+    },
+    {
+      "path": "llm/facts/source-lock.json",
+      "sha256": "545067ae57f50c435c569a39effa66e1193202f0593de4b179e42e1a2bc6b991"
+    },
+    {
+      "path": "llm/examples/README.md",
+      "sha256": "9bb19d326877e99bdd0ffbe94b9984a7ad44f67214b46179803b3569ae5ac6fa"
+    },
+    {
+      "path": "yuyu-book/manifest-llm.json",
+      "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+    },
+    {
+      "path": "tests/test_llm_vendor.py",
+      "sha256": "a9beb75f70c0dff1aa0337a497c8ef597fa1469f1a3d78ba4be25ee05f31bd22"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03-causal-mask.svg",
+      "sha256": "5f88e19e47677da763a23be13e49c56ceab20a20445e6e55651594c5dfc12b5f"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03-attention-fan.svg",
+      "sha256": "d0e71380e6b399f07564244d61c209610e504a9e99d99dbc77bc936390673c6f"
+    },
+    {
+      "path": "llm/examples/vendor/__init__.py",
+      "sha256": "cc925d400dbfd5e8e78cf9838d62b57fa983f088578fa51d24990cf93579dee4"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/base.py",
+      "sha256": "b5329a834e114459dce29a6889e05b0d5d15ead8738bf66f65396139822863b4"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/basic.py",
+      "sha256": "d240f8b54f25d8c65e81f3da1cc7c3a390a7692cdbf62d6ff6d0c1cba1b031b8"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/LICENSE",
+      "sha256": "b722e9119803e43de016cab2d9ea86a69e29fb8cc3bdfd7b96d86b855d93e353"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/README.md",
+      "sha256": "693f6914967ad158fcec4f33dab03f7a82623a4a846c95dd6b47d61e95990e4b"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/UPSTREAM.json",
+      "sha256": "cb0a96d81dc97259ef6894a4244468bded16482147c17952066e99069a2a2e1d"
+    },
+    {
+      "path": "llm/examples/vendor/minbpe/__init__.py",
+      "sha256": "189e3349feee7e702cf7461b4e8c1e0ab327c93a592d36eb6cd48312486e7e71"
+    },
+    {
+      "path": "yuyu-llm-zh.html",
+      "bytes": 786295,
+      "sha256": "6c5def4bb6662ed0965c35becbe3bab7b93f9a323dedc4d6d96a406909334d7a"
+    },
+    {
+      "path": "yuyu-llm-zh.pdf",
+      "bytes": 8093530,
+      "sha256": "d67c1ec0e3166f75680970fc21dfe1c9f15d338ee939a2c6d35dce23810dc947"
+    }
+  ]
+}

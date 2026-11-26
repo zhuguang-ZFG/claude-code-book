@@ -795,6 +795,9 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 /* The token-count table keeps readable samples and scrolls as a whole. */
 #llm-ch01 .table-scroll[data-cols="5"] th:first-child,
 #llm-ch01 .table-scroll[data-cols="5"] td:first-child{min-width:14rem}
+@media screen{
+  #llm-ch03 .table-scroll[data-cols="4"] td:first-child{min-width:7rem}
+  #llm-ch03 .table-scroll[data-cols="4"] td code{white-space:nowrap}}
 table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
  tbody tr:nth-child(even){background:rgba(243,234,216,.35)}
 th{font-family:var(--sans);font-weight:700;color:var(--bronze-3);
@@ -1456,6 +1459,8 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
   .codehilite .c,.codehilite .c1{color:#7A6F58}
   .codehilite .k{color:#7A5B22}.codehilite .s{color:#4F6B3A}
   .codehilite .m{color:#8A5A2B}.codehilite .nt{color:#3A5F80}
+  /* The walkthroughs need legible operators and digits on the light paper. */
+  #llm-ch01 .codehilite span,#llm-ch03 .codehilite span{color:#423622}
   h1{bookmark-level:1;bookmark-label:content()}
   .page-title,.pd-title{bookmark-level:1;bookmark-label:content()}
   article h2,article h3,article h4,.rev-v,.reg-kind,.idx-letter{
@@ -1480,6 +1485,7 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
   /* These chapter examples are short enough to keep their steps/rows together. */
   #llm-ch05 .table-scroll[data-cols="4"],
   #llm-ch05 ul,
+  #llm-ch03 pre,
   #llm-ch12 pre,
   #llm-ch15 .table-scroll[data-cols="3"]{break-inside:avoid}
   .illu-frame:has(svg.llm-explainer){max-width:110mm}

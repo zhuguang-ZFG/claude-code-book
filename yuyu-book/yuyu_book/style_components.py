@@ -129,6 +129,9 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 /* The token-count table keeps readable samples and scrolls as a whole. */
 #llm-ch01 .table-scroll[data-cols="5"] th:first-child,
 #llm-ch01 .table-scroll[data-cols="5"] td:first-child{min-width:14rem}
+@media screen{
+  #llm-ch03 .table-scroll[data-cols="4"] td:first-child{min-width:7rem}
+  #llm-ch03 .table-scroll[data-cols="4"] td code{white-space:nowrap}}
 table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
  tbody tr:nth-child(even){background:rgba(243,234,216,.35)}
 th{font-family:var(--sans);font-weight:700;color:var(--bronze-3);

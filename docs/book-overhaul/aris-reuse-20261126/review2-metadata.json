@@ -1,0 +1,26 @@
+{
+  "call_number": 2,
+  "session_id": "/root/aris_reuse_review2",
+  "tool": "collaboration.spawn_agent",
+  "backend": "codex",
+  "fork_turns": "none",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_effort": "xhigh",
+  "reported_reviewer_model": null,
+  "reported_effort": null,
+  "identity_note": "Native tool returned task name only; requested settings are not verified identity.",
+  "route": {
+    "source": "host-default",
+    "host": "codex",
+    "backend": "codex",
+    "tier": "regular"
+  },
+  "timestamp": "2026-11-26T01:11:24.798692+00:00",
+  "status": "completed",
+  "review_completed": true,
+  "score": 8.0,
+  "verdict": "Almost",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "input_snapshot": ".scratch/aris-reuse-20261126/round1"
+}

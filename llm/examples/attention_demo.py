@@ -33,6 +33,8 @@ def project(vectors: list[list[float]],
 
 
 def dot(left: list[float], right: list[float]) -> float:
+    if len(left) != len(right):
+        raise ValueError("query and key dimensions must match")
     return sum(a * b for a, b in zip(left, right))
 
 
@@ -44,14 +46,33 @@ def softmax(scores: list[float]) -> list[float]:
 
 
 def attention(queries: list[list[float]], keys: list[list[float]],
-              values: list[list[float]], causal: bool = True):
-    """Return (outputs, weight rows) for one head."""
+              values: list[list[float]], causal: bool = True,
+              query_start: int = 0):
+    """One head; key positions start at zero, query positions at query_start.
+
+    For cached decoding, include the new key/value in the cache and pass the
+    query's absolute position. This example has no sliding/evicted cache.
+    """
+    if not queries or not keys or not values:
+        raise ValueError("queries, keys and values must be nonempty")
+    if len(keys) != len(values):
+        raise ValueError("each key must have a matching value")
+    width = len(queries[0])
+    value_width = len(values[0])
+    if not width or any(len(row) != width for row in [*queries, *keys]):
+        raise ValueError("query and key rows must have the same positive width")
+    if not value_width or any(len(row) != value_width for row in values):
+        raise ValueError("value rows must have a consistent positive width")
+    if not isinstance(query_start, int) or query_start < 0:
+        raise ValueError("query_start must be a nonnegative integer")
+    if causal and query_start + len(queries) > len(keys):
+        raise ValueError("causal keys must include every queried position")
     scale = math.sqrt(len(queries[0]))
     outputs, rows = [], []
     for i, query in enumerate(queries):
         scores = [dot(query, key) / scale for key in keys]
         if causal:
-            scores = [score if j <= i else float("-inf")
+            scores = [score if j <= query_start + i else float("-inf")
                       for j, score in enumerate(scores)]
         weights = softmax(scores)
         outputs.append([sum(weights[j] * values[j][d]
@@ -64,6 +85,10 @@ def attention(queries: list[list[float]], keys: list[list[float]],
 def attention_params(d_model: int, heads: int, kv_heads: int | None = None) -> dict:
     """Per-layer Q/K/V/O parameters, ignoring biases and the FFN."""
     kv_heads = heads if kv_heads is None else kv_heads
+    if any(not isinstance(value, int) or value <= 0 for value in (d_model, heads, kv_heads)):
+        raise ValueError("model width and head counts must be positive integers")
+    if d_model % heads or heads % kv_heads:
+        raise ValueError("model width must divide into heads, and query heads into KV groups")
     d_head = d_model // heads
     q = o = d_model * d_model
     k = v = d_model * kv_heads * d_head
@@ -102,6 +127,19 @@ def main() -> int:
     print("without the mask, the first token also reads the future:")
     print(f"  weights {fmt_row(future_rows[0])} -> {fmt_row(future[0])}")
     print(f"  with mask it stays {fmt_row(outputs[0])}")
+    print()
+
+    cached = []
+    for position in range(len(X)):
+        step, _ = attention(queries[position:position + 1], keys[:position + 1],
+                            values[:position + 1], query_start=position)
+        cached.extend(step)
+    error = max(abs(a - b) for full, step in zip(outputs, cached)
+                for a, b in zip(full, step))
+    print(f"cached decode matches full causal attention: max error {error:.1e}")
+    wrong, _ = attention(queries[-1:], keys, values)
+    print(f"  last query with reset position: {fmt_row(wrong[0])}")
+    print(f"  last query at position 2:       {fmt_row(cached[-1])}")
     print()
 
     print("two heads, each one dimension wide (causal)")

@@ -17,6 +17,12 @@ scope) and never republishes the body text of a source. Anthropic source
 material — the Claude Code product, its repository and changelog, its
 documentation and blog posts — is linked, not reproduced.
 
+The LLM examples redistribute minbpe's base.py and basic.py at commit
+1acefe89412b20245db5a22d2a02001e547dc602 under their original MIT license,
+Copyright (c) 2024 Andrej. See llm/examples/vendor/minbpe/LICENSE and
+llm/examples/vendor/minbpe/UPSTREAM.json for the license and provenance.
+Those files retain their MIT terms rather than the book text license.
+
 ===========================================================================
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International

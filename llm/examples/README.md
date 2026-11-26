@@ -4,10 +4,10 @@
 
 | 脚本 | 用途 | 主要输出 |
 | --- | --- | --- |
-| `bpe_demo.py` | 在极小语料上训练 byte-level BPE，编码与解码样本 | 合并规则、字符/字节/token 对照表、round-trip 检查 |
+| `bpe_demo.py` | 复用 minbpe 合并与编码，在极小语料上训练 byte-level BPE | 合并规则、码点/字节/token 对照表、round-trip 检查 |
 | `embedding_demo.py` | 手设向量的余弦相似度与 top-k 检索 | 点积/余弦排序差异、近邻表、参数与扫描成本 |
 | `ann_demo.py` | 用 IVF 分桶演示近似最近邻的召回率与扫描比例 | ASCII 桶图、nprobe 表、最差查询漏检分析 |
-| `attention_demo.py` | 对三个手设向量计算单头/双头因果注意力 | 权重矩阵、输出向量、Q/K/V/O 参数与 KV cache |
+| `attention_demo.py` | 对三个手设向量计算单头/双头因果注意力 | 权重矩阵、参数与 KV cache、完整计算与分步缓存对照 |
 | `transformer_demo.py` | 走一遍 pre-norm block，算 Norm、残差、RoPE 与参数账 | 归一化结果、残差流模长、参数表、RoPE 点积 |
 | `sampling_demo.py` | 对合成的下一个 token 分布应用温度、top-k、top-p | 概率表、保留候选数、每段初始化一次 seed 的连续抽样结果 |
 | `context_budget.py` | 计算窗口预算、KV cache 与注意力 pair 数 | 预算余量、KV cache 大小、假设价格下的账单 |
@@ -53,6 +53,8 @@ python llm/examples/multimodal_demo.py
 ```
 
 `context_budget.py` 接受 `--window`、`--retrieved`、`--kv-heads`、`--price-per-million` 等参数；运行 `python llm/examples/context_budget.py --help` 查看全部输入。
+
+`bpe_demo.py` 使用随仓库提供的 [minbpe 基础源码](vendor/minbpe/README.md)，按完整提交固定，保留 MIT 许可；运行时不下载依赖。训练文本边界、并列候选排序和严格解码由本书处理，未改写上游文件。`tests/test_llm_vendor.py` 检查源码与许可证的哈希，行为测试另行核对重叠 pair、合并顺序和文档边界。
 
 ## 限制
 
