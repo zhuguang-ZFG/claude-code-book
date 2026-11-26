@@ -100,17 +100,24 @@ def main() -> int:
               f" -> {show(BASE + rank, vocab)!r}")
 
     print()
-    print(f"{'sample':<22} {'chars':>5} {'utf8':>5} {'tokens':>6} {'tok/char':>8}")
+    print(f"{'sample':<22} {'codepoints':>10} {'utf8':>5} {'tokens':>6} {'tok/cp':>8}")
     for text in SAMPLES:
         ids = encode(text, rules)
         assert decode(ids, vocab) == text, text
         chars = len(text)
         nbytes = len(text.encode("utf-8"))
         ratio = len(ids) / chars if chars else 0
-        print(f"{text!r:<22} {chars:>5} {nbytes:>5} {len(ids):>6} {ratio:>8.2f}")
+        print(f"{text!r:<22} {chars:>10} {nbytes:>5} {len(ids):>6} {ratio:>8.2f}")
 
     print()
     print("round-trip OK: every sample decoded back to its original text")
+    print(f"Unicode counts: len('é')={len('é')}, len('e\\u0301')={len('e\u0301')}")
+    print("partial UTF-8 bytes:", "青".encode("utf-8")[:2].hex())
+    try:
+        "青".encode("utf-8")[:2].decode("utf-8")
+    except UnicodeDecodeError:
+        print("  strict decode -> UnicodeDecodeError; errors='replace' ->",
+              "青".encode("utf-8")[:2].decode("utf-8", errors="replace"))
     print("note: these are toy counts; a production tokenizer has different "
           "merges and will report different numbers")
     return 0

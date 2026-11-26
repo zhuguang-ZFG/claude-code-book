@@ -10,8 +10,11 @@ strategies, so the numbers behind chapters 6 and 10 become one bill:
   append-only prefix  cache the previous turn's whole prompt (it is a prefix
                       of the next one, because history only grows)
 
+The serialized order is system, docs, task, then appended output/tool pairs.
+Only prompt tokens are cached here, not the generated answer. The toy timing
+omits cache reads, scheduling and network time; prices omit cache write fees
+and assume the cache survives all turns. Rates stay constant at every length.
 Prices, rates and the model shape are assumptions, not vendor quotes.
-Replace them with your own provider's numbers before making a budget.
 """
 from __future__ import annotations
 
@@ -64,6 +67,17 @@ def turn_prompts() -> list[int]:
 def prefix_tokens() -> int:
     """The part of turn 1 that never changes: system prompt plus docs."""
     return SYSTEM_TOKENS + DOCS * DOC_TOKENS
+
+
+def input_categories() -> dict[str, int]:
+    """Count each category every time it is resent as input."""
+    return {
+        "system prompt": SYSTEM_TOKENS * TURNS,
+        "retrieved docs": DOCS * DOC_TOKENS * TURNS,
+        "assistant history": sum(sum(OUTPUT_TOKENS[:i]) for i in range(TURNS)),
+        "tool results": sum(TOOL_TOKENS * i for i in range(TURNS)),
+        "task": TASK_TOKENS * TURNS,
+    }
 
 
 def cost(prompt: int, cached: int, output: int) -> tuple[float, float]:
@@ -132,20 +146,15 @@ def main() -> int:
     print()
 
     print("where the input tokens go (no cache)")
-    rows = [
-        ("system prompt", SYSTEM_TOKENS * TURNS),
-        ("retrieved docs", DOCS * DOC_TOKENS * TURNS),
-        ("tool results", sum(sum(OUTPUT_TOKENS[:i]) + TOOL_TOKENS * i
-                             for i in range(TURNS))),
-        ("task", TASK_TOKENS * TURNS),
-    ]
-    for label, tokens in rows:
-        print(f"  {label:<15} {tokens:>7,} {tokens / sum(prompts) * 100:>6.1f}%")
+    for label, tokens in input_categories().items():
+        print(f"  {label:<17} {tokens:>7,} {tokens / sum(prompts) * 100:>6.1f}%")
     print(f"  only {sum(fresh):,} of {sum(prompts):,} input tokens are fresh "
           f"({sum(fresh) / sum(prompts) * 100:.1f}%)")
     print()
 
     print("three strategies, same session")
+    print("  toy timing: fixed rates; cache read, queue and network time omitted")
+    print("  toy billing: no cache write fee; all cached prefixes survive")
     print("  strategy                input $  output $    bill $   model s")
     baseline = None
     for strategy in ("no cache", "stable prefix", "append-only prefix"):

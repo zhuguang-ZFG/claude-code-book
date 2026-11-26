@@ -126,6 +126,9 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 .table-scroll::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:999px}
 .table-scroll::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
 .table-scroll:focus-visible{outline:2px solid var(--bronze)}
+/* The token-count table keeps readable samples and scrolls as a whole. */
+#llm-ch01 .table-scroll[data-cols="5"] th:first-child,
+#llm-ch01 .table-scroll[data-cols="5"] td:first-child{min-width:14rem}
 table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
  tbody tr:nth-child(even){background:rgba(243,234,216,.35)}
 th{font-family:var(--sans);font-weight:700;color:var(--bronze-3);
@@ -170,6 +173,7 @@ figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
   box-shadow:0 6px 22px -12px rgba(38,34,27,.30),
     inset 0 0 0 1px rgba(255,255,255,.55)}
 .illu-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.illu-frame:has(svg.llm-explainer){max-width:520px;margin-inline:auto}
 /* registration ticks: the hand-drawn plates borrow the diagram frame's two
    L-marks so an illustrated figure reads as the same series of pasted plates,
    not a picture dropped into a box. Skipped for photo plates, whose full-bleed

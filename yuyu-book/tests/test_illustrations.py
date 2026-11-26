@@ -206,15 +206,33 @@ class ShippedPlates(unittest.TestCase):
         self.assertIn("seq", art.drawing("ch03-tool-pipeline").split(">", 1)[0])
         self.assertNotIn("seq", art.drawing("ch03-tool-bench").split(">", 1)[0])
 
-    def test_no_drawing_carries_its_own_chinese_labels(self):
-        """A plate ships unchanged in both editions, so any Chinese drawn
-        inside it lands on the English page. Words belong in the caption."""
+    def test_shared_drawings_stay_language_neutral_and_zh_only_labels_are_named(self):
+        """Shared artwork must stay usable in the English edition.
+
+        The separately registered Chinese-only LLM volume can use Chinese
+        explanations in its own named figures. Derive that scope from its
+        actual chapter slots rather than exempting the whole agent art tray.
+        """
+        llm_manifest, _sources = load_configs("manifest-llm.json", "sources-llm.json")
+        localized = set()
+        if llm_manifest.get("langs") == ["zh"]:
+            for unit_def, kind, _part in unit_stream(llm_manifest):
+                unit = load_unit(unit_def, kind, "zh", REPO_ROOT)
+                localized.update(block.name for block in unit.ills
+                                 if block.name.startswith("llm-"))
         han = re.compile(r"[\u3400-\u9fff]")
         for d in (art.ART_DIR, art.OMP_ART_DIR, art.PI_ART_DIR,
                   art.AGENT_ART_DIR):
             for path in sorted(d.glob("*.svg")):
                 with self.subTest(drawing=path.name):
                     text = path.read_text(encoding="utf-8")
+                    if d == art.AGENT_ART_DIR and path.stem in localized and han.search(text):
+                        root = text.split(">", 1)[0]
+                        self.assertRegex(root, r'aria-label="[^"\s][^"]*"')
+                        self.assertIn('role="img"', root)
+                        self.assertNotIn('aria-hidden="true"', root)
+                        self.assertIn("<desc>", text)
+                        continue
                     self.assertIsNone(han.search(text), path.name)
 
     def test_every_attribute_sized_label_clears_the_narrow_column(self):

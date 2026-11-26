@@ -196,6 +196,12 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   /* an inline drawing takes the whole 176 mm text block, so the label sizes
      chosen for the 285 px phone column would print at twice the body size.
      Paper re-caps the label scale; the screen keeps the larger attributes. */
+  /* These chapter examples are short enough to keep their steps/rows together. */
+  #llm-ch05 .table-scroll[data-cols="4"],
+  #llm-ch05 ul,
+  #llm-ch12 pre,
+  #llm-ch15 .table-scroll[data-cols="3"]{break-inside:avoid}
+  .illu-frame:has(svg.llm-explainer){max-width:110mm}
   .illu-frame svg text{font-size:14px}
   .illu-frame svg text.il-head{font-size:16px}
   .illu-frame svg text.il-big{font-size:24px}

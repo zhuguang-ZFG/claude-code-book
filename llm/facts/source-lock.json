@@ -1,5 +1,5 @@
 {
-  "accessed": "2026-11-25",
+  "accessed": "2026-11-26",
   "repositories": [
     {
       "repo": "openai/tiktoken",
@@ -29,13 +29,13 @@
       "repo": "huggingface/transformers",
       "commit": "47b0e478f324b54f177ea7998a0791870fdd0324",
       "license": "Apache-2.0",
-      "scope": "第 4、8 章：v4.57.3 的 RoPE、Mixtral 与 BERT/decoder 分类实现；第 10 章：投机解码和不同 tokenizer 的 UAD"
+      "scope": "第 4、8 章：v4.57.3 的 RoPE、Mixtral 与 BERT/decoder 分类实现；第 10 章：投机解码和不同 tokenizer 的 UAD；第 5、6 章：同提交的采样过滤与 KV cache 范围"
     },
     {
       "repo": "rasbt/LLMs-from-scratch",
       "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8",
       "license": "Apache-2.0",
-      "scope": "第 2、7、8 章：token embedding、训练/验证损失与分类微调的公开配套教材"
+      "scope": "第 2、7、8 章：token embedding、训练/验证损失与分类微调的公开配套教材；第 5 章：固定 seed 的连续抽样、温度与 top-k"
     },
     {
       "repo": "huggingface/trl",
@@ -66,6 +66,24 @@
       "commit": "7ecc794703b2877f63226f2477a49b34f9b25163",
       "license": "仅链接与独立概述；未引入仓库数据",
       "scope": "第 9 章：人工步骤标签来源与数据结构；仅链接 README，不复制数据或资产。"
+    },
+    {
+      "repo": "modelcontextprotocol/modelcontextprotocol",
+      "commit": "5f5440bb26a62e2cf3440b92da5a667efa03b267",
+      "license": "MIT；仅链接与原创转述",
+      "scope": "第 12 章：逐请求协议声明与新旧版本边界；另读同提交的 discovery、tools、stdio 与 schema。"
+    },
+    {
+      "repo": "haotian-liu/LLaVA",
+      "commit": "c121f0432da27facab705978f83c4ada465e46fd",
+      "license": "Apache-2.0；仅链接与原创转述",
+      "scope": "第 15 章：特征对齐与视觉指令微调的冻结范围；不转载训练数据或资产。"
+    },
+    {
+      "repo": "d2l-ai/d2l-en",
+      "commit": "23d7a5aecceee57d1292c56e90cce307f183bb0a",
+      "license": "教材 CC BY-SA 4.0，代码 Apache-2.0；仅链接与独立概述",
+      "scope": "第 15 章：公开教材的 patch embedding、位置嵌入、分类 token 与 Transformer 编码；不冒称通读商业书。"
     }
   ]
 }

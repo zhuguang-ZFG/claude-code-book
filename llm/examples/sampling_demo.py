@@ -21,12 +21,19 @@ LOGITS = {
 
 
 def softmax(logits: dict[str, float], temperature: float) -> dict[str, float]:
-    if temperature <= 0:
-        raise ValueError("temperature must be greater than zero")
-    scaled = {token: value / temperature for token, value in logits.items()}
-    largest = max(scaled.values())
-    weights = {token: math.exp(value - largest)
-               for token, value in scaled.items()}
+    if not math.isfinite(temperature) or temperature <= 0:
+        raise ValueError("temperature must be finite and greater than zero")
+    if not logits or any(not math.isfinite(value) for value in logits.values()):
+        raise ValueError("logits must be nonempty and finite")
+    largest = max(logits.values())
+    weights = {}
+    for token, value in logits.items():
+        offset = value - largest
+        # Center before dividing: tiny T must not turn the maximum into inf.
+        # Opposite-sign extreme logits can overflow the subtraction instead.
+        scaled = (offset / temperature if math.isfinite(offset)
+                  else value / temperature - largest / temperature)
+        weights[token] = math.exp(scaled)
     total = sum(weights.values())
     return {token: weight / total for token, weight in weights.items()}
 
@@ -34,7 +41,7 @@ def softmax(logits: dict[str, float], temperature: float) -> dict[str, float]:
 def top_k(dist: dict[str, float], k: int) -> dict[str, float]:
     if k <= 0:
         raise ValueError("k must be positive")
-    kept = dict(sorted(dist.items(), key=lambda item: item[1],
+    kept = dict(sorted(_renormalize(dist).items(), key=lambda item: item[1],
                        reverse=True)[:k])
     return _renormalize(kept)
 
@@ -44,7 +51,7 @@ def top_p(dist: dict[str, float], p: float) -> dict[str, float]:
         raise ValueError("p must be in (0, 1]")
     kept: dict[str, float] = {}
     cumulative = 0.0
-    for token, probability in sorted(dist.items(), key=lambda item: item[1],
+    for token, probability in sorted(_renormalize(dist).items(), key=lambda item: item[1],
                                      reverse=True):
         kept[token] = probability
         cumulative += probability
@@ -54,19 +61,31 @@ def top_p(dist: dict[str, float], p: float) -> dict[str, float]:
 
 
 def _renormalize(dist: dict[str, float]) -> dict[str, float]:
+    if not dist or any(not math.isfinite(p) or p < 0 for p in dist.values()):
+        raise ValueError("probabilities must be nonempty, finite and nonnegative")
     total = sum(dist.values())
+    if not math.isfinite(total) or total <= 0:
+        raise ValueError("probabilities must have positive finite total mass")
     return {token: probability / total for token, probability in dist.items()}
 
 
 def sample(dist: dict[str, float], rng: random.Random) -> str:
+    ordered = [(token, p) for token, p in sorted(
+        _renormalize(dist).items(), key=lambda item: item[1], reverse=True) if p > 0]
     draw = rng.random()
     cumulative = 0.0
-    for token, probability in sorted(dist.items(), key=lambda item: item[1],
-                                     reverse=True):
+    for token, probability in ordered:
         cumulative += probability
-        if draw <= cumulative:
+        if draw < cumulative:
             return token
-    return next(reversed(dist))
+    # A rounding residual belongs to the final positive interval.
+    return ordered[-1][0]
+
+
+def sample_sequence(dist: dict[str, float], seed: int, count: int) -> list[str]:
+    """Advance one generator through the whole sequence, then replay by seed."""
+    rng = random.Random(seed)
+    return [sample(dist, rng) for _ in range(count)]
 
 
 def main() -> int:
@@ -99,10 +118,9 @@ def main() -> int:
             print(f"  {label:<10} {runs} draws -> {summary}")
         print()
 
-    first = [sample(top_p(softmax(LOGITS, 0.2), 0.9), random.Random(11))
-             for _ in range(8)]
-    second = [sample(top_p(softmax(LOGITS, 0.2), 0.9), random.Random(11))
-              for _ in range(8)]
+    replay_dist = top_p(softmax(LOGITS, 1.0), 0.9)
+    first = sample_sequence(replay_dist, seed=11, count=8)
+    second = sample_sequence(replay_dist, seed=11, count=8)
     assert first == second
     print("same seed, same call order -> same toys:", " ".join(first))
     print("note: a real provider may change batching, kernels or versions; "

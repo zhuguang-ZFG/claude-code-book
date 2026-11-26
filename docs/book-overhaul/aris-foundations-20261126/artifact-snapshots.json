@@ -1,0 +1,38 @@
+[
+  {
+    "round": "round0",
+    "path": "yuyu-llm-zh.html",
+    "bytes": 759607,
+    "sha256": "b2152ec8e01214c9a234033f52a7ef0dcce89ecb087aa68de7fe21c09501ca00"
+  },
+  {
+    "round": "round0",
+    "path": "yuyu-llm-zh.pdf",
+    "bytes": 8165273,
+    "sha256": "0b6f409d19f82cf002a2df8130fc05eda449d91e9ed40d8568c8f0f37684ff40"
+  },
+  {
+    "round": "round1",
+    "path": "yuyu-llm-zh.html",
+    "bytes": 776979,
+    "sha256": "3055abb207d65bacfada243b63e62e448eccf6a789ade2bd68af088fa8eb7405"
+  },
+  {
+    "round": "round1",
+    "path": "yuyu-llm-zh.pdf",
+    "bytes": 8035208,
+    "sha256": "5184fa27e200cd08caef9f101810f84d9b1414919edc9acc333758aa9300ce87"
+  },
+  {
+    "round": "round2",
+    "path": "yuyu-llm-zh.html",
+    "bytes": 777593,
+    "sha256": "56f76cf48ac1cc4269ddcb3382b0f68fe4371ebeae8aaaa9332486e1ff5c4837"
+  },
+  {
+    "round": "round2",
+    "path": "yuyu-llm-zh.pdf",
+    "bytes": 8032445,
+    "sha256": "20769aeaab105f248354e4dc166d321be509252c8b7dbeb90347d3a4259cad55"
+  }
+]

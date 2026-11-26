@@ -1,0 +1,17 @@
+{
+  "html": {
+    "bytes": 777593,
+    "sha256": "56f76cf48ac1cc4269ddcb3382b0f68fe4371ebeae8aaaa9332486e1ff5c4837"
+  },
+  "pdf": {
+    "bytes": 8032445,
+    "sha256": "20769aeaab105f248354e4dc166d321be509252c8b7dbeb90347d3a4259cad55",
+    "pages": 161,
+    "bookmarks": 28
+  },
+  "visual": "36 section/viewport/theme checks, plus 4 token-table scroll-to-right checks",
+  "table_columns": 91,
+  "structure": "chapter headings, stable blocks and illustration references unchanged",
+  "gate": "9 steps passed; 466 repository tests (1 skip), 629 builder tests; 488 Markdown and 280 Mermaid, 0 errors; ruff and collected assembly passed",
+  "layout": "Five samples readable in <=2 lines at 390 px, all ratio columns visible by keyboard/scroll; PDF opening sample intact and short sampling table kept together"
+}

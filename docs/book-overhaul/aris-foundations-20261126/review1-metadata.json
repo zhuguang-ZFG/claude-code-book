@@ -1,0 +1,32 @@
+{
+  "call_number": 1,
+  "purpose": "round-1-review",
+  "timestamp": "2026-11-25T23:34:13.243871+00:00",
+  "tool": "collaboration.spawn_agent",
+  "backend": "codex",
+  "requested_reviewer_model": "gpt-6-astra",
+  "reported_reviewer_model": null,
+  "requested_effort": "xhigh",
+  "reported_effort": null,
+  "route": {
+    "backend": "codex",
+    "host": "codex",
+    "source": "host-default",
+    "model": "gpt-6-astra",
+    "effort": "xhigh",
+    "transport": "native",
+    "fresh_tool": "spawn_agent",
+    "continuation_tool": "send_input"
+  },
+  "session_id": "/root/aris_foundations_review1",
+  "fork_turns": "none",
+  "status": "ok",
+  "review_completed": true,
+  "review_scope_complete": true,
+  "score": 6.5,
+  "verdict": "Almost",
+  "review_positive": true,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "identity_note": "Native host does not report actual model or effort; requested pair is not verified identity."
+}
