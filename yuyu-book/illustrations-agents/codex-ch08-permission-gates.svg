@@ -13,9 +13,6 @@
   <text x="610" y="158" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">attempt</text>
   <path d="M170 151H194M330 151H354M490 151H534"/>
   <path d="M184 141L196 151L184 161M344 141L356 151L344 161M524 141L536 151L524 161"/>
-  <text x="182" y="134" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">yes</text>
-  <text x="342" y="134" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">yes</text>
-  <text x="512" y="134" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">yes</text>
   <path d="M105 198V246M265 198V246M425 198V246" stroke-dasharray="7 7"/>
   <rect x="40" y="246" width="450" height="62" rx="8" opacity="0.18"/>
   <text x="265" y="286" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">NO: stop before execution</text>
