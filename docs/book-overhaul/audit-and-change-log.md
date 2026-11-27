@@ -243,4 +243,5 @@ manifest：`manifest-t3code.json`；sources：`sources-t3code.json`；23 单元�
 - 分册 PDF 页数：御舆 555、LLM 182、提示词 99、Kimi 88、OpenCode 156、DeepSeek 146、Hermes 137、Codex 151、T3 129、Pi 186、Omp 439、Vibe 81；对应 EPUB 均由正式构建器生成。
 - 390px 下已目检御舆、LLM、八卷新增图、Omp 与 Vibe 的代表章；PDF 封面与代表章页已生成接触表目检。
 - `task_verify run`：未验证，原因 `project-or-git-baseline-unavailable`；不把窄测试或完整门禁写成 task_verify 通过。
-- 合订本最终 PDF/EPUB 正在重建；完成后补入页数、字节数与 EPUB 导航证据。
+- 合订本最终产物：HTML 76,277,501 字节；PDF 101.6 MB、2260 页、383 书签、97 条索引页码，`empty_sheets()` 为 0；EPUB 56,449,387 字节、2791 条导航、387 个文档、716 张图（659 张栅格化 SVG）。第 26 页已恢复为卷一扉页。
+- 发布前仍需处理：合订本封面元数据仍为 `LinTsinghua v0.2.0 · 2026-11-21`；24 张新图的信息密度与图注需第二轮加深；多数分册 PDF 早于最终打印样式加固，应按发布门槛重新生成。
