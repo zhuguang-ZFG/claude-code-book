@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A parent fiber owns child fibers and effects so disposal follows the ownership tree">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="282" y="44" width="156" height="66" rx="8"/>
+  <text x="316" y="85" font-size="28" fill="currentColor" stroke="none">parent</text>
+  <path d="M360 110V154M154 154H566M154 154V194M360 154V194M566 154V194"/>
+  <circle cx="154" cy="230" r="36"/>
+  <circle cx="360" cy="230" r="36"/>
+  <circle cx="566" cy="230" r="36"/>
+  <text x="112" y="320" font-size="28" fill="currentColor" stroke="none">child A</text>
+  <text x="318" y="320" font-size="28" fill="currentColor" stroke="none">child B</text>
+  <text x="514" y="320" font-size="28" fill="currentColor" stroke="none">effect</text>
+  <path d="M154 266V300M360 266V300M566 266V300" stroke-dasharray="7 7"/>
+  <path d="M118 230H190M324 230H396M530 230H602" opacity="0.45"/>
+</svg>

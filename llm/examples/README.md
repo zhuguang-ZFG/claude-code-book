@@ -8,7 +8,7 @@
 | `embedding_demo.py` | 手设向量的余弦相似度与 top-k 检索 | 点积/余弦排序差异、近邻表、参数与扫描成本 |
 | `ann_demo.py` | 用 IVF 分桶演示近似最近邻的召回率与扫描比例 | ASCII 桶图、nprobe 表、最差查询漏检分析 |
 | `attention_demo.py` | 对三个手设向量计算单头/双头因果注意力 | 权重矩阵、参数与 KV cache、完整计算与分步缓存对照 |
-| `transformer_demo.py` | 走一遍 pre-norm block，算 Norm、残差、RoPE 与参数账 | 归一化结果、残差流模长、参数表、RoPE 点积 |
+| `transformer_demo.py` | 走一遍 pre-norm block、真实多 token 前向与参数账 | 归一化、残差流模长、rotate_half 对齐、GQA/MoE 参数账、MoE 路由 |
 | `sampling_demo.py` | 对合成的下一个 token 分布应用温度、top-k、top-p | 概率表、保留候选数、每段初始化一次 seed 的连续抽样结果 |
 | `context_budget.py` | 计算窗口预算、KV cache 与注意力 pair 数 | 预算余量、KV cache 大小、假设价格下的账单 |
 | `scaling_demo.py` | 计算 6ND 训练算力、推理算力与参数/token 分配 | 三档预算表、7B 模型的 GPU-days、推理 FLOPs |

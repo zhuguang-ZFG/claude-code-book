@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A scheduled check moves from due to claimed to running and then records success or failure">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <circle cx="92" cy="180" r="42"/>
+  <path d="M92 154V180L110 194"/>
+  <circle cx="268" cy="180" r="42"/>
+  <path d="M252 180H284M268 164V196" opacity="0.55"/>
+  <circle cx="444" cy="180" r="42"/>
+  <path d="M426 180L440 194L464 164"/>
+  <circle cx="620" cy="180" r="42"/>
+  <path d="M602 168H638V204H602Z"/>
+  <path d="M134 180H226M310 180H402M486 180H578"/>
+  <path d="M222 170L234 180L222 190M398 170L410 180L398 190M574 170L586 180L574 190"/>
+  <text x="62" y="258" font-size="28" fill="currentColor" stroke="none">due</text>
+  <text x="224" y="258" font-size="28" fill="currentColor" stroke="none">claim</text>
+  <text x="405" y="258" font-size="28" fill="currentColor" stroke="none">run</text>
+  <text x="590" y="258" font-size="28" fill="currentColor" stroke="none">record</text>
+  <path d="M444 222V300H92V222" stroke-dasharray="8 8"/>
+  <text x="236" y="334" font-size="28" fill="currentColor" stroke="none">failure keeps its own status</text>
+</svg>

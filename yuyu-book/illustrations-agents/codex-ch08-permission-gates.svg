@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Task authorization, approval policy, sandbox capability, and resource success are separate gates">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <path d="M74 180H646" opacity="0.25"/>
+  <circle cx="112" cy="180" r="44"/>
+  <circle cx="268" cy="180" r="44"/>
+  <circle cx="424" cy="180" r="44"/>
+  <circle cx="580" cy="180" r="44"/>
+  <text x="78" y="188" font-size="28" fill="currentColor" stroke="none">intent</text>
+  <text x="246" y="188" font-size="28" fill="currentColor" stroke="none">ask</text>
+  <text x="408" y="188" font-size="28" fill="currentColor" stroke="none">OS</text>
+  <text x="556" y="188" font-size="28" fill="currentColor" stroke="none">state</text>
+  <path d="M156 180H224M312 180H380M468 180H536"/>
+  <path d="M214 170L226 180L214 190M370 170L382 180L370 190M526 170L538 180L526 190"/>
+  <text x="202" y="286" font-size="28" fill="currentColor" stroke="none">four questions, four kinds of evidence</text>
+</svg>

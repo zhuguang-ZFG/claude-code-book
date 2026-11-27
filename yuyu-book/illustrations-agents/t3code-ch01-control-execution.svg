@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Clients send commands to the environment server while provider execution and state stay on that server">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="52" y="62" width="142" height="58" rx="7"/>
+  <rect x="52" y="151" width="142" height="58" rx="7"/>
+  <rect x="52" y="240" width="142" height="58" rx="7"/>
+  <text x="94" y="100" font-size="28" fill="currentColor" stroke="none">web</text>
+  <text x="76" y="189" font-size="28" fill="currentColor" stroke="none">desktop</text>
+  <text x="86" y="278" font-size="28" fill="currentColor" stroke="none">mobile</text>
+  <path d="M194 91C250 112 268 146 294 160M194 180H294M194 269C250 248 268 214 294 200"/>
+  <rect x="294" y="112" width="168" height="136" rx="8"/>
+  <text x="340" y="158" font-size="28" fill="currentColor" stroke="none">env</text>
+  <text x="330" y="194" font-size="28" fill="currentColor" stroke="none">server</text>
+  <path d="M328 216H428" opacity="0.4"/>
+  <path d="M462 160H520"/>
+  <path d="M510 150L522 160L510 170"/>
+  <circle cx="584" cy="160" r="54"/>
+  <text x="554" y="169" font-size="28" fill="currentColor" stroke="none">agent</text>
+  <path d="M462 206C506 236 548 248 584 214" stroke-dasharray="8 8"/>
+  <text x="486" y="286" font-size="28" fill="currentColor" stroke="none">state returns</text>
+</svg>

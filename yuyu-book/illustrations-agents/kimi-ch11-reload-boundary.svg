@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A plugin source must be copied into the managed installation and reloaded before the active agent uses it">
+  <path d="M68 310C236 300 476 314 652 302" opacity="0.18"/>
+  <path d="M64 92H210V224H64Z"/>
+  <path d="M64 92L88 68H210" opacity="0.6"/>
+  <text x="86" y="150" font-size="28" fill="currentColor" stroke="none">SOURCE</text>
+  <path d="M210 158H300"/>
+  <path d="M290 148L302 158L290 168"/>
+  <path d="M312 92H458V224H312Z"/>
+  <text x="344" y="150" font-size="28" fill="currentColor" stroke="none">COPY</text>
+  <path d="M458 158H548"/>
+  <path d="M538 148L550 158L538 168"/>
+  <circle cx="610" cy="158" r="58"/>
+  <path d="M584 158H636M610 132V184" opacity="0.55"/>
+  <text x="568" y="250" font-size="28" fill="currentColor" stroke="none">ACTIVE</text>
+  <path d="M136 224C154 286 360 292 382 228" stroke-dasharray="8 8"/>
+  <text x="204" y="316" font-size="28" fill="currentColor" stroke="none">save != sync != reload</text>
+</svg>

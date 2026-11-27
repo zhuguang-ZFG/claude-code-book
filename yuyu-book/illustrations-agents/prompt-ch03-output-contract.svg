@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="One set of facts is rendered for a reader and checked by a program before semantic review">
+  <path d="M72 310C230 300 478 315 650 304" opacity="0.18"/>
+  <circle cx="360" cy="74" r="38"/>
+  <path d="M343 74H377M360 57V91" opacity="0.6"/>
+  <text x="394" y="83" font-size="29" fill="currentColor" stroke="none">same facts</text>
+  <path d="M344 111C310 146 238 147 194 178M376 111C410 146 482 147 526 178"/>
+  <path d="M82 178H306V270H82Z"/>
+  <path d="M414 178H638V270H414Z"/>
+  <text x="112" y="222" font-size="28" fill="currentColor" stroke="none">reader note</text>
+  <text x="444" y="222" font-size="28" fill="currentColor" stroke="none">field check</text>
+  <path d="M112 244H266M444 244H596" opacity="0.4"/>
+  <path d="M194 270V294M526 270V294M194 294H526"/>
+  <circle cx="360" cy="294" r="24"/>
+  <path d="M349 294L358 303L373 284"/>
+  <text x="300" y="344" font-size="28" fill="currentColor" stroke="none">meaning review</text>
+</svg>

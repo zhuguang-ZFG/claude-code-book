@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A command, event, projection, receipt, and outbox effect commit together before the worker performs side effects">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="44" y="136" width="126" height="88" rx="7"/>
+  <text x="58" y="188" font-size="28" fill="currentColor" stroke="none">command</text>
+  <path d="M170 180H224"/>
+  <path d="M212 170L226 180L212 190"/>
+  <rect x="226" y="72" width="238" height="216" rx="8"/>
+  <text x="278" y="112" font-size="28" fill="currentColor" stroke="none">transaction</text>
+  <rect x="254" y="136" width="82" height="44" rx="5"/>
+  <rect x="352" y="136" width="82" height="44" rx="5"/>
+  <rect x="254" y="204" width="82" height="44" rx="5"/>
+  <rect x="352" y="204" width="82" height="44" rx="5"/>
+  <text x="270" y="165" font-size="28" fill="currentColor" stroke="none">evt</text>
+  <text x="370" y="165" font-size="28" fill="currentColor" stroke="none">view</text>
+  <text x="266" y="233" font-size="28" fill="currentColor" stroke="none">rct</text>
+  <text x="374" y="233" font-size="28" fill="currentColor" stroke="none">fx</text>
+  <path d="M464 180H524"/>
+  <path d="M514 170L528 180L514 190"/>
+  <circle cx="596" cy="180" r="58"/>
+  <path d="M572 180H620M596 156V204" opacity="0.55"/>
+  <text x="526" y="278" font-size="28" fill="currentColor" stroke="none">after commit</text>
+</svg>

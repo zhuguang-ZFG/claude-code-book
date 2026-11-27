@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Memory writes update disk and live entries while the system prompt snapshot stays frozen until reload">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="58" y="70" width="180" height="92" rx="7"/>
+  <rect x="270" y="70" width="180" height="92" rx="7"/>
+  <rect x="482" y="70" width="180" height="92" rx="7"/>
+  <text x="104" y="111" font-size="28" fill="currentColor" stroke="none">disk</text>
+  <text x="314" y="111" font-size="28" fill="currentColor" stroke="none">live</text>
+  <text x="512" y="111" font-size="28" fill="currentColor" stroke="none">snapshot</text>
+  <path d="M238 116H270M450 116H482" stroke-dasharray="7 7"/>
+  <path d="M148 162V236M572 162V236M148 236H572"/>
+  <rect x="270" y="210" width="180" height="52" rx="6"/>
+  <text x="322" y="244" font-size="28" fill="currentColor" stroke="none">reload</text>
+  <path d="M148 236C148 292 250 296 270 262M572 236C572 292 470 296 450 262" stroke-dasharray="7 7"/>
+  <text x="248" y="332" font-size="28" fill="currentColor" stroke="none">write now, prompt later</text>
+</svg>

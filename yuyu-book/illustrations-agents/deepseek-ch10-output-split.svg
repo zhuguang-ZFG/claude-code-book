@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A tool call passes through validation, policy, execution, and separate canonical and rendered outputs">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="48" y="140" width="118" height="80" rx="7"/>
+  <rect x="214" y="140" width="118" height="80" rx="7"/>
+  <rect x="380" y="140" width="118" height="80" rx="7"/>
+  <text x="82" y="188" font-size="28" fill="currentColor" stroke="none">check</text>
+  <text x="251" y="188" font-size="28" fill="currentColor" stroke="none">policy</text>
+  <text x="417" y="188" font-size="28" fill="currentColor" stroke="none">run</text>
+  <path d="M166 180H214M332 180H380M498 180H548"/>
+  <path d="M206 170L216 180L206 190M372 170L382 180L372 190M538 170L550 180L538 190"/>
+  <path d="M548 180C580 180 590 106 636 92M548 180C580 180 590 254 636 268"/>
+  <rect x="636" y="62" width="76" height="60" rx="6"/>
+  <rect x="636" y="238" width="76" height="60" rx="6"/>
+  <text x="652" y="100" font-size="28" fill="currentColor" stroke="none">data</text>
+  <text x="652" y="276" font-size="28" fill="currentColor" stroke="none">text</text>
+</svg>

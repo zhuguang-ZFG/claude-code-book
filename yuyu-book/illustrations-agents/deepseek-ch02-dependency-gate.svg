@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A dependent plugin waits until both required services are active and returns to pending when a provider disappears">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <circle cx="128" cy="180" r="54"/>
+  <circle cx="592" cy="180" r="54"/>
+  <text x="92" y="171" font-size="28" fill="currentColor" stroke="none">svc A</text>
+  <text x="556" y="171" font-size="28" fill="currentColor" stroke="none">svc B</text>
+  <path d="M182 158C260 118 302 142 322 160M538 158C460 118 418 142 398 160"/>
+  <rect x="322" y="126" width="76" height="108" rx="8"/>
+  <path d="M340 158H380M340 184H380M340 208H364" opacity="0.5"/>
+  <path d="M360 234V286H128V234M360 286H592V234" stroke-dasharray="8 8"/>
+  <text x="284" y="330" font-size="28" fill="currentColor" stroke="none">missing dependency = pending</text>
+</svg>

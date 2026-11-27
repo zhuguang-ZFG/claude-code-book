@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Before and after hooks surround a host tool call and share a correlation key">
+  <path d="M70 312C246 302 470 316 650 306" opacity="0.18"/>
+  <circle cx="112" cy="180" r="52"/>
+  <text x="77" y="190" font-size="28" fill="currentColor" stroke="none">before</text>
+  <circle cx="608" cy="180" r="52"/>
+  <text x="579" y="190" font-size="28" fill="currentColor" stroke="none">after</text>
+  <rect x="268" y="126" width="184" height="108" rx="8"/>
+  <text x="294" y="174" font-size="28" fill="currentColor" stroke="none">host</text>
+  <text x="286" y="208" font-size="28" fill="currentColor" stroke="none">read()</text>
+  <path d="M164 180H268M452 180H556"/>
+  <path d="M252 170L266 180L252 190M544 170L558 180L544 190"/>
+  <path d="M112 232C180 302 540 302 608 232" stroke-dasharray="8 8"/>
+  <rect x="286" y="276" width="148" height="42" rx="6"/>
+  <text x="334" y="307" font-size="28" fill="currentColor" stroke="none">key</text>
+</svg>

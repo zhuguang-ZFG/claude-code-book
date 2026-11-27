@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="An OpenCode instance connects project configuration, sessions, tools, and server state">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <circle cx="360" cy="180" r="66"/>
+  <text x="326" y="172" font-size="28" fill="currentColor" stroke="none">instance</text>
+  <text x="334" y="204" font-size="28" fill="currentColor" stroke="none">state</text>
+  <rect x="64" y="66" width="176" height="72" rx="7"/>
+  <rect x="480" y="66" width="176" height="72" rx="7"/>
+  <rect x="64" y="238" width="176" height="72" rx="7"/>
+  <rect x="480" y="238" width="176" height="72" rx="7"/>
+  <text x="94" y="111" font-size="28" fill="currentColor" stroke="none">project</text>
+  <text x="522" y="111" font-size="28" fill="currentColor" stroke="none">session</text>
+  <text x="104" y="283" font-size="28" fill="currentColor" stroke="none">config</text>
+  <text x="532" y="283" font-size="28" fill="currentColor" stroke="none">tools</text>
+  <path d="M240 102C286 112 304 136 322 150M480 102C434 112 416 136 398 150M240 274C286 264 304 240 322 214M480 274C434 264 416 240 398 214"/>
+</svg>

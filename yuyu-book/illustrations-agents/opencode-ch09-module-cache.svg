@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Disk changes and module cache changes diverge until the host process restarts">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <path d="M74 74H250V238H74Z"/>
+  <path d="M74 74L98 50H250" opacity="0.55"/>
+  <text x="106" y="132" font-size="28" fill="currentColor" stroke="none">DISK</text>
+  <path d="M108 166H208M108 196H184" opacity="0.4"/>
+  <rect x="354" y="92" width="292" height="146" rx="8"/>
+  <text x="388" y="144" font-size="28" fill="currentColor" stroke="none">MODULE CACHE</text>
+  <path d="M388 178H608M388 206H566" opacity="0.4"/>
+  <path d="M250 158H354" stroke-dasharray="8 8"/>
+  <path d="M338 148L352 158L338 168"/>
+  <text x="270" y="136" font-size="28" fill="currentColor" stroke="none">cache</text>
+  <path d="M500 238V284H220V246"/>
+  <path d="M210 237L220 249L230 237"/>
+  <text x="292" y="326" font-size="28" fill="currentColor" stroke="none">restart reloads the module</text>
+</svg>

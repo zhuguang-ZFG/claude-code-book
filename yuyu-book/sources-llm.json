@@ -31,10 +31,10 @@
     "authority": "上游仓库与教学讲义",
     "kind": "github",
     "url": "https://github.com/karpathy/nanoGPT/tree/3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
-    "snapshot": "固定提交 3adf61e154c3fe3fca428ad6bc3818b27a3b8291；2026-11-26 复读 model.py 的 CausalSelfAttention。",
+    "snapshot": "固定提交 3adf61e154c3fe3fca428ad6bc3818b27a3b8291（正文直链同提交 model.py 的 blob/3adf61.../model.py 路径）；2026-11-26 复读 model.py 的 CausalSelfAttention、Pre-LN Block 与末尾 ln_f",
     "accessed": "2026-11-26",
     "license": "MIT",
-    "scope": "第 3 章：Q/K/V 分头、缩放、因果遮罩、输出投影及 SDPA 调用；第 7 章：训练循环结构。仅引用与独立讲解，未复制代码。",
+    "scope": "第 3 章：Q/K/V 分头、缩放、因果遮罩、输出投影及 SDPA 调用；第 4 章：Pre-LN Block 与末尾 ln_f；第 7 章：训练循环结构。仅引用与独立讲解，未复制代码。",
     "pinned": {
       "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291"
     }
@@ -123,12 +123,25 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/1607.06450",
-    "snapshot": "arXiv:1607.06450，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:1607.06450，2026-11-26 核对摘要与公式",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
     "scope": "第 4 章：LayerNorm 的去均值与缩放公式，以及它和 RMSNorm 的差别。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
+    }
+  },
+  "rmsnorm": {
+    "title": "Root Mean Square Layer Normalization",
+    "authority": "arXiv 预印本（NeurIPS 2019）",
+    "kind": "docs",
+    "url": "https://arxiv.org/abs/1910.07467",
+    "snapshot": "arXiv:1910.07467，2026-11-26 读取完整 PDF 正文 Eq. (4) 与引言关于均值重中心化与尺度不变性的论证",
+    "accessed": "2026-11-26",
+    "license": "arXiv 预印本，仅链接引用",
+    "scope": "第 4、16 章：RMSNorm 的均方根缩放公式，以及尺度不变性与重中心化不变性的实验区分。",
+    "pinned": {
+      "accessed": "2026-11-26"
     }
   },
   "pre-ln": {
@@ -136,12 +149,12 @@
     "authority": "arXiv 预印本（ICML 2020）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2002.04745",
-    "snapshot": "arXiv:2002.04745，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2002.04745，2026-11-26 读取完整 PDF 梯度尺度定理与初始化对比",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：pre-norm 与 post-norm 的训练差异，用来解释现代 decoder 的 block 顺序；不引用具体实验数字。",
+    "scope": "第 4 章：pre-norm 与 post-norm 的梯度尺度差异，用来解释现代 decoder 的 block 顺序与 Final Norm；不引用具体实验数字。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "swiglu": {
@@ -149,12 +162,12 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2002.05202",
-    "snapshot": "arXiv:2002.05202，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2002.05202，2026-11-26 读取完整 PDF Eq. (1)–(6) 的门控前馈公式",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
     "scope": "第 4 章：SwiGLU 等门控 FFN 变体的结构，以及 d_ff 取值与参数量的关系。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "rope": {
@@ -162,12 +175,12 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2104.09864",
-    "snapshot": "arXiv:2104.09864，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:2104.09864，2026-11-26 读取完整 PDF 相邻配对旋转、相对偏移折叠与频率表",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：RoPE 的位置旋转与点积中的相对偏移；缩放算法另以 PI、YaRN 与固定版本实现为依据。",
+    "scope": "第 4 章：RoPE 的位置旋转、相邻配对约定与点积中的相对偏移；缩放算法另以 PI、YaRN 与固定版本实现为依据。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "word2vec": {
@@ -580,12 +593,12 @@
     "authority": "arXiv 预印本",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2306.15595",
-    "snapshot": "arXiv:2306.15595，2026-11-21 读取摘要页；2026-11-25 复核摘要中位置插值与微调的前提",
-    "accessed": "2026-11-25",
+    "snapshot": "arXiv:2306.15595，2026-11-26 读取完整 PDF 公式与微调条件",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
     "scope": "第 4 章：位置索引线性缩放；论文报告的扩展结果包含微调，不能推广成免训练的质量保证。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "yarn-paper": {
@@ -593,12 +606,12 @@
     "authority": "arXiv 预印本（ICLR 2024）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2309.00071",
-    "snapshot": "arXiv:2309.00071，2026-11-21 读取摘要页；2026-11-25 复核摘要中的训练前提，频段与注意力缩放另核固定版本源码",
-    "accessed": "2026-11-25",
+    "snapshot": "arXiv:2309.00071，2026-11-26 读取完整 PDF 第 3 节与附录 A.2 的 NTK-aware 及分频段缩放公式",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：长上下文扩展包含训练条件；分频段混合与注意力缩放同时对照固定版本 Transformers 源码。",
+    "scope": "第 4、16 章：NTK-aware 基底变换、分频段混合与注意力温度缩放；同时对照固定版本 Transformers 源码。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "moe-paper": {
@@ -606,12 +619,12 @@
     "authority": "arXiv 预印本（ICLR 2017）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/1701.06538",
-    "snapshot": "arXiv:1701.06538，2026-11-21 读取摘要页",
-    "accessed": "2026-11-21",
+    "snapshot": "arXiv:1701.06538，2026-11-26 读取完整 PDF §2.1 KeepTopK 门控与负载均衡机制",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：按条件激活参数的 MoE 起点，以及负载均衡的动机；不引用其容量数字。",
+    "scope": "第 4 章：按条件激活参数的 MoE 起点、KeepTopK 与负载均衡的动机；区分现代 softmax-then-topk 实现，不引用容量数字。",
     "pinned": {
-      "accessed": "2026-11-21"
+      "accessed": "2026-11-26"
     }
   },
   "deepseek-v2-paper": {
@@ -682,15 +695,16 @@
   },
   "rope-extrapolation": {
     "title": "Scaling Laws of RoPE-based Extrapolation",
-    "authority": "arXiv 预印本（COLM 2024）",
+    "authority": "arXiv 预印本（ICLR 2024）",
     "kind": "docs",
     "url": "https://arxiv.org/abs/2310.05209",
-    "snapshot": "arXiv:2310.05209，2026-11-22 引用号经赵鑫等《大语言模型》参考文献页核对",
-    "accessed": "2026-11-22",
+    "snapshot": "arXiv:2310.05209v2，2026-11-26 读取完整 PDF §3.2 Lemma 1 临界维度推导（含 Llama-2-7B 示例 d_extra=92）",
+    "accessed": "2026-11-26",
     "license": "arXiv 预印本，仅链接引用",
-    "scope": "第 4 章：RoPE 外推的频段分析，作为进一步阅读；不据此声称位置截断通用有效或无需训练。",
+    "scope": "第 4 章：RoPE 外推的周期与临界维度分析；据此说明长输入分布外风险，不宣称位置截断通用有效或无需训练。",
     "pinned": {
-      "accessed": "2026-11-22"
+      "accessed": "2026-11-26",
+      "arxiv-version": "2310.05209v2"
     }
   },
   "gpt3-paper": {
@@ -919,10 +933,49 @@
     "authority": "Hugging Face 官方仓库",
     "kind": "github",
     "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/modeling_rope_utils.py",
-    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 阅读线性、动态 NTK、YaRN 频率计算",
-    "accessed": "2026-11-25",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-26 复读线性、动态 NTK、YaRN 与 llama3 分段频率计算",
+    "accessed": "2026-11-26",
     "license": "Apache-2.0",
     "scope": "第 4 章：区分缩放算法、频段处理与注意力缩放；只核对算法实现，不据此承诺 checkpoint 的长上下文质量。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "transformers-llama": {
+    "title": "Transformers v4.57.3: Llama model implementation",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/llama/modeling_llama.py",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-26 读取 LlamaRMSNorm、LlamaMLP、LlamaDecoderLayer 与 rotate_half",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0",
+    "scope": "第 4 章：RMSNorm float32 方差计算、Pre-LN + Final Norm 串行主干、SwiGLU 三矩阵门控与 split-half rotate_half 配对约定。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "transformers-llama-config": {
+    "title": "Transformers v4.57.3: Llama configuration",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/llama/configuration_llama.py",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-26 读取 LlamaConfig 默认参数字段",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0",
+    "scope": "第 4 章：核对 7B 默认词表 32000、4096 隐藏维、11008 中间维、32 层/32 头与 untied/bias 默认开关。",
+    "pinned": {
+      "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "transformers-qwen2": {
+    "title": "Transformers v4.57.3: Qwen2 model implementation",
+    "authority": "Hugging Face 官方仓库",
+    "kind": "github",
+    "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/qwen2/modeling_qwen2.py",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-26 读取 Qwen2Attention（含 Q/K/V bias 与可选滑动窗口）",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0",
+    "scope": "第 4 章：对比同属 Pre-LN RMSNorm+SwiGLU+RoPE 家族但保留 Q/K/V 线性偏置与可选滑动窗口的工程差异。",
     "pinned": {
       "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
     }
@@ -932,12 +985,25 @@
     "authority": "Hugging Face 官方仓库",
     "kind": "github",
     "url": "https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/mixtral/modeling_mixtral.py",
-    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-25 阅读 MixtralSparseMoeBlock",
-    "accessed": "2026-11-25",
+    "snapshot": "v4.57.3 对应完整提交 47b0e478f324b54f177ea7998a0791870fdd0324，2026-11-26 复读 MixtralSparseMoeBlock",
+    "accessed": "2026-11-26",
     "license": "Apache-2.0",
-    "scope": "第 4 章：逐 token top-k 路由、路由权重归一化与专家输出合并；不引用硬件性能数字。",
+    "scope": "第 4、16 章：逐 token 先 softmax 再 top-k 与路由权重归一化，以及专家输出合并；不引用硬件性能数字。",
     "pinned": {
       "commit": "47b0e478f324b54f177ea7998a0791870fdd0324"
+    }
+  },
+  "llms-from-scratch-ch04": {
+    "title": "Build a Large Language Model (From Scratch): Chapter 4 code",
+    "authority": "Sebastian Raschka 官方配套仓库",
+    "kind": "github",
+    "url": "https://github.com/rasbt/LLMs-from-scratch/blob/22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8/ch04/01_main-chapter-code/ch04.ipynb",
+    "snapshot": "固定提交 22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8，2026-11-26 读取第 4 章 GPTModel、LayerNorm、GELU 与 tied 权重参数核算",
+    "accessed": "2026-11-26",
+    "license": "Apache-2.0",
+    "scope": "第 4 章：两矩阵 4d GELU FFN、Pre-LN + final_norm 骨架及 tied embedding 参数对照；独立转述，未复制商业书正文或代码。",
+    "pinned": {
+      "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8"
     }
   },
   "llms-from-scratch-ch02": {

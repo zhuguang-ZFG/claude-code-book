@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Request, tool call, tool result, and answer are four distinct records">
+  <path d="M66 314C250 304 470 316 654 306" opacity="0.18"/>
+  <g>
+    <rect x="92" y="48" width="536" height="52" rx="6"/>
+    <circle cx="122" cy="74" r="12"/>
+    <text x="154" y="83" font-size="28" fill="currentColor" stroke="none">request: the goal</text>
+  </g>
+  <g>
+    <rect x="92" y="118" width="536" height="52" rx="6"/>
+    <circle cx="122" cy="144" r="12"/>
+    <text x="154" y="153" font-size="28" fill="currentColor" stroke="none">call: intended action</text>
+  </g>
+  <g>
+    <rect x="92" y="188" width="536" height="52" rx="6"/>
+    <circle cx="122" cy="214" r="12"/>
+    <text x="154" y="223" font-size="28" fill="currentColor" stroke="none">result: observed data</text>
+  </g>
+  <g>
+    <rect x="92" y="258" width="536" height="52" rx="6"/>
+    <circle cx="122" cy="284" r="12"/>
+    <text x="154" y="293" font-size="28" fill="currentColor" stroke="none">answer: interpretation</text>
+  </g>
+  <path d="M72 74H88M72 144H88M72 214H88M72 284H88" opacity="0.5"/>
+</svg>

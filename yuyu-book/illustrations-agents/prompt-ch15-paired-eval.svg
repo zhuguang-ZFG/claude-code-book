@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Two prompt versions run against the same frozen cases and are compared by criteria">
+  <path d="M70 314C250 304 470 316 650 306" opacity="0.18"/>
+  <rect x="74" y="72" width="226" height="104" rx="8"/>
+  <rect x="420" y="72" width="226" height="104" rx="8"/>
+  <text x="112" y="119" font-size="30" fill="currentColor" stroke="none">PROMPT A</text>
+  <text x="458" y="119" font-size="30" fill="currentColor" stroke="none">PROMPT B</text>
+  <path d="M112 144H254M458 144H600" opacity="0.4"/>
+  <path d="M187 176V204M533 176V204M187 204H533V236H187Z"/>
+  <text x="224" y="268" font-size="28" fill="currentColor" stroke="none">same cases</text>
+  <path d="M360 236V286M322 286H398"/>
+  <path d="M284 318H436M300 338H420" opacity="0.55"/>
+  <text x="486" y="322" font-size="28" fill="currentColor" stroke="none">compare</text>
+</svg>

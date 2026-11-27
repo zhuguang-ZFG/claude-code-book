@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A large tool menu consumes more context than four default tools for the same task">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="66" y="66" width="254" height="220" rx="8"/>
+  <rect x="400" y="66" width="254" height="220" rx="8"/>
+  <text x="100" y="112" font-size="28" fill="currentColor" stroke="none">30+ tools</text>
+  <text x="448" y="112" font-size="28" fill="currentColor" stroke="none">4 tools</text>
+  <path d="M100 144H286M100 174H286M100 204H286M100 234H268M100 264H250" opacity="0.28"/>
+  <path d="M448 152H606M448 194H606M448 236H606M448 278H574" opacity="0.55"/>
+  <path d="M320 180H400"/>
+  <path d="M388 170L402 180L388 190"/>
+  <text x="282" y="330" font-size="28" fill="currentColor" stroke="none">same task, less context</text>
+</svg>
