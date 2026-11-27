@@ -1507,10 +1507,11 @@ article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
   .collected .back-index .idx-block{break-inside:auto}
   /* the source registry ends the same way before the last volume's appendices */
   .collected .sources{padding-bottom:0}
-  /* the final "sources & permissions" link is intentionally its own group so
-     it cannot strand the last volume heading. Its screen-sized top margin
-     leaves only that link on a new sheet in the omnibus; reclaim the air on
-     this final label alone, keeping the type size and every contents row. */
+  /* The penultimate back-matter link used to leave the final one on a sheet
+     of its own. Reclaim that group's screen-sized top margin while keeping
+     the final label's established print spacing contract. */
+  .collected #toc .toc-group:nth-last-child(2)>.toc-part{
+    margin:.15rem 0 .05rem;line-height:1.2}
   .collected #toc .toc-group:last-child>.toc-part{
     margin:.25rem 0 .15rem;line-height:1.35}
   /* the folio slot: a screen has no pages, so the row hides its page reference;
