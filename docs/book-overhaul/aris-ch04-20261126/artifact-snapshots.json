@@ -1,0 +1,604 @@
+{
+  "round0": [
+    {
+      "path": "round0/source/00-前言.md",
+      "bytes": 11547,
+      "sha256": "48714c4a3df3d8b32a6666c3fed7a20e84b3e925f8bbaadd28109bcb08512a56"
+    },
+    {
+      "path": "round0/source/ch04.md",
+      "bytes": 13921,
+      "sha256": "2d33e938bbaf114790eacaff8a2a49b017b04aa49116b3a95f4386b1867d83c4"
+    },
+    {
+      "path": "round0/source/ch16.md",
+      "bytes": 25248,
+      "sha256": "29daab56e1fe91266c88c6e9d4c84d559568b27d0d78b44210af374e0ecfe213"
+    },
+    {
+      "path": "round0/source/llm-ch04-rope-rotation.svg",
+      "bytes": 1547,
+      "sha256": "4d068a5bec0a22741789aca38fb1dba88f624241b2fd4690afa5dc5929a517c9"
+    },
+    {
+      "path": "round0/source/llm-ch04-transformer-block.svg",
+      "bytes": 2361,
+      "sha256": "02d4aaf36274650c3062e6c84d067cf1b8695c17d596aaba10c0058bbcf2982e"
+    },
+    {
+      "path": "round0/source/llm-volume-plan.md",
+      "bytes": 14303,
+      "sha256": "e8925e187bc12410c8f9c39b03bae0239a3ba578188d92f9b63a6763c43ea6f2"
+    },
+    {
+      "path": "round0/source/manifest-llm.json",
+      "bytes": 6812,
+      "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+    },
+    {
+      "path": "round0/source/README.md",
+      "bytes": 7101,
+      "sha256": "bed75b6a53c9e21ada8110940888ebe8efbb5850dabd0a87fa8a944f19d32ce4"
+    },
+    {
+      "path": "round0/source/source-lock.json",
+      "bytes": 5368,
+      "sha256": "48ed58c73cc97aee7fc913110cf8583683d0c355d4a9c32ef70337e727ede227"
+    },
+    {
+      "path": "round0/source/sources-llm.json",
+      "bytes": 66798,
+      "sha256": "74bcc8be0d6fcd9855136fc1175a83f9cea991ef18e71a228b960c2380718e85"
+    },
+    {
+      "path": "round0/source/test_llm_examples.py",
+      "bytes": 66512,
+      "sha256": "49754db9022b0911ef9cb0b4b35ff686fbba9fcd904ddff2cd16dbb3fc71c48b"
+    },
+    {
+      "path": "round0/source/test_llm_product.py",
+      "bytes": 6873,
+      "sha256": "bc9ddb8f691145cb9f9dfd9cfc781b16a927c0c88507b8a0d641f1baccb8dc68"
+    },
+    {
+      "path": "round0/source/transformer_demo.py",
+      "bytes": 5668,
+      "sha256": "b8b7395b897b5f8918a7b7c84f18973c8e4f744c61694aa4208c73769cb09690"
+    },
+    {
+      "path": "round0/source/VERIFY.md",
+      "bytes": 18657,
+      "sha256": "f05e7ab4419696bda14466d5552ff780008f4549be1841a3ddcf602689ebaa09"
+    },
+    {
+      "path": "yuyu-llm-zh.html",
+      "bytes": 796999,
+      "sha256": "652005678594b9a4a7538107275e946fda4d139c5371ff778c952c0563b17753"
+    },
+    {
+      "path": "yuyu-llm-zh.pdf",
+      "bytes": 8177202,
+      "sha256": "64bc41045a3382a4b5fa0fdf425df870b309eb838593b7bc13583d1d421d8291",
+      "pages": 166,
+      "bookmarks": 28
+    }
+  ],
+  "round1": [
+    {
+      "path": "round1/source/00-前言.md",
+      "bytes": 11547,
+      "sha256": "48714c4a3df3d8b32a6666c3fed7a20e84b3e925f8bbaadd28109bcb08512a56"
+    },
+    {
+      "path": "round1/source/ch04.md",
+      "bytes": 18479,
+      "sha256": "25a66b8f6ae19964fecfe1114cf8cb5ed11de4e0cea91e818533728fa89ee00b"
+    },
+    {
+      "path": "round1/source/ch16.md",
+      "bytes": 25631,
+      "sha256": "9075b57167b1e5b521f00a5fa7079696fe6d0e85c55c6eb0c7f5d4135ce6417c"
+    },
+    {
+      "path": "round1/source/llm-ch04-rope-rotation.svg",
+      "bytes": 4348,
+      "sha256": "6d3a385766ff4220943eb9dc7e43a6d75f56aedd6f175e3e68ee6430ef131817"
+    },
+    {
+      "path": "round1/source/llm-ch04-transformer-block.svg",
+      "bytes": 3301,
+      "sha256": "9b5f98a1ce70be37d2bf99135b6ccdabf407e410a62ec0b539dd508892bf5454"
+    },
+    {
+      "path": "round1/source/llm-volume-plan.md",
+      "bytes": 14303,
+      "sha256": "e8925e187bc12410c8f9c39b03bae0239a3ba578188d92f9b63a6763c43ea6f2"
+    },
+    {
+      "path": "round1/source/manifest-llm.json",
+      "bytes": 6812,
+      "sha256": "a0aa08636e01735410d0100dbf47c74509a650eb6751d7bcde10b4bd79172816"
+    },
+    {
+      "path": "round1/source/README.md",
+      "bytes": 7120,
+      "sha256": "01cf807b7e596350072c551378e6f2a0852aff1f8c9c22571e428786f7122549"
+    },
+    {
+      "path": "round1/source/source-lock.json",
+      "bytes": 5493,
+      "sha256": "2e942fde9fe499e9ca15aa9e34749cfa15db8572221c3e9126de662334389da9"
+    },
+    {
+      "path": "round1/source/sources-llm.json",
+      "bytes": 70931,
+      "sha256": "aa8c85dd42b318ec19cf8ab536b8f2c1f4fb7c786ca210a2b2f1ee66e8bd1634"
+    },
+    {
+      "path": "round1/source/style_print.py",
+      "bytes": 15732,
+      "sha256": "21651f2f76c79fa9a75fbe8b1304d71619a4a2003053fd9f97c492f72905e452"
+    },
+    {
+      "path": "round1/source/test_llm_examples.py",
+      "bytes": 72142,
+      "sha256": "f7b3cc51c52b1714d18d8bc61505395b7444b13529d51ca75560d0e6e893c600"
+    },
+    {
+      "path": "round1/source/test_llm_product.py",
+      "bytes": 8838,
+      "sha256": "ca7594b95be517d1ed4504f427af44ac3795721e57a6941f3a8be0461c0d5ffb"
+    },
+    {
+      "path": "round1/source/transformer_demo.py",
+      "bytes": 20931,
+      "sha256": "a622516a297054ac5fdb1a7bb76bc338675ffa02df92322d4945c89e58b6f3a6"
+    },
+    {
+      "path": "round1/source/VERIFY.md",
+      "bytes": 18657,
+      "sha256": "f05e7ab4419696bda14466d5552ff780008f4549be1841a3ddcf602689ebaa09"
+    },
+    {
+      "path": "yuyu-llm-zh.html",
+      "bytes": 817681,
+      "sha256": "4a0169f584552862fb1a3526bd059be9f78217b0a129b88957934493b3be645a"
+    },
+    {
+      "path": "yuyu-llm-zh.pdf",
+      "bytes": 8354823,
+      "sha256": "a782493f6839b89ce732cdb9f311478396a73d02ad3247ec5e9087823dba32f1",
+      "pages": 168,
+      "bookmarks": 28
+    }
+  ],
+  "round2": [
+    {
+      "path": "llm/00-前言.md",
+      "bytes": 11646,
+      "sha256": "300da06a639bbf39c3ea13a14e898900c52235fc69227cf85537b4001a39b633"
+    },
+    {
+      "path": "llm/ch04.md",
+      "bytes": 18667,
+      "sha256": "b90f2cfd8618d503b71e9ba7d9b7a123dce1a214a5621d5c20a475d0357790b6"
+    },
+    {
+      "path": "llm/ch16.md",
+      "bytes": 26181,
+      "sha256": "0fb5111a9f63be1a916434acfaf517d8f0e04c13b73f541f2e5d259702b810d3"
+    },
+    {
+      "path": "llm/examples/README.md",
+      "bytes": 7120,
+      "sha256": "01cf807b7e596350072c551378e6f2a0852aff1f8c9c22571e428786f7122549"
+    },
+    {
+      "path": "llm/examples/transformer_demo.py",
+      "bytes": 22747,
+      "sha256": "1653ef728ae7a5e9ed5bc4b5fe178aa9ca2dbae25579f7d37c33b19e10758c2a"
+    },
+    {
+      "path": "llm/facts/source-lock.json",
+      "bytes": 5493,
+      "sha256": "2e942fde9fe499e9ca15aa9e34749cfa15db8572221c3e9126de662334389da9"
+    },
+    {
+      "path": "llm/VERIFY.md",
+      "bytes": 23178,
+      "sha256": "13fdab5d6c07c4b78386a5007b84d7906ac150def9747b588622045ace4ae77d"
+    },
+    {
+      "path": "scripts/build_epub.py",
+      "bytes": 29557,
+      "sha256": "92aa4f639433cb9889cf38cc990c22f2e63bb1ad4fbf2d49008b24e4b8b80e9b"
+    },
+    {
+      "path": "tests/test_epub_paint.py",
+      "bytes": 4913,
+      "sha256": "b722d08e21207e9cb16fb3b9fd813f983d4a939caaef5ebe0bfafae6d6438e85"
+    },
+    {
+      "path": "tests/test_llm_examples.py",
+      "bytes": 73567,
+      "sha256": "22f4a402dc94d9163d75b6ccd78c87cab8171c4aa52283f990477bef96a9713e"
+    },
+    {
+      "path": "yuyu-book/sources-llm.json",
+      "bytes": 71002,
+      "sha256": "93a5027e08c4557d6a5271b210cba9939152353344f1130c792857d7c0137442"
+    },
+    {
+      "path": "yuyu-book/tests/test_llm_product.py",
+      "bytes": 8838,
+      "sha256": "ca7594b95be517d1ed4504f427af44ac3795721e57a6941f3a8be0461c0d5ffb"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/render.py",
+      "bytes": 19784,
+      "sha256": "bb5b2c4bc7543c882ce77b9c9bff78aea45af3e1a7de1f1badb4da71f1beb150"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/style_components.py",
+      "bytes": 33558,
+      "sha256": "5eaa412bad6a19fb918335ede4f3d192e95bd38a76cd157b07517e5061fc9f76"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/style_screen.py",
+      "bytes": 38247,
+      "sha256": "b4e8295c7f00d7f3cc8d164165bef784bc588b87b470f64ba609fc74023b516a"
+    },
+    {
+      "path": "yuyu-book/yuyu_book/style_print.py",
+      "bytes": 15982,
+      "sha256": "2d71ec2ce84be0717e9f022afca9c4789bae607210b0cec725c1f9f55aa044ec"
+    },
+    {
+      "path": "docs/sample-chapter.html",
+      "bytes": 323318,
+      "sha256": "ee9ff0f9ebf85cff0ba6dc7f1fb4f8c54d69640cd2a8614b0f10a333d45c9629"
+    },
+    {
+      "path": "docs/portal.html",
+      "bytes": 7749,
+      "sha256": "b33424d148ac6ee6f3b78c42d75b6de3bcdb61d25a498c0f438c9b95a62eaccd"
+    },
+    {
+      "path": "docs/beginner-reader.html",
+      "bytes": 104169,
+      "sha256": "3b0abf9b771846f81e26c08abfa793eeef2e753e0dc4da3976d2e87dc05df16e"
+    },
+    {
+      "path": "docs/illustration-gallery.html",
+      "bytes": 1256171,
+      "sha256": "ece02fafd5a8d58feaf3daf4784dfcd53eb655048c7baed03a75e8878a04f16d"
+    },
+    {
+      "path": "docs/knowledge-cards.html",
+      "bytes": 94576,
+      "sha256": "05f80698aa9289b56ddf081b3d2203eb372dc793033ef35dfcd011dcf56c4e4d"
+    },
+    {
+      "path": "docs/search-index.json",
+      "bytes": 1328534,
+      "sha256": "0c8c030ecde905d139f0c8f34c646a0d7a90890e28ba0ada4201e56fa6b89f75"
+    },
+    {
+      "path": "docs/concept-map.json",
+      "bytes": 94397,
+      "sha256": "de8d6f3baea20eca911ab0214f2f4b213bb880fc05a6801adca8d16e9e027ee9"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/cover-llm.svg",
+      "bytes": 11808,
+      "sha256": "d23670de56ee4efc27a2b7813ccbddbda9acc47c9c577214c9f86449e3600f29"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch01-byte-merge.svg",
+      "bytes": 8479,
+      "sha256": "d5e5e067dd476998d48695181dccd9ac04ac0f53ad340d0cfef55c86316ed603"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch01-token-pipeline.svg",
+      "bytes": 5336,
+      "sha256": "14837c7dfe91e0b00a72d5829e143139a90301301587df735f6b011d37233ca3"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch01.svg",
+      "bytes": 907,
+      "sha256": "59a8782a836c3aeb09f5c493ea645346d07f7232bb994df383c5e35e56eb4494"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch02-dot-cosine.svg",
+      "bytes": 4972,
+      "sha256": "fec20a66d1225761be65f13c10356992b34f5e090de04cff4ed3b4ab501bf012"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch02-vector-space.svg",
+      "bytes": 7972,
+      "sha256": "1f008f477cba46add559c99bb412a1f628c4e728ded7c458cd4175af1a75b76d"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch02.svg",
+      "bytes": 817,
+      "sha256": "3e8e2fd94c2e33f70bd62c4fd65a3113d1d9308074610e0d1b8f72408ef19ee3"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03-attention-fan.svg",
+      "bytes": 6046,
+      "sha256": "79846175e463aba627ce170e69838d2b3287ac6ae5d10204423bd03df6cb2518"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03-causal-mask.svg",
+      "bytes": 6511,
+      "sha256": "aa4325baf7a36ddb42a5582afeb47631f8484aeedf80ad26366d972ad65e24c4"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch03.svg",
+      "bytes": 1207,
+      "sha256": "813a0e84da7f4f3e488c857fd58f3220f8bbdd81946ddf03f9f7d9e7a9cf5788"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch04-rope-rotation.svg",
+      "bytes": 6509,
+      "sha256": "06dd73e7f7127c03f1930346683797a1310ff7ed138998955661d12312e389dc"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch04-transformer-block.svg",
+      "bytes": 6841,
+      "sha256": "2a8922b9c3c70674803a4c825f6e2086d6b2e2acde5968d68fb1de1495c5cc46"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch04.svg",
+      "bytes": 843,
+      "sha256": "59e88de3c377faf9727c0c91938e87f07a4419be43ae347865af7e304712c871"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch05-filter-bars.svg",
+      "bytes": 11052,
+      "sha256": "121103694e354cd9fba7e2868bec8430ab47b0eafe1acc620b8b9e1b365070e8"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch05-sampling-curve.svg",
+      "bytes": 6586,
+      "sha256": "408d7f6cb4d5fe18cd9efe28818e2847c77bf658b8e7a9699fa6096b49031332"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch05.svg",
+      "bytes": 879,
+      "sha256": "e0024e7be729a9292e5032f8b264c2ec8ac315a8f6de54497aa5b2373f43f592"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch06-context-ledger.svg",
+      "bytes": 7151,
+      "sha256": "a9385d29189971c65f09a4ed36e2598e27cd28b5bbc79cee097bccefa0c9d82e"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch06-kv-growth.svg",
+      "bytes": 4604,
+      "sha256": "85989836ecf5d5071ba6856a8a16715b202be34bd1779927df801f46a1df58a3"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch06.svg",
+      "bytes": 726,
+      "sha256": "f38f2c81f1c4da822b1c5a35bac361588720932a4ce84f0287da896b131d3b35"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch07-compute-budget.svg",
+      "bytes": 6666,
+      "sha256": "5be7ef90339b7e59adfe8a5b74537a9458026cc3613bc1df7b96ad3aae022db4"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch07-scaling-curve.svg",
+      "bytes": 5731,
+      "sha256": "653a1bb08ec522f099a9e119e39771edd8c69cfb43b57d062fa480a771378ed7"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch07.svg",
+      "bytes": 699,
+      "sha256": "c950a1d7d43168c0a37c96fe6aed151202b05b63327f31d5e9022097094d59c2"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch08-loss-weights.svg",
+      "bytes": 8828,
+      "sha256": "90831a7d26dd44179868eae09f8b9ef6ed0c535f018393b50b147e154ceeecc2"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch08-sft-lora.svg",
+      "bytes": 7171,
+      "sha256": "043019a6cca92b2dc37d6120c210bca5acaf1f3eccf5dbd3528235850272e3d0"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch08.svg",
+      "bytes": 774,
+      "sha256": "236b30a57e147d4c76a211d3abcacfbe7568eb017439b7ac77439a2a656632c2"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch09-alignment-scale.svg",
+      "bytes": 6626,
+      "sha256": "5baf8083caa324bed155ebc90bd536826f2cef9ca6b9dac7a0e21ef528f06d17"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch09-preference-curve.svg",
+      "bytes": 5097,
+      "sha256": "80b37b041ce8cefbecfb24ac976da1cfad97e56b627cc5d560e77ba3b3287469"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch09.svg",
+      "bytes": 725,
+      "sha256": "bfa21f8f1cb1086691af6660a197963e5395d90affa03484f873ad517e1b0ffd"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch10-batching-queue.svg",
+      "bytes": 6304,
+      "sha256": "1cbc703c37c7b6c55e0c82d613871ce8b301a32f5b3effb06e9c8df5faa00edc"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch10-prefill-decode.svg",
+      "bytes": 9040,
+      "sha256": "56b1f5041ab6de63b8e7d22ee1b4aff4b498d90b4e052c692f52c8476276872d"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch10.svg",
+      "bytes": 890,
+      "sha256": "0112bcd155320ffa95ebe0e1379f8cc074f12cc95257447a74d71daa6bffa9e4"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch11-chunking.svg",
+      "bytes": 7511,
+      "sha256": "4045813f6fd1ef275ecd816113092c5b4c5fb145e7dfe50d5b45f41cbb97e4d7"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch11-rag-pipeline.svg",
+      "bytes": 6084,
+      "sha256": "6274f0563b58e916a8f815d5ce9dc0b7292e3caab49f6cfdbeece31a1600ddb4"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch11.svg",
+      "bytes": 920,
+      "sha256": "99e0cf6fdf1e3af7c13fb2e3ad293a2709a7a81b150331de7e1131fac84f5dd5"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch12-mcp-bridge.svg",
+      "bytes": 4807,
+      "sha256": "64d5f441ddfcaec5d5c1e5929113c03d77f7c701381332ae465e652aa15db947"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch12-validation-loop.svg",
+      "bytes": 5710,
+      "sha256": "e41d756e4203c5cf878411c01c9c952c697d28543e4a2b9e74751417b569a76a"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch12.svg",
+      "bytes": 658,
+      "sha256": "d54194faef94c7bb9aea96ba74c4a7da05983ad228d18ef7bed0108315834a36"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch13-cost-curve.svg",
+      "bytes": 5583,
+      "sha256": "30c48691675672a33f0af805b50b0219e79882f4ee0aa3c0523930a69be56ac0"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch13-voting.svg",
+      "bytes": 6384,
+      "sha256": "5645aa1c8f3189c5368263fcf9fd7c734b38effc664e1f301be845dd9c14646b"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch13.svg",
+      "bytes": 759,
+      "sha256": "ff8535d589d71b9c6bf46caaca019adbce5c96a4044a6ff9db758674d85b615f"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch14-contamination.svg",
+      "bytes": 5487,
+      "sha256": "6153b737ccdfa07ab79b499bf9bfc78845307c3a0268abd34dde5cd53b89eebd"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch14-eval-ledger.svg",
+      "bytes": 6399,
+      "sha256": "651c96471900683975c0c17563399702fea88a254f2890ebaae3d61847fd11ec"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch14.svg",
+      "bytes": 777,
+      "sha256": "6ff06010fe63d079b8029f58452dfb2b0c32ec6be782c177148b50449d915ea1"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch15-patch-grid.svg",
+      "bytes": 5607,
+      "sha256": "a5d38afba6fcf46d2967a1cd7963698737b0bef3b47d71139723dc628fe87de2"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch15-vision-budget.svg",
+      "bytes": 4426,
+      "sha256": "eb712cb900b59406999a5a61028392f28bcf3c14c685a082371d931dd5eac909"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch15.svg",
+      "bytes": 1018,
+      "sha256": "3d5630e0a85cb0a8aa511e8f558e5c69d61c82afe9dd90a542b28be37a1d47cb"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch16-glossary-map.svg",
+      "bytes": 9916,
+      "sha256": "bff624a66f9b8d807ac6ec1e3fe6edb55764411d4293e3b3a3e83f7ca23e3eec"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-ch16.svg",
+      "bytes": 633,
+      "sha256": "f0b179b535007e33aa33d771ca2ccfb850960a6bd7681a8b8e997d5b666407da"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/llm-front.svg",
+      "bytes": 826,
+      "sha256": "2ee07c85bd8914c03cdf0345ca8ab2adfd15a0e7f2b20657396f2d754e989463"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p1.svg",
+      "bytes": 1487,
+      "sha256": "06a9ac05274ae9ca33c14b1b047a4c47b3f4c881731c4a87312fafa464305ba8"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p10.svg",
+      "bytes": 1080,
+      "sha256": "77bb3fb8fe26a842cf902d30d8f4b5fa4c5040aab7ea7fbb65f7f40fa9a167a1"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p2.svg",
+      "bytes": 1736,
+      "sha256": "536dfde6711ba960b7ea87e4e3fb8d988ec8bc292858e2ebb4592a49178d64ed"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p3.svg",
+      "bytes": 1507,
+      "sha256": "2165f26667ea2a60b2867e77a4eaf5d18a49a76067e96dff423c6925c16b9ca8"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p4.svg",
+      "bytes": 1216,
+      "sha256": "80dcef21e5891109843c137e7052c391356d787caa3637cfa27f7603693821ba"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p5.svg",
+      "bytes": 1274,
+      "sha256": "cb9128001c63335bd4faa5973fdf4e07b48f447200a2d055923af0c1c26a24b6"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p6.svg",
+      "bytes": 1089,
+      "sha256": "92d1c5736ca0bc690788930288f95d996c91a8178f7bf75c9c46386417595b04"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p7.svg",
+      "bytes": 1224,
+      "sha256": "1f3356c0909d39c8ea00967c1e4e93a0f978593ac1010c42c297f855273dd06b"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p8.svg",
+      "bytes": 1496,
+      "sha256": "4dd109708f8211bb3d3c23f89ae770db62c9865ebb2fa384cdc08ae4cec91063"
+    },
+    {
+      "path": "yuyu-book/illustrations-agents/part-llm-p9.svg",
+      "bytes": 1322,
+      "sha256": "646c6c9a89fadabae5d1b09040f512f0ca8ceb849a47aa44ed07c8f2783d2616"
+    },
+    {
+      "path": "yuyu-llm-zh.html",
+      "bytes": 960467,
+      "sha256": "ab57ff8a8b02baff3a93bb2943c41c6a83307581b06eced0b2fefe836a945fb5"
+    },
+    {
+      "path": "yuyu-llm-zh.pdf",
+      "bytes": 8851825,
+      "sha256": "2baad668d2ba2bb060f43aa87ae8cb990edd38b099fe205d9cc757fe239cf546",
+      "pages": 174,
+      "bookmarks": 28
+    },
+    {
+      "path": "yuyu-llm-zh.epub",
+      "bytes": 3401524,
+      "sha256": "1b3b11e6447e04932bda26bc088f68883c352abd1b4c976cf377e0c561783696"
+    }
+  ]
+}

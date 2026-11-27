@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Task authorization, approval, and sandbox capability permit an attempt, but runtime evidence determines whether the side effect succeeded">
+  <text x="360" y="46" text-anchor="middle" font-size="30" fill="currentColor" stroke="none">Permission to try is not proof of success</text>
+  <rect x="40" y="104" width="130" height="94" rx="8"/>
+  <rect x="200" y="104" width="130" height="94" rx="8"/>
+  <rect x="360" y="104" width="130" height="94" rx="8"/>
+  <rect x="540" y="104" width="140" height="94" rx="8" opacity="0.25"/>
+  <text x="105" y="144" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">task</text>
+  <text x="105" y="178" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">allowed</text>
+  <text x="265" y="144" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">approval</text>
+  <text x="265" y="178" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">allows</text>
+  <text x="425" y="144" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">sandbox</text>
+  <text x="425" y="178" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">capable</text>
+  <text x="610" y="158" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">attempt</text>
+  <path d="M170 151H194M330 151H354M490 151H534"/>
+  <path d="M184 141L196 151L184 161M344 141L356 151L344 161M524 141L536 151L524 161"/>
+  <path d="M105 198V246M265 198V246M425 198V246" stroke-dasharray="7 7"/>
+  <rect x="40" y="246" width="450" height="62" rx="8" opacity="0.18"/>
+  <text x="265" y="286" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">NO: stop before execution</text>
+  <path d="M610 198V246"/>
+  <path d="M600 236L610 246L620 236"/>
+  <rect x="540" y="246" width="140" height="86" rx="8"/>
+  <text x="610" y="282" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">result</text>
+  <text x="610" y="316" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">exit + hash</text>
+  <text x="360" y="386" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">Locks, disk space, or bugs can still fail</text>
+</svg>
+

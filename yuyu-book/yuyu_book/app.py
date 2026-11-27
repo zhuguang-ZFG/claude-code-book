@@ -537,14 +537,16 @@ def build_collected(lang: str, spec: dict, volumes, *,
         rail.append("</details>")
 
     foot = pages.ui("diagrams", lang)
+    unit_word = "篇单元" if lang == "zh" else "units"
     body.append(f'<footer class="colophon">{wheel(34)}'
                 f'{pages.esc(spec["title"][lang])} · v'
                 f'{pages.esc(spec["version"])} · {len(volumes)} 卷 · '
-                f'{len(units_all)} units · {n_diagrams} {foot}</footer>')
+                f'{len(units_all)} {unit_word} · {n_diagrams} {foot}</footer>')
     body.insert(3 if guide_def else 2, pages.toc_html(toc_entries, lang))
     if guide_def:
         body.insert(0, '<nav class="collection-jumps no-print" '
                     f'aria-label="{pages.ui("collection_navigation", lang)}">'
+                    f'<a href="#cover">{pages.esc(spec["title"][lang])}</a>'
                     f'<a href="#{guide.id}">{pages.esc(guide.title)}</a>'
                     f'<a href="#toc">{pages.ui("toc", lang)}</a></nav>')
 

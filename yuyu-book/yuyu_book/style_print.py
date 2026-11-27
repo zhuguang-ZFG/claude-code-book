@@ -10,6 +10,7 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
      on white, so paper pulls the whole charcoal scale one step deeper too. */
   :root{--paper:#FFFFFF;--card:#FFFFFF;--paper-2:#F6F0E2;--code-bg:#F8F4EA;
     --code-fg:#26221B;--code-line:#E3D8C1;--cinnabar:#9C4630;
+    --jade:#365344;--sky:#335270;
     --bronze-2:#6E6353;--bronze-3:#4A4234}
   body{background:#fff;font-size:10.2pt;line-height:1.74;padding:0!important}
   body.lang-en{font-size:10pt;line-height:1.6}
@@ -27,8 +28,10 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   .front-page.cover{min-height:250mm;display:flex;align-items:stretch}
   .cover-inner{margin:0;width:100%;border:none;box-shadow:inset 0 0 0 1px var(--line-2),inset 0 0 0 5px var(--card),inset 0 0 0 5.5px var(--bronze-2),inset 0 0 0 6px var(--card);
     display:flex;flex-direction:column;justify-content:space-between}
-  .diagram-frame,.codehilite,.table-scroll,.compass-card,.route-card,.illu-frame{
+  .diagram-frame,.codehilite,.table-scroll,.compass-card,.route-card,.illu-frame,.chapter-notes,.reg-list li{
     box-shadow:none}
+  .rev-v{border-bottom-color:var(--line)}
+  body::before{display:none!important}
   /* the reading-paths page carries the routes, the offline note, the parts list
      and the tier legend; the legend is the one block that must not be split.
      Rows lose a few points of air so the legend stays on the page it starts on,
@@ -63,10 +66,11 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   .collected .back-index .idx-block{break-inside:auto}
   /* the source registry ends the same way before the last volume's appendices */
   .collected .sources{padding-bottom:0}
-  /* the final "sources & permissions" link is intentionally its own group so
-     it cannot strand the last volume heading. Its screen-sized top margin
-     leaves only that link on a new sheet in the omnibus; reclaim the air on
-     this final label alone, keeping the type size and every contents row. */
+  /* The penultimate back-matter link used to leave the final one on a sheet
+     of its own. Reclaim that group's screen-sized top margin while keeping
+     the final label's established print spacing contract. */
+  .collected #toc .toc-group:nth-last-child(2)>.toc-part{
+    margin:.15rem 0 .05rem;line-height:1.2}
   .collected #toc .toc-group:last-child>.toc-part{
     margin:.25rem 0 .15rem;line-height:1.35}
   /* the folio slot: a screen has no pages, so the row hides its page reference;
@@ -151,6 +155,9 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   .pd-inner{padding-top:1.6rem}
   .pd-art{width:min(15rem,58%);margin-bottom:.7rem}
   .pd-art img{width:100%;height:auto;display:block}
+  .collected .volume-divider{padding:20mm 0 18mm}
+  .pd-list.pd-list-cols{max-width:none;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1.4rem}
+  .pd-list.pd-list-cols li{padding:.26rem 0}
   /* the card is a plate, so it moves as one: allowed to break, its last row
      overflowed the text block by a point and Chromium handed the chapter an
      extra sheet carrying nothing at all — the one thing the empty-page gate
@@ -165,18 +172,28 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
      caption's flanking hairlines stay — with the box gone they are what holds
      each figure to the page. */
   .diagram-frame::before,.diagram-frame::after{display:none}
-  .illu-photo .illu-frame::after{display:none}
   .illu-photo .illu-frame{background:none;border:0;border-radius:0;
     padding:0;overflow:visible}
   .part-divider{background:none}
   .pd-ghost{opacity:.12}
+  .ch-seal{box-shadow:inset 0 0 0 1px rgba(156,70,48,.18)}
   .cover-seal{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .codehilite::after{color:var(--bronze-3);background:var(--paper-2)}
   .codehilite pre{white-space:pre-wrap;word-break:break-word}
-  .codehilite .c,.codehilite .c1{color:#7A6F58}
-  .codehilite .k{color:#7A5B22}.codehilite .s{color:#4F6B3A}
-  .codehilite .m{color:#8A5A2B}.codehilite .nt{color:#3A5F80}
+  /* Full light-paper syntax ink scale: every token class clears WCAG AA on
+     #F8F4EA instead of inheriting the screen's dark-plate pastel colours. */
+  .codehilite .c,.codehilite .cm,.codehilite .c1,.codehilite .cs{color:#665D4B;font-style:italic}
+  .codehilite .k,.codehilite .kd,.codehilite .kn,.codehilite .kt{color:#7A5318;font-weight:600}
+  .codehilite .nf,.codehilite .nc,.codehilite .fm{color:#7D3E24}
+  .codehilite .s,.codehilite .s1,.codehilite .s2,.codehilite .sb,.codehilite .sd{color:#355B37}
+  .codehilite .m,.codehilite .mi,.codehilite .mf,.codehilite .mh{color:#8A4A1C}
+  .codehilite .nt,.codehilite .tag{color:#2E5274}
+  .codehilite .na,.codehilite .attr{color:#6E5019}
+  .codehilite .o,.codehilite .ow{color:#5A5143}
+  .codehilite .p{color:#5E5547}
+  .codehilite .err{color:#9C3A26}
   /* The walkthroughs need legible operators and digits on the light paper. */
-  #llm-ch01 .codehilite span,#llm-ch03 .codehilite span{color:#423622}
+  #llm-ch01 .codehilite span,#llm-ch03 .codehilite span,#llm-ch04 .codehilite span{color:#423622}
   h1{bookmark-level:1;bookmark-label:content()}
   .page-title,.pd-title{bookmark-level:1;bookmark-label:content()}
   article h2,article h3,article h4,.rev-v,.reg-kind,.idx-letter{
@@ -191,22 +208,29 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
   /* two, not three: the fold-out plates already start their own sheet, and a
      three-line tail cost four pages and produced one fully blank sheet */
   p{orphans:2;widows:2}
-  /* one link of a chapter's citation list landing alone at the head of a fresh
-     sheet reads as a printing slip; the block is short enough to move whole */
-  .chapter-notes{break-inside:avoid}
+  /* allow long citation blocks to flow across page boundaries so chapters like ch04
+     do not strand a half-blank preceding sheet, while keeping the heading tied to
+     its first row and each citation row unbroken */
+  .chapter-notes{break-inside:auto}
+  .chapter-notes .notes-title{break-after:avoid}
+  .notes-list li{break-inside:avoid;orphans:2;widows:2}
   figure.diagram,figure{break-inside:avoid;max-height:none}
   /* an inline drawing takes the whole 176 mm text block, so the label sizes
      chosen for the 285 px phone column would print at twice the body size.
      Paper re-caps the label scale; the screen keeps the larger attributes. */
   /* These chapter examples are short enough to keep their steps/rows together. */
+  #llm-ch04 .notes-list li{flex-wrap:nowrap;padding:.2rem 0;gap:.45rem}
+  #llm-ch04 .notes-list a.fn-url{flex:1 1 auto}
   #llm-ch05 .table-scroll[data-cols="4"],
   #llm-ch05 ul,
   #llm-ch02 pre,
   #llm-ch03 pre,
+  #llm-ch04 pre,
   #llm-ch12 pre,
   #llm-ch15 .table-scroll[data-cols="3"]{break-inside:avoid}
   .illu-frame:has(svg.llm-explainer){max-width:110mm}
   .illu-frame svg text{font-size:14px}
+  .illu-frame svg text.il-sub{font-size:12px}
   .illu-frame svg text.il-head{font-size:16px}
   .illu-frame svg text.il-big{font-size:24px}
   .illu-frame svg text.frame-no{font-size:7px}
@@ -236,13 +260,13 @@ PRINT_CSS = r"""/* ------- print / PDF ------- */
      is `width="100%"`, which a shrink-to-fit container resolves to nothing.) */
   .diagram-frame{background:none;border:0;border-radius:0;padding:0;overflow:visible}
   .fig-hint{display:none}
-  .part-divider{padding:40mm 0 35mm}
   /* the plate has to hold its ground on one sheet: 40/35mm of air plus the big
      numeral pushed the last entry of a four-item list onto the next sheet as a
      line of its own. Same look, ~20mm shorter, and nothing escapes. */
   .part-divider{padding:26mm 0 24mm}
   .pd-num{-webkit-text-stroke:1.6px var(--bronze-2)}
   tbody tr:nth-child(2n){background:transparent}
+  .callout{box-shadow:none;background:var(--card)}
   a.ext::after{content:""}
   @page{size:A4;margin:21mm 17mm 19mm}
 }

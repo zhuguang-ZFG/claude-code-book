@@ -34,32 +34,51 @@ DC = "http://purl.org/dc/elements/1.1/"
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 BLOCK = {"article", "section", "main", "aside", "header", "footer", "figure", "figcaption", "div", "p", "pre", "blockquote", "ul", "ol", "li", "dl", "dt", "dd", "table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption", "colgroup", "h1", "h2", "h3", "h4", "h5", "h6", "nav", "hr", "br", "img", "a", "span", "strong", "em", "b", "i", "s", "small", "sub", "sup", "code", "kbd", "samp", "var", "abbr", "cite", "time", "mark", "q", "wbr"}
 ATTR = {"id", "class", "href", "src", "alt", "title", "colspan", "rowspan", "scope", "start", "value", "datetime", "lang", "dir"}
+DEFAULT_EPUB_INKS = {
+    "--ink": "#26221B",
+    "--ink-2": "#5C5448",
+    "--ink-3": "#675F4F",
+    "--bronze": "#43392B",
+    "--bronze-2": "#8A7D68",
+    "--bronze-3": "#5A5040",
+    "--cinnabar": "#B4472F",
+    "--jade": "#4E6E5D",
+    "--sky": "#4C7093",
+    "--sans": '"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif',
+    "--serif": '"Noto Serif SC","Source Han Serif SC",Georgia,serif',
+    "--mono": '"JetBrains Mono","Cascadia Code",Consolas,Menlo,monospace',
+}
 CSS = """
 /* yuyu collected reader edition — light first, dark overrides last */
 html{color:#26221B;background:#FBF7EF}
 body{font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","SimSun",Georgia,"Times New Roman",serif;line-height:1.7;margin:1em}
 h1,h2,h3,h4{line-height:1.35;break-after:avoid}
 h1{font-size:1.45em;margin:.2em 0 .6em}
-h2{font-size:1.26em;margin:1.9em 0 .6em}
-h3{font-size:1.12em;margin:1.5em 0 .5em}
-h4{font-size:1em;margin:1.3em 0 .5em}
-p{orphans:2;widows:2;margin:0 0 .6em;text-align:justify}
+h2{font-size:1.22em;margin:1.8em 0 .6em;padding:0 0 .25em .6em;border-left:3px solid #B4472F;border-bottom:1px solid #E3D8C1}
+h3{font-size:1.1em;margin:1.4em 0 .45em;color:#5A5040}
+h4{font-size:1em;margin:1.2em 0 .4em;color:#5C5448}
+p{orphans:2;widows:2;margin:0 0 .68em;text-align:justify;line-break:strict}
+strong{font-weight:700}
+em{font-family:"Kaiti SC","STKaiti","KaiTi","楷体",serif;font-style:normal;color:#5A5040}
 li{margin:.25em 0}
 hr{border:none;border-top:1px solid #E3D8C1;margin:1.5em 0}
 article,section.part-divider{break-before:page}
 img{max-width:100%;height:auto;object-fit:contain}
 figure{margin:1.5em 0;break-inside:avoid}
-figcaption{font-size:.85em;color:#5C5448;text-align:center;margin-top:.5em}
-.fig-no{color:#8A7D68;font-weight:700}
-.diagram-frame,.illu-frame{background:#FFFDF8;border:1px solid #E3D8C1;border-radius:6px;padding:.6em}
+figcaption{font-size:.85em;color:#5C5448;text-align:center;margin-top:.55em;line-height:1.6}
+.fig-no{color:#B4472F;font-weight:700;margin-right:.35em}
+.diagram-frame,.illu-frame{background:#FFFDF8;border:1px solid #E3D8C1;border-radius:6px;padding:.65em}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8em;line-height:1.6;margin:0;padding:.9em 1em;background:#211E19;color:#EDE6D6;border-radius:6px}
-code{font-family:"JetBrains Mono","Cascadia Code","SF Mono",Consolas,Menlo,monospace;overflow-wrap:anywhere}
+code{font-family:"JetBrains Mono","Cascadia Code","SF Mono",Consolas,Menlo,monospace;overflow-wrap:anywhere;font-size:.88em;background:#F3EAD8;color:#5A5040;padding:.06em .3em;border-radius:4px}
+pre code,.codehilite code{background:none;color:inherit;padding:0;font-size:inherit;border-radius:0}
 .codehilite{margin:1.2em 0;border:1px solid #3A352C;border-radius:6px;overflow:hidden;background:#211E19}
-table{border-collapse:collapse;max-width:100%;font-size:.8em;margin:1.2em 0}
-td,th{border:1px solid #D2C4A6;padding:.4em .55em;overflow-wrap:anywhere}
-th{background:#F3EAD8}
+table{border-collapse:collapse;max-width:100%;font-size:.82em;margin:1.2em 0;font-variant-numeric:tabular-nums}
+td,th{border:1px solid #D2C4A6;padding:.42em .6em;overflow-wrap:anywhere;vertical-align:top}
+th{background:#F3EAD8;color:#5A5040;font-weight:700;text-align:left;border-bottom:2px solid #8A7D68}
+tbody tr:nth-child(2n){background:#F7F1E4}
 a{color:#B4472F}
-blockquote{border-inline-start:2px solid #D2C4A6;margin-inline:0;padding-inline-start:1em}
+blockquote{border-inline-start:3px solid #8A7D68;margin-inline:0;padding:.55em 1em;background:#F5EFE2;border-radius:0 6px 6px 0;color:#5C5448}
+.chapter-body > blockquote:first-child:not(.callout){border-inline-start:none;border-top:1px solid #E3D8C1;border-bottom:1px solid #E3D8C1;background:none;border-radius:0;padding:.6em 0;text-align:right;color:#5A5040}
 /* chapter opener */
 .chapter-head{margin:0 0 1.6em;padding:1.1em 0 1em;border-bottom:2px solid #E3D8C1}
 .eyebrow{font-size:.8em;letter-spacing:.12em;color:#675F4F;margin:0 0 .7em}
@@ -68,7 +87,7 @@ blockquote{border-inline-start:2px solid #D2C4A6;margin-inline:0;padding-inline-
 .ch-title{margin:.1em 0 .2em}
 .ch-emblem{display:block;margin:.3em 0 .8em;text-align:center}
 .ch-emblem img{width:4em;height:4em;object-fit:contain;mix-blend-mode:multiply}
-.kp-art img{mix-blend-mode:multiply}
+.kp-art img,.pd-art img,.cover-art img,.diagram-frame img,.illu-frame img{mix-blend-mode:multiply}
 /* one-line summary */
 .lead-band{margin:1.3em 0;padding:.85em 1em .95em;background:#F3EAD8;border-left:4px solid #B4472F;border-radius:0 6px 6px 0}
 .lb-tag{margin:0 0 .35em;font-weight:700;color:#B4472F;font-size:.9em;letter-spacing:.06em}
@@ -124,21 +143,49 @@ section.part-divider{padding-top:2.5em}
 .pd-list{margin:1em 0}
 /* front matter */
 .front-page{padding-top:1.5em}
-.cover{text-align:center;padding-top:2.5em}
+.page-title{font-size:1.55em;margin:0 0 .85em;padding-bottom:.3em;border-bottom:2px solid #B4472F;color:#5A5040}
+.cover{text-align:center;padding-top:2.2em}
 .cover .book-title{font-size:2em;margin:.4em 0 .3em}
 .cover-art img{max-width:88%}
-.cover-kicker{letter-spacing:.3em;color:#675F4F}
+.cover-kicker{letter-spacing:.3em;color:#675F4F;font-size:.82em}
 .book-sub,.book-epi{color:#5C5448}
-.cover-seal{display:inline-block;margin:1em 0;color:#B4472F}
-.cover-foot{margin-top:1.2em;color:#675F4F}
-/* volume toc and sources */
-.toc-vol{display:block;font-weight:700;margin:1.2em 0 .4em}
+.cover-seal{display:inline-block;margin:.6em 0;padding:.25em .6em;background:#B4472F;color:#FBF7EF;border-radius:4px;font-weight:700;letter-spacing:.15em}
+.cover-foot{margin-top:1.2em;padding-top:.8em;border-top:1px solid #E3D8C1;color:#675F4F;font-size:.85em}
+.imprint-list{margin:0 0 1.4em}
+.ip-row{padding:.45em 0;border-bottom:1px solid #E3D8C1}
+.ip-row dt{font-size:.82em;font-weight:700;letter-spacing:.12em;color:#43392B;margin:0}
+.ip-row dd{margin:.15em 0 0}
+.ip-notice-t{font-size:.95em;color:#B4472F;margin:1.2em 0 .35em}
+.ip-notice{border-left:3px solid #D2C4A6;padding-left:.85em;color:#5C5448;font-size:.92em}
+.rev-v{font-size:1.05em;color:#5A5040;border-bottom:1px solid #E3D8C1;padding-bottom:.2em;margin:1.2em 0 .4em}
+.rev-d{font-size:.8em;color:#675F4F;margin-left:.6em;font-weight:400}
+.route-card{margin:.75em 0;padding:.75em .95em;background:#FFFDF8;border:1px solid #E3D8C1;border-top:2.5px solid #8A7D68;border-radius:6px}
+.route-card h3{margin:0 0 .3em;font-size:.95em;color:#B4472F}
+.route-card p{margin:0;font-size:.9em;color:#5C5448}
+.route-parts{list-style:none;padding:0;margin:1em 0}
+.route-parts li{padding:.45em 0;border-bottom:1px solid #E3D8C1}
+.route-goal{display:block;font-size:.88em;color:#675F4F;margin-top:.15em}
+/* volume toc and backmatter */
+.toc-vol{display:block;font-weight:700;margin:1.3em 0 .45em;padding-top:.65em;border-top:2px solid #D2C4A6}
 .tp-no{color:#B4472F;margin-inline-end:.5em}
-.toc-row{display:block;margin:.5em 0;text-decoration:none}
-.toc-n{font-weight:700;margin-inline-end:.5em}
-.toc-part{display:block;font-weight:700;margin:.9em 0 .3em}
+.toc-row{display:block;margin:.42em 0;text-decoration:none}
+.toc-n{display:inline-block;min-width:1.9em;text-align:center;font-weight:700;font-size:.82em;padding:.05em .28em;border:1px solid #D2C4A6;border-radius:4px;margin-inline-end:.5em;color:#5A5040}
+.toc-n-guide{color:#B4472F;border-color:#B4472F;background:#F3EAD8}
+.toc-part{display:block;font-weight:700;margin:.95em 0 .35em}
+.reg-kind{font-size:1em;color:#5A5040;border-bottom:1px solid #D2C4A6;padding-bottom:.25em;margin:1.5em 0 .6em}
+.reg-list{list-style:none;padding:0;margin:0}
+.reg-list li{padding:.65em .85em;margin:.5em 0;background:#FFFDF8;border:1px solid #E3D8C1;border-left:3px solid #8A7D68;border-radius:6px;break-inside:avoid}
 .reg-no{font-weight:700;color:#B4472F;margin-inline-end:.5em}
-.reg-meta{color:#675F4F;font-size:.9em}
+.reg-auth{display:inline-block;font-size:.8em;padding:.05em .45em;background:#F3EAD8;border-radius:4px;color:#43392B;margin-inline:.35em}
+.reg-meta{color:#675F4F;font-size:.85em;margin-top:.25em}
+.reg-scope{font-size:.9em;color:#5C5448;margin-top:.25em}
+.idx-letter{color:#B4472F;border-bottom:2px solid #8A7D68;display:inline-block;padding-bottom:.1em;margin:1.2em 0 .35em}
+.idx-list,.pr-list,.kn-list{list-style:none;padding:0;margin:0}
+.idx-row,.pr-row,.kn-row{padding:.38em 0;border-bottom:1px dotted #D2C4A6;break-inside:avoid}
+.idx-term,.pr-term,.kn-head{font-weight:700;color:#5A5040;margin-right:.45em}
+.pr-why,.kn-note{display:block;margin-top:.15em;padding-left:.6em;border-left:2px solid #8A7D68}
+.pr-ana{display:block;margin-top:.15em;padding-left:.6em;color:#B4472F}
+.colophon{margin-top:2em;padding-top:1em;border-top:1px solid #E3D8C1;text-align:center;font-size:.82em;color:#675F4F}
 /* pygments — dark ground in both schemes */
 .codehilite .c,.codehilite .cm,.codehilite .c1,.codehilite .cs{color:#93886F;font-style:italic}
 .codehilite .k,.codehilite .kd,.codehilite .kn,.codehilite .kt{color:#D8B26A;font-weight:600}
@@ -156,13 +203,23 @@ svg{max-width:100%}
 @media(prefers-color-scheme:dark){
 html{color:#E9E4D8;background:#1E1D18}
 a{color:#E07B5F}
+h2{border-left-color:#E07B5F;border-bottom-color:#37342A}
+h3{color:#E2DBCB}
+h4{color:#BDB4A2}
+em{color:#E2DBCB}
+code{background:#22221C;color:#E2DBCB}
+pre code,.codehilite code{background:none;color:inherit}
 hr{border-top-color:#37342A}
 figcaption,.lb-analogy,.pd-motto,.pd-goal,.book-sub,.book-epi,.cc-src,.keeper-note{color:#BDB4A2}
 .eyebrow,.cover-kicker,.cover-foot,.reg-meta,.pd-count{color:#A59C8A}
 td,th{border-color:#4A4536}
-th{background:#22221C}
-blockquote{border-inline-start-color:#4A4536}
-.diagram-frame,.illu-frame,.compass-card{background:#1E1D18;border-color:#37342A}
+th{background:#22221C;color:#E2DBCB;border-bottom-color:#A89E8C}
+tbody tr:nth-child(2n){background:#24231D}
+blockquote{border-inline-start-color:#A89E8C;background:#22221C;color:#BDB4A2}
+.chapter-body > blockquote:first-child:not(.callout){border-top-color:#37342A;border-bottom-color:#37342A;background:none;color:#E2DBCB}
+.compass-card{background:#1E1D18;border-color:#37342A}
+.diagram-frame,.illu-frame{background:#F5EFE2;border-color:#4A4536}
+.diagram-frame img,.illu-frame img{mix-blend-mode:multiply}
 .lead-band,.chapter-notes,.new-terms,.keeper,.callout{background:#22221C;border-color:#37342A}
 .callout{border-left-color:#A89E8C}
 .callout-tag,.toc-n,.source-chip{color:#E2DBCB}
@@ -174,7 +231,20 @@ blockquote{border-inline-start-color:#4A4536}
 .callout-warning .callout-tag{color:#E07B5F}
 .callout-concept{border-left-color:#8FB2D4}
 .callout-concept .callout-tag{color:#8FB2D4}
-.lb-tag,.vol-tag,.pd-no,.tp-no,.cover-seal,.reg-no{color:#E07B5F}
+.lb-tag,.vol-tag,.pd-no,.tp-no,.reg-no,.ip-notice-t,.route-card h3,.idx-letter,.pr-ana{color:#E07B5F}
+.cover-seal{background:#E07B5F;color:#1E1D18}
+.page-title{color:#E2DBCB;border-bottom-color:#E07B5F}
+.cover-foot,.ip-row,.rev-v,.route-parts li,.colophon{border-color:#37342A}
+.ip-row dt,.rev-v,.reg-kind,.idx-term,.pr-term,.kn-head{color:#E2DBCB}
+.ip-notice,.route-card p,.reg-scope,.route-goal{color:#BDB4A2}
+.ip-notice,.toc-vol,.reg-kind,.idx-row,.pr-row,.kn-row{border-color:#4A4536}
+.route-card,.reg-list li{background:#22221C;border-color:#37342A}
+.route-card{border-top-color:#A89E8C}
+.reg-list li{border-left-color:#A89E8C}
+.reg-auth{background:#1E1D18;color:#CFC6B4}
+.toc-n{border-color:#4A4536;color:#E2DBCB}
+.toc-n-guide{color:#E07B5F;border-color:#E07B5F;background:#22221C}
+.pr-why,.kn-note{border-left-color:#A89E8C}
 .compass-card{border-left-color:#9DBFA9}
 .compass-card.question{border-left-color:#E07B5F}
 .compass-card.boundary{border-left-color:#BDB4A2}
@@ -186,8 +256,9 @@ blockquote{border-inline-start-color:#4A4536}
 .t-core{background:#E07B5F}
 .t-deep{background:#BDB4A2}
 .fig-no,.chapter-notes h4,.new-terms h4{color:#A89E8C}
+.fig-no{color:#E07B5F}
 .ch-seal{color:#4A4536}
-.ch-emblem img,.kp-art img{mix-blend-mode:screen;filter:invert(1)}
+.ch-emblem img,.kp-art img,.pd-art img,.cover-art img{mix-blend-mode:screen;filter:invert(1) hue-rotate(180deg)}
 .chapter-head,.ch-close{border-color:#37342A}
 .hr-rule,.cover-rule{background:#4A4536}
 .keeper-note{border-inline-start-color:#A89E8C}
@@ -404,20 +475,46 @@ def build(html: Path, output: Path, lang: str, browser: str | None = None) -> di
             }""")
             svg_count = page.locator("main svg").count()
             raster = launched.new_page(viewport={"width": 1200, "height": 900}, device_scale_factor=1.5)
+            raster.emulate_media(color_scheme="light", reduced_motion="reduce")
             for index in range(svg_count):
                 node = page.locator(f'main svg[data-epub-svg="{index}"]')
                 drawing = node.evaluate("""e => {
                     const style = getComputedStyle(e);
+                    const rootStyle = getComputedStyle(document.documentElement);
                     const box = e.viewBox.baseVal;
+                    const vars = {};
+                    for (const name of [
+                        '--ink', '--ink-2', '--ink-3',
+                        '--bronze', '--bronze-2', '--bronze-3',
+                        '--cinnabar', '--jade', '--sky',
+                        '--sans', '--serif', '--mono'
+                    ]) {
+                        const val = (style.getPropertyValue(name) || rootStyle.getPropertyValue(name) || '').trim();
+                        if (val) vars[name] = val;
+                    }
                     return {svg:e.outerHTML, width:Math.min(1100, e.getBoundingClientRect().width || box.width),
-                            ratio:box.width / box.height, color:style.color, font:style.fontFamily};
+                            ratio:box.width / box.height, color:style.color, font:style.fontFamily, vars:vars};
                 }""")
                 width = max(1, round(drawing["width"]))
                 height = max(1, round(width / drawing["ratio"]))
+                ink_vars = {
+                    key: re.sub(r"[{}<>]", "", str(drawing.get("vars", {}).get(key) or default))
+                    for key, default in DEFAULT_EPUB_INKS.items()
+                }
+                vars_css = ";".join(f"{key}:{val}" for key, val in ink_vars.items())
                 raster.set_content('<html><body>' + drawing["svg"] + '</body></html>')
                 raster.add_style_tag(content=(
+                    f':root{{{vars_css}}}'
                     f'body{{margin:0;color:{drawing["color"]};font-family:{drawing["font"]}}}'
                     f'svg{{display:block!important;width:{width}px!important;height:{height}px!important;min-width:0!important;max-width:none!important}}'
+                    'svg.il-cinnabar,svg .il-cinnabar{color:var(--cinnabar)}'
+                    'svg.il-jade,svg .il-jade{color:var(--jade)}'
+                    'svg.il-sky,svg .il-sky{color:var(--sky)}'
+                    'svg.il-bronze,svg .il-bronze{color:var(--bronze)}'
+                    'svg.il-bronze-2,svg .il-bronze-2{color:var(--bronze-2)}'
+                    'svg.il-bronze-3,svg .il-bronze-3{color:var(--bronze-3)}'
+                    'svg.il-muted,svg .il-muted{color:var(--ink-3)}'
+                    'svg .frame-no{font-family:var(--sans);font-size:9px;fill:currentColor;opacity:.5;stroke:none}'
                     '*{animation:none!important;transition:none!important;scroll-behavior:auto!important}'))
                 raster.evaluate("document.fonts.ready")
                 image = raster.locator("svg").screenshot(type="png", animations="disabled", timeout=30000)

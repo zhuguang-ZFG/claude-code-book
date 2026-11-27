@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Interactive CLI, exec, and app-server entries share a runtime but expose different completion evidence">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="54" y="54" width="164" height="64" rx="7"/>
+  <rect x="54" y="148" width="164" height="64" rx="7"/>
+  <rect x="54" y="242" width="164" height="64" rx="7"/>
+  <text x="104" y="94" font-size="28" fill="currentColor" stroke="none">CLI</text>
+  <text x="99" y="188" font-size="28" fill="currentColor" stroke="none">exec</text>
+  <text x="82" y="282" font-size="28" fill="currentColor" stroke="none">server</text>
+  <path d="M218 86C278 104 292 148 320 168M218 180H320M218 274C278 256 292 212 320 192"/>
+  <rect x="320" y="132" width="170" height="96" rx="8"/>
+  <text x="348" y="188" font-size="28" fill="currentColor" stroke="none">runtime</text>
+  <path d="M490 180H554"/>
+  <path d="M544 170L556 180L544 190"/>
+  <rect x="556" y="132" width="112" height="96" rx="8"/>
+  <text x="582" y="174" font-size="28" fill="currentColor" stroke="none">OS</text>
+  <text x="584" y="205" font-size="28" fill="currentColor" stroke="none">I/O</text>
+</svg>

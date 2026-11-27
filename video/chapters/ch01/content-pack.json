@@ -12,12 +12,12 @@
     {
       "index": 2,
       "title": "1.2 Claude Code 全景架构导览",
-      "summary": "设计哲学稍后再谈。先把镜头拉远，看 Claude Code 的代码库到底有多大。"
+      "summary": "设计取舍稍后再谈。先把镜头拉远，看 Claude Code 的代码库到底有多大。"
     },
     {
       "index": 3,
       "title": "1.3 Agent Harness 设计哲学的五大原则",
-      "summary": "读 Claude Code 的架构，能提炼出五个贯穿始终的设计原则。它们彼此支撑，是一张架构决策网。每一个原则都回答了一个核心的\"为什么\"：为什么不选更简单的方案？如果不这样设计会怎样？"
+      "summary": "以下五条原则贯穿 Claude Code 的架构，每条都对应一个具体的设计取舍。"
     },
     {
       "index": 4,

@@ -162,9 +162,12 @@ _H_RE = re.compile(r"^(#{2,3})\s+(.*)$")
 
 
 def captions_for(text: str, blocks: list[MermaidBlock],
-                 fallback: str = "架构示意") -> dict[str, str]:
+                 fallback: str = "架构示意", *,
+                 include_h3: bool = False) -> dict[str, str]:
     """Nearest preceding H2 per block, fence-aware.
 
+    Hand-drawn plates opt into H3 so a descriptive subheading can name the
+    mechanism without changing the section's H2 or the table of contents.
     ``block.line`` is a line of ``text``, so a heading sitting directly
     above the opening fence still counts; ``fallback`` applies only to a
     diagram with no heading above it at all.
@@ -187,7 +190,7 @@ def captions_for(text: str, blocks: list[MermaidBlock],
         if fence is not None:
             continue
         hm = _H_RE.match(raw)
-        if hm and len(hm.group(1)) == 2:
+        if hm and (include_h3 or len(hm.group(1)) == 2):
             last = hm.group(2).strip()
     for b in blocks:
         caps.setdefault(b.uid, fallback)

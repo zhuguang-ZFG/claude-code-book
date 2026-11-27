@@ -49,6 +49,45 @@ class EpubPaint(unittest.TestCase):
                 self.assertNotIn("<style", content)
                 self.assertNotIn(".node{", content)
 
+    def test_il_semantic_ink_classes_survive_rasterization(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            source = folder / "inks.html"
+            output = folder / "inks.epub"
+            source.write_text('''<!doctype html><html lang="zh"><head>
+                <meta charset="utf-8"><title>Multi-ink fixture</title>
+                <style>
+                :root{--ink:#26221B;--cinnabar:#B4472F;--jade:#4E6E5D;--sky:#4C7093}
+                .illu-frame svg .il-cinnabar{color:var(--cinnabar)}
+                .illu-frame svg .il-jade{color:var(--jade)}
+                .illu-frame svg .il-sky{color:var(--sky)}
+                </style></head><body><main>
+                <h1 id="title">Multi-ink fixture</h1>
+                <figure class="illu"><div class="illu-frame">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" width="300" height="100">
+                    <rect class="il-cinnabar" x="0" y="0" width="100" height="100" fill="currentColor" stroke="none"/>
+                    <rect class="il-jade" x="100" y="0" width="100" height="100" fill="currentColor" stroke="none"/>
+                    <rect class="il-sky" x="200" y="0" width="100" height="100" fill="currentColor" stroke="none"/>
+                  </svg>
+                </div><figcaption>Semantic inks</figcaption></figure>
+                </main></body></html>''', encoding="utf-8")
+            report = build(source, output, "zh")
+            self.assertEqual(report["rasterized_svg"], 1)
+            with zipfile.ZipFile(output) as archive:
+                images = [name for name in archive.namelist() if name.endswith(".png")]
+                self.assertEqual(len(images), 1)
+                image = Image.open(io.BytesIO(archive.read(images[0]))).convert("RGB")
+                mid_y = image.height // 2
+                cinnabar = image.getpixel((int(image.width * 0.16), mid_y))
+                jade = image.getpixel((int(image.width * 0.50), mid_y))
+                sky = image.getpixel((int(image.width * 0.84), mid_y))
+                self.assertEqual(cinnabar, (180, 71, 47))
+                self.assertEqual(jade, (78, 110, 93))
+                self.assertEqual(sky, (76, 112, 147))
+                css = archive.read("EPUB/book.css").decode("utf-8")
+                self.assertIn(".diagram-frame,.illu-frame{background:#F5EFE2", css)
+                self.assertIn(".diagram-frame img,.illu-frame img{mix-blend-mode:multiply}", css)
+
 
 if __name__ == "__main__":
     unittest.main()

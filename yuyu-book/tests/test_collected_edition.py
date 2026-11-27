@@ -251,6 +251,9 @@ class CollectionNavigation(unittest.TestCase):
         for anchor in ("collection-guide", "vol8-subject-index", "vol9", "vol10", "vol9-sources"):
             self.assertIn(f'href="#{anchor}"', rail)
         self.assertIn('class="collection-jumps no-print"', self.html)
+        self.assertIn('class="cover-seal" aria-hidden="true">合订</span>', self.html)
+        self.assertIn('class="toc-n toc-n-guide">导</span>', self.html)
+        self.assertNotIn("units ·", self.html)
 
 
 if __name__ == "__main__":

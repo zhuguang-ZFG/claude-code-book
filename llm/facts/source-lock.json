@@ -17,7 +17,7 @@
       "repo": "karpathy/nanoGPT",
       "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
       "license": "MIT",
-      "scope": "第 3 章：Q/K/V 分头、缩放、因果遮罩、输出投影及 SDPA 调用；第 7 章：训练循环结构。仅引用与独立讲解，未复制代码。"
+      "scope": "第 3 章：Q/K/V 分头、缩放、因果遮罩、输出投影及 SDPA 调用；第 4 章：Pre-LN Block 与末尾 ln_f；第 7 章：训练循环结构。仅引用与独立讲解，未复制代码。"
     },
     {
       "repo": "huggingface/sentence-transformers",
@@ -29,13 +29,13 @@
       "repo": "huggingface/transformers",
       "commit": "47b0e478f324b54f177ea7998a0791870fdd0324",
       "license": "Apache-2.0",
-      "scope": "第 4、8 章：v4.57.3 的 RoPE、Mixtral 与 BERT/decoder 分类实现；第 10 章：投机解码和不同 tokenizer 的 UAD；第 5、6 章：同提交的采样过滤与 KV cache 范围"
+      "scope": "第 4、8 章：v4.57.3 的 Llama/Qwen2/Mixtral、RoPE rotate_half 与 BERT/decoder 分类实现；第 10 章：投机解码和不同 tokenizer 的 UAD；第 5、6 章：同提交的采样过滤与 KV cache 范围"
     },
     {
       "repo": "rasbt/LLMs-from-scratch",
       "commit": "22c637fdf9aa2f5fdd39c2cc80c1d36b4ab7d8d8",
       "license": "Apache-2.0",
-      "scope": "第 2、7、8 章：token embedding、训练/验证损失与分类微调的公开配套教材；第 5 章：固定 seed 的连续抽样、温度与 top-k"
+      "scope": "第 2、4、7、8 章：token embedding、第 4 章 GPTModel/GELU/final_norm/tied 参数核算、训练/验证损失与分类微调的公开配套教材；第 5 章：固定 seed 的连续抽样、温度与 top-k"
     },
     {
       "repo": "huggingface/trl",

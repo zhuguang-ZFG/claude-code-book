@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Project trust controls resource loading while operating system permissions still bound tool execution">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="66" y="70" width="236" height="220" rx="8"/>
+  <text x="94" y="116" font-size="28" fill="currentColor" stroke="none">project trust</text>
+  <path d="M94 148H274M94 182H250M94 216H224" opacity="0.35"/>
+  <rect x="418" y="70" width="236" height="220" rx="8"/>
+  <text x="450" y="116" font-size="28" fill="currentColor" stroke="none">OS boundary</text>
+  <path d="M450 148H622M450 182H594M450 216H570" opacity="0.35"/>
+  <path d="M302 180H418"/>
+  <path d="M406 170L420 180L406 190"/>
+  <circle cx="360" cy="180" r="24"/>
+  <path d="M349 180L358 189L373 170"/>
+  <text x="300" y="338" font-size="28" fill="currentColor" stroke="none">trust != sandbox</text>
+</svg>

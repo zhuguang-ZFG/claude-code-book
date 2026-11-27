@@ -153,22 +153,22 @@ class FenceAwareExtraction(unittest.TestCase):
 
 
 class Captions(unittest.TestCase):
-    def captions(self, text, file="t.md"):
+    def captions(self, text, file="t.md", include_h3=False):
         _no, _t, body = normalize_h1(text, "zh", file)
         _body, blocks, _langs = extract_mermaid(body, file)
         # build.py passes the file as shipped; block.line is a line of it
-        return mm.captions_for(text, blocks), blocks
+        return mm.captions_for(text, blocks, include_h3=include_h3), blocks
 
-    def test_caption_is_the_nearest_preceding_h2(self):
-        caps, blocks = self.captions(
-            "# 第 1 章　标题\n\n## 第一节\n\n```mermaid\nA-->B\n```\n\n"
-            "## 第二节\n")
-        self.assertEqual(caps[blocks[0].uid], "第一节")
-
-    def test_h3_is_not_a_caption_source(self):
+    def test_h3_is_not_a_default_caption_source(self):
         caps, blocks = self.captions(
             "# 第 1 章　标题\n\n## 大节\n\n### 小节\n\n```mermaid\nA-->B\n```\n")
         self.assertEqual(caps[blocks[0].uid], "大节")
+
+    def test_h3_can_be_opted_in_for_descriptive_plate_captions(self):
+        caps, blocks = self.captions(
+            "# 第 1 章　标题\n\n## 大节\n\n### 小节\n\n```mermaid\nA-->B\n```\n",
+            include_h3=True)
+        self.assertEqual(caps[blocks[0].uid], "小节")
 
     def test_heading_inside_a_fence_does_not_become_a_caption(self):
         caps, blocks = self.captions(

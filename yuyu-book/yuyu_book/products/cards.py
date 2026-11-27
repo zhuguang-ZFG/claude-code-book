@@ -21,12 +21,12 @@ OUT = {"zh": "knowledge-cards.html"}
 LABELS = {
     "zh": {
         "title": "御舆 · 知识卡",
-        "sub": "十五章，每章三张 3:4 卡：一句话钩子、核心机制、三句带走。",
+        "sub": "十五章，每章三张 3:4 卡：一句话钩子、核心机制、三条核对。",
         "hint": ("全部素材取自本书自有插图；手机可读，打印时每张卡独立成页。"
                  "没有脚本，离线打开也是这个样子。"),
         "kicker_hook": "章钩子",
         "kicker_core": "核心机制",
-        "kicker_recap": "三句带走",
+        "kicker_recap": "本章核对",
         "deck": "张",
         "footer": ("回到 <a href=\"portal.html\">站点导航</a> · "
                    "<a href=\"beginner-reader.html\">入门分册</a> · "
@@ -48,23 +48,27 @@ PAGE = """<!doctype html>
 <meta property="og:type" content="website">
 <meta property="og:image" content="cover.png">
 <style>
-body{margin:0;font:15px/1.75 @@SERIF@@;background:#F5F0E6;color:#26221B}
+body{margin:0;font:15px/1.75 @@SERIF@@;background:#F5F0E6;color:#26221B;
+  font-feature-settings:"kern" 1,"palt" 1;text-rendering:optimizeLegibility}
 header{padding:34px 30px 8px;max-width:1040px;margin:0 auto;text-align:center}
-h1{font-size:26px;margin:0 0 4px;font-weight:650}
+h1{font-size:26px;margin:0 0 4px;font-weight:650;letter-spacing:.04em}
 .brush{width:200px;height:9px;color:#B4472F;display:block;margin:2px auto 8px}
 .sub{color:#5C5448;font-size:13.5px;margin:0}
 .hint{color:#6E6353;font-size:12.5px;margin:8px 0 0}
 main{max-width:1040px;margin:0 auto;padding:10px 30px 50px}
-.ch{margin:26px 0 0}
+.ch{margin:28px 0 0}
 .ch-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px dashed rgba(38,34,27,.25);
   padding:0 0 8px;margin:0 0 14px}
 .ch-no{margin:0;font-size:12px;letter-spacing:.14em;color:#9C3A26;white-space:nowrap}
 .ch-head h2{font-size:19px;margin:0;font-weight:650}
 .deck{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.kcard{position:relative;aspect-ratio:3/4;border:1.5px solid rgba(38,34,27,.3);
+.kcard{position:relative;aspect-ratio:3/4;border:1.5px solid rgba(38,34,27,.28);
   border-radius:@@RADIUS_CARD@@;padding:22px 20px 16px;
   display:flex;flex-direction:column;gap:9px;overflow:hidden;
-  box-shadow:2px 3px 0 rgba(38,34,27,.08)}
+  box-shadow:0 8px 20px -14px rgba(38,34,27,.28),2px 3px 0 rgba(38,34,27,.08);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.kcard:hover{transform:translateY(-3px);border-color:#B4472F;
+  box-shadow:0 14px 28px -14px rgba(180,71,47,.32),3px 5px 0 rgba(180,71,47,.18)}
 .kcard::after{content:"";position:absolute;inset:7px;pointer-events:none;
   border:1px dashed rgba(38,34,27,.18);
   border-radius:@@RADIUS_RESUME@@}
@@ -80,6 +84,13 @@ main{max-width:1040px;margin:0 auto;padding:10px 30px 50px}
 .k-plain{margin:0;font-size:13.5px;line-height:1.65}
 .k-ana{margin:0;font-size:12.5px;line-height:1.6;color:#5C5448}
 .k-plate{width:100%;height:auto;color:#5A5040;margin:auto 0}
+.k-mark svg .il-cinnabar,.k-plate svg .il-cinnabar{color:#B4472F}
+.k-mark svg .il-jade,.k-plate svg .il-jade{color:#4E6E5D}
+.k-mark svg .il-sky,.k-plate svg .il-sky{color:#4C7093}
+.k-mark svg .il-bronze,.k-plate svg .il-bronze{color:#43392B}
+.k-mark svg .il-bronze-2,.k-plate svg .il-bronze-2{color:#8A7D68}
+.k-mark svg .il-bronze-3,.k-plate svg .il-bronze-3{color:#5A5040}
+.k-mark svg .il-muted,.k-plate svg .il-muted{color:#675F4F}
 .k-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .k-list li{font-size:12.5px;line-height:1.55;padding-left:20px;position:relative}
 .k-list li::before{counter-increment:kcard;content:counter(kcard);position:absolute;
@@ -100,6 +111,7 @@ a:focus-visible{outline:2px solid #B4472F;outline-offset:3px}
   .kcard{box-shadow:none;break-inside:avoid}
   .deck{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media screen and (prefers-reduced-motion: reduce){
+  .kcard,.kcard:hover{transition:none;transform:none}
   footer a{transition:none}}
 </style>
 </head>

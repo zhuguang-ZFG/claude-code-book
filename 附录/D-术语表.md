@@ -238,7 +238,7 @@ flowchart LR
 | Reactive Compact | 响应式压缩 | 在 Token 使用量接近阈值时自动触发的压缩策略，作为对资源压力的实时响应。由 `REACTIVE_COMPACT` 功能标志控制 | Auto Compact, Compaction, Token Budget | 第 7 章 |
 | React | React 框架 | Claude Code 的 UI 层基于 React 框架构建，通过 Ink 适配器将 React 组件树渲染为终端文本输出 | Ink, CLI, REPL | 第 2 章 |
 | ReadOnly Tool | 只读工具 | 标记为 readOnly 的工具，仅执行读取操作而不修改文件系统或外部状态。只读工具在 Plan Mode 下也可使用，通常权限约束更宽松 | Tool, Plan Mode, Concurrency Safe | 第 3 章 |
-| REPL (Read-Eval-Print Loop) | 交互式循环 | Claude Code 的主界面循环，持续接收用户输入、执行处理、渲染输出，形成交互闭环。基于 Ink 框架渲染 | CLI, Ink, Main Loop | 第 2 章 |
+| REPL (Read-Eval-Print Loop) | 交互式循环 | Claude Code 的主界面循环，持续接收用户输入、执行处理并渲染输出，基于 Ink 框架实现 | CLI, Ink, Main Loop | 第 2 章 |
 | Runtime Gate | 运行时门控 | 功能标志的一种类型，编译时为 true 但在运行时还需额外条件（如环境变量、服务端配置）才真正激活。如 `KAIROS`、`COORDINATOR_MODE` 等 | Feature Flag, Build-time Dead Code Elimination | 附录 C |
 
 ## S

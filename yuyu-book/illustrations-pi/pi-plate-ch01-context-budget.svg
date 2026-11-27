@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Tool definitions recur in every turn and reduce the context left for task material">
+  <text x="60" y="54" font-size="30" fill="currentColor" stroke="none">Same context window, different room</text>
+  <text x="60" y="94" font-size="28" fill="currentColor" stroke="none">4 default tools</text>
+  <rect x="60" y="108" width="150" height="58" rx="7"/>
+  <rect x="210" y="108" width="96" height="58" rx="7" opacity="0.55"/>
+  <rect x="306" y="108" width="260" height="58" rx="7" opacity="0.22"/>
+  <rect x="566" y="108" width="94" height="58" rx="7" opacity="0.4"/>
+  <text x="82" y="146" font-size="28" fill="currentColor" stroke="none">fixed</text>
+  <text x="222" y="146" font-size="28" fill="currentColor" stroke="none">4 defs</text>
+  <text x="330" y="146" font-size="28" fill="currentColor" stroke="none">task material</text>
+  <text x="580" y="146" font-size="28" fill="currentColor" stroke="none">out</text>
+  <text x="60" y="216" font-size="28" fill="currentColor" stroke="none">More tools added</text>
+  <rect x="60" y="230" width="150" height="58" rx="7"/>
+  <rect x="210" y="230" width="240" height="58" rx="7" opacity="0.55"/>
+  <rect x="450" y="230" width="116" height="58" rx="7" opacity="0.22"/>
+  <rect x="566" y="230" width="94" height="58" rx="7" opacity="0.4"/>
+  <text x="82" y="268" font-size="28" fill="currentColor" stroke="none">fixed</text>
+  <text x="228" y="268" font-size="28" fill="currentColor" stroke="none">more defs</text>
+  <text x="464" y="268" font-size="28" fill="currentColor" stroke="none">less</text>
+  <text x="580" y="268" font-size="28" fill="currentColor" stroke="none">out</text>
+  <path d="M60 326H660" opacity="0.25"/>
+  <text x="360" y="370" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">Tool schemas are read again every turn</text>
+  <text x="360" y="406" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">Add tools for the task, not the menu</text>
+</svg>
+

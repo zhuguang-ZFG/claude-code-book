@@ -42,6 +42,7 @@ PALETTE: dict[str, str] = {
     "cinnabar": "#B4472F",      # 朱砂
     "cinnabar-deep": "#9C3A26",
     "cinnabar-warm": "#8A4A34",
+    "jade": "#4E6E5D",
     "jade-deep": "#3E5A4C",
     "sky": "#4C7093",
     "sky-deep": "#3A5A78",
@@ -52,8 +53,13 @@ PALETTE: dict[str, str] = {
     "dark-ink-2": "#BDB4A2",
     "dark-ink-3": "#A59C8A",
     "dark-bronze": "#9C9484",
+    "dark-bronze-1": "#CFC6B4",
+    "dark-bronze-2": "#A89E8C",
+    "dark-bronze-3": "#E2DBCB",
     "dark-plain": "#B3AA99",
     "dark-cinnabar": "#E07B5F",
+    "dark-jade": "#9DBFA9",
+    "dark-sky": "#8FB2D4",
 }
 
 # name in this module -> custom property in style_tokens.TOKENS_CSS
@@ -70,6 +76,7 @@ BOOK_MIRROR: dict[str, str] = {
     "bronze-2": "--bronze-2",
     "bronze-3": "--bronze-3",
     "cinnabar": "--cinnabar",
+    "jade": "--jade",
     "sky": "--sky",
 }
 

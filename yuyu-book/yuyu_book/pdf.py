@@ -83,7 +83,7 @@ def _launch(p, browser: str | None):
             return p.chromium.launch(executable_path=browser)
         except Exception:
             pass
-    for kind in ("msedge", "chrome", None):
+    for kind in ("chrome", "msedge", None):
         try:
             return (p.chromium.launch(channel=kind) if kind
                     else p.chromium.launch())
@@ -100,7 +100,9 @@ def _print_pdf(html_path: Path, raw: Path, browser: str | None) -> None:
     with sync_playwright() as p:
         launched = _launch(p, browser)
         page = launched.new_page(viewport={"width": 1280, "height": 900})
-        page.goto(html_path.resolve().as_uri(), wait_until="load")
+        # The collected single-file edition is ~76 MB; Chromium needs more
+        # than Playwright's 30 s default to parse it before printing.
+        page.goto(html_path.resolve().as_uri(), wait_until="load", timeout=120_000)
         try:
             page.evaluate("() => document.fonts.ready.then(() => true)")
         except Exception:
@@ -217,33 +219,45 @@ class _Head:
 
 
 def _folio(head: _Head, page, n: int, total: int) -> None:
-    """Centred footer folio: n / total, flanked by short hairlines."""
+    """Centred footer folio: n / total, flanked by hairlines and tiny cinnabar dots."""
     text, size = f"{n} / {total}", 8.2
     rect = page.rect
     w = head.width(text, size)
     cx, y = rect.width / 2, rect.height - 26
     head.draw(page, cx - w / 2, y, text, size, INK)
     shape = page.new_shape()
-    shape.draw_line((cx - w / 2 - 26, y - 3), (cx - w / 2 - 9, y - 3))
-    shape.draw_line((cx + w / 2 + 9, y - 3), (cx + w / 2 + 26, y - 3))
-    shape.finish(color=RULE, width=0.5)
+    shape.draw_line((cx - w / 2 - 28, y - 2.8), (cx - w / 2 - 11, y - 2.8))
+    shape.draw_line((cx + w / 2 + 11, y - 2.8), (cx + w / 2 + 28, y - 2.8))
+    shape.finish(color=RULE, width=0.55)
     shape.commit()
+    dot = page.new_shape()
+    dot.draw_circle((cx - w / 2 - 7.5, y - 2.8), 1.0)
+    dot.draw_circle((cx + w / 2 + 7.5, y - 2.8), 1.0)
+    dot.finish(color=(0.61, 0.27, 0.19), fill=(0.61, 0.27, 0.19), width=0)
+    dot.commit()
 
 
 def _running_head(head: _Head, page, text: str, side: str) -> None:
     size = 8.0
     rect = page.rect
-    text = _fit(text, (rect.width - 2 * MARGIN) / 2, size,
+    text = _fit(text, (rect.width - 2 * MARGIN) * 0.62, size,
                 lambda t: head.width(t, size))
     if not text:
         return
     w = head.width(text, size)
     x = MARGIN if side == "left" else rect.width - MARGIN - w
-    head.draw(page, x, 40, text, size, INK)
+    head.draw(page, x, 39.5, text, size, INK)
     shape = page.new_shape()
     shape.draw_line((MARGIN, 46), (rect.width - MARGIN, 46))
-    shape.finish(color=RULE, width=0.5)
+    shape.finish(color=RULE, width=0.55)
     shape.commit()
+    accent = page.new_shape()
+    if side == "left":
+        accent.draw_line((MARGIN, 46), (MARGIN + 22, 46))
+    else:
+        accent.draw_line((rect.width - MARGIN - 22, 46), (rect.width - MARGIN, 46))
+    accent.finish(color=(0.61, 0.27, 0.19), width=1.15)
+    accent.commit()
 
 
 def build_pdf(html_path: Path, meta: PrintManifest, browser: str | None = None,

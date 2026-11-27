@@ -1,11 +1,9 @@
 """Chapter copy shared by the knowledge cards and the sample chapter.
 
-The hook and the three-sentence recap are authored as blockquotes whose bold
-lead-in names them. Both editions use the same pattern, so one parser feeds
-both products; a missing label is a build failure, not an empty card.
+The hook is a quote whose bold lead-in names it. The recap is structural: the
+last quote with exactly three circled checks, with or without the legacy
+label. Removing a visible slogan from the book must not break derivative pages.
 """
-from __future__ import annotations
-
 import re
 from pathlib import Path
 
@@ -45,14 +43,18 @@ def hook(unit, lang: str) -> str:
 
 
 def recap(unit, lang: str) -> list[str]:
-    """The three sentences the chapter asks the reader to carry away."""
-    label = RECAP[lang]
-    text = _after_label(_quote_block(unit, label), label)
-    items = [part.strip() for part in _CIRCLED.split(text) if part.strip()]
-    if len(items) != 3:
-        raise ValueError(f"{unit.id}: expected 3 '{label}' items in {lang}, "
-                         f"found {len(items)}")
-    return items
+    """The chapter's three closing checks, independent of a visible label."""
+    legacy = RECAP[lang]
+    for section in reversed(unit.sections):
+        for block in reversed(section.blocks):
+            if block.kind != "quote":
+                continue
+            text = _after_label(block.text, legacy) if legacy in block.text \
+                else " ".join(line.lstrip("> ").strip() for line in block.text.splitlines())
+            items = [part.strip() for part in _CIRCLED.split(text) if part.strip()]
+            if len(items) == 3:
+                return items
+    raise ValueError(f"{unit.id}: expected 3 closing checks in {lang}")
 
 
 def content_plate(unit_id: str) -> Path | None:

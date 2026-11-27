@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Evidence moves from source to quotation to an independent check">
+  <path d="M76 302C236 294 448 307 646 298" opacity="0.18"/>
+  <path d="M102 88H282L300 106V242H102Z"/>
+  <path d="M282 88V106H300" opacity="0.55"/>
+  <text x="126" y="132" font-size="30" fill="currentColor" stroke="none">SOURCE</text>
+  <path d="M126 164H272M126 194H250M126 218H208" opacity="0.45"/>
+  <path d="M334 126C370 126 382 139 416 151" stroke-dasharray="7 8"/>
+  <path d="M410 142L420 152L406 157" opacity="0.7"/>
+  <path d="M434 82H614L632 100V236H434Z"/>
+  <path d="M614 82V100H632" opacity="0.55"/>
+  <text x="458" y="130" font-size="28" fill="currentColor" stroke="none">QUOTE</text>
+  <path d="M460 162H592M460 192H574" opacity="0.45"/>
+  <path d="M434 270C500 248 555 248 632 263" stroke-dasharray="7 8"/>
+  <circle cx="366" cy="286" r="30"/>
+  <path d="M351 286L363 298L384 272"/>
+  <text x="278" y="336" font-size="28" fill="currentColor" stroke="none">claim + evidence + check</text>
+</svg>

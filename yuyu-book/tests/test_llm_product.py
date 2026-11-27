@@ -66,21 +66,81 @@ class LlmProduct(unittest.TestCase):
         self.assertEqual(registered, manuscripts)
 
     def test_rope_plate_compares_original_and_rotated_qk_vectors(self):
-        plate = (REPO_ROOT / "yuyu-book/illustrations-agents/"
-                 "llm-ch04-rope-rotation.svg").read_text(encoding="utf-8")
-        self.assertIn('stroke-dasharray="5 5" opacity=".45"', plate)
-        self.assertIn("M560 120L621 85M560 120L584 54", plate)
-        self.assertIn("M560 120L628 138M560 120L623 90", plate)
-        self.assertEqual(plate.count('fill="currentColor"'), 3,
-                         "q stays filled in both states and on the faint ghost vectors")
-        q_before = math.degrees(math.atan2(35, 61))
-        k_before = math.degrees(math.atan2(66, 24))
-        q_after = math.degrees(math.atan2(-18, 68))
-        k_after = math.degrees(math.atan2(30, 63))
+        import xml.etree.ElementTree as ET
+
+        plate_path = (REPO_ROOT / "yuyu-book/illustrations-agents/"
+                      "llm-ch04-rope-rotation.svg")
+        plate = plate_path.read_text(encoding="utf-8")
+        root = ET.fromstring(plate)
+        self.assertEqual(root.attrib.get("role"), "img")
+        self.assertTrue(root.attrib.get("aria-label"))
+        self.assertIn("llm-explainer", root.attrib.get("class", ""))
+        self.assertIn("stroke-dasharray=\"4 4\" opacity=\".42\"", plate)
+        ns = "{http://www.w3.org/2000/svg}"
+        self.assertIsNotNone(root.find(f"{ns}title"))
+        self.assertIsNotNone(root.find(f"{ns}desc"))
+        q_circles = [
+            el for el in root.findall(f"{ns}circle")
+            if el.attrib.get("fill") == "currentColor" and el.attrib.get("r") == "4.2"
+        ]
+        ghost_q = [
+            el for el in root.findall(f"{ns}circle")
+            if el.attrib.get("fill") == "currentColor" and el.attrib.get("r") == "3.4"
+        ]
+        self.assertEqual(len(q_circles), 2, "solid q and rotated q' markers")
+        self.assertEqual(len(ghost_q), 1, "ghost pre-shift q marker")
+        # Verify left panel (10 deg, 55 deg) and right panel (+45 deg -> 55 deg, 100 deg)
+        vector_paths = [
+            el.attrib["d"] for el in root.findall(f"{ns}path")
+            if el.attrib.get("stroke-width") == "2.2"
+        ]
+        self.assertEqual(len(vector_paths), 2)
+        coords_before = [float(v) for v in re.findall(r"-?\d+(?:\.\d+)?", vector_paths[0])]
+        coords_after = [float(v) for v in re.findall(r"-?\d+(?:\.\d+)?", vector_paths[1])]
+        q_before = math.degrees(math.atan2(-(coords_before[3] - coords_before[1]),
+                                           coords_before[2] - coords_before[0]))
+        k_before = math.degrees(math.atan2(-(coords_before[7] - coords_before[5]),
+                                           coords_before[6] - coords_before[4]))
+        q_after = math.degrees(math.atan2(-(coords_after[3] - coords_after[1]),
+                                          coords_after[2] - coords_after[0]))
+        k_after = math.degrees(math.atan2(-(coords_after[7] - coords_after[5]),
+                                          coords_after[6] - coords_after[4]))
         q_rotation = (q_after - q_before + 180) % 360 - 180
         k_rotation = (k_after - k_before + 180) % 360 - 180
-        self.assertAlmostEqual(q_rotation, -45, delta=1)
-        self.assertAlmostEqual(k_rotation, -45, delta=1)
+        self.assertAlmostEqual(q_rotation, 45, delta=1)
+        self.assertAlmostEqual(k_rotation, 45, delta=1)
+        self.assertAlmostEqual(k_after - q_after, k_before - q_before, delta=1)
+
+        block_path = (REPO_ROOT / "yuyu-book/illustrations-agents/"
+                      "llm-ch04-transformer-block.svg")
+        block = block_path.read_text(encoding="utf-8")
+        for label in ("Pre-LN", "Post-LN", "RMSNorm", "Attention", "FFN", "Final", "lm_head"):
+            self.assertIn(label, block)
+
+    def test_all_llm_body_plates_carry_accessible_metadata_and_synced_wording(self):
+        import xml.etree.ElementTree as ET
+
+        ns = "{http://www.w3.org/2000/svg}"
+        art_dir = REPO_ROOT / "yuyu-book/illustrations-agents"
+        plates = sorted(p for p in art_dir.glob("llm-ch*.svg") if len(p.stem) > 8)
+        self.assertEqual(len(plates), 31)
+        for path in plates:
+            text = path.read_text(encoding="utf-8")
+            root = ET.fromstring(text)
+            self.assertEqual(root.attrib.get("role"), "img", path.name)
+            self.assertTrue(root.attrib.get("aria-label"), path.name)
+            self.assertIn("llm-explainer", root.attrib.get("class", ""), path.name)
+            self.assertIsNotNone(root.find(f"{ns}title"), path.name)
+            self.assertIsNotNone(root.find(f"{ns}desc"), path.name)
+            self.assertIn("currentColor", text, path.name)
+        validation = (art_dir / "llm-ch12-validation-loop.svg").read_text(encoding="utf-8")
+        self.assertIn("^ORD-[0-9]{4}$", validation)
+        self.assertNotIn(r"\d{4}", validation)
+        lora = (art_dir / "llm-ch08-sft-lora.svg").read_text(encoding="utf-8")
+        self.assertIn("4 MiB", lora)
+        cost = (art_dir / "llm-ch13-cost-curve.svg").read_text(encoding="utf-8")
+        self.assertIn("正确率 +23.8pp", cost)
+        self.assertNotIn("准率", cost)
 
     def test_written_chapters_are_the_planned_preview(self):
         numbers = {int(uid.rsplit("ch", 1)[1])

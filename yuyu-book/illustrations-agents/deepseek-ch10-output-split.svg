@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A tool result is normalized into a canonical value that can be rendered separately as model content and a UI card">
+  <rect x="30" y="164" width="120" height="82" rx="8"/>
+  <text x="90" y="212" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">tool call</text>
+  <path d="M150 205H186"/>
+  <path d="M176 195L188 205L176 215"/>
+  <rect x="190" y="154" width="164" height="102" rx="8" opacity="0.25"/>
+  <text x="272" y="196" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">validate</text>
+  <text x="272" y="232" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">normalize</text>
+  <path d="M354 205H404V105H474M404 205H474M404 205V315H474"/>
+  <path d="M464 95L476 105L464 115M464 195L476 205L464 215M464 305L476 315L464 325"/>
+  <rect x="480" y="62" width="210" height="86" rx="8"/>
+  <rect x="480" y="162" width="210" height="86" rx="8" opacity="0.25"/>
+  <rect x="480" y="272" width="210" height="86" rx="8" opacity="0.5"/>
+  <text x="585" y="96" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">lines / chars</text>
+  <text x="585" y="132" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">{2, 7}</text>
+
+  <text x="585" y="198" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">model content</text>
+  <text x="585" y="232" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">2 lines, 7 chars</text>
+  <text x="585" y="308" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">UI card</text>
+  <text x="585" y="342" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">display only</text>
+  <text x="360" y="398" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">Hiding text does not hide the value object</text>
+</svg>
+

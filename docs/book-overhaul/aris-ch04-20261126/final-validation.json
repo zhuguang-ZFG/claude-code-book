@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-11-26T08:15:41.066763+00:00",
+  "scope": [
+    "llm/ch04.md",
+    "llm/ch16.md",
+    "llm/00-前言.md",
+    "llm/VERIFY.md",
+    "llm/examples/transformer_demo.py",
+    "yuyu-book/sources-llm.json",
+    "llm/facts/source-lock.json",
+    "scripts/build_epub.py",
+    "tests/test_epub_paint.py",
+    "tests/test_llm_examples.py",
+    "yuyu-book/tests/test_llm_product.py",
+    "yuyu-book/yuyu_book/render.py",
+    "yuyu-book/yuyu_book/style_components.py",
+    "yuyu-book/yuyu_book/style_screen.py",
+    "yuyu-book/yuyu_book/style_print.py",
+    "docs/ (site build outputs)",
+    "yuyu-book/illustrations-agents/*llm*.svg (59 files)"
+  ],
+  "artifacts": {
+    "html": {
+      "bytes": 960467,
+      "sha256": "ab57ff8a8b02baff3a93bb2943c41c6a83307581b06eced0b2fefe836a945fb5",
+      "units": 17,
+      "plates": 31,
+      "cited_links": 198,
+      "emblems": 17,
+      "headpieces": 10,
+      "ch04_has_wbr_in_fig_caps": false
+    },
+    "pdf": {
+      "bytes": 8851825,
+      "sha256": "2baad668d2ba2bb060f43aa87ae8cb990edd38b099fe205d9cc757fe239cf546",
+      "pages": 174,
+      "bookmarks": 28,
+      "ch04_pages": [
+        41,
+        49
+      ],
+      "fig_4_1_page": 41,
+      "overflow_pages": 0,
+      "ch04_bottom_free_pt_range": [
+        56.2,
+        301.4
+      ],
+      "table_orphan_wraps_ch04": 0
+    },
+    "epub": {
+      "bytes": 3401524,
+      "sha256": "1b3b11e6447e04932bda26bc088f68883c352abd1b4c976cf377e0c561783696",
+      "navigation_entries": 170,
+      "documents": 34,
+      "xhtml_count": 35,
+      "png_assets": 59,
+      "rasterized_svg": 59,
+      "multi_ink_images": 59,
+      "cinnabar_images": 58,
+      "jade_images": 55,
+      "sky_images": 56,
+      "chromatic_totals": {
+        "cinnabar_px": 466137,
+        "jade_px": 221739,
+        "sky_px": 401210
+      },
+      "has_spine": true,
+      "bad_pngs": 0,
+      "zero_pngs": 0
+    }
+  },
+  "checks": {
+    "fast": "9 steps passed (dependencies, source build, general tests, builder tests, content, omp plain language, mermaid, video configuration, product idempotence)",
+    "repository_tests": "486 passed (1 skipped)",
+    "builder_tests": 629,
+    "llm_example_tests": 136,
+    "llm_product_tests": 8,
+    "epub_paint_tests": 2,
+    "markdown_files": 498,
+    "mermaid_diagrams": 280,
+    "ruff": "passed",
+    "visual_layout_site": "0 failures (320/1280px light/dark)",
+    "collected_assembly": "12 volumes, 286 units, 366 plates, 1108 glosses, 205 lead bands, 159 keeper notes; CHECK OK",
+    "products_idempotence": "7 byte-identical outputs; local anchors checked",
+    "visual_audit": {
+      "modes": [
+        "desktop-1440-light",
+        "desktop-1440-dark",
+        "mobile-390-light",
+        "mobile-390-dark",
+        "print"
+      ],
+      "method": "Playwright Chromium DOM bounding-box & path sampling + PyMuPDF vector/text geometry + Pillow PNG pixel inspection (file-read tool does not directly interpret binary PNG bitmaps)",
+      "body_plates_checked_per_mode": 31,
+      "total_svg_overflows": 0,
+      "total_svg_collisions": 0,
+      "total_rect_crossings": 0,
+      "total_path_crossings": 0,
+      "total_small_mobile_fonts": 0,
+      "min_mobile_font_px": 10.02
+    }
+  },
+  "pytorch": {
+    "torch": "2.14.1+cpu",
+    "device": "cpu",
+    "dtype": "float64",
+    "rms_norm_max_error": 2.220446049250313e-16,
+    "layer_norm_max_error": 4.440892098500626e-16,
+    "forward_block_gqa_rope_swiglu_max_error": 1.7763568394002505e-15,
+    "sparse_moe_top2_max_error": 0.0,
+    "benchmark": false
+  },
+  "reviews": {
+    "round1": "docs/book-overhaul/aris-ch04-20261126/review1.md (7/10, Almost, same-family / provisional)",
+    "round2": "docs/book-overhaul/aris-ch04-20261126/review2.md (7/10, Almost, same-family / provisional)",
+    "post_review_closure": "Remaining round1 findings resolved plus 59-SVG redraw polish and multi-ink EPUB rasterization fix verified on round2; no third review requested or fabricated."
+  },
+  "limits": "Teaching forward-pass calculations and synthetic scripts only; no production LLM training/inference speed or long-context perplexity benchmark; same-family reviews remain provisional."
+}

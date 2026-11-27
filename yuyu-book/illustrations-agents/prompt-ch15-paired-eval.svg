@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Two prompt versions run the same seven cases twice and all twenty-eight requests use one criteria set">
+  <text x="360" y="48" text-anchor="middle" font-size="30" fill="currentColor" stroke="none">Freeze the comparison before running</text>
+  <rect x="60" y="76" width="240" height="62" rx="8"/>
+  <rect x="420" y="76" width="240" height="62" rx="8"/>
+  <text x="180" y="117" text-anchor="middle" font-size="30" fill="currentColor" stroke="none">PROMPT A</text>
+  <text x="540" y="117" text-anchor="middle" font-size="30" fill="currentColor" stroke="none">PROMPT B</text>
+  <path d="M180 138V166H360V186M540 138V166H360"/>
+  <path d="M350 176L360 186L370 176"/>
+  <rect x="250" y="186" width="220" height="58" rx="8" opacity="0.25"/>
+  <text x="360" y="224" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">7 frozen cases</text>
+  <path d="M360 244V264H200V284M360 264H520V284"/>
+  <path d="M190 274L200 284L210 274M510 274L520 284L530 274"/>
+  <rect x="90" y="284" width="220" height="72" rx="8"/>
+  <rect x="410" y="284" width="220" height="72" rx="8"/>
+  <text x="200" y="316" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">repeat 1</text>
+  <text x="200" y="346" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">7 per version</text>
+  <text x="520" y="316" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">repeat 2</text>
+  <text x="520" y="346" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">7 per version</text>
+  <text x="360" y="404" text-anchor="middle" font-size="30" fill="currentColor" stroke="none">2 x 7 x 2 = 28 requests</text>
+  <text x="360" y="442" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">One criteria set; keep every response</text>
+</svg>
+

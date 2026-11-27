@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A repair is reviewed through baseline failure, one-line patch, passing tests, and final diff evidence">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="50" y="126" width="138" height="108" rx="8"/>
+  <rect x="218" y="126" width="138" height="108" rx="8"/>
+  <rect x="386" y="126" width="138" height="108" rx="8"/>
+  <rect x="554" y="126" width="116" height="108" rx="8"/>
+  <text x="62" y="174" font-size="28" fill="currentColor" stroke="none">baseline</text>
+  <text x="86" y="208" font-size="28" fill="currentColor" stroke="none">fail</text>
+  <text x="264" y="174" font-size="28" fill="currentColor" stroke="none">patch</text>
+  <text x="252" y="208" font-size="28" fill="currentColor" stroke="none">one line</text>
+  <text x="428" y="174" font-size="28" fill="currentColor" stroke="none">tests</text>
+  <text x="438" y="208" font-size="28" fill="currentColor" stroke="none">pass</text>
+  <text x="572" y="174" font-size="28" fill="currentColor" stroke="none">diff</text>
+  <text x="572" y="208" font-size="28" fill="currentColor" stroke="none">review</text>
+  <path d="M188 180H218M356 180H386M524 180H554"/>
+  <path d="M208 170L220 180L208 190M376 170L388 180L376 190M544 170L556 180L544 190"/>
+</svg>

@@ -3,6 +3,19 @@ from __future__ import annotations
 
 from .labels import esc, note, route_map_lead, ui
 
+_PRODUCT_SEALS: dict[str, str] = {
+    "book": "御舆",
+    "collected": "合订",
+    "llm": "模型",
+    "prompt": "提示",
+    "omp": "OMP",
+    "pi": "PI",
+    "kimi": "KIMI",
+    "vibe": "VIBE",
+    "t3code": "T3",
+}
+
+
 def cover(manifest: dict, lang: str) -> str:
     from .art import cover_plate
     from .style import wheel
@@ -24,15 +37,19 @@ def cover(manifest: dict, lang: str) -> str:
     mark = "" if plate else wheel(26)
     src_line = (f'<span class="epi-src">——{esc(epi_src.strip())}</span>'
                 if epi_src else "")
-    seal = (f'<span class="cover-seal" aria-hidden="true">{esc(main.strip()[:2])}</span>'
-            if lang == "zh" and main.strip() and not is_agent else "")
+    seal_text = (manifest.get("seal") or {}).get(lang) or _PRODUCT_SEALS.get(product) or main.strip()[:2]
+    is_latin_seal = seal_text.isascii()
+    seal_cls = "cover-seal cover-seal-latin" if is_latin_seal else "cover-seal"
+    seal = (f'<span class="{seal_cls}" aria-hidden="true">{esc(seal_text)}</span>'
+            if lang == "zh" and seal_text and not is_agent else "")
     kicker = (manifest.get("kicker") or {}).get(lang) or ui("cover_kicker", lang)
     volume_class = f" agent-volume av-{product}" if is_agent else ""
+    tail_html = f'<span class="bt-tail">{esc(tail.strip())}</span>' if tail.strip() else ""
     return (f'<section class="front-page cover{volume_class}" id="cover">'
             f'<div class="cover-inner">{seal}'
             f'<p class="cover-kicker">{esc(kicker)}</p>'
             f'<h1 class="book-title"><span class="bt-main">{esc(main.strip())}</span>'
-            f'<span class="bt-tail">{esc(tail.strip())}</span></h1>'
+            f'{tail_html}</h1>'
             f'<div class="cover-rule"><i></i>{mark}<i></i></div>'
             f'{plate}'
             f'<p class="book-sub">{esc(manifest["subtitle"][lang])}</p>'
@@ -69,7 +86,7 @@ def revisions_page(entries: list[dict], lang: str) -> str:
         lis = "".join(f"<li>{note(x)}</li>" for x in e.get(lang, []))
         items.append(f'<h2 class="rev-v">v{esc(e["version"])}'
                      f'<span class="rev-d">{esc(e["date"])}</span></h2><ul>{lis}</ul>')
-    return (f'<section class="front-page" id="revisions">'
+    return (f'<section class="front-page revisions" id="revisions">'
             f'<h1 class="page-title">{esc(ui("revisions", lang))}</h1>'
             f'{"".join(items)}</section>')
 
@@ -182,6 +199,7 @@ def volume_divider(volume: dict, lang: str, idx: int,
         for anchor, no, label in rows)
     motto = (volume.get("motto") or {}).get(lang, "")
     goal = (volume.get("goal") or {}).get(lang, "")
+    list_cls = "pd-list pd-list-cols" if len(rows) > 6 else "pd-list"
     return (f'<section class="part-divider volume-divider" id="{volume["id"]}">'
             f'<span class="pd-ghost" aria-hidden="true">{wheel(360)}</span>'
             f'<div class="pd-inner">'
@@ -192,7 +210,7 @@ def volume_divider(volume: dict, lang: str, idx: int,
             + (f'<p class="pd-motto">{esc(motto)}</p>' if motto else "")
             + (f'<p class="pd-goal">{esc(goal)}</p>' if goal else "")
             + f'{route_map("vol-" + volume["id"], len(rows))}'
-            f'<ol class="pd-list">{items}</ol>'
+            f'<ol class="{list_cls}">{items}</ol>'
             f'</div></section>')
 
 
@@ -228,9 +246,11 @@ def toc_html(entries: list[dict], lang: str) -> str:
         elif kind == "hr":
             chunks[-1].append('<hr class="toc-hr">')
         else:
+            no_html = (f'<span class="toc-n">{esc(e["no"])}</span>'
+                       if e["no"] else '<span class="toc-n toc-n-guide">导</span>')
             chunks[-1].append(
                 f'<a class="toc-row" href="#{e["anchor"]}">'
-                f'<span class="toc-n">{esc(e["no"])}</span>'
+                f'{no_html}'
                 f'<span class="toc-t">{esc(e["title"])}</span>'
                 f'<span class="leader"></span>'
                 f'<span class="page-ref" data-ref="{e["anchor"]}"></span></a>')

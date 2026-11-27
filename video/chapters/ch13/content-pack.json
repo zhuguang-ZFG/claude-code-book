@@ -20,15 +20,11 @@
     "StreamingToolExecutor 做到了\"流到即执行\"，并发安全工具可以并行运行，非安全工具串行执行，结果按顺序缓冲输出。这种设计把顺序排在延迟前面 -- 宁可多等一个串行工具，也不冒险并行执行可能冲突的操作。",
     "启动性能优化的核心思想是并行化：让 I/O 密集操作（MDM 读取、keychain 读取）与 CPU 密集操作（模块评估）并行。示意计算中，关键路径由 160ms 缩短到 65ms；真实收益需要注明机器、版本、缓存状态和计时终点后实测。",
     "成本追踪采用两层函数设计：updateUsage 处理单条流式事件的增量数据（用 > 0 守卫防止增量数据覆盖真实值），accumulateUsage 跨消息累加总量。不同生命周期组件（QueryEngine vs forked agent）采用不同粒度的累加策略。",
-    "缓存优化需要字节级一致性：fork agent 必须与父请求共享完全相同的 system prompt、tools、model、messages prefix 和 thinking config，任何维度的偏差都会导致缓存断裂。缓存命中率的持续监控是 Agent 系统成本控制的基石。",
-    "流式架构归在架构选择一档，优化空间由它派生：它决定了系统的每一个组件都必须按照\"增量、可中断、可组合\"的原则设计，是整个 Agent Harness 的基石。从 QueryEngine 到 StreamingToolExecutor 到工具执行，流式思维贯穿始终。",
+    "缓存优化需要字节级一致性：fork agent 必须与父请求共享完全相同的 system prompt、tools、model、messages prefix 和 thinking config，任何维度的偏差都会导致缓存断裂。持续监控缓存命中率是控制 Agent 运行成本的前提。",
+    "流式架构决定后续优化空间：它要求系统的每个组件按“增量、可中断、可组合”的方式组织。从 QueryEngine 到 StreamingToolExecutor 再到工具执行，这条约束贯穿整条调用链。",
     "工具输出的 token 成本往往比模型输出更值得关注：一个大型文件的读取可能产生 60K+ 的缓存创建 token，而模型一轮输出的 token 通常只有 1-5K。优化工具返回内容（如限制行数、过滤无关信息）比优化模型输出更有效。"
   ],
   "core_terms": [
-    {
-      "zh": "智能体线束",
-      "en": "Agent Harness"
-    },
     {
       "zh": "yield",
       "en": "yield"
@@ -56,6 +52,10 @@
     {
       "zh": "流式",
       "en": "streaming"
+    },
+    {
+      "zh": "工具结果",
+      "en": "tool result"
     }
   ]
 }

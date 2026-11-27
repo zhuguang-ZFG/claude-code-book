@@ -121,14 +121,18 @@ class ShippedDrawings(unittest.TestCase):
         self.assertIn('aria-hidden="true"', out)
         self.assertEqual(out.count("aria-hidden"), 1)
 
-    def test_agent_volumes_have_distinct_offline_covers(self):
+    def test_all_nonbook_products_have_distinct_offline_covers(self):
+        products = (
+            "llm", "opencode", "deepseek", "hermes", "codex", "t3code",
+            "omp", "pi", "kimi", "prompt", "vibe",
+        )
         drawings = []
-        for product in ("opencode", "deepseek", "hermes", "codex", "t3code"):
+        for product in products:
             drawing = art._read(f"cover-{product}", art.PLATE_BYTES)
             self.assertTrue(drawing, product)
             self.assertIn(drawing, art.cover_plate("zh", product))
             drawings.append(drawing)
-        self.assertEqual(len(set(drawings)), 5)
+        self.assertEqual(len(set(drawings)), len(products))
         self.assertNotIn(drawings[0], art.cover_plate("zh", "book"))
 
 

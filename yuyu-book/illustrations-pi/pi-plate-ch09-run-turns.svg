@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A run can contain several turns and only settles after retries, recovery, and queued work finish">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <rect x="54" y="138" width="142" height="84" rx="8"/>
+  <text x="94" y="188" font-size="28" fill="currentColor" stroke="none">start</text>
+  <rect x="246" y="54" width="142" height="70" rx="8"/>
+  <rect x="246" y="154" width="142" height="70" rx="8"/>
+  <rect x="246" y="254" width="142" height="70" rx="8"/>
+  <text x="278" y="98" font-size="28" fill="currentColor" stroke="none">turn 1</text>
+  <text x="278" y="198" font-size="28" fill="currentColor" stroke="none">turn 2</text>
+  <text x="278" y="298" font-size="28" fill="currentColor" stroke="none">turn 3</text>
+  <path d="M196 180H246M196 180C220 180 218 89 246 89M196 180H246M196 180C220 180 218 289 246 289"/>
+  <path d="M388 89H454V289H388M454 180H538"/>
+  <circle cx="600" cy="180" r="52"/>
+  <text x="568" y="190" font-size="28" fill="currentColor" stroke="none">settled</text>
+  <text x="224" y="342" font-size="28" fill="currentColor" stroke="none">retry / recovery / queue</text>
+</svg>

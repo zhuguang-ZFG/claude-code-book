@@ -6,12 +6,17 @@ COMPONENTS_CSS = r"""/* ------- compass ------- */
   margin:0 0 1.1rem}
 @media (max-width:860px){.compass{grid-template-columns:1fr}}
 .compass-card{background:var(--card);border:1px solid var(--line);
-  border-radius:var(--r-2);padding:.75rem .9rem .8rem;position:relative;overflow:hidden;
-  box-shadow:0 1px 4px rgba(38,34,27,.05)}
+  border-radius:var(--r-2);padding:.8rem .95rem .85rem;position:relative;overflow:hidden;
+  box-shadow:0 2px 8px -5px rgba(38,34,27,.14);
+  transition:box-shadow .18s ease,border-color .18s ease}
+.compass-card:hover{border-color:var(--line-2);box-shadow:0 6px 16px -10px rgba(38,34,27,.22)}
 .compass-card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;
   background:var(--bronze-2)}
 .compass-card.question::before{background:var(--cinnabar)}
 .compass-card.boundary::before{background:var(--ink-3)}
+@media (prefers-color-scheme:dark){
+  body:not(.force-light) .compass-card{box-shadow:0 4px 14px -8px rgba(0,0,0,.55)}
+}
 .cc-tag{margin:0 0 .3rem;font-size:.72rem;letter-spacing:.2em;
   color:var(--bronze);font-weight:700}
 .compass-card.question .cc-tag{color:var(--cinnabar)}
@@ -26,10 +31,11 @@ COMPONENTS_CSS = r"""/* ------- compass ------- */
 .source-chip:hover{border-color:var(--cinnabar);color:var(--cinnabar)}
 
 /* ------- callouts ------- */
-.callout{margin:1.15rem 0;padding:.75rem 1.05rem .3rem;border-radius:var(--r-2);
+.callout{margin:1.15rem 0;padding:.8rem 1.1rem .35rem;border-radius:var(--r-2);
   border:1px solid var(--line);border-left-width:4px;background:var(--card);
-  font-size:.96rem}
-.callout .callout-tag{margin:0 0 .2rem;font-family:var(--sans);font-weight:700}
+  font-size:.96rem;box-shadow:0 2px 10px -6px rgba(38,34,27,.16);
+  transition:box-shadow .18s ease}
+.callout .callout-tag{margin:0 0 .24rem;font-family:var(--sans);font-weight:700}
 .callout .callout-tag strong{font-size:.86rem;letter-spacing:.08em}
 .callout .callout-body{margin:.15rem 0 .65rem;color:var(--ink-2)}
 .callout-icon{margin-right:.45rem}
@@ -41,7 +47,7 @@ COMPONENTS_CSS = r"""/* ------- compass ------- */
 .callout-tip .callout-tag{color:var(--jade)}
 .callout-warning{border-left-color:var(--cinnabar);background:linear-gradient(90deg,
   rgba(180,71,47,.10),var(--card) 46%)}
-.callout:hover{box-shadow:0 2px 8px rgba(38,34,27,.06)}
+.callout:hover{box-shadow:0 4px 14px -6px rgba(38,34,27,.22)}
 .callout-warning .callout-tag{color:var(--cinnabar)}
 .callout-info{border-left-color:var(--bronze);background:linear-gradient(90deg,
   rgba(138,107,63,.10),var(--card) 46%)}
@@ -51,7 +57,7 @@ COMPONENTS_CSS = r"""/* ------- compass ------- */
 .callout-concept .callout-tag{color:var(--sky)}
 .callout-note{border-left-color:var(--ink-3)}
 .callout-note .callout-tag{color:var(--ink-2)}
-blockquote{margin:1.15rem 0;padding:.8rem 1.1rem;border-left:3px solid var(--line-2);
+blockquote{margin:1.15rem 0;padding:.85rem 1.15rem;border-left:3px solid var(--bronze-2);
   border-radius:var(--r-2);background:rgba(243,234,216,.5);color:var(--ink-2)}
 blockquote p{margin:0 0 .5em}
 /* A quotation follows its block's alignment, not the body's: justifying a
@@ -59,35 +65,42 @@ blockquote p{margin:0 0 .5em}
    defeated the right-aligned setting the first-quote rule asks for. */
 .chapter-body blockquote p{text-align:inherit}
 blockquote p:last-child{margin-bottom:0}
-.chapter-body > blockquote:first-of-type{border-left:none;border-top:1px solid var(--line);
+.chapter-body > blockquote:first-child:not(.callout){border-left:none;border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);border-radius:0;background:none;
-  padding:.8rem 0;margin:0 auto 1.6rem;text-align:end;font-family:var(--kai);
-  font-size:1.04rem;line-height:2;color:var(--bronze-3)}
+  padding:.95rem 0;margin:0 auto 1.75rem;text-align:end;font-family:var(--kai);
+  font-size:1.05rem;line-height:2;color:var(--bronze-3);letter-spacing:.03em}
 @media (prefers-color-scheme:dark){
-  body:not(.force-light) blockquote{background:rgba(34,34,28,.55)}}
+  body:not(.force-light) blockquote:not(.callout){background:rgba(34,34,28,.55)}
+  body:not(.force-light) .callout{box-shadow:0 4px 16px -8px rgba(0,0,0,.55)}
+  body:not(.force-light) .callout-tip{background:linear-gradient(90deg,rgba(157,191,169,.12),var(--card) 48%)}
+  body:not(.force-light) .callout-warning{background:linear-gradient(90deg,rgba(224,123,95,.14),var(--card) 48%)}
+  body:not(.force-light) .callout-info{background:linear-gradient(90deg,rgba(207,198,180,.10),var(--card) 48%)}
+  body:not(.force-light) .callout-concept{background:linear-gradient(90deg,rgba(143,178,212,.12),var(--card) 48%)}
+}
 
 /* ------- code ------- */
 code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
   overflow-wrap:anywhere;
-  border:1px solid var(--line);border-radius:var(--r-1);padding:.06em .34em;
+  border:1px solid var(--line);border-radius:var(--r-1);padding:.06em .36em;
   color:var(--bronze-3)}
-.codehilite{margin:1.1rem 0 1.25rem;border-radius:var(--r-2);position:relative;
+.codehilite{margin:1.25rem 0 1.4rem;border-radius:var(--r-2);position:relative;
   overflow:hidden;background:var(--code-bg);border:1px solid var(--code-line);
-  box-shadow:0 6px 18px -12px rgba(38,34,27,.55)}
+  box-shadow:0 8px 22px -12px rgba(38,34,27,.52),
+    inset 0 1px 0 rgba(237,230,214,.07)}
 .mermaid-source-wrap{margin:1rem 0 1.25rem;border-radius:var(--r-2);
   overflow-x:auto;background:var(--code-bg);border:1px solid var(--code-line);
   box-shadow:0 2px 10px -4px rgba(0,0,0,.35)}
 .codehilite::after{content:attr(data-lang);position:absolute;top:0;right:0;
   font-family:var(--sans);font-size:.6rem;font-weight:600;letter-spacing:.16em;
-  text-transform:uppercase;line-height:1;padding:.34rem .55rem .3rem;
+  text-transform:uppercase;line-height:1;padding:.34rem .58rem .3rem;
   color:#B9AC8E;background:rgba(200,164,92,.13);
   border-inline-start:1px solid var(--code-line);
   border-bottom:1px solid var(--code-line);border-start-end-radius:0;
   border-start-start-radius:8px}
 .codehilite:not([data-lang])::after{content:none}
-.codehilite pre,.mermaid-source pre{margin:0;padding:1.05rem 1.2rem;
-  color:var(--code-fg);font-family:var(--mono);font-size:.83rem;line-height:1.68;
-  background:transparent;overflow-x:auto;white-space:pre;
+.codehilite pre,.mermaid-source pre{margin:0;padding:1.15rem 1.3rem;
+  color:var(--code-fg);font-family:var(--mono);font-size:.83rem;line-height:1.72;
+  tab-size:4;background:transparent;overflow-x:auto;white-space:pre;
   scrollbar-width:thin;scrollbar-color:rgba(200,164,92,.4) transparent}
 .codehilite pre::-webkit-scrollbar{height:7px}
 .codehilite pre::-webkit-scrollbar-thumb:hover{background:var(--bronze-2)}
@@ -109,10 +122,13 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 .codehilite .err{color:#E07B5F}
 
 /* ------- tables ------- */
-.table-scroll{overflow-x:auto;margin:1.1rem 0;border:1px solid var(--line);
+.table-scroll{overflow-x:auto;margin:1.25rem 0 1.35rem;border:1px solid var(--line);
   border-radius:var(--r-2);background:var(--card);
   scrollbar-width:thin;scrollbar-color:var(--line-2) var(--paper-2);
-  box-shadow:0 1px 5px rgba(38,34,27,.05)}
+  box-shadow:0 3px 12px -6px rgba(38,34,27,.14)}
+@media (prefers-color-scheme:dark){
+  body:not(.force-light) .table-scroll{box-shadow:0 6px 18px -10px rgba(0,0,0,.55)}
+}
 /* a phone paints no bar until the reader drags, so a column sliced in half
    reads as the end of the table: measured on a 390px screen, one appendix sheet
    hid 493px of columns behind a straight cut. Naming the bar makes Chrome and
@@ -132,15 +148,20 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
 @media screen{
   #llm-ch03 .table-scroll[data-cols="4"] td:first-child{min-width:7rem}
   #llm-ch03 .table-scroll[data-cols="4"] td code{white-space:nowrap}}
-table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6}
- tbody tr:nth-child(even){background:rgba(243,234,216,.35)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.6;
+  font-variant-numeric:tabular-nums}
 th{font-family:var(--sans);font-weight:700;color:var(--bronze-3);
-  background:var(--paper-2);text-align:start;padding:.6rem .9rem;
-  border-bottom:2px solid var(--line-2);white-space:nowrap}
-td{padding:.55rem .9rem;border-bottom:1px solid var(--line);vertical-align:top}
-tbody tr:nth-child(2n){background:rgba(243,234,216,.45)}
+  background:var(--paper-2);text-align:start;padding:.65rem .9rem;
+  border-bottom:2px solid var(--bronze-2);white-space:nowrap}
+td{padding:.58rem .9rem;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:nth-child(2n){background:rgba(243,234,216,.42)}
+@media screen{
+  tbody tr:hover{background:rgba(180,71,47,.045)}
+}
 @media (prefers-color-scheme:dark){
-  body:not(.force-light) tbody tr:nth-child(2n){background:rgba(34,34,28,.6)}}
+  body:not(.force-light) tbody tr:nth-child(2n){background:rgba(34,34,28,.6)}
+  body:not(.force-light) tbody tr:hover{background:rgba(224,123,95,.07)}}
 tr{break-inside:avoid}
 table td code{font-size:.8rem}
 
@@ -169,54 +190,29 @@ figure.diagram{margin:1.5rem 0;text-align:center;break-inside:avoid}
    as one series, but not its sideways scroll: a drawing is looked at, not
    panned, and its lines already carry the eye across the sheet */
 figure.illu{margin:1.6rem 0;text-align:center;break-inside:avoid}
-.illu-frame{position:relative;background:
-    linear-gradient(180deg,var(--card),var(--paper-2)),
-    radial-gradient(100% 60% at 50% 0%,rgba(200,164,92,.07),transparent);
-  border:1px solid var(--line-2);border-radius:var(--r-2);padding:1.3rem 1.2rem;
-  box-shadow:0 6px 22px -12px rgba(38,34,27,.30),
-    inset 0 0 0 1px rgba(255,255,255,.55)}
+/* Illustrated plates stay on the paper surface. Depth comes from the drawing's
+   own hierarchy, not stacked gradients, shadows, registration ticks or hover
+   lift; the same quiet frame works in screen, dark mode and print. */
+.illu-frame{position:relative;background:var(--card);
+  border:1px solid var(--line-2);border-radius:var(--r-2);padding:1.15rem 1rem}
 .illu-frame svg{display:block;margin:0 auto;max-width:100%;height:auto}
 .illu-frame:has(svg.llm-explainer){max-width:520px;margin-inline:auto}
-/* registration ticks: the hand-drawn plates borrow the diagram frame's two
-   L-marks so an illustrated figure reads as the same series of pasted plates,
-   not a picture dropped into a box. Skipped for photo plates, whose full-bleed
-   image already has its own frame language. */
-figure.illu:not(.illu-photo) .illu-frame::before,
-figure.illu:not(.illu-photo) .illu-frame::after{content:"";position:absolute;
-  width:9px;height:9px;border:1px solid var(--bronze-2);opacity:.6;
-  pointer-events:none}
-figure.illu:not(.illu-photo) .illu-frame::before{left:6px;top:6px;
-  border-right:none;border-bottom:none}
-figure.illu:not(.illu-photo) .illu-frame::after{right:6px;bottom:6px;
-  border-left:none;border-top:none}
-@media screen and (prefers-reduced-motion: no-preference){
-  figure.illu:not(.illu-photo) .illu-frame{transition:box-shadow .3s ease}
-  figure.illu:not(.illu-photo):hover .illu-frame{
-    box-shadow:0 14px 34px -16px rgba(38,34,27,.42),
-      inset 0 0 0 1px rgba(255,255,255,.7)}
-}
-.illu-photo .illu-frame{padding:0;overflow:hidden;
-  box-shadow:0 10px 26px -16px rgba(38,34,27,.34),
-    inset 0 0 0 1px rgba(38,34,27,.07),
-    inset 0 1px 0 rgba(255,255,255,.7)}
+.illu-photo .illu-frame{padding:0;overflow:hidden}
 .illu-photo img{display:block;width:100%;height:auto}
-@media screen{
-  figure.illu-photo .illu-frame{
-    transition:box-shadow .3s ease,transform .3s ease}
-  figure.illu-photo:hover .illu-frame{transform:translateY(-2px);
-    box-shadow:0 18px 38px -18px rgba(38,34,27,.45),
-      inset 0 0 0 1px rgba(38,34,27,.11),
-      inset 0 1px 0 rgba(255,255,255,.85)}
-}
-.illu-photo .illu-frame::after{content:"";position:absolute;inset:-20% -40%;
-  background:linear-gradient(112deg,transparent 42%,
-    rgba(255,255,255,.42) 50%,transparent 58%);
-  transform:translateX(-60%);opacity:0;pointer-events:none}
 @media (prefers-color-scheme:dark){
-  body:not(.force-light) .illu-photo .illu-frame{
-    box-shadow:0 14px 34px -18px rgba(0,0,0,.8),
-      inset 0 0 0 1px rgba(236,226,204,.14)}
+  body:not(.force-light) .diagram-frame{
+    box-shadow:0 10px 28px -14px rgba(0,0,0,.7),
+      inset 0 0 0 1px rgba(67,57,43,.18)}
 }
+/* semantic editorial ink classes inside inline SVGs: inherit CSS variables for
+   screen light/dark and deeper print inks while keeping currentColor fallbacks */
+.illu-frame svg .il-cinnabar,.cover-art svg .il-cinnabar,.pd-art svg .il-cinnabar,.ch-emblem svg .il-cinnabar,.kp-art svg .il-cinnabar{color:var(--cinnabar)}
+.illu-frame svg .il-jade,.cover-art svg .il-jade,.pd-art svg .il-jade,.ch-emblem svg .il-jade,.kp-art svg .il-jade{color:var(--jade)}
+.illu-frame svg .il-sky,.cover-art svg .il-sky,.pd-art svg .il-sky,.ch-emblem svg .il-sky,.kp-art svg .il-sky{color:var(--sky)}
+.illu-frame svg .il-bronze,.cover-art svg .il-bronze,.pd-art svg .il-bronze,.ch-emblem svg .il-bronze,.kp-art svg .il-bronze{color:var(--bronze)}
+.illu-frame svg .il-bronze-2,.cover-art svg .il-bronze-2,.pd-art svg .il-bronze-2,.ch-emblem svg .il-bronze-2,.kp-art svg .il-bronze-2{color:var(--bronze-2)}
+.illu-frame svg .il-bronze-3,.cover-art svg .il-bronze-3,.pd-art svg .il-bronze-3,.ch-emblem svg .il-bronze-3,.kp-art svg .il-bronze-3{color:var(--bronze-3)}
+.illu-frame svg .il-muted,.cover-art svg .il-muted,.pd-art svg .il-muted,.ch-emblem svg .il-muted,.kp-art svg .il-muted{color:var(--ink-3)}
 /* the frame numbers of a sequential plate: small, in the margin, so the
    drawing stays the thing you look at. Below 480 px the plate itself is
    drawn at 0.82x, so the number needs 13 px to land above 10 px; wider
@@ -229,11 +225,13 @@ figure.illu:not(.illu-photo) .illu-frame::after{right:6px;bottom:6px;
 figcaption{margin:.7rem auto 0;max-width:var(--measure);font-family:var(--sans);
   font-size:.83rem;color:var(--ink-2);line-height:1.7;
   display:flex;gap:.7rem;justify-content:center;align-items:baseline}
-figcaption::before,.figcaption::after{content:"";flex:0 0 2.2rem;height:1px;
+figcaption::before,figcaption::after{content:"";flex:0 0 2.2rem;height:1px;
   background:linear-gradient(90deg,transparent,var(--line-2));
   transform:translateY(-.35em)}
 figcaption::after{background:linear-gradient(90deg,var(--line-2),transparent)}
-.fig-no{color:var(--bronze);font-weight:700;letter-spacing:.06em;white-space:nowrap}
+.fig-no{font-family:var(--sans);font-size:.74rem;color:var(--cinnabar);font-weight:700;
+  letter-spacing:.06em;white-space:nowrap;background:var(--paper-2);
+  border:1px solid var(--line-2);border-radius:var(--r-1);padding:.04rem .45rem}
 .fig-cap{color:var(--ink-3)}
 .fig-hint{font-size:.7rem;line-height:1.5;color:var(--ink-3);white-space:nowrap;
   border:1px solid var(--line-2);border-radius:var(--r-1);padding:.02rem .5rem;
@@ -252,21 +250,25 @@ img{max-width:100%;height:auto}
 }
 
 /* ------- chapter notes ------- */
-.chapter-notes{margin:1.9rem 0 0;padding:.85rem 1.05rem .9rem;border:1px solid var(--line);
-  border-radius:var(--r-2);background:var(--card)}
+.chapter-notes{margin:1.95rem 0 0;padding:.9rem 1.1rem .95rem;border:1px solid var(--line);
+  border-top:2px solid var(--bronze-2);border-radius:var(--r-2);background:var(--card);
+  box-shadow:0 2px 8px -5px rgba(38,34,27,.12)}
+@media (prefers-color-scheme:dark){
+  body:not(.force-light) .chapter-notes{box-shadow:0 4px 14px -8px rgba(0,0,0,.5)}
+}
 .notes-title{font-family:var(--sans);font-size:.75rem;letter-spacing:.25em;
   color:var(--bronze);margin:0 0 .5rem}
 .notes-list{list-style:none;margin:0;padding:0;counter-reset:fn;
   font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
 .notes-list li{display:flex;gap:.6rem;align-items:baseline;padding:.32rem 0;
-  border-bottom:1px dotted var(--line);word-break:break-all;flex-wrap:wrap}
+  border-bottom:1px dotted var(--line);word-break:normal;flex-wrap:wrap}
 .notes-list li:last-child{border-bottom:none}
 .notes-list code,.notes-list a{min-width:0;max-width:100%;overflow-wrap:anywhere}
 .notes-list li::before{counter-increment:fn;content:counter(fn);flex:0 0 1.3rem;
   text-align:right;font-family:var(--sans);font-weight:700;color:var(--bronze)}
 .notes-list a.fn-url{color:inherit;text-decoration:none}
 .notes-list a.fn-url:hover{color:var(--cinnabar)}
-.notes-list .backref{text-decoration:none;color:var(--bronze)}
+.notes-list .backref{flex:0 0 auto;white-space:nowrap;text-decoration:none;color:var(--bronze)}
 sup.fnum{font-family:var(--sans);font-size:.68em}
 sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 
@@ -282,11 +284,13 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
   letter-spacing:0}
 .reg-list{list-style:none;margin:0;padding:0}
 /* a row is a bordered card: cut by a page break it reads as two broken boxes */
-.reg-list li{padding:.85rem 1rem .95rem;margin-bottom:.55rem;
+.reg-list li{padding:.9rem 1.05rem 1rem;margin-bottom:.65rem;
   border:1px solid var(--line);border-inline-start:3px solid var(--bronze-2);
   border-radius:var(--r-2);background:var(--card);
-  break-inside:avoid;transition:border-inline-start-color .15s ease}
-.reg-list li:hover{border-inline-start-color:var(--cinnabar)}
+  box-shadow:0 2px 8px -6px rgba(38,34,27,.14);
+  break-inside:avoid;transition:border-inline-start-color .16s ease,box-shadow .16s ease}
+.reg-list li:hover{border-inline-start-color:var(--cinnabar);
+  box-shadow:0 6px 16px -10px rgba(38,34,27,.24)}
 .reg-head{display:flex;flex-wrap:wrap;gap:.55rem;align-items:baseline}
 .reg-no{font-family:var(--mono);font-size:.72rem;color:var(--bronze-3);
   letter-spacing:.04em}
@@ -361,15 +365,15 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 /* the old postman at the foot of each unit: a narrow box floated to the far
    edge so the line reads as marginalia, not as a paragraph the manuscript
    grew; on paper the same box sits inline above the ruts it comments on */
-.keeper{display:flex;align-items:flex-end;gap:.65rem;margin:1.4rem 0 .15rem;
-  max-width:min(38ch,100%);margin-inline-start:auto}
+.keeper{display:flex;align-items:flex-end;gap:.75rem;margin:1.55rem 0 .2rem;
+  max-width:min(40ch,100%);margin-inline-start:auto}
 .kp-art{flex:none;width:2.4rem;line-height:0;color:var(--ink-3)}
 .kp-art svg{width:100%;height:auto;transition:transform .18s ease}
 .keeper:hover .kp-art svg,.keeper:focus-within .kp-art svg{
   transform:translateY(-3px) rotate(-4deg)}
-.keeper-note{margin:0;font-family:var(--kai);font-size:.92rem;line-height:1.75;
+.keeper-note{margin:0;font-family:var(--kai);font-size:.94rem;line-height:1.8;
   color:var(--ink-2);border-inline-start:2px solid var(--bronze-2);
-  padding-inline-start:.6rem}
+  padding-inline-start:.7rem}
 .kn-list{list-style:none;margin:.35rem 0 0;padding:0}
 .kn-row{display:grid;grid-template-columns:7.2rem 1fr;column-gap:.9rem;
   padding:.45rem 0 .5rem;border-bottom:1px dotted var(--line-2);
@@ -387,18 +391,22 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
 }
 
 /* ------- footer ------- */
-.colophon{margin:2.8rem 0 1.3rem;text-align:center;color:var(--ink-3);
-  font-family:var(--sans);font-size:.78rem;letter-spacing:.1em}
-.colophon .wheel{width:34px;height:34px;color:var(--bronze-2);opacity:.7;
-  display:block;margin:0 auto .8rem}
+.colophon{margin:3.2rem 0 1.6rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  text-align:center;color:var(--ink-3);
+  font-family:var(--sans);font-size:.78rem;letter-spacing:.12em}
+.colophon .wheel{width:34px;height:34px;color:var(--bronze-2);opacity:.72;
+  display:block;margin:0 auto .85rem}
 
 /* ------- plain-language layer (通俗层) ------- */
 /* the lead band is the one device that survives print unchanged, so it is
    deliberately the loudest block on a chapter opener */
-.lead-band{position:relative;margin:0 0 1.1rem;padding:.9rem 1.2rem 1rem;
+.lead-band{position:relative;margin:0 0 1.15rem;padding:.95rem 1.25rem 1.05rem;
   border:1px solid var(--line);border-radius:var(--r-2);overflow:hidden;
   background:linear-gradient(135deg,var(--card),var(--paper-2) 82%);
-  box-shadow:0 1px 4px rgba(38,34,27,.05)}
+  box-shadow:0 3px 12px -6px rgba(38,34,27,.16)}
+@media (prefers-color-scheme:dark){
+  body:not(.force-light) .lead-band{box-shadow:0 6px 18px -10px rgba(0,0,0,.6)}
+}
 .lead-band::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;
   background:linear-gradient(180deg,var(--cinnabar),var(--bronze-2))}
 /* a faint wheel in the corner: the band is the loudest block on a chapter
@@ -425,17 +433,19 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
   .lb-plain{font-size:1.02rem}}
 
 /* dashed term + CSS-only popover: no JS, and focus works for tap and keyboard */
-.gloss{position:relative;border-bottom:1px dashed var(--bronze-2);cursor:help}
+.gloss{position:relative;border-bottom:1px dashed var(--bronze-2);cursor:help;
+  padding-bottom:.04em;transition:color .14s ease,border-bottom-color .14s ease,background-color .14s ease}
 .gloss:hover,.gloss:focus,.gloss:focus-within{border-bottom-color:var(--cinnabar);
-  color:var(--cinnabar);outline:none}
-.gloss-pop{position:absolute;left:50%;bottom:calc(100% + .55rem);
+  color:var(--cinnabar);background:rgba(180,71,47,.06);border-radius:var(--r-1);outline:none}
+.gloss-pop{position:absolute;left:50%;bottom:calc(100% + .6rem);
   transform:translate(-50%,.35rem);z-index:40;width:max-content;
-  max-width:min(21rem,80vw);padding:.6rem .8rem .65rem;text-align:start;
-  font-family:var(--sans);font-size:.8rem;line-height:1.65;font-weight:400;
+  max-width:min(21rem,80vw);padding:.7rem .9rem .75rem;text-align:start;
+  font-family:var(--sans);font-size:.8rem;line-height:1.68;font-weight:400;
   color:var(--ink);background:var(--card);border:1px solid var(--line-2);
-  border-radius:var(--r-2);box-shadow:0 12px 28px -16px rgba(38,34,27,.6);
+  border-top:2.5px solid var(--cinnabar);
+  border-radius:var(--r-2);box-shadow:0 14px 32px -14px rgba(38,34,27,.45);
   opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .12s ease,transform .12s ease}
+  transition:opacity .14s ease,transform .14s ease}
 .gloss:hover .gloss-pop,.gloss:focus .gloss-pop,.gloss:focus-within .gloss-pop{
   opacity:1;visibility:visible;transform:translate(-50%,0)}
 .gloss-pop::after{content:"";position:absolute;left:50%;top:100%;
@@ -510,7 +520,7 @@ sup.fnum a{text-decoration:none;color:var(--cinnabar)}
    without a float, which would fight page breaks in print */
 article h2{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.6rem}
 .sec-tier,.tier-chip{flex:0 0 auto;align-self:center;margin-inline-start:auto;
-  font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.14em;
+  font-family:var(--sans);font-size:.64rem;font-weight:700;letter-spacing:.14em;
   color:var(--ink-3);border:1px solid var(--line-2);border-radius:var(--r-1);
   padding:.08rem .5rem;white-space:nowrap}
 .t-start{color:var(--jade);border-color:var(--jade)}

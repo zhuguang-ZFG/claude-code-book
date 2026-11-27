@@ -109,6 +109,18 @@ class SlotCaptions(unittest.TestCase):
         name, cap = render.drawing_slots(unit)[ills[0].uid]
         self.assertEqual((name, cap), ("bench", "3.2 工具注册与动态发现"))
 
+    def test_a_plate_prefers_a_descriptive_h3_above_it(self):
+        text = ("## 3.2 工具注册与动态发现\n\n"
+                "### 请求、调用与结果分别留下什么\n\n"
+                "```ill\nbench\n```\n")
+        body, ills = slot_texts(text)
+        unit = Unit(id="ch03", kind="chapter", lang="zh", no="第 3 章",
+                    title="工具系统", md=body, ills=ills)
+        name, cap = render.drawing_slots(unit)[ills[0].uid]
+        self.assertEqual((name, cap),
+                         ("bench", "请求、调用与结果分别留下什么"))
+
+
     def test_a_slot_under_no_heading_at_all_falls_back(self):
         body, ills = slot_texts("```ill\nbench\n```\n")
         unit = Unit(id="ch03", kind="chapter", lang="zh", no="第 3 章",

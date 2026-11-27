@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Program files, Hermes home, and the project directory have separate ownership and lifetimes">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <path d="M66 82H246V242H66Z"/>
+  <path d="M66 82L90 58H246" opacity="0.55"/>
+  <circle cx="360" cy="162" r="62"/>
+  <path d="M334 162H386M360 136V188" opacity="0.5"/>
+  <path d="M474 82H654V242H474Z"/>
+  <path d="M474 82L498 58H654" opacity="0.55"/>
+  <text x="92" y="150" font-size="28" fill="currentColor" stroke="none">PROGRAM</text>
+  <text x="510" y="150" font-size="28" fill="currentColor" stroke="none">PROJECT</text>
+  <text x="318" y="278" font-size="28" fill="currentColor" stroke="none">HERMES HOME</text>
+  <path d="M92 182H210M510 182H628" opacity="0.4"/>
+  <path d="M246 160H298M422 160H474M360 224V252"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="A socket handshake establishes identity but every RPC still passes its own scope check">
+  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
+  <path d="M84 180H204M516 180H636"/>
+  <circle cx="136" cy="180" r="52"/>
+  <path d="M116 180H156M136 160V200" opacity="0.5"/>
+  <circle cx="584" cy="180" r="52"/>
+  <path d="M564 180H604M584 160V200" opacity="0.5"/>
+  <rect x="238" y="112" width="244" height="136" rx="8"/>
+  <text x="266" y="156" font-size="28" fill="currentColor" stroke="none">handshake</text>
+  <path d="M266 178H454" opacity="0.35"/>
+  <text x="272" y="216" font-size="28" fill="currentColor" stroke="none">RPC scope check</text>
+  <path d="M360 248V300M320 300H400"/>
+  <text x="274" y="338" font-size="28" fill="currentColor" stroke="none">connected != authorized</text>
+</svg>
