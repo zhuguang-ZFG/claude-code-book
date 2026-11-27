@@ -107,7 +107,7 @@
 ### [MINOR-2] 第 4.5 节 MoE 叙述“先 KeepTopK 再 softmax 加噪声路由”语序易误解执行顺序
 
 - **证据**：`round1/source/ch04.md:142` 写为：
-  > “`[稀疏门控 MoE](...)` 早期论文按先 `KeepTopK` 再 `softmax` 加噪声路由，而 `[Mixtral 实现](...)` 先对全部本地专家做 `softmax` 再选 `topk` 并重新归一化权重”
+  > “`[稀疏门控 MoE](https://arxiv.org/abs/1701.06538)` 早期论文按先 `KeepTopK` 再 `softmax` 加噪声路由，而 `[Mixtral 实现](https://github.com/huggingface/transformers/blob/47b0e478f324b54f177ea7998a0791870fdd0324/src/transformers/models/mixtral/modeling_mixtral.py)` 先对全部本地专家做 `softmax` 再选 `topk` 并重新归一化权重”
   对比固定原始论文 `sources/moe-1701.06538.txt` 公式 (3)–(5)：
   - Eq. (4)：`H(x)_i = (x · W_g)_i + StandardNormal() · Softplus((x · W_noise)_i)`（**先加可调高斯噪声**）；
   - Eq. (5) & (3)：`G(x) = Softmax(KeepTopK(H(x), k))`（**再做 `KeepTopK`，最后 `Softmax`**）。
