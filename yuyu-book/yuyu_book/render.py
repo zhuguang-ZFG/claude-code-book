@@ -105,6 +105,7 @@ def wrap_tables(doc: str) -> str:
 # ------------------------------------------------------------- name breaks --
 
 _LONG_RUN = re.compile(r"\S{12,}")
+_ASCII_SPAN = re.compile(r"[A-Za-z0-9_/.~:-]{12,}")
 _BREAK_AFTER = re.compile(r"[_/]+")
 _CAMEL = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
 _NAME_BREAK_SKIP = {"svg", "style", "script", "textarea", "pre",
@@ -113,8 +114,11 @@ _NAME_BREAK_SKIP = {"svg", "style", "script", "textarea", "pre",
 
 def _break_offsets(run: str) -> list[int]:
     """Character indices inside `run` where a line may break without damage."""
-    cuts = {m.end() for m in _BREAK_AFTER.finditer(run)}
-    cuts |= {m.start() for m in _CAMEL.finditer(run)}
+    cuts: set[int] = set()
+    for span in _ASCII_SPAN.finditer(run):
+        start, text = span.start(), span.group(0)
+        cuts |= {start + m.end() for m in _BREAK_AFTER.finditer(text)}
+        cuts |= {start + m.start() for m in _CAMEL.finditer(text)}
     return sorted(c for c in cuts if 0 < c < len(run))
 
 

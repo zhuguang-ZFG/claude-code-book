@@ -36,7 +36,7 @@ LABELS = {
         "title": "样章 · 第 2 章 对话循环 —— 御舆",
         "kicker": "御舆 · 试读样章",
         "hint": "下文即完整版第 2 章原文，图版、表格与引文与正式版一致。",
-        "recap": "三句话带走",
+        "recap": "本章核对",
         "go": "在完整版继续读 →",
         "meta": ("完整版 v@@BASELINE@@ · "
                  "<a href=\"portal.html\">站点导航</a> · "
@@ -72,6 +72,8 @@ body.sample{--measure:44rem}
   color:var(--cinnabar);margin:0 0 .45rem}
 .sp-mark{width:62px;height:62px;color:var(--bronze);margin:0 auto .2rem}
 .sp-mark svg{width:100%;height:100%}
+.sp-mark svg .il-cinnabar{color:var(--cinnabar)}.sp-mark svg .il-jade{color:var(--jade)}.sp-mark svg .il-sky{color:var(--sky)}
+.sp-mark svg .il-bronze{color:var(--bronze)}.sp-mark svg .il-bronze-2{color:var(--bronze-2)}.sp-mark svg .il-bronze-3{color:var(--bronze-3)}.sp-mark svg .il-muted{color:var(--ink-3)}
 .sp-hero .brush{width:190px;height:10px;color:var(--cinnabar);
   display:block;margin:.35rem auto .85rem}
 .sp-hook{max-width:34rem;margin:0 auto;font-size:1.02rem;line-height:1.85;
@@ -86,17 +88,21 @@ body.sample{--measure:44rem}
 .sample-main{max-width:64rem;margin:0 auto;padding:0 1.2rem 1rem}
 .sample-main article.chapter{padding-top:1.2rem;break-before:auto}
 .sp-recap{max-width:var(--measure);margin:2.2rem auto 3rem;
-  padding:1.4rem 1.6rem 1.2rem;background:var(--paper-2);
-  border:1.5px solid var(--line-2);
+  padding:1.45rem 1.7rem 1.3rem;background:var(--paper-2);
+  border:1.5px solid var(--line-2);border-top:3px solid var(--cinnabar);
   border-radius:@@RADIUS_STATION@@;
-  box-shadow:2px 3px 0 rgba(38,34,27,.08)}
-.sp-recap h2{font-size:1.05rem;margin:0 0 .44rem;color:var(--ink)}
-.sp-recap ol{margin:.3rem 0 1rem;padding-left:1.35rem}
-.sp-recap li{margin:.34rem 0;font-size:.95rem;line-height:1.75}
-.sp-go{display:inline-block;font-size:.88rem;color:var(--cinnabar);
+  box-shadow:0 8px 24px -14px rgba(38,34,27,.28)}
+.sp-recap h2{font-size:1.05rem;margin:0 0 .5rem;color:var(--ink);
+  letter-spacing:.04em}
+.sp-recap ol{margin:.35rem 0 1.05rem;padding-left:1.35rem}
+.sp-recap li{margin:.38rem 0;font-size:.95rem;line-height:1.78}
+.sp-go{display:inline-block;font-size:.88rem;font-weight:600;color:var(--cinnabar);
   text-decoration:none;border-bottom:1.5px solid var(--cinnabar);
-  padding-bottom:1px}
-.sp-go:hover{color:var(--cinnabar-deep)}
+  padding-bottom:2px;transition:color .14s ease,border-color .14s ease}
+.sp-go:hover{color:var(--cinnabar-deep);border-color:var(--cinnabar-deep)}
+@media (prefers-color-scheme:dark){
+  body:not(.force-light) .sp-recap{box-shadow:0 10px 28px -14px rgba(38,34,27,.45)}
+}
 .sp-foot{max-width:var(--furniture,56rem);margin:0 auto;
   padding:1.2rem 1.5rem 3rem;border-top:1px dashed var(--line-2);
   color:var(--ink-3);font-size:.8rem;text-align:center}

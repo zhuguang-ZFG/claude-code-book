@@ -8,17 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import build_site_portal  # noqa: E402
 
-REDUCE = "@media screen and (prefers-reduced-motion: reduce)"
 
-
-class PortalReducedMotion(unittest.TestCase):
-    def test_card_entrance_animation_stops_for_reduced_motion(self):
+class PortalPresentation(unittest.TestCase):
+    def test_portal_has_no_nonessential_card_motion(self):
         page = build_site_portal.PAGE
-        self.assertIn("animation:card-in", page)
-        self.assertIn(REDUCE, page)
-        guard = page[page.index(REDUCE):page.index("</style>")]
-        self.assertIn("a.card{animation:none", guard)
-        self.assertIn("a.card:hover{transform:none}", guard)
+        self.assertNotIn("@keyframes", page)
+        self.assertNotIn("animation:", page)
+        self.assertNotRegex(page, r"transition:[^;}]*transform")
 
     def test_the_committed_portal_matches_its_generator(self):
         committed = (ROOT / "docs" / "portal.html").read_text(encoding="utf-8")
@@ -40,6 +36,24 @@ class PortalReducedMotion(unittest.TestCase):
         self.assertIn('href="omp/yuyu-omp-zh.html"', live)
         self.assertNotIn("@@", live)
         self.assertNotIn('href="omp/yuyu-omp-zh.html"', build_site_portal.PAGE)
+
+
+class PortalInformationArchitecture(unittest.TestCase):
+    def test_front_door_is_a_quiet_document_index(self):
+        page = build_site_portal.PAGE
+        self.assertIn('<a class="skip-link" href="#content">跳到主要内容</a>',
+                      page)
+        self.assertIn('<main id="content" tabindex="-1">', page)
+        self.assertIn('<nav class="cards" aria-label="阅读入口">', page)
+        self.assertIn("</nav>", page)
+        self.assertLess(page.index('href="beginner-reader.html"'),
+                        page.index('href="yuyu-agent-harness-zh.html"'))
+        self.assertLess(page.index('href="yuyu-agent-harness-zh.html"'),
+                        page.index('href="sample-chapter.html"'))
+        self.assertNotIn("radial-gradient", page)
+        self.assertNotIn("box-shadow", page)
+        self.assertNotIn('src="cover.png"', page)
+        self.assertNotIn('class="ico"', page)
 
 
 if __name__ == "__main__":

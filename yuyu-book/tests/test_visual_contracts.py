@@ -166,5 +166,282 @@ class CollectedTocPrintContracts(unittest.TestCase):
                 browser.close()
 
 
+class CollectedNavigationContracts(unittest.TestCase):
+    def test_deep_anchor_clears_the_wrapped_sticky_collection_bar(self):
+        fixture = (
+            '<html><head><style>' + CSS + '</style></head>'
+            '<body class="lang-zh collected"><main class="sheet">'
+            '<nav class="collection-jumps no-print" aria-label="合集导航">'
+            '<a href="#cover">Agent Harness 十二卷合订本</a>'
+            '<a href="#collection-guide">合集导读</a>'
+            '<a href="#toc">目录</a></nav>'
+            '<article class="chapter"><div class="chapter-body">'
+            '<h2 id="deep-link">7.6 会话从列表里消失后，怎样找回再分叉</h2>'
+            '</div></article></main></body></html>'
+        )
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                for width in (320, 390, 520):
+                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page.set_content(fixture)
+                    metrics = page.evaluate("""() => {
+                        const bar = document.querySelector('.collection-jumps');
+                        const target = document.getElementById('deep-link');
+                        return {
+                            barHeight: bar.getBoundingClientRect().height,
+                            scrollMargin: parseFloat(getComputedStyle(target).scrollMarginTop),
+                        };
+                    }""")
+                    page.close()
+                    self.assertGreaterEqual(
+                        metrics["scrollMargin"], metrics["barHeight"],
+                        f"{width}px: anchor offset {metrics['scrollMargin']} "
+                        f"is smaller than sticky bar {metrics['barHeight']}")
+            finally:
+                browser.close()
+
+
+class AestheticContrastContracts(unittest.TestCase):
+    """Guard computed-style invariants for callouts, epigraphs, and code plates
+    across light/dark screen themes, print, and agent engineering volumes."""
+
+    def test_section_tier_labels_keep_ten_pixel_minimum_on_phone(self):
+        fixture = (
+            '<html><head><style>' + CSS + '</style></head>'
+            '<body class="lang-zh"><main class="sheet">'
+            '<article class="chapter"><div class="chapter-body">'
+            '<h2>章节标题<span class="sec-tier t-start">起步</span></h2>'
+            '</div></article><div class="tier-legend">'
+            '<span class="tier-chip t-core">主干</span>'
+            '</div></main></body></html>'
+        )
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page(viewport={"width": 390, "height": 844})
+                page.set_content(fixture)
+                sizes = page.evaluate("""() => {
+                    return [...document.querySelectorAll('.sec-tier,.tier-chip')]
+                        .map(e => parseFloat(getComputedStyle(e).fontSize));
+                }""")
+                self.assertEqual(len(sizes), 2)
+                for size in sizes:
+                    self.assertGreaterEqual(size, 10.0)
+            finally:
+                browser.close()
+
+    @staticmethod
+    def _rgb_to_lum(rgb: str) -> float:
+        nums = [int(x) / 255.0 for x in re.findall(r"\d+", rgb)[:3]]
+        def chan(c: float) -> float:
+            return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+        r, g, b = (chan(c) for c in nums)
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    def _contrast(self, fg: str, bg: str) -> float:
+        a, b = sorted((self._rgb_to_lum(fg), self._rgb_to_lum(bg)), reverse=True)
+        return (a + 0.05) / (b + 0.05)
+
+    def test_callouts_keep_semantic_border_and_epigraph_keeps_borderless_left(self):
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page()
+                page.set_content(
+                    '<html><head><style>' + CSS + '</style></head>'
+                    '<body class="lang-zh"><main class="sheet"><article class="chapter">'
+                    '<div class="chapter-body">'
+                    '<blockquote id="epi"><p>开篇题辞</p></blockquote>'
+                    '<blockquote id="tip" class="callout callout-tip"><p class="callout-tag"><strong>最佳实践：</strong></p><p class="callout-body">内容</p></blockquote>'
+                    '<blockquote id="warn" class="callout callout-warning"><p class="callout-tag"><strong>注意：</strong></p><p class="callout-body">内容</p></blockquote>'
+                    '<blockquote id="concept" class="callout callout-concept"><p class="callout-tag"><strong>设计洞察：</strong></p><p class="callout-body">内容</p></blockquote>'
+                    '</div></article></main></body></html>')
+                got = page.evaluate("""() => {
+                    const pick = id => {
+                        const s = getComputedStyle(document.getElementById(id));
+                        return {bLW: s.borderLeftWidth, bLC: s.borderLeftColor, bT: s.borderTopStyle};
+                    };
+                    return {epi: pick('epi'), tip: pick('tip'), warn: pick('warn'), concept: pick('concept')};
+                }""")
+                self.assertEqual(got["epi"]["bLW"], "0px")
+                self.assertEqual(got["epi"]["bT"], "solid")
+                self.assertEqual(got["tip"]["bLW"], "4px")
+                self.assertEqual(got["tip"]["bLC"], "rgb(78, 110, 93)")
+                self.assertEqual(got["warn"]["bLC"], "rgb(180, 71, 47)")
+                self.assertEqual(got["concept"]["bLC"], "rgb(76, 112, 147)")
+            finally:
+                browser.close()
+
+    def test_agent_book_and_print_code_plates_clear_aa_contrast(self):
+        fixture = (
+            '<html><head><style>' + CSS + '</style></head>'
+            '<body class="lang-zh __BODY__"><main class="sheet"><article class="chapter">'
+            '<div class="chapter-body"><div class="codehilite" data-lang="py"><pre>'
+            '<span class="k">def</span> <span class="nf">f</span>'
+            '<span class="p">(</span><span class="n">x</span><span class="p">):</span> '
+            '<span class="s2">"hi"</span> <span class="o">+</span> '
+            '<span class="mi">1</span> <span class="c1"># c</span>'
+            '</pre></div></div></article></main></body></html>'
+        )
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                for body_cls, media, scheme in (
+                    ("agent-book agent-deepseek", "screen", "light"),
+                    ("agent-book agent-deepseek", "screen", "dark"),
+                    ("", "print", "light"),
+                ):
+                    page = browser.new_page()
+                    page.emulate_media(media=media, color_scheme=scheme)
+                    page.set_content(fixture.replace("__BODY__", body_cls))
+                    colors = page.evaluate("""() => {
+                        const bg = getComputedStyle(document.querySelector('.codehilite')).backgroundColor;
+                        const pre = getComputedStyle(document.querySelector('.codehilite pre')).color;
+                        const spans = [...document.querySelectorAll('.codehilite pre span')].map(
+                            s => [s.className, getComputedStyle(s).color]);
+                        return {bg, pre, spans};
+                    }""")
+                    page.close()
+                    self.assertGreaterEqual(
+                        self._contrast(colors["pre"], colors["bg"]), 4.5,
+                        f"{body_cls} {media} {scheme} pre fg={colors['pre']} bg={colors['bg']}")
+                    for cls, fg in colors["spans"]:
+                        ratio = self._contrast(fg, colors["bg"])
+                        self.assertGreaterEqual(
+                            ratio, 4.5,
+                            f"{body_cls} {media} {scheme} .{cls} fg={fg} bg={colors['bg']} ratio={ratio:.2f}")
+            finally:
+                browser.close()
+
+    def test_structural_lists_do_not_inherit_prose_diamond_bullets_and_cover_seal_clears_kicker(self):
+        fixture = (
+            '<html><head><style>' + CSS + '</style></head>'
+            '<body class="lang-zh"><main class="sheet">'
+            '<section class="front-page cover" id="cover"><div class="cover-inner">'
+            '<span class="cover-seal" aria-hidden="true">御舆</span>'
+            '<p class="cover-kicker">AGENT HARNESS · 深度架构解析</p>'
+            '<h1 class="book-title"><span class="bt-main">御舆</span></h1>'
+            '</div></section>'
+            '<section class="front-page revisions" id="revisions"><h1 class="page-title">修订</h1>'
+            '<ul id="rev-ul"><li id="rev-li">条目</li></ul></section>'
+            '<section class="front-page"><ul class="route-parts"><li id="rp-li">第一部分</li></ul>'
+            '<ul class="reg-list"><li id="reg-li">来源</li></ul>'
+            '<ul class="idx-list"><li id="idx-li">索引</li></ul></section>'
+            '<article class="chapter"><div class="chapter-body">'
+            '<ul><li id="prose-li">正文要点</li></ul>'
+            '<aside class="new-terms"><ul class="nt-list"><li id="nt-li" class="nt-row">新词</li></ul></aside>'
+            '</div></article></main></body></html>'
+        )
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                for vp in ({"width": 1440, "height": 900}, {"width": 390, "height": 844}):
+                    page = browser.new_page(viewport=vp)
+                    page.set_content(fixture)
+                    res = page.evaluate("""() => {
+                        const bef = id => getComputedStyle(document.getElementById(id), '::before').content;
+                        const sr = document.querySelector('.cover-seal').getBoundingClientRect();
+                        const kr = document.querySelector('.cover-kicker').getBoundingClientRect();
+                        const ov = Math.max(0, Math.min(sr.right, kr.right) - Math.max(sr.left, kr.left)) *
+                                   Math.max(0, Math.min(sr.bottom, kr.bottom) - Math.max(sr.top, kr.top));
+                        return {
+                            prose: bef('prose-li'),
+                            rev: bef('rev-li'),
+                            rp: bef('rp-li'),
+                            reg: bef('reg-li'),
+                            idx: bef('idx-li'),
+                            nt: bef('nt-li'),
+                            sealOverlap: Math.round(ov),
+                        };
+                    }""")
+                    page.close()
+                    self.assertEqual(res["prose"], '"◆"')
+                    self.assertEqual(res["rev"], '"◆"')
+                    for key in ("rp", "reg", "idx", "nt"):
+                        self.assertEqual(res[key], "none", f"vp={vp['width']} {key} leaked bullet")
+                    self.assertEqual(res["sealOverlap"], 0, f"vp={vp['width']} seal overlapped kicker")
+            finally:
+                browser.close()
+
+    def test_collected_long_volume_divider_uses_two_columns_and_fits_a4_sheet(self):
+        from yuyu_book import pages
+        rows = [(f"llm-p{i}", f"第{i}篇", f"篇目 {i}") for i in range(1, 11)]
+        divider = pages.volume_divider(
+            {"id": "vol2", "no": {"zh": "卷二"},
+             "title": {"zh": "大模型：写给 Agent 工程师的原理与实战"},
+             "motto": {"zh": "从 token 到多模态，把模型侧原理连成一张图"},
+             "goal": {"zh": "从 token、向量与注意力开始，逐步理解训练、推理、RAG 和评测。"}},
+            "zh", 2, rows, counts="10 篇 · 16 章")
+        self.assertIn('class="pd-list pd-list-cols"', divider)
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page(viewport={"width": 794, "height": 1123})
+                page.set_content('<html><head><style>' + CSS + '</style></head>'
+                                 '<body class="lang-zh collected"><main class="sheet">'
+                                 + divider + '</main></body></html>')
+                page.emulate_media(media="print")
+                metrics = page.evaluate("""() => {
+                    const div = document.querySelector('.volume-divider');
+                    const list = document.querySelector('.pd-list');
+                    return {
+                        height: Math.round(div.getBoundingClientRect().height),
+                        cols: getComputedStyle(list).gridTemplateColumns.split(' ').length,
+                    };
+                }""")
+                self.assertEqual(metrics["cols"], 2)
+                self.assertLessEqual(metrics["height"], 960,
+                                     f"10-part volume divider spilled A4 page ({metrics['height']}px)")
+            finally:
+                browser.close()
+
+    def test_chinese_emphasis_uses_kaiti_without_slanted_faux_italic(self):
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page()
+                page.set_content(
+                    '<html><head><style>' + CSS + '</style></head>'
+                    '<body class="lang-zh"><main class="sheet"><article class="chapter">'
+                    '<div class="chapter-body"><p>这是一句<em id="zh-em">强调</em>。</p></div>'
+                    '</article></main></body></html>')
+                zh = page.evaluate("""() => {
+                    const s = getComputedStyle(document.getElementById('zh-em'));
+                    return {style: s.fontStyle, family: s.fontFamily};
+                }""")
+                self.assertEqual(zh["style"], "normal")
+                self.assertRegex(zh["family"], r"Kai|楷")
+            finally:
+                browser.close()
+
+    def test_agent_book_tables_and_blockquotes_use_cool_surfaces_not_warm_beige(self):
+        fixture = (
+            '<html><head><style>' + CSS + '</style></head>'
+            '<body class="lang-zh agent-book agent-deepseek"><main class="sheet">'
+            '<article class="chapter"><div class="chapter-body">'
+            '<p>正文段落。</p>'
+            '<blockquote id="bq"><p>引文</p></blockquote>'
+            '<div class="table-scroll"><table><tbody>'
+            '<tr><td>1</td></tr><tr id="even-row"><td>2</td></tr>'
+            '</tbody></table></div></div></article></main></body></html>'
+        )
+        with sync_playwright() as playwright:
+            browser = _launch(playwright, None)
+            try:
+                page = browser.new_page()
+                page.set_content(fixture)
+                got = page.evaluate("""() => ({
+                    bqBg: getComputedStyle(document.getElementById('bq')).backgroundColor,
+                    bqBorder: getComputedStyle(document.getElementById('bq')).borderLeftColor,
+                    rowBg: getComputedStyle(document.getElementById('even-row')).backgroundColor,
+                })""")
+                self.assertEqual(got["bqBg"], "rgb(240, 243, 242)")
+                self.assertEqual(got["bqBorder"], "rgb(49, 90, 166)")
+                self.assertIn("240, 243, 242", got["rowBg"])
+            finally:
+                browser.close()
+
+
 if __name__ == "__main__":
     unittest.main()

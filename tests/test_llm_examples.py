@@ -792,9 +792,13 @@ class TransformerExample(unittest.TestCase):
         output = run("transformer_demo")
         self.assertIn("202,383,360", output)
         self.assertIn("6,738,411,520", output)
+        self.assertIn("6,738,415,616", output)
+        self.assertIn("41,943,040 (total=5,933,109,248)", output)
         self.assertIn("m-n=2: dot=-0.416", output)
         self.assertIn("base=10000, m-n=10: dot=+0.156", output)
         self.assertIn("base=100, m-n=10: dot=-0.299", output)
+        self.assertIn("interleaved=-1.082, permuted rotate_half=-1.082, unpermuted mismatch=+0.193", output)
+        self.assertIn("sparse MoE top-2:    [E0:0.646, E1:0.354]", output)
 
     def test_rope_base_exercise_needs_a_second_coordinate_pair(self):
         module = self.transformer
@@ -823,6 +827,135 @@ class TransformerExample(unittest.TestCase):
                 module.rope([-x for x in query], 10, base),
                 module.rope(key, 0, base))
             self.assertNotAlmostEqual(value, changed_content)
+
+    def test_norm_scale_invariance_and_optional_affine(self):
+        module = self.transformer
+        scaled = [0.1 * v for v in module.X0]
+        r_full, s_full = module.rms_norm(module.X0, eps=1e-6)
+        r_scaled, s_scaled = module.rms_norm(scaled, eps=1e-6)
+        for a, b in zip(r_full, r_scaled):
+            self.assertAlmostEqual(a, b, places=3)
+        self.assertAlmostEqual(s_scaled, 0.1 * s_full, places=3)
+        r_f32, _ = module.rms_norm(module.X0, float32_stats=True, weight=[2.0, 0.5, -1.0])
+        self.assertAlmostEqual(r_f32[0], 2.0 * r_full[0], places=5)
+        self.assertAlmostEqual(r_f32[2], -1.0 * r_full[2], places=5)
+        ln_aff, _, _ = module.layer_norm(module.X0, weight=[2.0, 1.0, 0.5], bias=[0.5, -0.5, 1.0])
+        self.assertAlmostEqual(ln_aff[1], -0.5, places=6)
+
+    def test_rotate_half_matches_permuted_interleaved_and_mismatches_unpermuted(self):
+        module = self.transformer
+        q = [0.4, -1.2, 0.7, 2.0]
+        k = [1.3, 0.5, -0.8, 0.1]
+        interleaved_dot = module.dot(module.rope(q, 10), module.rope(k, 0))
+        half_permuted_dot = module.dot(
+            module.rotate_half_rope(module.interleaved_to_half(q), 10),
+            module.rotate_half_rope(module.interleaved_to_half(k), 0),
+        )
+        half_mixed_dot = module.dot(
+            module.rotate_half_rope(q, 10), module.rotate_half_rope(k, 0),
+        )
+        self.assertAlmostEqual(interleaved_dot, half_permuted_dot, places=12)
+        self.assertNotAlmostEqual(interleaved_dot, half_mixed_dot, places=2)
+
+    def test_silu_gelu_and_ffn_variants(self):
+        import math
+        module = self.transformer
+        self.assertTrue(math.isfinite(module.silu(-1000.0)))
+        self.assertEqual(module.silu(-1000.0), 0.0)
+        self.assertAlmostEqual(module.gelu(1.0, "none"), 0.8413447, places=6)
+        self.assertAlmostEqual(module.gelu(1.0, "tanh"), 0.8411920, places=6)
+        eye2 = [[1.0, 0.0], [0.0, 1.0]]
+        swi = module.swiglu_ffn([1.0, -2.0], eye2, eye2, eye2)
+        self.assertAlmostEqual(swi[0], module.silu(1.0) * 1.0, places=12)
+        relu_out = module.two_layer_ffn([1.0, -2.0], eye2, eye2, activation="relu")
+        self.assertEqual(relu_out, [1.0, 0.0])
+
+    def test_forward_block_model_and_sparse_moe(self):
+        module = self.transformer
+        xs = [[1.0, 0.5, -0.5, 0.25], [0.2, 1.2, 0.4, -0.8]]
+        eye4 = [[1.0 if i == j else 0.0 for j in range(4)] for i in range(4)]
+        blk = {
+            "n_heads": 2,
+            "n_kv_heads": 1,
+            "w_q": eye4,
+            "w_k": eye4[:2],
+            "w_v": eye4[:2],
+            "w_o": eye4,
+            "w_gate": eye4,
+            "w_up": eye4,
+            "w_down": eye4,
+        }
+        future_xs = [xs[0], [99.0, -50.0, 12.0, 4.0]]
+        out_base = module.forward_block(xs, blk)
+        out_changed_future = module.forward_block(future_xs, blk)
+        self.assertEqual(out_base[0], out_changed_future[0])
+        normed, logits = module.forward_model(xs, [blk], final_norm_weight=[1.0] * 4,
+                                              lm_head_weight=[[1.0, 0.0, 0.0, 0.0]])
+        self.assertEqual(len(logits), 2)
+        self.assertAlmostEqual(logits[0][0], normed[0][0], places=12)
+
+        moe_out, weights = module._demo_moe()
+        self.assertEqual(len(weights), 2)
+        self.assertAlmostEqual(sum(w for _, w in weights), 1.0, places=12)
+        self.assertEqual([idx for idx, _ in weights], [0, 1])
+        self.assertEqual(len(moe_out), 2)
+
+    def test_extended_params_gqa_moe_and_chapter_snippet(self):
+        import re
+        module = self.transformer
+        llama = module.params(4096, 32, 32, 11008, 32000, True, False, final_norm=True)
+        self.assertEqual(llama["final_norm"], 4096)
+        self.assertEqual(llama["total"], 6_738_415_616)
+        gqa = module.params(4096, 32, 32, 11008, 32000, True, False,
+                            kv_heads=8, final_norm=True)
+        self.assertEqual(gqa["attention"], 41_943_040)
+        self.assertEqual(gqa["total"], 5_933_109_248)
+        self.assertEqual(llama["attention"] - gqa["attention"], 25_165_824)
+        qwen_style = module.params(4096, 32, 32, 11008, 32000, True, False,
+                                   kv_heads=8, final_norm=True, qkv_bias=True)
+        self.assertEqual(qwen_style["bias"], 4096 + 2 * 1024)
+        moe = module.params(4096, 32, 32, 14336, 32000, True, False,
+                            kv_heads=8, moe_experts=8, moe_active=2, final_norm=True)
+        self.assertGreater(moe["total"], moe["active_total"])
+        self.assertEqual(moe["router"], 4096 * 8)
+
+        moe_biased = module.params(
+            4096, 32, 32, 14336, 32000, True, False,
+            kv_heads=8, moe_experts=8, moe_active=2, shared_experts=1,
+            final_norm=True, qkv_bias=True, mlp_bias=True,
+        )
+        per_expert_ffn_bias = 2 * 14336 + 4096
+        attn_bias = 4096 + 2 * 1024
+        self.assertEqual(moe_biased["bias"], attn_bias + per_expert_ffn_bias * 9)
+        self.assertEqual(
+            moe_biased["per_layer"] - moe_biased["active_per_layer"],
+            (3 * 4096 * 14336 + per_expert_ffn_bias) * 6,
+        )
+        with self.assertRaises(ValueError):
+            module.params(4096, 32, 32, 11008, 32000, kv_heads=3)
+        with self.assertRaises(ValueError):
+            module.params(4095, 32, 32, 11008, 32000)
+        with self.assertRaises(ValueError):
+            module.params(4096, 32, 32, 11008, 32000, moe_experts=4, moe_active=5)
+
+        with self.assertRaises(ValueError):
+            module.matvec([[1.0, 2.0, 3.0]], [1.0, 2.0])
+        eye4 = [[1.0 if i == j else 0.0 for j in range(4)] for i in range(4)]
+        with self.assertRaises(ValueError):
+            module.causal_rope_attention([[1.0, 0.0, 0.0, 0.0]], eye4, eye4, eye4[:2], eye4, n_heads=2, n_kv_heads=2)
+        with self.assertRaises(ValueError):
+            module.causal_rope_attention([[1.0, 0.0, 0.0, 0.0]], eye4, eye4, eye4, eye4[:2], n_heads=2, n_kv_heads=2)
+        budget = module.memory_budget(llama["total"], 32, 8, 128, 131_072)
+        self.assertAlmostEqual(budget["kv_gib"], 16.0, places=4)
+
+        chapter = (ROOT / "llm/ch04.md").read_text(encoding="utf-8")
+        code = next(block for block in re.findall(r"```python\n(.*?)\n```", chapter, re.S)
+                    if "transformer_demo" in block)
+        ns: dict = {}
+        exec(compile(code, "llm/ch04.md", "exec"), ns)
+        self.assertEqual(ns["base"]["total"], 6_738_415_616)
+        self.assertEqual(ns["gqa"]["attention"], 41_943_040)
+        self.assertEqual(ns["gqa"]["total"], 5_933_109_248)
 
 
 class SamplingExample(unittest.TestCase):
