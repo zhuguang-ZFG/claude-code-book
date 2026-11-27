@@ -152,11 +152,15 @@ def mermaid_figure(uid: str, svg: str, fig_no: str, caption: str,
 def drawing_slots(unit: Unit) -> dict[str, tuple[str, str]]:
     """The drawing each `ill` slot asks for, and the caption it earns.
 
-    A plate borrows its caption from the section above it, the same rule a
-    Mermaid plate follows, so the prose names a picture without describing it.
+    A plate borrows its caption from the nearest section heading above it,
+    the same rule a Mermaid plate follows. An H3 can name the mechanism
+    without changing the section's H2 or the table of contents.
+
     """
     caps = mermaid.captions_for(unit.md, unit.ills,
-                                fallback=pages.ui("plate_fallback", unit.lang))
+                                fallback=pages.ui("plate_fallback", unit.lang),
+                                include_h3=True)
+
     return {b.uid: (b.name, caps.get(b.uid, "")) for b in unit.ills}
 
 

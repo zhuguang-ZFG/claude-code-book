@@ -1,15 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Memory writes update disk and live entries while the system prompt snapshot stays frozen until reload">
-  <path d="M68 314C240 304 472 316 650 306" opacity="0.18"/>
-  <rect x="58" y="70" width="180" height="92" rx="7"/>
-  <rect x="270" y="70" width="180" height="92" rx="7"/>
-  <rect x="482" y="70" width="180" height="92" rx="7"/>
-  <text x="104" y="111" font-size="28" fill="currentColor" stroke="none">disk</text>
-  <text x="314" y="111" font-size="28" fill="currentColor" stroke="none">live</text>
-  <text x="512" y="111" font-size="28" fill="currentColor" stroke="none">snapshot</text>
-  <path d="M238 116H270M450 116H482" stroke-dasharray="7 7"/>
-  <path d="M148 162V236M572 162V236M148 236H572"/>
-  <rect x="270" y="210" width="180" height="52" rx="6"/>
-  <text x="322" y="244" font-size="28" fill="currentColor" stroke="none">reload</text>
-  <path d="M148 236C148 292 250 296 270 262M572 236C572 292 470 296 450 262" stroke-dasharray="7 7"/>
-  <text x="248" y="332" font-size="28" fill="currentColor" stroke="none">write now, prompt later</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 470" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Loading creates a prompt snapshot; later writes change disk and live entries but only reload replaces the snapshot">
+  <text x="360" y="44" text-anchor="middle" font-size="30" fill="currentColor" stroke="none">Writes update two stores, not the frozen prompt</text>
+  <rect x="40" y="72" width="130" height="68" rx="8"/>
+  <rect x="240" y="72" width="220" height="68" rx="8"/>
+  <rect x="520" y="72" width="160" height="68" rx="8" opacity="0.4"/>
+  <text x="105" y="114" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">load</text>
+  <text x="350" y="106" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">disk + live</text>
+  <text x="350" y="136" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">A</text>
+  <text x="600" y="106" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">snapshot</text>
+  <text x="600" y="136" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">A</text>
+  <path d="M170 106H232M460 106H512"/>
+  <path d="M222 96L234 106L222 116M502 96L514 106L502 116"/>
+  <rect x="40" y="220" width="130" height="68" rx="8"/>
+  <rect x="240" y="220" width="220" height="68" rx="8"/>
+  <rect x="520" y="220" width="160" height="68" rx="8" opacity="0.4"/>
+  <text x="105" y="262" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">write B</text>
+  <text x="350" y="254" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">disk + live</text>
+  <text x="350" y="284" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">A, B</text>
+  <text x="600" y="254" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">snapshot</text>
+  <text x="600" y="284" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">A</text>
+  <path d="M170 254H232"/>
+  <path d="M222 244L234 254L222 264"/>
+  <path d="M460 254H512" stroke-dasharray="7 7"/>
+  <rect x="40" y="370" width="130" height="68" rx="8"/>
+  <rect x="240" y="370" width="220" height="68" rx="8" opacity="0.25"/>
+  <rect x="520" y="370" width="160" height="68" rx="8"/>
+  <text x="105" y="412" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">reload</text>
+  <text x="350" y="412" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">read disk again</text>
+  <text x="600" y="404" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">snapshot</text>
+  <text x="600" y="434" text-anchor="middle" font-size="28" fill="currentColor" stroke="none">A, B</text>
+  <path d="M170 404H232M460 404H512"/>
+  <path d="M222 394L234 404L222 414M502 394L514 404L502 414"/>
 </svg>
+
+
